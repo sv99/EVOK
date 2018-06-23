@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="xjplc.Device">
+    <Position X="0.5" Y="0.5" Width="4.5" />
+    <NestedTypes>
+      <Class Name="xjplc.Device.DataProCallBack" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Device.cs</NewMemberFileName>
+        </TypeIdentifier>
+        <Lollipop Position="0.2" />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>QgRAIAA0AABAAAAAiAAAAEgAAAJQgIgAAAAAFAAEAAA=</HashCode>
+      <FileName>Device.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>
