@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EvokDeltTa
+namespace evokNew
 {
     public partial class WatchForm : Form
     {
@@ -22,6 +22,11 @@ namespace EvokDeltTa
             dgv.DataSource = dt;
         }
         private void watchForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

@@ -5,8 +5,7 @@
 	file path:	E:\project\2018\中意木工\新版\plc测试\xjplc\xjplc
 	file base:	CommManager
 	file ext:	cs
-	author:		王均晖
-	
+	author:		王均晖	
 	purpose:	此类主要集中处理与PLC的通信 数据简单转化等
 *********************************************************************/
 using System;

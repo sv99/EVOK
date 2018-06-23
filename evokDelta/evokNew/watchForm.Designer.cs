@@ -1,4 +1,4 @@
-﻿namespace EvokDeltTa
+﻿namespace evokNew
 {
     partial class WatchForm
     {
@@ -41,15 +41,16 @@
             this.dgv.RowTemplate.Height = 27;
             this.dgv.Size = new System.Drawing.Size(868, 524);
             this.dgv.TabIndex = 0;
+            this.dgv.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellContentClick);
             // 
-            // watchForm
+            // WatchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(919, 569);
             this.Controls.Add(this.dgv);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "watchForm";
+            this.Name = "WatchForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "数据监控";
             this.TopMost = true;

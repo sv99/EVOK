@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EvokDeltTa.Properties {
+namespace evokNew.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
