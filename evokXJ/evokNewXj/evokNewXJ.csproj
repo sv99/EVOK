@@ -7,8 +7,8 @@
     <ProjectGuid>{B95FA900-B3B3-4714-8D6C-180FFC74723F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>evokNew</RootNamespace>
-    <AssemblyName>evokNew</AssemblyName>
+    <RootNamespace>evokNewXJ</RootNamespace>
+    <AssemblyName>evokNewXJ</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
