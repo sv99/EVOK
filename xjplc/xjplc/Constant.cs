@@ -1,13 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace xjplc
 {
-  
-        public class Constant
+    /// <summary>
+    /// 串口参数类
+    /// </summary>
+    public struct PortParam
+    {
+        //串口名
+        public string m_portName;
+        //波特率
+        public int m_baudRate;
+        //奇偶校验
+        public Parity m_parity;
+        //停止位
+        public StopBits m_stopbits;
+        //流控制 传输协议
+        public Handshake m_handshake;
+        //数据位长度
+        public int m_dataBits;
+        //读取缓冲区大小
+        public int m_readBufferSize;
+        //读取缓冲区中断标准
+        public int m_receivedBytesThreshold;
+        //连续接收超时时间
+        public int m_receiveTimeout;
+        //发送时间间隔
+        public int m_sendInterval;
+    }
+    //委托事件传递类 这里用作传递数据接收后处理的参数
+    public class commEventArgs : EventArgs
+    {
+        byte[] byte_buffer;
+        public byte[] Byte_buffer
+        {
+            get { return byte_buffer; }
+            set { byte_buffer = value; }
+        }
+        public commEventArgs()
+        {
+
+        }
+    }
+    public delegate void commDataProcess(object s, commEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
+    public class Constant
         {
         public static readonly string ConnectMachineSuccess = "设备连接成功！";
         public static readonly string ConnectMachineFail    = "设备连接失败,请检查设备端口！";
@@ -69,6 +110,12 @@ namespace xjplc
         public static readonly string measureOutOfTime = "测量超时！";
         public static readonly string IsWorking = "设备生产中！";
         public static readonly string CutEnd = "生产结束！";
+        #endregion
+        #region 台达PLC专用
+        //台达PLC 发送命令 判断是否存在 存在则回复以下
+        // 3a 30 31 30 35 30 43 30 30 46 46 30 30 45 46 0d 0a
+        public static readonly byte[] DTExistByteOutIn = 
+            { 0x3a,0x30,0x31 ,0x30 ,0x35 ,0x30 ,0x43 ,0x30 ,0x30 ,0x46 ,0x46 ,0x30 ,0x30 ,0x45 ,0x46 ,0x0d ,0x0a };       
         #endregion
         #region 信捷PLC 专用
         //信捷PLC 发送命令 判断是否存在 存在则回复以下

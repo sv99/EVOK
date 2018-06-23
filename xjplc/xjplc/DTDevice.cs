@@ -16,7 +16,7 @@ namespace xjplc
     /// 2.处理commmanager来的数据
     /// 3.接收用户界面提供的端口数据和需要读取寄存器内容的文件
     /// </summary>
-    public class XJDevice 
+    public class DTDevice 
     {
         CsvStreamReader CSVData ;
 
@@ -41,11 +41,11 @@ namespace xjplc
         //这里为什么要这样？ 因为M值不连续的分一组 再整理起来
         public List<List<PlcInfo>> MPlcInfoAll;
 
-        XJPLCPackCmdAndDataUnpack XJPLCcmd ;
+        DTPLCPackCmdAndDataUnpack DTPLCcmd ;
 
         PortParam portParam ;
 
-        XJCommManager comManager ;
+        DTCommManager comManager ;
 
         System.Timers.Timer WatchCommTimer ;// new System.Timers.Timer(500);
 
@@ -58,7 +58,7 @@ namespace xjplc
             set { status = value; }
         }
       
-        public XJDevice()
+        public DTDevice()
         {
 
         }
@@ -84,9 +84,9 @@ namespace xjplc
         /// </summary>
         /// <returns></returns>
 
-        public XJDevice(List<string> filestr)
+        public DTDevice(List<string> filestr)
         {
-            XJPLCcmd    = new XJPLCPackCmdAndDataUnpack();
+            DTPLCcmd    = new DTPLCPackCmdAndDataUnpack();
             DataFormLst = new List<DataTable>();
             CSVData     = new CsvStreamReader();
             dgShowLst   = new List<DataGridView>();
@@ -95,7 +95,7 @@ namespace xjplc
             GetPlcDataTableFromFile(filestr);
 
             //找一下串口 不存在就报错 退出
-            if (!ConstantMethod.XJFindPort())
+            if (!ConstantMethod.DTFindPort())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
                 System.Environment.Exit(0);
@@ -209,7 +209,7 @@ namespace xjplc
             WatchCommTimer.Enabled = true;
             status = Constant.DeviceNoConnection;
 
-            if (XJPLCcmd !=null)
+            if (DTPLCcmd !=null)
 
             if (comManager.ConnectMachine())
             {
@@ -237,12 +237,12 @@ namespace xjplc
             portParam = portParam0;
           
 
-            comManager = new XJCommManager(portParam);
+            comManager = new DTCommManager(portParam);
             //设置数据处理委托事件
             comManager.EventDataProcess += new xjplc.commDataProcess(Dataprocess);
 
             //命令打包类重新确认
-            comManager.SetXJPLCcmd(XJPLCcmd);
+            comManager.SetDTPLCcmd(DTPLCcmd);
            
             //GC.Collect();
             //GC.WaitForPendingFinalizers();
@@ -273,9 +273,9 @@ namespace xjplc
         public void SetPlcReadDMData(string filename)
         {
                       
-            if (XJPLCcmd.CmdReadDMDataOut != null)
+            if (DTPLCcmd.CmdReadDMDataOut != null)
             {
-                XJPLCcmd.CmdReadDMDataOut = null;
+                DTPLCcmd.CmdReadDMDataOut = null;
             }
 
             if (CSVData != null)
@@ -397,7 +397,7 @@ namespace xjplc
                     count = count * 2;
                 }
                 //传入数据起始地址 个数 区域 模式
-                PlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr,count,strSplit2, DSmode);
+                PlcInfo[] tmpInfoLst = DTPLCcmd.GetPlcInfo(mAddr,count,strSplit2, DSmode);
 
                 if (tmpInfoLst.Count() > 0) plcInfoLst.AddRange(tmpInfoLst);
                 #endregion
@@ -488,7 +488,7 @@ namespace xjplc
             FindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfoAll);
 
             
-            XJPLCcmd.PackCmdReadDMDataOut(addrLst, idLst, addrcount, 5 + DPlcInfo.Count * 2 + mCount);
+            DTPLCcmd.PackCmdReadDMDataOut(addrLst, idLst, addrcount, 5 + DPlcInfo.Count * 2 + mCount);
            
             #endregion
             addrLst = null;
@@ -672,7 +672,7 @@ namespace xjplc
                     m = plcInfoLst0[i + 1].RelAddr - plcInfoLst0[i].RelAddr;
                     if (m > 1)
                     {
-                        PlcInfo[] tmpPlcInfoLst = XJPLCcmd.GetPlcInfo(plcInfoLst0[i].RelAddr, m, plcInfoLst0[i].StrArea, plcInfoLst0[i].ValueMode);
+                        PlcInfo[] tmpPlcInfoLst = DTPLCcmd.GetPlcInfo(plcInfoLst0[i].RelAddr, m, plcInfoLst0[i].StrArea, plcInfoLst0[i].ValueMode);
                         if (tmpPlcInfoLst.Count() > 0)
                         {
                             plcInfoLst1.AddRange(tmpPlcInfoLst);                         
@@ -722,7 +722,7 @@ namespace xjplc
         {
             isShiftDataForm = false;
             //数据处理 以及更新 datagridview
-            XJPLCcmd.UnPackCmdReadDMDataIn(dataForm,e.Byte_buffer, DPlcInfo, MPlcInfoAll);            
+            DTPLCcmd.UnPackCmdReadDMDataIn(dataForm,e.Byte_buffer, DPlcInfo, MPlcInfoAll);            
             Application.DoEvents();                   
             e.Byte_buffer = null;
             //GC.Collect();

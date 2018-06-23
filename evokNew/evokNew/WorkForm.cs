@@ -236,8 +236,8 @@ namespace evokNew
 
         public void InitParam()
         {
-             optSize = new OptSize( UserData);
-             strDataFormPath = new List<string>();
+            optSize = new OptSize( UserData);
+            strDataFormPath = new List<string>();
             if (File.Exists(Constant.PlcDataFilePath))
             {
                  strDataFormPath.Add(Constant.PlcDataFilePath);
@@ -265,7 +265,7 @@ namespace evokNew
                 MessageBox.Show(Constant.ErrorPlcFile);
                 Environment.Exit(0);
             }
-             evokDevice = new EvokXJDevice( strDataFormPath);
+            evokDevice = new EvokXJDevice( strDataFormPath);
             if (! evokDevice.getDeviceData())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);

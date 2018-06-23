@@ -10,11 +10,20 @@ using System.Windows.Forms;
 
 namespace EvokDeltTa
 {
-    public partial class Form1 : Form
+    public partial class WatchForm : Form
     {
-        public Form1()
+        public WatchForm()
         {
             InitializeComponent();
+        }
+
+        public void SetShowDataTable(DataTable dt)
+        {
+            dgv.DataSource = dt;
+        }
+        private void watchForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -123,10 +123,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommManager.cs" />
+    <Compile Include="DTCommManager.cs" />
+    <Compile Include="XJCommManager.cs" />
     <Compile Include="ConfigFileManager.cs" />
     <Compile Include="ConstantMethod.cs" />
     <Compile Include="CSVUtility.cs" />
+    <Compile Include="DTDevice.cs" />
+    <Compile Include="PlcPackCmdAndUnpack.cs" />
     <Compile Include="XJDevice.cs" />
     <Compile Include="EvokXJDevice.cs" />
     <Compile Include="EvokWork.cs" />
@@ -144,6 +147,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialPortListener .cs" />
     <Compile Include="Constant.cs" />
+    <Compile Include="DTPLCPackCmdAndDataUnpack.cs" />
     <Compile Include="XJPLCPackCmdAndDataUnpack.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

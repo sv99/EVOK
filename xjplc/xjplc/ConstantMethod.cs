@@ -131,6 +131,81 @@ namespace xjplc
 
         }
         #endregion
+        #region 台达PLC 
+        /// <summary>
+        /// 这里检测台达PLC 是否存在 并发送 可以设置读取命令的数据
+        /// </summary>
+        /// <returns></returns>
+        public static bool DTFindPort() //如果可以连接 则写到config里
+        {
+            SerialPort m_serialPort = new SerialPort();
+
+            string[] str = SerialPort.GetPortNames();
+
+            List<string> portNameLst = new List<string>();
+
+            PortParam portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+
+            for (int i = 0; i < (str.Length + 1); i++)
+            {
+                try
+                {
+                    if (i == 0)
+                        m_serialPort.PortName = portparam0.m_portName;
+                    else
+                    {
+                        if (!str[i - 1].Equals(portparam0.m_portName))
+                            m_serialPort.PortName = str[i - 1];
+                        else continue;
+                    }
+                    m_serialPort.BaudRate = portparam0.m_baudRate;
+                    m_serialPort.Parity = portparam0.m_parity;
+                    m_serialPort.StopBits = portparam0.m_stopbits;
+                    m_serialPort.Handshake = portparam0.m_handshake;
+                    m_serialPort.DataBits = portparam0.m_dataBits;
+                    m_serialPort.ReadBufferSize = 1024;
+                    m_serialPort.WriteBufferSize = 1024;
+                    m_serialPort.ReadTimeout = 100;
+                    if (!m_serialPort.IsOpen)
+                    {
+                        m_serialPort.Open();
+                    }
+                    byte[] resultByte = new byte[Constant.DTExistByteOutIn.Count()];
+
+                    m_serialPort.Write(Constant.DTExistByteOutIn, 0, Constant.DTExistByteOutIn.Length);
+
+                    ConstantMethod.Delay(200);
+
+                    m_serialPort.Read(resultByte, 0, Constant.DTExistByteOutIn.Count());
+
+
+                    if (ConstantMethod.compareByteStrictly(resultByte, Constant.DTExistByteOutIn))
+                    {
+                        //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
+                        ConstantMethod.SetPortParam(Constant.ConfigFilePath, Constant.PortName, m_serialPort.PortName);
+                        return true;
+                    }
+
+                }
+                catch
+                {
+                    //rtbResult.AppendText("连接失败" + m_serialPort.PortName);
+                    // throw new SerialPortException(
+                    //string.Format("无法打开串口:{0}", m_serialPort.PortName));
+                    //continue;
+                }
+                finally { m_serialPort.Close(); };
+
+            }
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+
+            return false;
+
+        }
+
+        #endregion
         public static void ShowInfo(RichTextBox r1, string s)
         {
             if (r1 != null && r1.IsHandleCreated )

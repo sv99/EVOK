@@ -25,5 +25,10 @@ namespace evokNew
         {
 
         }
+
+        private void dgv_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
