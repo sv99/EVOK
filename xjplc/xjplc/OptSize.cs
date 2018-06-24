@@ -479,8 +479,7 @@ namespace xjplc
             //干活之前 先清空数据 做好准备工作
             if (rt1 != null) rt1.Clear();
             singleSizeLst.Clear();
-            ProdInfoLst.Clear();
-                     
+            ProdInfoLst.Clear();                     
                        
             if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
 
@@ -537,8 +536,7 @@ namespace xjplc
                     ConstantMethod.ShowInfo(rt1, "尾料：" + prodInfo.WL.ToString());
                     ProdInfoLst.Add(prodInfo);
                     singleSizeLst.Add(resultSingleSize);
-                    ConstantMethod.ShowInfo(rt1, "--------------");
-                    ConstantMethod.ShowInfo(rt1, "--------------");
+                    ConstantMethod.ShowInfo(rt1, "------------------------------------");
                 }          
         
             }
@@ -554,12 +552,9 @@ namespace xjplc
         }
         public string OptNormal(RichTextBox rt1)
         {
-            //干活之前 先清空数据 做好准备工作
-            if (rt1 != null) rt1.Clear();
+            //干活之前 先清空数据 做好准备工作          
             singleSizeLst.Clear();
-            ProdInfoLst.Clear();
-
-           
+            ProdInfoLst.Clear();          
            
             if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
 

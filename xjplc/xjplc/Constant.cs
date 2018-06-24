@@ -102,6 +102,7 @@ namespace xjplc
         public static readonly string optSuccess = "优化结束！";
         public static readonly string NextOpt = "下一根料准备！";
         public static readonly string ErrorMeasure = "测量错误！";
+        public static readonly string InOPT = "优化中,请稍等。。。。。。。。";
         public static readonly int MeaSureMaxTime = 30000;
         #endregion
 
@@ -144,7 +145,7 @@ namespace xjplc
 
         public static readonly int XJConnectMaxCount = 5;
         //读取超时 
-        public static readonly int ReadTimeOut = 200; //这里0.5 秒别改 工控机性能不行
+        public static readonly int ReadTimeOut = 1000; //这里0.5 秒别改 工控机性能不行
 
         //写入超时 
         public static readonly int WriteTimeOut = 500;

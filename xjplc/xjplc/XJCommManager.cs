@@ -191,13 +191,14 @@ namespace xjplc
             openPort();
 
             //询问设备是否存在 收到的数据 变成 回复的长度
-            for (int i = 0; i < 3; i++)
+            for (int  i = 0; i < 3; i++)
             {
                 if (status)
                 {
                     SetCmdOut(Constant.XJExistByteOut.ToArray(), Constant.XJExistByteIn.Count());
                     SetCmdIn(Constant.XJExistByteIn);
-                    m_SerialPort.Send(XJPLCcmd.CmdOut);                    
+                    m_SerialPort.Send(XJPLCcmd.CmdOut);
+                                        
                     //等待连接 约300秒         
                     ConstantMethod.Delay(Constant.ReadTimeOut, ref isDeviceReady);
 
@@ -208,8 +209,6 @@ namespace xjplc
                     }
                 }
             }
-                                
-            
 
             m_buffer.Clear();
 

@@ -673,7 +673,7 @@ namespace xjplc
         {
             int start = Environment.TickCount;
             while ((Math.Abs(Environment.TickCount - start) < milliSecond)&&(!jump))
-            {
+            {               
                 Application.DoEvents();
             }
         }
