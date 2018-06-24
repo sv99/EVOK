@@ -1,4 +1,4 @@
-﻿namespace evokNew
+﻿namespace evokNew0066
 {
     partial class WatchForm
     {

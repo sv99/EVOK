@@ -73,6 +73,7 @@ namespace xjplc
             ParamStr19 = "";
             ParamStr20 = "";
             ParamStrLst = new List<string>();
+            ParamStrLst.Add(Barc);
             ParamStrLst.Add(ParamStr1);
             ParamStrLst.Add(ParamStr2);
             ParamStrLst.Add(ParamStr3);
@@ -85,6 +86,16 @@ namespace xjplc
             ParamStrLst.Add(ParamStr10);
             ParamStrLst.Add(ParamStr11);
             ParamStrLst.Add(ParamStr12);
+            ParamStrLst.Add(ParamStr12);
+            ParamStrLst.Add(ParamStr13);
+            ParamStrLst.Add(ParamStr14);
+            ParamStrLst.Add(ParamStr15);
+            ParamStrLst.Add(ParamStr16);
+            ParamStrLst.Add(ParamStr17);
+            ParamStrLst.Add(ParamStr18);
+            ParamStrLst.Add(ParamStr19);
+            ParamStrLst.Add(ParamStr20);
+
 
             DtUser = dt;
             Xuhao = xuhao0;
@@ -497,7 +508,7 @@ namespace xjplc
                 }
 
             //----返回的结果 只有一组数据
-            resultOpt = OptModuleMeasure(dataOpt.ToList<int>(), OptRealLen, dbc, ltbc, safe);
+            resultOpt = OptModuleMeasure(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
                                                         
             if (resultOpt.Count > 0)
             {
@@ -576,7 +587,7 @@ namespace xjplc
             }
 
             //----
-            resultOpt = OptModuleNormal(dataOpt.ToList<int>(), OptRealLen, dbc, ltbc, safe);
+            resultOpt = OptModuleNormal(dataOpt.ToList<int>(),len, dbc, ltbc, safe);
 
                     
             if (resultOpt.Count > 0 )
@@ -985,13 +996,13 @@ namespace xjplc
                         pi.Cut = size;                       
                         pi.Barc = dt.Rows[i][Constant.strformatZh[3]].ToString();
                         pi.DtUser = dt;
-                        //添加参数
+                        //添加参数                      
                         for (int m = 0; m < pi.ParamStrLst.Count; m++)
                         {
-                            if (dt.Rows[i][4 + m] != null)  //参数
+                            if ((m+4)<dt.Rows[i].ItemArray.Count() && dt.Rows[i][4 + m] != null)  //参数
                                 pi.ParamStrLst[m] = dt.Rows[i][4 + m].ToString();
                         }
-                        
+                        pi.ParamStrLst.Insert(0,pi.Barc);
 
                     }
                 }

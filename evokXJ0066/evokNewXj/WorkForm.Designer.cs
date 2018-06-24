@@ -1,4 +1,4 @@
-﻿namespace evokNew
+﻿namespace evokNew0066
 {
     partial class WorkForm
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +64,7 @@
             this.stopBtn = new System.Windows.Forms.Button();
             this.pauseBtn = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
+            this.printBarCodeBtn = new System.Windows.Forms.Button();
             this.ccBtn = new System.Windows.Forms.Button();
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
@@ -100,7 +101,6 @@
             this.lblY16 = new System.Windows.Forms.Button();
             this.BtnM101 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tes = new System.Windows.Forms.Button();
             this.dgvParam = new System.Windows.Forms.DataGridView();
             this.bin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.value = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -111,6 +111,7 @@
             this.DialogExcelDataLoad = new System.Windows.Forms.OpenFileDialog();
             this.report1 = new FastReport.Report();
             this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
+            this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -228,6 +229,7 @@
             this.tabPage1.Controls.Add(this.stopBtn);
             this.tabPage1.Controls.Add(this.pauseBtn);
             this.tabPage1.Controls.Add(this.button10);
+            this.tabPage1.Controls.Add(this.printBarCodeBtn);
             this.tabPage1.Controls.Add(this.ccBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
@@ -494,6 +496,19 @@
             this.button10.Text = "条码预览";
             this.button10.UseVisualStyleBackColor = true;
             // 
+            // printBarCodeBtn
+            // 
+            this.printBarCodeBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.printBarCodeBtn.Location = new System.Drawing.Point(624, 133);
+            this.printBarCodeBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.printBarCodeBtn.Name = "printBarCodeBtn";
+            this.printBarCodeBtn.Size = new System.Drawing.Size(164, 52);
+            this.printBarCodeBtn.TabIndex = 109;
+            this.printBarCodeBtn.Tag = "条码打印";
+            this.printBarCodeBtn.Text = "条码打印";
+            this.printBarCodeBtn.UseVisualStyleBackColor = true;
+            this.printBarCodeBtn.Click += new System.EventHandler(this.printBarCodeBtn_Click);
+            // 
             // ccBtn
             // 
             this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -628,12 +643,13 @@
             // 
             this.label103.AutoSize = true;
             this.label103.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label103.Location = new System.Drawing.Point(1087, 35);
+            this.label103.Location = new System.Drawing.Point(1089, 297);
             this.label103.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label103.Name = "label103";
             this.label103.Size = new System.Drawing.Size(68, 28);
             this.label103.TabIndex = 77;
             this.label103.Text = "锯料";
+            this.label103.Visible = false;
             // 
             // textBox16
             // 
@@ -660,13 +676,14 @@
             // textBox5
             // 
             this.textBox5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox5.Location = new System.Drawing.Point(1049, 77);
+            this.textBox5.Location = new System.Drawing.Point(1051, 339);
             this.textBox5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(129, 38);
             this.textBox5.TabIndex = 73;
             this.textBox5.Tag = "锯料读";
             this.textBox5.Text = "锯料读";
+            this.textBox5.Visible = false;
             // 
             // label18
             // 
@@ -690,6 +707,8 @@
             this.button18.Tag = "检测负";
             this.button18.Text = "检测负向";
             this.button18.UseVisualStyleBackColor = true;
+            this.button18.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.button18.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // TxtHSD4
             // 
@@ -705,7 +724,7 @@
             // button12
             // 
             this.button12.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button12.Location = new System.Drawing.Point(1216, 77);
+            this.button12.Location = new System.Drawing.Point(1218, 339);
             this.button12.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(160, 52);
@@ -713,6 +732,9 @@
             this.button12.Tag = "锯料负";
             this.button12.Text = "锯料负向";
             this.button12.UseVisualStyleBackColor = true;
+            this.button12.Visible = false;
+            this.button12.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.button12.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // TxtHSD0
             // 
@@ -736,6 +758,8 @@
             this.button17.Tag = "检测正";
             this.button17.Text = "检测正向";
             this.button17.UseVisualStyleBackColor = true;
+            this.button17.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.button17.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // BtnM119
             // 
@@ -748,11 +772,13 @@
             this.BtnM119.Tag = "出料右";
             this.BtnM119.Text = ">";
             this.BtnM119.UseVisualStyleBackColor = true;
+            this.BtnM119.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.BtnM119.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // button8
             // 
             this.button8.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button8.Location = new System.Drawing.Point(881, 77);
+            this.button8.Location = new System.Drawing.Point(883, 339);
             this.button8.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(160, 52);
@@ -760,6 +786,9 @@
             this.button8.Tag = "锯料正";
             this.button8.Text = "锯料正向";
             this.button8.UseVisualStyleBackColor = true;
+            this.button8.Visible = false;
+            this.button8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.button8.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // BtnM102
             // 
@@ -772,6 +801,8 @@
             this.BtnM102.Tag = "送料右";
             this.BtnM102.Text = ">";
             this.BtnM102.UseVisualStyleBackColor = true;
+            this.BtnM102.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.BtnM102.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // BtnM118
             // 
@@ -784,6 +815,8 @@
             this.BtnM118.Tag = "出料左";
             this.BtnM118.Text = "<";
             this.BtnM118.UseVisualStyleBackColor = true;
+            this.BtnM118.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.BtnM118.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // lblY14
             // 
@@ -954,10 +987,10 @@
             this.BtnM101.Text = "<";
             this.BtnM101.UseVisualStyleBackColor = true;
             this.BtnM101.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.BtnM101.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.tes);
             this.tabPage3.Controls.Add(this.dgvParam);
             this.tabPage3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabPage3.Location = new System.Drawing.Point(4, 33);
@@ -967,15 +1000,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tes
-            // 
-            this.tes.Location = new System.Drawing.Point(1072, 122);
-            this.tes.Name = "tes";
-            this.tes.Size = new System.Drawing.Size(187, 75);
-            this.tes.TabIndex = 2;
-            this.tes.Text = "button1";
-            this.tes.UseVisualStyleBackColor = true;
             // 
             // dgvParam
             // 
@@ -987,8 +1011,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1048,6 +1072,12 @@
             this.FileSaveTimer.Enabled = true;
             this.FileSaveTimer.Interval = 30000;
             this.FileSaveTimer.Tick += new System.EventHandler(this.FileSave_Tick);
+            // 
+            // errorTimer
+            // 
+            this.errorTimer.Enabled = true;
+            this.errorTimer.Interval = 1000;
+            this.errorTimer.Tick += new System.EventHandler(this.errorTimer_Tick);
             // 
             // WorkForm
             // 
@@ -1122,7 +1152,6 @@
         private System.Windows.Forms.ToolStripStatusLabel infolbl;
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.OpenFileDialog DialogExcelDataLoad;
-        private System.Windows.Forms.Button tes;
         private System.Windows.Forms.DataGridViewTextBoxColumn bin;
         private System.Windows.Forms.DataGridViewTextBoxColumn value;
         private System.Windows.Forms.RichTextBox rtbResult;
@@ -1165,6 +1194,8 @@
         private System.Windows.Forms.Button BtnM101;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button ccBtn;
+        private System.Windows.Forms.Timer errorTimer;
+        private System.Windows.Forms.Button printBarCodeBtn;
     }
 }
 

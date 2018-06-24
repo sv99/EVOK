@@ -63,6 +63,7 @@ namespace xjplc
         public static readonly int ExcelFile = 1;
         public static readonly int CsvFile = 2;
         public static readonly int ErrorFile = 0;
+        public static readonly string Alarm = "报警";
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;

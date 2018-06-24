@@ -1,4 +1,4 @@
-﻿namespace evokNew
+﻿namespace evokNew0066
 {
     partial class WorkForm
     {
@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -64,6 +63,7 @@
             this.stopBtn = new System.Windows.Forms.Button();
             this.pauseBtn = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
+            this.printBarCodeBtn = new System.Windows.Forms.Button();
             this.ccBtn = new System.Windows.Forms.Button();
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
@@ -100,17 +100,17 @@
             this.lblY16 = new System.Windows.Forms.Button();
             this.BtnM101 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tes = new System.Windows.Forms.Button();
             this.dgvParam = new System.Windows.Forms.DataGridView();
             this.bin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.value = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.infolbl = new System.Windows.Forms.ToolStripStatusLabel();
-            this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.UpdateTimer = new System.Windows.Forms.Timer();
             this.DialogExcelDataLoad = new System.Windows.Forms.OpenFileDialog();
             this.report1 = new FastReport.Report();
-            this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
+            this.FileSaveTimer = new System.Windows.Forms.Timer();
+            this.errorTimer = new System.Windows.Forms.Timer();
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -228,6 +228,7 @@
             this.tabPage1.Controls.Add(this.stopBtn);
             this.tabPage1.Controls.Add(this.pauseBtn);
             this.tabPage1.Controls.Add(this.button10);
+            this.tabPage1.Controls.Add(this.printBarCodeBtn);
             this.tabPage1.Controls.Add(this.ccBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
@@ -493,6 +494,19 @@
             this.button10.Tag = "条码预览";
             this.button10.Text = "条码预览";
             this.button10.UseVisualStyleBackColor = true;
+            // 
+            // printBarCodeBtn
+            // 
+            this.printBarCodeBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.printBarCodeBtn.Location = new System.Drawing.Point(624, 133);
+            this.printBarCodeBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.printBarCodeBtn.Name = "printBarCodeBtn";
+            this.printBarCodeBtn.Size = new System.Drawing.Size(164, 52);
+            this.printBarCodeBtn.TabIndex = 109;
+            this.printBarCodeBtn.Tag = "条码打印";
+            this.printBarCodeBtn.Text = "条码打印";
+            this.printBarCodeBtn.UseVisualStyleBackColor = true;
+            this.printBarCodeBtn.Click += new System.EventHandler(this.printBarCodeBtn_Click);
             // 
             // ccBtn
             // 
@@ -957,7 +971,6 @@
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.tes);
             this.tabPage3.Controls.Add(this.dgvParam);
             this.tabPage3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabPage3.Location = new System.Drawing.Point(4, 33);
@@ -967,15 +980,6 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // tes
-            // 
-            this.tes.Location = new System.Drawing.Point(1072, 122);
-            this.tes.Name = "tes";
-            this.tes.Size = new System.Drawing.Size(187, 75);
-            this.tes.TabIndex = 2;
-            this.tes.Text = "button1";
-            this.tes.UseVisualStyleBackColor = true;
             // 
             // dgvParam
             // 
@@ -1049,6 +1053,12 @@
             this.FileSaveTimer.Interval = 30000;
             this.FileSaveTimer.Tick += new System.EventHandler(this.FileSave_Tick);
             // 
+            // errorTimer
+            // 
+            this.errorTimer.Enabled = true;
+            this.errorTimer.Interval = 1000;
+            this.errorTimer.Tick += new System.EventHandler(this.errorTimer_Tick);
+            // 
             // WorkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1060,7 +1070,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "WorkForm";
-            this.Text = "EVOK-0067";
+            this.Text = "EVOK-0066";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -1122,7 +1132,6 @@
         private System.Windows.Forms.ToolStripStatusLabel infolbl;
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.OpenFileDialog DialogExcelDataLoad;
-        private System.Windows.Forms.Button tes;
         private System.Windows.Forms.DataGridViewTextBoxColumn bin;
         private System.Windows.Forms.DataGridViewTextBoxColumn value;
         private System.Windows.Forms.RichTextBox rtbResult;
@@ -1165,6 +1174,8 @@
         private System.Windows.Forms.Button BtnM101;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button ccBtn;
+        private System.Windows.Forms.Timer errorTimer;
+        private System.Windows.Forms.Button printBarCodeBtn;
     }
 }
 

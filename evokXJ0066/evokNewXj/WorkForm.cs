@@ -5,15 +5,17 @@ using System.Drawing;
 using System.Windows.Forms;
 using xjplc;
 using System.IO;
-namespace evokNew
+
+namespace evokNew0066
 {
     public partial class WorkForm : Form
     {
         private static Queue<Control> allCtrls = new Queue<Control>();
 
-
+        List<string> errorList = new List<string>();
+        int errorId = 0;
         private EvokXJDevice evokDevice;
-        private EvokWork evokWork;
+        private EvokXJWork evokWork;
         private OptSize optSize;
 
         private List<string> strDataFormPath;
@@ -50,11 +52,7 @@ namespace evokNew
 
         private void BtnM101_MouseDown(object sender, MouseEventArgs e)
         {
-            PlcInfoSimple simple =  getPsFromPslLst(((TextBox)sender).Tag.ToString(), Constant.Write,  evokWork.PsLstAuto);
-            if (simple != null)
-            {
-                simple.IsInEdit = false;
-            }
+            evokWork.SetMPsOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
         }
 
 
@@ -203,15 +201,7 @@ namespace evokNew
 
         private void HandOff2On_Click(object sender, EventArgs e)
         {
-            PlcInfoSimple p =  getPsFromPslLst(((Control)sender).Tag.ToString(), Constant.Write,  evokWork.PsLstHand);
-            if (p != null)
-            {
-                 evokDevice.SetMValueOFF2ON(p);
-            }
-            else
-            {
-                MessageBox.Show(Constant.SetDataFail);
-            }
+            evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(),Constant.Write,evokWork.PsLstHand);
         }
 
         private void InitControl()
@@ -273,11 +263,12 @@ namespace evokNew
             }
              UpdateTimer.Enabled = true;
              optSize = new OptSize( UserData);
-             evokWork = new EvokWork();
+             evokWork = new EvokXJWork();
              evokWork.SetEvokDevice( evokDevice);
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
+            evokWork.SetPrintReport(report1);
 
         }
 
@@ -345,10 +336,6 @@ namespace evokNew
             ConstantMethod.Delay(100);
             Application.Exit();
             Environment.Exit(0);
-        }
-
-        private void mesChkBox_CheckedChanged(object sender, EventArgs e)
-        {
         }
 
         private void optBtn_Click(object sender, EventArgs e)
@@ -515,7 +502,8 @@ namespace evokNew
         {
             if ( tc1.SelectedIndex == 0)
             {
-                 IsoptBtnShow( evokWork.AutoMes);
+                               
+                IsoptBtnShow( evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
@@ -535,6 +523,52 @@ namespace evokNew
                  statusLabel.Text = Constant.ConnectMachineFail;
                  statusLabel.BackColor = Color.Red;
             }
+            if (tc1.SelectedIndex == 0)
+            {
+                foreach(PlcInfoSimple p in evokWork.PsLstAuto)
+                {
+                    if (p.Name.Contains(Constant.Alarm)&& p.ShowStr != null && p.ShowStr.Count > 0)
+                    {
+                        for (int i = 0; i < p.ShowStr.Count; i++)
+                        {
+                            int index = errorList.IndexOf(p.ShowStr[i]);
+                            if (p.ShowValue == Constant.M_ON && index <0)
+                            {
+                                errorList.Add(p.ShowStr[i]);
+                            }
+                            if (p.ShowValue == Constant.M_OFF && index > 0 && index <p.ShowStr.Count)
+                            {
+                                errorList.RemoveAt(index);
+                            }                            
+                        }
+                                              
+                    }
+                }
+            }
+            if (tc1.SelectedIndex == 1)
+            {
+                foreach (PlcInfoSimple p in evokWork.PsLstHand)
+                {
+                    if (p.Name.Contains(Constant.Alarm) && p.ShowStr != null && p.ShowStr.Count > 0)
+                    {
+                        for (int i = 0; i < p.ShowStr.Count; i++)
+                        {
+                            int index = errorList.IndexOf(p.ShowStr[i]);
+                            if (p.ShowValue == Constant.M_ON && index < 0)
+                            {
+                                errorList.Add(p.ShowStr[i]);
+                            }
+                            if (p.ShowValue == Constant.M_OFF && index > 0 && index < p.ShowStr.Count)
+                            {
+                                errorList.RemoveAt(index);
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
         }
 
         private void UpdataHand()
@@ -570,6 +604,36 @@ namespace evokNew
         {
              wForm.SetShowDataTable( evokDevice.DataFormLst[ tc1.SelectedIndex]);
              wForm.ShowDialog();
+        }
+
+        private void errorTimer_Tick(object sender, EventArgs e)
+        {
+            if (errorList.Count >0)
+            {
+                infolbl.Text = errorList[errorId];
+                errorId++;
+                if (errorId >= errorList.Count)
+                {
+                    errorId = 0;
+                }
+            }
+        }
+
+        private void printBarCodeBtn_Click(object sender, EventArgs e)
+        {
+            if (evokWork.IsPrintBarCode)
+            {
+                evokWork.printBarCodeOFF();
+            }
+            else
+            {
+                evokWork.printBarCodeON();
+            }
+        }
+
+        private void BtnM101_MouseUp(object sender, MouseEventArgs e)
+        {
+            evokWork.SetMPsOff(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
         }
     }
 }

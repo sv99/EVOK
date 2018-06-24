@@ -132,7 +132,6 @@
     <Compile Include="PlcPackCmdAndUnpack.cs" />
     <Compile Include="XJDevice.cs" />
     <Compile Include="EvokXJDevice.cs" />
-    <Compile Include="EvokWork.cs" />
     <Compile Include="ExcelNpoi.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -188,6 +187,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="evokNewXJ0066.csproj" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

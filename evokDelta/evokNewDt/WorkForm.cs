@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using xjplc;
 using System.IO;
+
 namespace evokNew
 {
     public partial class WorkForm : Form
@@ -13,7 +14,7 @@ namespace evokNew
 
 
         private EvokXJDevice evokDevice;
-        private EvokWork evokWork;
+        private EvokXJWork evokWork;
         private OptSize optSize;
 
         private List<string> strDataFormPath;
@@ -273,7 +274,7 @@ namespace evokNew
             }
              UpdateTimer.Enabled = true;
              optSize = new OptSize( UserData);
-             evokWork = new EvokWork();
+             evokWork = new EvokXJWork();
              evokWork.SetEvokDevice( evokDevice);
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);

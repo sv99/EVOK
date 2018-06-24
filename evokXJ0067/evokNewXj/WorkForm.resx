@@ -140,7 +140,7 @@
   </metadata>
   <data name="report1.ReportResourceString" xml:space="preserve">
     <value>﻿&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;Report ScriptLanguage="CSharp" ReportInfo.Created="02/07/2016 09:46:34" ReportInfo.Modified="06/23/2018 16:12:29" ReportInfo.CreatorVersion="2013.2.2.0"&gt;
+&lt;Report ScriptLanguage="CSharp" ReportInfo.Created="02/07/2016 09:46:34" ReportInfo.Modified="06/23/2018 20:04:54" ReportInfo.CreatorVersion="2013.2.2.0"&gt;
   &lt;Dictionary/&gt;
 &lt;/Report&gt;
 </value>
@@ -148,8 +148,11 @@
   <metadata name="FileSaveTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 60</value>
   </metadata>
+  <metadata name="errorTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>175, 60</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>77</value>
+    <value>118</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8843413A-836E-4432-AA32-167FCDCBBBC0}</ProjectGuid>
+    <ProjectGuid>{BD006CD6-BC48-4A8B-B780-DA5307D02B6B}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>evokNewXJ</RootNamespace>
@@ -98,6 +98,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EvokXJWork.cs" />
     <Compile Include="WorkForm.cs">
       <SubType>Form</SubType>
     </Compile>

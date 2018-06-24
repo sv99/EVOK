@@ -31,7 +31,7 @@ namespace xjplc
                 {
                     for (int j = 0; j < psLst.Count; j++)
                     {                      
-                        if (dt.Rows[i]["bin"].ToString().Contains(psLst[j].Name))
+                        if (dt.Rows[i]["bin"].ToString().Equals(psLst[j].Name))
                         {
 
                             psLst[j].Mode = dt.Rows[i]["mode"].ToString();
