@@ -521,8 +521,10 @@ namespace xjplc
 
                 //取字母
                 strSplit2 = Regex.Replace(row["addr"].ToString(), "[0-9]", "", RegexOptions.IgnoreCase);
+                strSplit1 = strSplit1.Trim();
+                strSplit2= strSplit2.Trim();
 
-                DSmode = row["mode"].ToString();
+                DSmode = row["mode"].ToString().Trim();
 
                 //地址超了 无效 暂且定XDM 最大69999
                 if (!int.TryParse(strSplit1, out mAddr) || (mAddr < 0) || (mAddr > Constant.XJMaxAddr))
@@ -534,6 +536,7 @@ namespace xjplc
                 {
                     continue;
                 }
+             
                 mArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(strSplit2);
 
                 if (mArea > Constant.HM_ID)
@@ -541,9 +544,9 @@ namespace xjplc
                     mAddr = ConstantMethod.GetXYAddr8To10(mAddr);
 
                 }
-
+              
                 mAddr = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(mAddr, strSplit2);
-
+               
                 if (mArea < 0) continue;
                 if (row["param1"] != null && row["param2"] != null)
                 {

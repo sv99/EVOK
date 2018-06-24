@@ -69,10 +69,10 @@ namespace xjplc
         public static readonly int M_OFF = 0;
         //PLC 要读取的数据的文件列名 CSV
         public static readonly string[] PLCstrCol = {"addr","mode", "bin", "count","value","param1","param2","param3","param4","param5","param6"};
-        public static readonly string PlcDataFilePath = AppFilePath + "Plc Data\\plc_data.csv";
-        public static readonly string PlcDataFilePath0 = AppFilePath + "Plc Data\\plc_data0.csv";
-        public static readonly string PlcDataFilePath1 = AppFilePath + "Plc Data\\plc_data1.csv";
-        public static readonly string PlcDataFilePath2 = AppFilePath + "Plc Data\\plc_data2.csv";
+        public static readonly string PlcDataFilePathAuto = AppFilePath + "Plc Data\\plc_data_auto.csv";
+        public static readonly string PlcDataFilePathHand = AppFilePath + "Plc Data\\plc_data_hand.csv";
+        public static readonly string PlcDataFilePathParam = AppFilePath + "Plc Data\\plc_data_param.csv";
+        public static readonly string PlcDataFilePathIO = AppFilePath + "Plc Data\\plc_data_IO.csv";
         public static readonly string PlcDataFilePath3 = AppFilePath + "Plc Data\\plc_data3.csv";
         public static readonly string ErrorMValue = "位值只能为1或者0！";
         public static readonly string AppFilePath = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -102,7 +102,7 @@ namespace xjplc
         public static readonly string optSuccess = "优化结束！";
         public static readonly string NextOpt = "下一根料准备！";
         public static readonly string ErrorMeasure = "测量错误！";
-        public static readonly int MeaSureMaxTime = 20000;
+        public static readonly int MeaSureMaxTime = 30000;
         #endregion
 
         #region 运行数据

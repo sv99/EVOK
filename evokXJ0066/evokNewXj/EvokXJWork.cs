@@ -29,6 +29,9 @@ namespace evokNew0066
 
         //显示优化文本框
         RichTextBox rtbResult;
+
+        //
+        List<List<PlcInfoSimple>> AllPlcSimpleLst;
         public DataTable UserDataTable
         {
             get { return userDataTable; }
@@ -66,7 +69,6 @@ namespace evokNew0066
         ThreadStart CutThreadStart;
         //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
         Thread CutThread;   //需要引入System.Threading命名空间
-
         public void SetEvokDevice(EvokXJDevice evokDevice0)
         {
             evokDevice = evokDevice0;
@@ -87,6 +89,12 @@ namespace evokNew0066
             rtbResult = richrtbWork0;
         }
 
+        public bool DeviceStatus {
+            get {
+
+                return evokDevice.Status==Constant.DeviceConnected;
+            }
+        }
         public void SetPrintReport(FastReport.Report r1)
         {
             if (r1 != null)
@@ -172,7 +180,11 @@ namespace evokNew0066
         public PlcInfoSimple cljlOutPs = new PlcInfoSimple("出料夹料写");
         public PlcInfoSimple tmxyqgOutPs = new PlcInfoSimple("条码下压气缸写");
         public PlcInfoSimple tmspjcqgOutPs = new PlcInfoSimple("条码水平进出气缸写");
+        public PlcInfoSimple sljccOutPs = new PlcInfoSimple("上料架检测吹尘写");
+        public PlcInfoSimple slsyOutPs = new PlcInfoSimple("送料上压写");
 
+        public PlcInfoSimple slsyInPs = new PlcInfoSimple("送料上压读");
+        public PlcInfoSimple sljccInPs = new PlcInfoSimple("上料架检测吹尘读");
         public PlcInfoSimple slInPs0 = new PlcInfoSimple("送料读");      
         public PlcInfoSimple clInPs0 = new PlcInfoSimple("出料读");   
         public PlcInfoSimple jlInPs = new PlcInfoSimple("锯料读");
@@ -209,6 +221,14 @@ namespace evokNew0066
             set { psLstParam = value; }
         }
         #endregion
+        #region IO监控
+        List<PlcInfoSimple> psLstIO;
+        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstIO
+        {
+            get { return psLstIO; }
+            set { psLstIO = value; }
+        }
+        #endregion
         public EvokXJWork()
         {
             PsLstAuto = new List<PlcInfoSimple>();
@@ -227,7 +247,7 @@ namespace evokNew0066
             PsLstAuto.Add(resetOutPs);
             PsLstAuto.Add(autoSLOutPs);
             PsLstAuto.Add(pageShiftOutPs);
-           
+
             PsLstAuto.Add(emgStopInPs);
             PsLstAuto.Add(startInPs);
             PsLstAuto.Add(resetInPs);
@@ -280,7 +300,11 @@ namespace evokNew0066
             PsLstHand.Add(tmxyqgOutPs);
             PsLstHand.Add(tmspjcqgOutPs);
             PsLstHand.Add(pageShiftOutPs);
+            PsLstHand.Add(sljccOutPs);
+            PsLstHand.Add(slsyOutPs);
 
+            PsLstHand.Add(slsyInPs);
+            PsLstHand.Add(sljccInPs);
             PsLstHand.Add(slInPs0);          
             PsLstHand.Add(clInPs0);          
             PsLstHand.Add(jlInPs);           
@@ -321,16 +345,79 @@ namespace evokNew0066
             PsLstHand.Add(alarm16InPs);
 
             PsLstParam = new List<PlcInfoSimple>();
+            PsLstIO = new List<PlcInfoSimple>();
+            UserDataTable = new DataTable();
 
-            UserDataTable = new DataTable();          
+            AllPlcSimpleLst=  new List<List<PlcInfoSimple>>();
 
+            AllPlcSimpleLst.Add(psLstAuto);
+            AllPlcSimpleLst.Add(psLstHand);
+            AllPlcSimpleLst.Add(psLstParam);
+            AllPlcSimpleLst.Add(PsLstIO);
 
         }
-        public  void printBarcode(Report rp1, object s2)
+        public bool RestartDevice(int id)
         {
-            
+            evokDevice.RestartConneect(evokDevice.DataFormLst[id]);
+            return evokDevice.getDeviceData();
+        }
+        #region 运行部分
+        //启动
+        public void start()
+        {
+            evokDevice.SetMValueOFF2ON(startOutPs);
+            //切割类
+            CutThreadStart = new ThreadStart(CutWork0);
+            //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
+            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
+            RunFlag = true;
+
+            rtbWork.Clear();
+
+        }
+        public void stop()
+        {
+            RunFlag = false;
+            evokDevice.SetMValueOFF2ON(stopOutInPs);
+            optSize.SingleSizeLst.Clear();
+            optSize.ProdInfoLst.Clear();
+        }
+
+        public bool IsInEmg {
+            get
+            {
+                if (emgStopInPs.ShowValue == Constant.M_ON) return true; else return false;
+            }
+        }
+        //停止 
+        public void pause()
+        {
+            evokDevice.SetMValueOFF2ON(pauseOutPs);
+        }
+        //自动上料
+        public void autoSL()
+        {
+            evokDevice.SetMValueOFF2ON(autoSLOutPs);
+        }
+        //复位
+        public void reset()
+        {
+            stop();
+            evokDevice.SetMValueOFF2ON(resetOutPs);
+        }
+        #endregion
+        public void SaveFile()
+        {
+            optSize.SaveCsv();
+            optSize.SaveExcel();
+        }
+       
+        #region 条码部分
+        public void printBarcode(Report rp1, object s2)
+        {
+
             string[] s1 = (string[])s2;
-            if (s1 != null && printReport !=null && IsPrintBarCode)
+            if (s1 != null && printReport != null && IsPrintBarCode)
             {
                 Application.DoEvents();
                 if (rp1.FindObject("barcode1") != null)
@@ -382,58 +469,9 @@ namespace evokNew0066
                     (rp1.FindObject("Text18") as TextObject).Text = s1[18];
 
                 rp1.Prepare();
-                rp1.PrintSettings.ShowDialog = false;           
+                rp1.PrintSettings.ShowDialog = false;
                 rp1.Print();
             }
-        }
-
-        //启动
-        public void start()
-        {
-            evokDevice.SetMValueOFF2ON(startOutPs);
-            //切割类
-            CutThreadStart = new ThreadStart(CutWork0);
-            //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
-            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
-            RunFlag = true;
-
-            rtbWork.Clear();
-        }
-
-        public void stop()
-        {
-            RunFlag = false;
-            evokDevice.SetMValueOFF2ON(stopOutInPs);
-            optSize.SingleSizeLst.Clear();
-            optSize.ProdInfoLst.Clear();
-        }
-
-        public bool IsInEmg {
-            get
-            {
-                if (emgStopInPs.ShowValue == 1) return true; else return false;
-            }
-        }
-        public void SaveFile()
-        {
-            optSize.SaveCsv();
-            optSize.SaveExcel();
-        }
-        //停止 
-        public void pause()
-        {
-            evokDevice.SetMValueOFF2ON(pauseOutPs);
-        }
-        //自动上料
-        public void autoSL()
-        {
-            evokDevice.SetMValueOFF2ON(autoSLOutPs);
-        }
-        //复位
-        public void reset()
-        {
-            stop();
-            evokDevice.SetMValueOFF2ON(resetOutPs);
         }
         //打印条码打开
         public void printBarCodeON()
@@ -444,16 +482,9 @@ namespace evokNew0066
         {
             evokDevice.SetMValueOFF(barCodePrintOutInPs);
         }
-        //自动测长开
-        public void autoMesON()
-        {
-            evokDevice.SetMValueOFF(autoMesOutInPs);
-        }
 
-        public void autoMesOFF()
-        {
-            evokDevice.SetMValueON(autoMesOutInPs);
-        }
+        #endregion
+        
 
         #region 切割过程
         private void CutWork0()
@@ -555,10 +586,10 @@ namespace evokNew0066
         }
         #endregion
 
-        #region 自动测长 和正常切割
+        #region 自动测长
         public void CutStartMeasure()
         {
-
+         
             if (IsInEmg)
             {
                 MessageBox.Show(Constant.emgStopTip);
@@ -571,7 +602,7 @@ namespace evokNew0066
             //等待 测量
             while (mRunFlag)
             {
-                
+                                
                 int valueOld = 1;
 
                 ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs,ref emgStopInPs,ref mRunFlag);
@@ -581,7 +612,7 @@ namespace evokNew0066
                     stop();
                 }
 
-                if (autoCCInPs.ShowValue == 1)
+                if (autoCCInPs.ShowValue ==Constant.M_ON)
                 {
                     evokDevice.SetMValueOFF(autoCCInPs);
                     //开始优化 
@@ -633,7 +664,12 @@ namespace evokNew0066
                 MessageBox.Show(Constant.emgStopTip);
                 return;
             }
-
+            //正常模式需要优化
+            if (optSize.ProdInfoLst.Count < 1)
+            {
+                MessageBox.Show(Constant.noData);
+                return;
+            }
             start();
                         
             try
@@ -653,7 +689,16 @@ namespace evokNew0066
                 MessageBox.Show(Constant.CutEnd);
             }
         }
+        //自动测长开
+        public void autoMesON()
+        {
+            evokDevice.SetMValueOFF(autoMesOutInPs);
+        }
 
+        public void autoMesOFF()
+        {
+            evokDevice.SetMValueON(autoMesOutInPs);
+        }
         #endregion
         public void Dispose()
         {
@@ -675,6 +720,7 @@ namespace evokNew0066
 
         public void InitControl()
         {
+
             if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[0] != null))
             {
                 ConstantMethod.FindPos(evokDevice.DataFormLst[0], PsLstAuto);
@@ -703,7 +749,7 @@ namespace evokNew0066
                 }
 
                 evokDevice.shiftDataForm(pageid);
-                FindPlcInfo0(pageid);
+                FindPlcSimpleInPlcInfoLst(pageid);
                 ConstantMethod.Delay(50);
                 return true;
             }
@@ -712,6 +758,8 @@ namespace evokNew0066
            return false;       
 
         }
+
+        #region 寄存器操作部分
         private PlcInfoSimple getPsFromPslLst(string tag0, string str0, List<PlcInfoSimple> pslLst)
         {
             foreach (PlcInfoSimple simple in pslLst)
@@ -723,10 +771,6 @@ namespace evokNew0066
             }
             return null;
         }
-        /// <summary>
-        /// 和控件tag配合
-        /// </summary>
-        /// <returns></returns>
         public void  SetMPsOFFToOn(string str1,string str2 ,List<PlcInfoSimple> pLst)
         {
             PlcInfoSimple p = getPsFromPslLst(str1,str2, pLst);
@@ -776,8 +820,7 @@ namespace evokNew0066
                 MessageBox.Show(Constant.SetDataFail);
             }
         }
-
-       
+     
         public void SetDValue(string str1, string str2, List<PlcInfoSimple> pLst,int num)
         {
             PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
@@ -805,6 +848,7 @@ namespace evokNew0066
                 MessageBox.Show(Constant.SetDataFail);
             }
         }
+        #endregion
 
         #region 关于参数设置表格的设定
         public void DgvValueEdit(int rowIndex,int num3)
@@ -819,7 +863,7 @@ namespace evokNew0066
                 evokDevice.WriteSingleDData(addr, num3, area, mode);
             }
         }
-        public void InitDgv(DataGridView dgvParam)
+        public void InitDgvParam(DataGridView dgvParam)
         {
             if (evokDevice.DataFormLst.Count > 2)
             {
@@ -827,6 +871,17 @@ namespace evokNew0066
                 dgvParam.DataSource = evokDevice.DataFormLst[2];
                 dgvParam.Columns["bin"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
                 dgvParam.Columns["value"].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
+            }
+        }
+        public void InitDgvIO(DataGridView dgvIO)
+        {
+            if (evokDevice.DataFormLst.Count > 3)
+            {
+                dgvIO.AutoGenerateColumns = false;
+                dgvIO.DataSource = evokDevice.DataFormLst[3];
+                dgvIO.Columns["bin0"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
+                dgvIO.Columns["value0"].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
+                dgvIO.ReadOnly = true;
             }
         }
         public void DgvInOutEdit(int rowIndex,bool editEnable)
@@ -852,9 +907,24 @@ namespace evokNew0066
             }
         }
         #endregion;
-        //plcsimple 与缓冲区中的类绑定 便于后续读取值
-        private void FindPlcInfo0(int m)
+
+        #region 缓冲区中有个plcinfo类 存储了 PLC 的实时数据 PlcInfoSimple 则是用户进行对接的操作对象 两者进行连接
+        /// <summary>
+        /// plcsimple 与缓冲区中的类绑定 便于后续读取值 缓冲区的类 实时更新数据 
+        /// plcsimpele 进行与用户的操作绑定
+        /// </summary>
+        /// <param name="m"></param>
+        private void FindPlcSimpleInPlcInfoLst(int m)
         {
+
+            foreach (List<PlcInfoSimple> pLst in AllPlcSimpleLst)
+            {
+                foreach (PlcInfoSimple p in pLst)
+                {
+                    FindPlcInfo(p, evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
+                }
+            }
+            /****
             if (m == 0)
                 for (int i = 0; i <  PsLstAuto.Count; i++)
                 {
@@ -870,14 +940,20 @@ namespace evokNew0066
                 {
                     FindPlcInfo(PsLstParam[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
                 }
+                ***/
 
         }
         private void FindPlcInfo(PlcInfoSimple p, List<PlcInfo> dplc, List<List<PlcInfo>> mplc)
         {
-            if (dplc == null || mplc == null || dplc.Count == 0 || mplc.Count == 0) return;
+            if (p.Area == null) return;
+            if (dplc == null || 
+                mplc == null || 
+                dplc.Count == 0 || 
+                mplc.Count == 0  
+                ) return;
             foreach (PlcInfo p0 in dplc)
             {
-                if ((p0.RelAddr == p.Addr) && (p0.StrArea.Equals(p.Area)))
+                if ((p0.RelAddr == p.Addr) && (p0.StrArea.Equals(p.Area.Trim())))
                 {
                     p.SetPlcInfo(p0);
                     return;
@@ -888,15 +964,16 @@ namespace evokNew0066
             {
                 for (int j = 0; j < mplc[i].Count; j++)
                 {
-                   
-                        if ((mplc[i][j].RelAddr == p.Addr) && (mplc[i][j].StrArea.Equals(p.Area)))
-                        {
-                            p.SetPlcInfo(mplc[i][j]);
-                            return;
-                        }
-                   
+                    
+                    if ((mplc[i][j].RelAddr == p.Addr) && (mplc[i][j].StrArea.Equals(p.Area.Trim())))
+                    {
+                        p.SetPlcInfo(mplc[i][j]);
+                        return;
+                    }
+
                 }
             }
         }
+        #endregion
     }
 }

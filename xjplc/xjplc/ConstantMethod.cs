@@ -539,7 +539,6 @@ namespace xjplc
             {
                 return false;
             };
-
             //地址超了 无效 暂且定XDM 最大69999
             if (!int.TryParse(strAddr, out addr) || (addr < 0) || (addr > Constant.XJMaxAddr))
             {
@@ -708,7 +707,7 @@ namespace xjplc
 
             while ((Math.Abs(Environment.TickCount - start) < milliSecond))
             {
-                if (valueOld == p.ShowValue || (emg.ShowValue==1) || jump)  //测量好 或者 急停 都退出
+                if (valueOld == p.ShowValue || (emg.ShowValue==1) || !jump)  //测量好 或者 急停 都退出
                 {
                     break;
                 }

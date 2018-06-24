@@ -395,7 +395,6 @@ namespace xjplc
                 UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
             }
 
-
             for (int i = errorId.Count - 1; i >= 0; i--)
             {
                 UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;

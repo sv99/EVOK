@@ -32,9 +32,9 @@ namespace xjplc
         private void Form1_Load(object sender, EventArgs e)
         {
             strDataFormPath = new List<string>();
-            strDataFormPath.Add(Constant.PlcDataFilePath);
-            strDataFormPath.Add(Constant.PlcDataFilePath0);
-            strDataFormPath.Add(Constant.PlcDataFilePath1);
+            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
+            strDataFormPath.Add(Constant.PlcDataFilePathHand);
+            strDataFormPath.Add(Constant.PlcDataFilePathParam);
             CSVData = new CsvStreamReader();
             test();        
 

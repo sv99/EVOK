@@ -49,9 +49,20 @@ namespace evokNew0066
 
         private void button4_Click(object sender, EventArgs e)
         {
-             loadDataBtn.Enabled = false;
-             ReadCSVData();
-             loadDataBtn.Enabled = true;
+            /***单机启动
+            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
+            {
+                optSize.Len = 244000;//evokWork.lcOutInPs.ShowValue;
+                optSize.Dbc = 0;//evokWork.dbcOutInPs.ShowValue;
+                optSize.Ltbc = 0;/// evokWork.ltbcOutInPs.ShowValue;
+                optSize.Safe = 0;// evokWork.safeOutInPs.ShowValue;
+                optSize.LoadCsvData(DialogExcelDataLoad.FileName);
+            } 
+            ****/                     
+            loadDataBtn.Enabled = false;
+            ReadCSVData();
+            loadDataBtn.Enabled = true;
+           
         }
 
         private void ccBtn_Click(object sender, EventArgs e)
@@ -91,12 +102,12 @@ namespace evokNew0066
 
         private void connectMachine_Click(object sender, EventArgs e)
         {
-             tc1.SelectedIndex = 0;
+             
              UpdateTimer.Enabled = false;
-             evokDevice.RestartConneect( evokDevice.DataFormLst[0]);
-            if ( evokDevice.getDeviceData())
+             
+            if (evokWork.RestartDevice(tc1.SelectedIndex))
             {
-                 UpdateTimer.Enabled = true;
+                UpdateTimer.Enabled = true;
             }
             else
             {
@@ -177,39 +188,28 @@ namespace evokNew0066
         {
             optSize = new OptSize( UserData);
             strDataFormPath = new List<string>();
-            if (File.Exists(Constant.PlcDataFilePath))
+            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
+            strDataFormPath.Add(Constant.PlcDataFilePathHand);
+            strDataFormPath.Add(Constant.PlcDataFilePathParam);
+            strDataFormPath.Add(Constant.PlcDataFilePathIO);
+
+            for (int i = strDataFormPath.Count - 1; i >=0; i--)
             {
-                 strDataFormPath.Add(Constant.PlcDataFilePath);
-            }
-            else
-            {
-                MessageBox.Show(Constant.ErrorPlcFile);
-                Environment.Exit(0);
-            }
-            if (File.Exists(Constant.PlcDataFilePath0))
-            {
-                 strDataFormPath.Add(Constant.PlcDataFilePath0);
-            }
-            else
-            {
-                MessageBox.Show(Constant.ErrorPlcFile);
-                Environment.Exit(0);
-            }
-            if (File.Exists(Constant.PlcDataFilePath1))
-            {
-                 strDataFormPath.Add(Constant.PlcDataFilePath1);
-            }
-            else
-            {
-                MessageBox.Show(Constant.ErrorPlcFile);
-                Environment.Exit(0);
-            }
-            evokDevice = new EvokXJDevice( strDataFormPath);
+                if (!File.Exists(strDataFormPath[i]))
+                {
+                    strDataFormPath.RemoveAt(i);
+                    MessageBox.Show(Constant.ErrorPlcFile);
+                    Environment.Exit(0);
+                }                   
+            }          
+
+            evokDevice = new EvokXJDevice(strDataFormPath);
             if (! evokDevice.getDeviceData())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
                 Environment.Exit(0);
             }
+
              UpdateTimer.Enabled = true;
              optSize = new OptSize( UserData);
              evokWork = new EvokXJWork();
@@ -223,12 +223,13 @@ namespace evokNew0066
 
         private void InitView0()
         {
-             evokWork.InitDgv(dgvParam);
-             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
-             DialogExcelDataLoad.FileName = "请选择数据文件";
-             wForm = new WatchForm();
-             wForm.Visible = false;
+            evokWork.InitDgvParam(dgvParam);
+            evokWork.InitDgvIO(dgvIO);
+            DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
+            DialogExcelDataLoad.FileName = "请选择数据文件";
+            wForm = new WatchForm();
+            wForm.Visible = false;
         }
 
         private void IsoptBtnShow(bool showvalue)
@@ -271,18 +272,29 @@ namespace evokNew0066
 
         private void optBtn_Click(object sender, EventArgs e)
         {
-             optBtn.Enabled = false;
-             rtbResult.Clear();
-             rtbWork.Clear();
-             optSize.Len =  evokWork.lcOutInPs.ShowValue;
-             optSize.Dbc =  evokWork.dbcOutInPs.ShowValue;
-             optSize.Ltbc =  evokWork.ltbcOutInPs.ShowValue;
-             optSize.Safe =  evokWork.safeOutInPs.ShowValue;
-            if (! evokWork.AutoMes)
-            {
-                ConstantMethod.ShowInfo( rtbResult,  optSize.OptNormal( rtbResult));
+            optBtn.Enabled = false;
+            optBtn.BackColor = Color.Red;
+            rtbResult.Clear();
+            rtbWork.Clear();
+            optSize.Len = 24400;//evokWork.lcOutInPs.ShowValue;
+            optSize.Dbc = 0;//evokWork.dbcOutInPs.ShowValue;
+            optSize.Ltbc = 0;/// evokWork.ltbcOutInPs.ShowValue;
+            optSize.Safe = 0;// evokWork.safeOutInPs.ShowValue;
+            startOptShow();
+            /***单机启动
+           // if (!evokWork.AutoMes)
+           // {
+                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+           // }
+           ****/
+         
+            if (!evokWork.AutoMes)
+            {                
+                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
             }
-             optBtn.Enabled = true;
+            stopOptShow();
+            optBtn.BackColor = Color.Transparent;
+            optBtn.Enabled = true;
         }
 
         private void pauseBtn_Click(object sender, EventArgs e)
@@ -367,12 +379,45 @@ namespace evokNew0066
              qClr.Enabled = false;
              autoSLBtn.Enabled = false;
              ccBtn.Enabled = false;
-             UserData.ReadOnly = true;
+             printBarCodeBtn.Enabled = false;
+             UserData.ReadOnly = true;            
+        }
+        private void startOptShow()
+        {
+            stbtn.Enabled = false;
+            loadDataBtn.Enabled = false;
+            optBtn.Enabled = false;
+            button10.Enabled = false;
+            qClr.Enabled = false;
+            autoSLBtn.Enabled = false;
+            ccBtn.Enabled = false;
+            printBarCodeBtn.Enabled = false;
+            UserData.ReadOnly = true;
+            stopBtn.Enabled = false;
+            pauseBtn.Enabled = false;
+            resetBtn.Enabled = false;
+
+        }
+        private void stopOptShow()
+        {
+            stbtn.Enabled = true;
+            loadDataBtn.Enabled = true;
+            optBtn.Enabled = true;
+            button10.Enabled = true;
+            qClr.Enabled = true;
+            autoSLBtn.Enabled = true;
+            ccBtn.Enabled = true;
+            printBarCodeBtn.Enabled = true;
+            UserData.ReadOnly = true;
+            stopBtn.Enabled = true;
+            pauseBtn.Enabled = true;
+            resetBtn.Enabled = true;
+
         }
 
         private void stbtn_Click(object sender, EventArgs e)
         {
-             startBtnShow();
+            startBtnShow();
             if ( evokWork.AutoMes)
             {
                  evokWork.CutStartMeasure();
@@ -399,6 +444,7 @@ namespace evokNew0066
              autoSLBtn.Enabled = true;
              ccBtn.Enabled = true;
              UserData.ReadOnly = false;
+            printBarCodeBtn.Enabled = true;
         }
 
         private void tc1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -408,7 +454,7 @@ namespace evokNew0066
                 MessageBox.Show(Constant.IsWorking);
                 e.Cancel = true;
             }
-            else if (! evokWork.ShiftPage( tc1.SelectedIndex))
+            else if (!evokWork.ShiftPage(tc1.SelectedIndex))
             {
                 e.Cancel = true;
                 MessageBox.Show(Constant.ConnectMachineFail);
@@ -422,7 +468,6 @@ namespace evokNew0066
              UpdataHand();
              UpdataParam();
         }
-
 
         private void FileSave_Tick(object sender, EventArgs e)
         {
@@ -444,7 +489,7 @@ namespace evokNew0066
 
         private void UpdataError()
         {
-            if ( evokDevice.Status != -1)
+            if ( evokWork.DeviceStatus)
             {
                  statusLabel.Text = Constant.MachineWorking;
                  statusLabel.BackColor = Color.Green;
@@ -533,8 +578,10 @@ namespace evokNew0066
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             wForm.SetShowDataTable(evokDevice.DataFormLst[ tc1.SelectedIndex]);
-             wForm.ShowDialog();
+            if(tc1.SelectedIndex< evokDevice.DataFormLst.Count)
+            wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
+            wForm.ShowDialog();
+
         }
 
         private void errorTimer_Tick(object sender, EventArgs e)
@@ -566,5 +613,7 @@ namespace evokNew0066
         {
             evokWork.SetMPsOff(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
         }
+
+       
     }
 }
