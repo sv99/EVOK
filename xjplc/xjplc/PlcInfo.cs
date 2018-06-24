@@ -65,34 +65,36 @@ namespace xjplc
                     if (showvalue != pInfo.PlcValue || showvalue == 0)
                     {
                         showvalue = pInfo.PlcValue;
-
-                        if (showControl != null && showControl is Button)
+                        if (!IsInEdit)
                         {
-                            if (showvalue == 0)
+                            if (showControl != null && showControl is Button)
                             {
-                                showControl.BackColor = System.Drawing.Color.Transparent;
-                                if (showStr.Count > showvalue)
+                                if (showvalue == 0)
                                 {
-                                    showControl.Text = showStr[showvalue];
+                                    showControl.BackColor = System.Drawing.Color.Transparent;
+                                    if (showStr.Count > showvalue)
+                                    {
+                                        showControl.Text = showStr[showvalue];
+                                    }
+                                }
+                                else
+                                {
+                                    showControl.BackColor = System.Drawing.Color.Red;
+                                    if (showStr.Count > showvalue)
+                                    {
+                                        showControl.Text = showStr[showvalue];
+                                    }
                                 }
                             }
-                            else
+
+                            if (showControl != null && (showControl is TextBox || showControl is Label))
                             {
-                                showControl.BackColor = System.Drawing.Color.Red;
-                                if (showStr.Count > showvalue)
+                                showControl.Invoke((EventHandler)(delegate
                                 {
-                                    showControl.Text = showStr[showvalue];
-                                }
+                                    showControl.Text = showvalue.ToString();
+
+                                }));
                             }
-                        }                        
-
-                        if (showControl != null && (showControl is TextBox || showControl is Label ))
-                        {
-                            showControl.Invoke((EventHandler)(delegate
-                            {
-                                showControl.Text = showvalue.ToString();
-
-                            }));
                         }
                     }
                 }                                       

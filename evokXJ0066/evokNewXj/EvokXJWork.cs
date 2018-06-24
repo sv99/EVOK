@@ -673,6 +673,21 @@ namespace evokNew0066
 
         }
 
+        public void InitControl()
+        {
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[0] != null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[0], PsLstAuto);
+            }
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[1] != null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[1], PsLstHand);
+            }
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[2] != null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[2], PsLstParam);
+            }
+        }
         public bool ShiftPage(int pageid)
         {
             if (evokDevice.Status == Constant.DeviceConnected)
@@ -737,6 +752,47 @@ namespace evokNew0066
             }
         }
 
+        public void SetInEdit(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p != null)
+            {
+                p.IsInEdit = true;
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+        public void SetOutEdit(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p != null)
+            {
+                p.IsInEdit = false;
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+
+       
+        public void SetDValue(string str1, string str2, List<PlcInfoSimple> pLst,int num)
+        {
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p != null)
+            {
+                
+              evokDevice.SetDValue(p, num);
+                
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+
+        }
         public void SetMPsOff(string str1, string str2, List<PlcInfoSimple> pLst)
         {
             PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
@@ -750,7 +806,52 @@ namespace evokNew0066
             }
         }
 
-
+        #region 关于参数设置表格的设定
+        public void DgvValueEdit(int rowIndex,int num3)
+        {
+            string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
+            int addr = 0;
+            string area = "D";
+            string mode = evokDevice.DataForm.Rows[rowIndex]["mode"].ToString();
+            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
+            if ( ((XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) > -1) && (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)))
+            {
+                evokDevice.WriteSingleDData(addr, num3, area, mode);
+            }
+        }
+        public void InitDgv(DataGridView dgvParam)
+        {
+            if (evokDevice.DataFormLst.Count > 2)
+            {
+                dgvParam.AutoGenerateColumns = false;
+                dgvParam.DataSource = evokDevice.DataFormLst[2];
+                dgvParam.Columns["bin"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
+                dgvParam.Columns["value"].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
+            }
+        }
+        public void DgvInOutEdit(int rowIndex,bool editEnable)
+        {
+            string s = evokDevice.DataForm.Rows[rowIndex]["param1"].ToString();
+            string str2 = evokDevice.DataForm.Rows[rowIndex]["param2"].ToString();
+            string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
+            string area = "D";
+            int addr = 0;
+            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
+            int result = 0;
+            int num4 = 0;
+            if (int.TryParse(s, out result) && int.TryParse(str2, out num4))
+            {
+                if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)
+                {
+                    evokDevice.DPlcInfo[result].IsInEdit = editEnable;
+                }
+                else
+                {
+                    evokDevice.MPlcInfoAll[result][num4].IsInEdit = editEnable;
+                }
+            }
+        }
+        #endregion;
         //plcsimple 与缓冲区中的类绑定 便于后续读取值
         private void FindPlcInfo0(int m)
         {

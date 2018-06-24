@@ -34,27 +34,18 @@ namespace evokNew0066
 
         private void AutoTextBox_Enter(object sender, EventArgs e)
         {
-            PlcInfoSimple simple =  getPsFromPslLst(((TextBox)sender).Tag.ToString(), Constant.Write,  evokWork.PsLstAuto);
-            if (simple != null)
-            {
-                simple.IsInEdit = true;
-            }
+            evokWork.SetInEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);           
         }
 
         private void AutoTxt_Leave(object sender, EventArgs e)
         {
-            PlcInfoSimple simple =  getPsFromPslLst(((TextBox)sender).Tag.ToString(), Constant.Write,  evokWork.PsLstAuto);
-            if (simple != null)
-            {
-                simple.IsInEdit = false;
-            }
+            evokWork.SetOutEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);           
         }
 
         private void BtnM101_MouseDown(object sender, MouseEventArgs e)
         {
             evokWork.SetMPsOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
         }
-
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -118,56 +109,26 @@ namespace evokNew0066
         private void dgvParam_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             int rowIndex =  dgvParam.SelectedCells[0].RowIndex;
-            string s =  evokDevice.DataForm.Rows[rowIndex]["param1"].ToString();
-            string str2 =  evokDevice.DataForm.Rows[rowIndex]["param2"].ToString();
-            string userdata =  evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
-            string area = "D";
-            int addr = 0;
-            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
-            int result = 0;
-            int num4 = 0;
-            if (int.TryParse(s, out result) && int.TryParse(str2, out num4))
-            {
-                if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)
-                {
-                     evokDevice.DPlcInfo[result].IsInEdit = true;
-                }
-                else
-                {
-                     evokDevice.MPlcInfoAll[result][num4].IsInEdit = true;
-                }
-            }
+            evokWork.DgvInOutEdit(rowIndex,true);            
         }
 
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int num3;
             string s =  dgvParam.SelectedCells[0].Value.ToString();
-            int rowIndex =  dgvParam.SelectedCells[0].RowIndex;
-            string userdata =  evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
-            int addr = 0;
-            string area = "D";
-            string mode =  evokDevice.DataForm.Rows[rowIndex]["mode"].ToString();
-            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
-            if (int.TryParse(s, out num3) && ((XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) > -1) && (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)))
+
+            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
+            try
             {
-                 evokDevice.WriteSingleDData(addr, num3, area, mode);
-            }
-            string str5 =  evokDevice.DataForm.Rows[rowIndex]["param1"].ToString();
-            string str6 =  evokDevice.DataForm.Rows[rowIndex]["param2"].ToString();
-            int result = 0;
-            int num5 = 0;
-            if (int.TryParse(str5, out result) && int.TryParse(str6, out num5))
-            {
-                if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)
+                if (int.TryParse(s, out num3))
                 {
-                     evokDevice.DPlcInfo[result].IsInEdit = false;
-                }
-                else
-                {
-                     evokDevice.MPlcInfoAll[result][num5].IsInEdit = false;
+                    evokWork.DgvValueEdit(rowIndex, num3);
                 }
             }
+            catch { }
+            finally{ evokWork.DgvInOutEdit(rowIndex, false); }
+            
+           
         }
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)
@@ -206,22 +167,10 @@ namespace evokNew0066
 
         private void InitControl()
         {
-            if (( evokDevice.DataFormLst.Count > 0) && ( evokDevice.DataFormLst[0] != null))
-            {
-                ConstantMethod.FindPos( evokDevice.DataFormLst[0],  evokWork.PsLstAuto);
-            }
-            if (( evokDevice.DataFormLst.Count > 0) && ( evokDevice.DataFormLst[1] != null))
-            {
-                ConstantMethod.FindPos( evokDevice.DataFormLst[1],  evokWork.PsLstHand);
-            }
-            if (( evokDevice.DataFormLst.Count > 0) && ( evokDevice.DataFormLst[2] != null))
-            {
-                ConstantMethod.FindPos( evokDevice.DataFormLst[2],  evokWork.PsLstParam);
-            }
-             evokWork.ShiftPage(0);
-             SetControlInEvokWork();
+            evokWork.InitControl();
+            evokWork.ShiftPage(0);
+            SetControlInEvokWork();
         }
-
 
 
         public void InitParam()
@@ -268,19 +217,13 @@ namespace evokNew0066
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
-            evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport(report1);
 
         }
 
         private void InitView0()
         {
-            if ( evokDevice.DataFormLst.Count > 2)
-            {
-                 dgvParam.AutoGenerateColumns = false;
-                 dgvParam.DataSource =  evokDevice.DataFormLst[2];
-                 dgvParam.Columns["bin"].DataPropertyName =  evokDevice.DataFormLst[2].Columns["bin"].ToString();
-                 dgvParam.Columns["value"].DataPropertyName =  evokDevice.DataFormLst[2].Columns["value"].ToString();
-            }
+             evokWork.InitDgv(dgvParam);
              DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
              DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
              DialogExcelDataLoad.FileName = "请选择数据文件";
@@ -299,29 +242,18 @@ namespace evokNew0066
                  optBtn.Enabled = true;
             }
         }
-
-        private void lblY25_Click(object sender, EventArgs e)
-        {
-        }
+   
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == '\r')
             {
-                PlcInfoSimple p =  getPsFromPslLst(((TextBox)sender).Tag.ToString(), Constant.Write,  evokWork.PsLstAuto);
-                if (p != null)
+                int num;
+                if (int.TryParse(((TextBox)sender).Text, out num) && num >-1)
                 {
-                    int num;
-                    if (int.TryParse(((TextBox)sender).Text, out num))
-                    {
-                         evokDevice.SetDValue(p, num);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(Constant.SetDataFail);
-                }
-                 optBtn.Focus();
+                    evokWork.SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto,num);
+                }                            
+                optBtn.Focus();
             }
         }
 
@@ -334,7 +266,6 @@ namespace evokNew0066
                  evokWork.Dispose();
             }
             ConstantMethod.Delay(100);
-            Application.Exit();
             Environment.Exit(0);
         }
 
@@ -602,7 +533,7 @@ namespace evokNew0066
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-             wForm.SetShowDataTable( evokDevice.DataFormLst[ tc1.SelectedIndex]);
+             wForm.SetShowDataTable(evokDevice.DataFormLst[ tc1.SelectedIndex]);
              wForm.ShowDialog();
         }
 
