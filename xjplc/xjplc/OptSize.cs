@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -103,9 +104,152 @@ namespace xjplc
         }
     }
 
+    //针对打孔的 在继承 切片带角度的
+    public class SingleSizeWithHoleAngle : SingleSize
+    {
+        public SingleSizeWithHoleAngle(DataTable dt, int xuhao) : base(dt, xuhao)
+        {
+        }
+
+        int holeCount = 0;
+        public int HoleCount
+        {
+            get
+            {
+
+                for (int i = 0; i < hole.Count(); i = i + 3)
+                {
+                    if (hole[i] > 0)
+                        holeCount++;
+                }
+                return holeCount;
+            }
+
+        }
+        int[] hole;
+        public int[] Hole
+        {
+            get
+            {
+                List<string> strparam = new List<string>();
+
+                strparam.Add(ParamStr3);
+                strparam.Add(ParamStr4);
+                strparam.Add(ParamStr5);
+                strparam.Add(ParamStr6);
+                strparam.Add(ParamStr7);
+                strparam.Add(ParamStr8);
+                strparam.Add(ParamStr9);
+                strparam.Add(ParamStr10);
+                strparam.Add(ParamStr11);
+                strparam.Add(ParamStr12);
+                strparam.Add(ParamStr13);
+
+                hole = getHoleData(strparam.ToArray());
+
+                return hole;
+            }
+        }
+        int[] angle;
+        public int[] Angle
+        {
+            get
+            {
+                angle = getAngleData(ParamStr2);
+
+                return angle;
+            }
+
+        }
+
+
+
+        #region 涉及打孔的一些参数函数
+        private int[] getHoleData(string[] s)
+        {
+            List<int> data = new List<int>();
+
+            int holeX = -1;
+            int holeY = -1;
+            int holeZ = -1;
+
+            for (int i = 0; i < s.Count(); i++)
+            {
+                string[] sArray = Regex.Split(s[i], "-", RegexOptions.IgnoreCase);
+                if (sArray.Count() != 3)
+                {
+                    data.Add(0);
+                    data.Add(0);
+                    data.Add(0);
+                    continue;
+                }
+                else
+                {
+                    if (!int.TryParse(sArray[0], out holeX)) data.Add(0);
+                    else data.Add(holeX);
+                    if (!int.TryParse(sArray[1], out holeY)) data.Add(0);
+                    else data.Add(holeY);
+                    if (!int.TryParse(sArray[2], out holeZ)) data.Add(0);
+                    else data.Add(holeZ);
+
+                }
+            }
+
+            return data.ToArray();
+
+        }
+        private int[] getAngleData(string s)
+        {
+            List<int> data = new List<int>();
+            if (s.Count() != 9)
+            {
+                goto Last;
+            }
+
+            string strAngle =
+             Regex.Replace(s, @"[^0-9]+", "");
+
+            if (strAngle.Count() != 4) goto Last; //这里得出的角度暂时没有用起来
+
+            int intLAngle = getAngleDirectionFromStr(s[1], strAngle.Substring(0, 2));
+            int intRAngle = getAngleDirectionFromStr(s[6], strAngle.Substring(2, 2));
+
+            if ((intLAngle > 0) && (intRAngle > 0))
+            {
+                data.Add(intLAngle);
+                data.Add(intRAngle);
+                return data.ToArray();
+            }
+
+            Last:
+            {
+                data.Add(0);
+                data.Add(0);
+                return data.ToArray();
+            }
+
+
+
+        }
+
+        /// <summary>
+        /// 通过字符 得出是 几度
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private int getAngleDirectionFromStr(char s, string strangle)
+        {
+            if (s.Equals(Constant.Angle90)) return 90;
+            if (s.Equals(Constant.Angle135)) return (int.Parse(strangle) + 90);
+            if (s.Equals(Constant.Angle45)) return int.Parse(strangle);
+            return -1;
+
+        }
+        #endregion 涉及打孔的一些参数函数
+
+    }
     public  class ProdInfo
     {
-        
 
         int id;              //方案序号
         public int ID

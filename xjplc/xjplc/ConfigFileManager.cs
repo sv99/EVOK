@@ -29,6 +29,12 @@ namespace xjplc
             _xmldoc.Load(file);
         }
 
+        public void Dispose()
+        {
+            _xmldoc.Save(FilePath);
+            _xmldoc = null;
+        }
+
         public String ReadConfig(string key)
             {
                 XmlAttribute atrr;

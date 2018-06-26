@@ -257,7 +257,6 @@ namespace xjplc
         {
             XJPLCcmd.CmdOut = cmdbyte;
             receivedByteCount = rececount;
-
         }
         //将数据设置成 正常监控DM区域的命令 比较常用 写成函数
         private void SetCmdOutToCmdReadDMDataOut()

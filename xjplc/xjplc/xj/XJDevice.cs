@@ -101,7 +101,7 @@ namespace xjplc
                 System.Environment.Exit(0);
             }
 
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);          
+            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);          
 
             //监控第一个列表数据
             if (dataFormLst.Count>0)                
@@ -145,7 +145,24 @@ namespace xjplc
         #region 正常通讯
 
 
+        public bool shiftDataFormSplit(int formid,int rowSt,int count)
+        {
+            DataTable dt = dataFormLst[formid].Clone();
 
+            if((rowSt >0) && ((rowSt+count-1)< dataFormLst[formid].Rows.Count) && count>0)
+            {
+                for (int i = rowSt; i < rowSt+count; i++)
+                {
+                    dt.ImportRow(dataFormLst[formid].Rows[i]);
+                }
+            }
+            splitDataForm(dt,dataFormLst[formid]);
+            isShiftDataForm = true;
+
+            comManager.IsRePackCmdReadDMDataOut = true;
+
+            return true;
+        }
         /// <summary>
         /// 切换监控数据表格
         /// </summary>
@@ -154,21 +171,53 @@ namespace xjplc
         public bool shiftDataForm(int formid)
         {
             if (dataFormLst[formid] != null && dataFormLst[formid].Rows.Count > 0)
-            {
-            
+            {                                             
                 dataForm = dataFormLst[formid];
-                                                                         
+                int dAreaCount = 0;
+
+                foreach(DataRow r in dataFormLst[formid].Rows)
+                {
+                    if (r["addr"].ToString().Contains(Constant.strDMArea[0]))
+                       {
+                          dAreaCount++;
+                       }
+                }
+
+                if (dAreaCount > Constant.DataRowWatchMax)
+                {
+                    DataTable dt = dataFormLst[formid].Copy();
+                    for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                    {
+                        dt.Rows.RemoveAt(i);
+                        if (dt.Rows.Count == Constant.DataRowWatchMax) break;
+                    }
+
+                    splitDataForm(dt, dataFormLst[formid]);
+                } 
+                else                                                        
                 if (dataForm != null && dataForm.Rows.Count > 0)
                     PackCmdReadDMDataOut(dataForm);
                 
                 isShiftDataForm = true; 
-                                   
+                                                                                                                                                 
                 comManager.IsRePackCmdReadDMDataOut = true;                   
 
                 return true;
+
             }
             else return false;
                     
+        }
+        public bool splitDataForm(DataTable dataSplit,DataTable dataform1)
+        {
+            if (dataSplit != null && dataSplit.Rows.Count > 0)
+            {
+
+                SplitPackCmdReadDMDataOut(dataSplit, dataform1);
+              
+                return true;
+            }
+            else return false;
 
         }
 
@@ -179,7 +228,7 @@ namespace xjplc
 
             ConstantMethod.Delay(50);
 
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             if (!ConstantMethod.XJFindPort())
             {
@@ -499,6 +548,156 @@ namespace xjplc
             //GC.WaitForPendingFinalizers();
         }
         /// <summary>
+        /// 这里增加一个 就是 主form太大了 分割一个form出来 但是 绑定 还是在原来那个主form上
+        /// </summary>
+        /// <param name="dataForm0"></param>
+        void SplitPackCmdReadDMDataOut(DataTable dataForm0, DataTable dataForm1)
+        {
+            List<PlcInfo> plcInfoLst = new List<PlcInfo>();
+            List<PlcInfo> MPlcInfo = new List<PlcInfo>();
+            foreach (DataRow row in dataForm0.Rows)
+            {
+                int mAddr = 0;
+                int count = 0;
+                string strSplit1;
+                string strSplit2;
+                string DSmode; //单字还是双字
+                #region 获取地址 个数 区域 创建plcinfo类 并添加到集合
+                if (row == null) return;
+
+
+                if (row["addr"].ToString() == null || row["mode"].ToString() == null || row["count"].ToString() == null)
+                {
+                    return;
+                };
+                //添加各个单元
+                //取数字 用替代的字符的方法 取数组就替换字母为空 取字母就替换数字
+                strSplit1 = Regex.Replace(row["addr"].ToString(), "[A-Z]", "", RegexOptions.IgnoreCase);
+
+                //取字母
+                strSplit2 = Regex.Replace(row["addr"].ToString(), "[0-9]", "", RegexOptions.IgnoreCase);
+
+                DSmode = row["mode"].ToString();
+
+                if (!int.TryParse(row["count"].ToString(), out count))
+                {
+                    continue;
+                }
+                //地址超了 无效 暂且定XDM 最大69999
+                if (!int.TryParse(strSplit1, out mAddr) || (mAddr < 0) || (mAddr > Constant.XJMaxAddr))
+                {
+                    continue;
+                }
+                //字母大于4 无效地址
+                if (strSplit2.Count() > 3) continue;
+                //这里数组进行统计 
+                if (DSmode.Equals(Constant.DoubleMode) && (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(strSplit2) < Constant.M_ID))
+                {
+                    count = count * 2;
+                }
+                //传入数据起始地址 个数 区域 模式
+                PlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr, count, strSplit2, DSmode);
+
+                if (tmpInfoLst.Count() > 0) plcInfoLst.AddRange(tmpInfoLst);
+                #endregion
+            }
+            #region 排序 去重复 统计DM 起始点
+            //排序 按照绝对地址 
+            plcInfoLst = plcInfoLst.OrderBy(x => x.AbsAddr).ToList();
+            //去重复 
+            plcInfoLst = plcInfoLst.Distinct(new ModelComparer()).ToList();
+
+            //分离D 区 M区
+            DPlcInfo = plcInfoLst.FindAll(t => t.IntArea < (Constant.HSD_ID + 1));
+            MPlcInfo = plcInfoLst.FindAll(t => t.IntArea > (Constant.HSD_ID));
+
+            DPlcInfo = InsertPlcInfo(DPlcInfo); //将D区分解出来 出来 变成一个一个单个的地址 尽量保持连续 
+            MPlcInfo = InsertPlcInfo(MPlcInfo);
+
+
+            plcInfoLst = DPlcInfo.Union(MPlcInfo).ToList<PlcInfo>();
+            #endregion
+            #region  根据断点 建立命令的表格缓冲lst 然后创建读取DM区域的命令
+            //开始打包
+            List<int> addrLst = new List<int>();//连续地址的起始地址
+            List<int> idLst = new List<int>();  //地址是D xy HSD
+            List<int> addrcount = new List<int>(); //起始地址开始 读取几个寄存器
+
+            List<int> breakPoint = new List<int>(); //在
+            //首先要确定断点
+            breakPoint.Add(0);
+            //获取不连续点的位置  D区域
+            for (int i = 0; i < plcInfoLst.Count - 1; i++)
+            {
+                if (((plcInfoLst[i + 1].RelAddr - plcInfoLst[i].RelAddr) > 1) || (plcInfoLst[i + 1].IntArea != plcInfoLst[i].IntArea))
+                {
+                    int bp = i + 1;
+                    breakPoint.Add(bp);
+                }
+            }
+
+            breakPoint.Add(plcInfoLst.Count);
+
+            //d区在前面，M区在后面 根据断点来区分
+            //统计D区起始地址个数 统计M区起始地址个数 
+            //D区返回数据可以根据Dplcinfo集合来预算
+            //但M区需要知道M起始地址个数          
+            for (int j = 0; j < breakPoint.Count; j++)
+            {
+                if (breakPoint[j] < plcInfoLst.Count)
+                {
+                    addrLst.Add(plcInfoLst[breakPoint[j]].AbsAddr);
+                    idLst.Add(plcInfoLst[breakPoint[j]].IntArea);
+                    addrcount.Add(plcInfoLst[breakPoint[j + 1] - 1].RelAddr - plcInfoLst[breakPoint[j]].RelAddr + 1);
+                }
+            }
+            //这里d区的话 需要指定一下双字情况下的 另外一个字节
+            FindHighPlcInfo(DPlcInfo);
+
+            //这里M区麻烦一点 分成n个M单元组 每个单元组 有个起始地址
+            MPlcInfoAll = new List<List<PlcInfo>>();
+            for (int i = 0; i < addrLst.Count; i++)
+            {
+                List<PlcInfo> mplst = new List<PlcInfo>();
+                if (idLst[i] > Constant.HSD_ID)
+                {
+                    for (int k = 0; k < addrcount[i]; k++)
+                    {
+                        PlcInfo p = new PlcInfo();
+                        p.ValueMode = Constant.BitMode;
+                        p.ByteValue = new byte[1];
+                        p.IntArea = idLst[i];
+                        p.AbsAddr = addrLst[i] + k;
+                        p.Xuhao = k;
+                        mplst.Add(p);
+                    }
+
+                }
+                if (mplst.Count > 0) MPlcInfoAll.Add(mplst);
+            }
+
+            int mCount = 0;
+            for (int i = 0; i < MPlcInfoAll.Count; i++)
+            {
+                double cntdb = (double)MPlcInfoAll[i].Count / 8;
+                mCount = mCount +
+                    (int)Math.Ceiling(cntdb);
+            }
+            //绑定主form
+            FindIndexInPlcInfo(dataForm1, DPlcInfo, MPlcInfoAll);
+
+
+            XJPLCcmd.PackCmdReadDMDataOut(addrLst, idLst, addrcount, 5 + DPlcInfo.Count * 2 + mCount);
+
+            #endregion
+            addrLst = null;
+            idLst = null;
+            addrcount = null;
+            breakPoint = null;
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+        }
+        /// <summary>
         /// dataform中的数据 与 dplcinfo 和 mplcinfoall 集合对应起来 这样 更新速度会很快
         /// </summary>
         /// <param name="datafm"></param>
@@ -517,10 +716,10 @@ namespace xjplc
                 string strSplit2;//地址区域
                 string DSmode; //单字还是双字
 
-                strSplit1 = Regex.Replace(row["addr"].ToString(), "[A-Z]", "", RegexOptions.IgnoreCase);
+                strSplit1 = Regex.Replace(row["addr"].ToString().Trim(), "[A-Z]", "", RegexOptions.IgnoreCase);
 
                 //取字母
-                strSplit2 = Regex.Replace(row["addr"].ToString(), "[0-9]", "", RegexOptions.IgnoreCase);
+                strSplit2 = Regex.Replace(row["addr"].ToString().Trim(), "[0-9]", "", RegexOptions.IgnoreCase);
                 strSplit1 = strSplit1.Trim();
                 strSplit2= strSplit2.Trim();
 
@@ -532,7 +731,7 @@ namespace xjplc
                     continue;
                 }
                 int count;
-                if (!int.TryParse(row["count"].ToString(), out count))
+                if (!int.TryParse(row["count"].ToString().Trim(), out count))
                 {
                     continue;
                 }
@@ -551,16 +750,20 @@ namespace xjplc
                 if (row["param1"] != null && row["param2"] != null)
                 {
                     int[] s = FindValueIndexFromDPlcInfo(mAddr, mArea,  DSmode);
+                    
                     row["param1"] = s[0];
                     row["param2"] = s[1];
                     //让集合 把dataform 也保存下 方便更新数据
                     if (mArea < Constant.M_ID)
                     {
+                        if (!(s[0] > -1)) continue;
                         DPlcInfo[s[0]].BelongToDT = datafm;
                         DPlcInfo[s[0]].Row = datafm.Rows.IndexOf(row);
                     }
                     else
                     {
+                        
+                        if (!(s[0] > -1 && s[1] > -1)) continue;
                         MPlcInfoAll[s[0]][s[1]].BelongToDT = datafm;
                         MPlcInfoAll[s[0]][s[1]].Row = datafm.Rows.IndexOf(row);
                     }
@@ -951,7 +1154,6 @@ namespace xjplc
             WatchCommTimer.Enabled = false;
 
             //CloseUpdateUI();
-
             comManager.Reset();
 
             CommError = 0;

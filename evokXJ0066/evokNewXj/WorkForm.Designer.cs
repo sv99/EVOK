@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,6 +44,7 @@
             this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.printcb = new System.Windows.Forms.ComboBox();
             this.rtbWork = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.qClr = new System.Windows.Forms.Button();
@@ -65,7 +66,6 @@
             this.stopBtn = new System.Windows.Forms.Button();
             this.pauseBtn = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
-            this.printBarCodeBtn = new System.Windows.Forms.Button();
             this.ccBtn = new System.Windows.Forms.Button();
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
@@ -225,6 +225,7 @@
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage1.Controls.Add(this.printcb);
             this.tabPage1.Controls.Add(this.rtbWork);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.qClr);
@@ -237,7 +238,6 @@
             this.tabPage1.Controls.Add(this.stopBtn);
             this.tabPage1.Controls.Add(this.pauseBtn);
             this.tabPage1.Controls.Add(this.button10);
-            this.tabPage1.Controls.Add(this.printBarCodeBtn);
             this.tabPage1.Controls.Add(this.ccBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
@@ -248,6 +248,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // printcb
+            // 
+            this.printcb.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.printcb.FormattingEnabled = true;
+            this.printcb.Location = new System.Drawing.Point(624, 140);
+            this.printcb.Name = "printcb";
+            this.printcb.Size = new System.Drawing.Size(164, 35);
+            this.printcb.TabIndex = 122;
+            this.printcb.SelectedIndexChanged += new System.EventHandler(this.printcb_SelectedIndexChanged);
             // 
             // rtbWork
             // 
@@ -504,19 +514,7 @@
             this.button10.Tag = "条码预览";
             this.button10.Text = "条码预览";
             this.button10.UseVisualStyleBackColor = true;
-            // 
-            // printBarCodeBtn
-            // 
-            this.printBarCodeBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.printBarCodeBtn.Location = new System.Drawing.Point(624, 133);
-            this.printBarCodeBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.printBarCodeBtn.Name = "printBarCodeBtn";
-            this.printBarCodeBtn.Size = new System.Drawing.Size(164, 52);
-            this.printBarCodeBtn.TabIndex = 109;
-            this.printBarCodeBtn.Tag = "条码打印";
-            this.printBarCodeBtn.Text = "条码打印";
-            this.printBarCodeBtn.UseVisualStyleBackColor = true;
-            this.printBarCodeBtn.Click += new System.EventHandler(this.printBarCodeBtn_Click);
+            this.button10.Click += new System.EventHandler(this.button10_Click);
             // 
             // ccBtn
             // 
@@ -592,7 +590,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 33);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1759, 726);
+            this.tabPage2.Size = new System.Drawing.Size(1759, 759);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
             // 
@@ -978,10 +976,11 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 33);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1759, 726);
+            this.tabPage3.Size = new System.Drawing.Size(1759, 759);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
             // 
             // dgvParam
             // 
@@ -993,8 +992,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1020,10 +1019,11 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 33);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1759, 726);
+            this.tabPage4.Size = new System.Drawing.Size(1759, 759);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "IO监控";
             this.tabPage4.UseVisualStyleBackColor = true;
+            this.tabPage4.Enter += new System.EventHandler(this.tabPage4_Enter);
             // 
             // dgvIO
             // 
@@ -1035,8 +1035,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;
@@ -1213,7 +1213,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button ccBtn;
         private System.Windows.Forms.Timer errorTimer;
-        private System.Windows.Forms.Button printBarCodeBtn;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
@@ -1222,6 +1221,7 @@
         private System.Windows.Forms.DataGridView dgvIO;
         private System.Windows.Forms.DataGridViewTextBoxColumn bin0;
         private System.Windows.Forms.DataGridViewTextBoxColumn value0;
+        private System.Windows.Forms.ComboBox printcb;
     }
 }
 

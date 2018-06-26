@@ -69,7 +69,7 @@ namespace xjplc
 
             List<string> portNameLst = new List<string>();
 
-            PortParam portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+            PortParam portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             for (int i = 0; i < (str.Length + 1); i++)
             {
@@ -106,7 +106,7 @@ namespace xjplc
                     if (ConstantMethod.compareByteStrictly(resultByte, Constant.XJExistByteIn))
                     {
                         //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
-                        ConstantMethod.SetPortParam(Constant.ConfigFilePath, Constant.PortName, m_serialPort.PortName);
+                        ConstantMethod.SetPortParam(Constant.ConfigSerialportFilePath, Constant.PortName, m_serialPort.PortName);
                         return true ;
                     }
 
@@ -144,7 +144,7 @@ namespace xjplc
 
             List<string> portNameLst = new List<string>();
 
-            PortParam portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+            PortParam portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             for (int i = 0; i < (str.Length + 1); i++)
             {
@@ -182,7 +182,7 @@ namespace xjplc
                     if (ConstantMethod.compareByteStrictly(resultByte, Constant.DTExistByteOutIn))
                     {
                         //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
-                        ConstantMethod.SetPortParam(Constant.ConfigFilePath, Constant.PortName, m_serialPort.PortName);
+                        ConstantMethod.SetPortParam(Constant.ConfigSerialportFilePath, Constant.PortName, m_serialPort.PortName);
                         return true;
                     }
 
@@ -217,8 +217,38 @@ namespace xjplc
             }
 
         }
-      
-       public static void Optimize(int n, int[] w, int[] v, int[] x, int C)
+        public static bool InitPassWd()
+        {
+            ConfigFileManager passWdFile  = new ConfigFileManager();
+
+            passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
+
+            string readTimeStr = passWdFile.ReadConfig(Constant.passwdTime);
+            string readCountStr = passWdFile.ReadConfig(Constant.passwdCount);
+            //统计下密码和设置时间
+            int readTimeInt = 0;
+            int readCountInt = 0;
+            passWdFile.Dispose();
+
+            if (int.TryParse(readTimeStr, out readTimeInt) && 
+                int.TryParse(readCountStr, out readCountInt))
+            {
+                DateTime dt = DateTime.ParseExact(readTimeStr, "yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture);
+
+                if (readCountInt > Constant.pwdCountMax) return true;
+
+                if (dt <= DateTime.Now)
+                {
+                    passWdForm form = new passWdForm();
+                    form.Pwd = (readCountInt* readTimeInt).ToString();
+                    form.PwdCount = readCountInt;
+                    form.IsStart = true;
+                    form.ShowDialog();
+                }
+            }
+            return true;
+        }
+        public static void Optimize(int n, int[] w, int[] v, int[] x, int C)
       {
 
             int[,] V = new int[n+1,C+1];//前i个物品装入容量为j的背包中获得的最大价值
@@ -378,7 +408,7 @@ namespace xjplc
                 configManager.LoadFile(filepath);
             else
             {
-                MessageBox.Show(Constant.ErrorConfigFile);
+                MessageBox.Show(Constant.ErrorSerialportConfigFile);
                 Application.Exit();
                 System.Environment.Exit(0);
 
@@ -399,7 +429,7 @@ namespace xjplc
                     configManager.LoadFile(filepath);
                 else
                 {
-                    MessageBox.Show(Constant.ErrorConfigFile);
+                    MessageBox.Show(Constant.ErrorSerialportConfigFile);
                     Application.Exit();
                     System.Environment.Exit(0);
                 }

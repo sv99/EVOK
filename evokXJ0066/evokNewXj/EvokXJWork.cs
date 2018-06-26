@@ -3,6 +3,7 @@ using FastReport.Barcode;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -30,6 +31,15 @@ namespace evokNew0066
         //显示优化文本框
         RichTextBox rtbResult;
 
+        ConfigFileManager paramFile;
+
+        //打条码模式
+        int printBarCodeMode = 0;
+        public int PrintBarCodeMode
+        {
+            get { return printBarCodeMode; }
+            set { printBarCodeMode = value; }
+        }
         //
         List<List<PlcInfoSimple>> AllPlcSimpleLst;
         public DataTable UserDataTable
@@ -52,12 +62,12 @@ namespace evokNew0066
         {
             get
             {
-
-                if (barCodePrintOutInPs.ShowValue == Constant.M_ON)
+                if (PrintBarCodeMode != Constant.NoPrintBarCode)
                 {
                     return true;
                 }
                 else return false;
+
             }
         }
         bool mRunFlag ;
@@ -72,6 +82,20 @@ namespace evokNew0066
         public void SetEvokDevice(EvokXJDevice evokDevice0)
         {
             evokDevice = evokDevice0;
+            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[1].Rows.Count > 0)
+            {
+                psLstHand.Clear();
+                foreach (DataRow dr in evokDevice.DataFormLst[1].Rows)
+                {
+                    if (dr == null) continue;
+                    string name = dr["bin"].ToString();
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        PlcInfoSimple p = new PlcInfoSimple(name);
+                        psLstHand.Add(p);
+                    }
+                }
+            }
         }
 
         public void SetOptSize(OptSize optSize0)
@@ -98,7 +122,45 @@ namespace evokNew0066
         public void SetPrintReport(FastReport.Report r1)
         {
             if (r1 != null)
-            printReport = r1;
+                printReport = r1;
+            string filter = "*.frx";
+            string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
+            string[] getbarcodepath;
+            getbarcodepath = Directory.GetFiles(FilePath, filter);
+            if (Directory.GetFiles(FilePath, filter).Length == 0)
+            {
+                MessageBox.Show("条码文件不存在");
+            }
+            else
+            {
+                if (Directory.GetFiles(FilePath, filter).Length > 1)
+                {
+                    MessageBox.Show("多个条码文件，请点击条码查看选择");
+                }
+                if (Directory.GetFiles(FilePath,filter).Length == 1)
+                {
+                    printReport.Load(getbarcodepath[0]);
+                }
+            }
+           
+        }
+
+        public void ChangePrintMode(int value)
+        {
+           paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
+
+             printBarCodeMode = value;//
+
+            if (printBarCodeMode == Constant.AutoBarCode)
+            {
+                evokDevice.SetMValueON(plcHandlebarCodeOutInPs);               
+            }
+            else
+            {
+                evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
+            }
+
+                        
         }
         #region 自动
         //自动页面
@@ -118,7 +180,7 @@ namespace evokNew0066
         public PlcInfoSimple lcOutInPs      = new PlcInfoSimple("料长读写");
         public PlcInfoSimple stopOutInPs    = new PlcInfoSimple("停止读写");
         public PlcInfoSimple cutDoneOutInPs = new PlcInfoSimple("切割完毕读写");
-        public PlcInfoSimple barCodePrintOutInPs = new PlcInfoSimple("条码打印读写");
+        public PlcInfoSimple plcHandlebarCodeOutInPs = new PlcInfoSimple("条码打印读写");
 
         public PlcInfoSimple pauseOutPs     = new PlcInfoSimple("暂停写");
         public PlcInfoSimple startOutPs     = new PlcInfoSimple("启动写");             
@@ -240,7 +302,7 @@ namespace evokNew0066
             PsLstAuto.Add(lcOutInPs);
             PsLstAuto.Add(stopOutInPs);
             PsLstAuto.Add(cutDoneOutInPs);
-            PsLstAuto.Add(barCodePrintOutInPs);
+            PsLstAuto.Add(plcHandlebarCodeOutInPs);
            
             PsLstAuto.Add(pauseOutPs);
             PsLstAuto.Add(startOutPs);
@@ -274,75 +336,8 @@ namespace evokNew0066
             PsLstAuto.Add(alarm16InPs);
 
 
-            PsLstHand = new List<PlcInfoSimple>();
-            PsLstHand.Add(slzOutPs);
-            PsLstHand.Add(slyOutPs);
-            PsLstHand.Add(clzOutPs);
-            PsLstHand.Add(clyOutPs);
-            PsLstHand.Add(jlzOutPs);
-            PsLstHand.Add(jlfOutPs);
-            PsLstHand.Add(jcfOutPs);
-            PsLstHand.Add(sldjjOutPs);
-            PsLstHand.Add(sldjOutPs);
-            PsLstHand.Add(qlqgOutPs);
-            PsLstHand.Add(tmzkxffOutPs);
-            PsLstHand.Add(qddjOutPs);
-            PsLstHand.Add(qlcyzOutPs);
-            PsLstHand.Add(slksOutPs);
-            PsLstHand.Add(sljsjOutPs);
-            PsLstHand.Add(qlylOutPs);
-            PsLstHand.Add(qlcyyOutPs);
-            PsLstHand.Add(sfslwOutPs);
-            PsLstHand.Add(tmccfOutPs);
-            PsLstHand.Add(cldjOutPs);
-            PsLstHand.Add(tmtgcqfOutPs);
-            PsLstHand.Add(cljlOutPs);
-            PsLstHand.Add(tmxyqgOutPs);
-            PsLstHand.Add(tmspjcqgOutPs);
-            PsLstHand.Add(pageShiftOutPs);
-            PsLstHand.Add(sljccOutPs);
-            PsLstHand.Add(slsyOutPs);
+            PsLstHand = new List<PlcInfoSimple>();            
 
-            PsLstHand.Add(slsyInPs);
-            PsLstHand.Add(sljccInPs);
-            PsLstHand.Add(slInPs0);          
-            PsLstHand.Add(clInPs0);          
-            PsLstHand.Add(jlInPs);           
-            PsLstHand.Add(jcInPs);
-            PsLstHand.Add(sldjjInPs);
-            PsLstHand.Add(sldjInPs);
-            PsLstHand.Add(qlqgInPs);
-            PsLstHand.Add(tmzkxffInPs);
-            PsLstHand.Add(qddjInPs);
-            PsLstHand.Add(qlcyzInPs);
-            PsLstHand.Add(slksInPs);
-            PsLstHand.Add(sljsjInPs);
-            PsLstHand.Add(qlylInPs);
-            PsLstHand.Add(qlcyyInPs);
-            PsLstHand.Add(sfslwInPs);
-            PsLstHand.Add(tmccfInPs);
-            PsLstHand.Add(cldjInPs);
-            PsLstHand.Add(tmtgcqfInPs);
-            PsLstHand.Add(cljlInPs);
-            PsLstHand.Add(tmxyqgInPs);
-            PsLstHand.Add(tmspjcqgInPs);
-
-            PsLstHand.Add(alarm1InPs);
-            PsLstHand.Add(alarm2InPs);
-            PsLstHand.Add(alarm3InPs);
-            PsLstHand.Add(alarm4InPs);
-            PsLstHand.Add(alarm5InPs);
-            PsLstHand.Add(alarm6InPs);
-            PsLstHand.Add(alarm7InPs);
-            PsLstHand.Add(alarm8InPs);
-            PsLstHand.Add(alarm9InPs);
-            PsLstHand.Add(alarm10InPs);
-            PsLstHand.Add(alarm11InPs);
-            PsLstHand.Add(alarm12InPs);
-            PsLstHand.Add(alarm13InPs);
-            PsLstHand.Add(alarm14InPs);
-            PsLstHand.Add(alarm15InPs);
-            PsLstHand.Add(alarm16InPs);
 
             PsLstParam = new List<PlcInfoSimple>();
             PsLstIO = new List<PlcInfoSimple>();
@@ -354,6 +349,29 @@ namespace evokNew0066
             AllPlcSimpleLst.Add(psLstHand);
             AllPlcSimpleLst.Add(psLstParam);
             AllPlcSimpleLst.Add(PsLstIO);
+
+            paramFile = new ConfigFileManager();
+
+            if (File.Exists(Constant.ConfigParamFilePath))
+            {
+                paramFile.LoadFile(Constant.ConfigParamFilePath);
+
+                if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
+                {
+                    MessageBox.Show(Constant.ErrorParamConfigFile);
+
+                    Application.Exit();
+
+                    System.Environment.Exit(0);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.ErrorParamConfigFile);
+                Application.Exit();
+                System.Environment.Exit(0);
+            }
+
 
         }
         public bool RestartDevice(int id)
@@ -474,13 +492,13 @@ namespace evokNew0066
             }
         }
         //打印条码打开
-        public void printBarCodeON()
+        public void plcHandleBarCodeON()
         {
-            evokDevice.SetMValueON(barCodePrintOutInPs);
+            evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
         }
-        public void printBarCodeOFF()
+        public void plcHandleBarCodeOFF()
         {
-            evokDevice.SetMValueOFF(barCodePrintOutInPs);
+            evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
         }
 
         #endregion
@@ -708,13 +726,11 @@ namespace evokNew0066
             SaveFile();
             if (evokDevice != null)
                 evokDevice.DeviceShutDown();
-
+            printReport.Dispose();
             if (CutThread != null && CutThread.IsAlive)
             {
                 CutThread.Join();
             }
-
-
 
         }
 
@@ -739,18 +755,46 @@ namespace evokNew0066
             if (evokDevice.Status == Constant.DeviceConnected)
             {
                 //页面切换需要告诉下位机
-                if (pageid == 0)
+                if (pageid == Constant.AutoPage)
                 {
                     evokDevice.SetDValue(pageShiftOutPs, 2);
                 }
-                if (pageid == 1)
+                if (pageid == Constant.HandPage)
                 {
                     evokDevice.SetDValue(pageShiftOutPs, 3);
                 }
 
+                if (pageid == Constant.ParamPage)
+                {
+                    passWdForm psswd = new passWdForm();
+                    psswd.ShowDialog();
+
+                    while (psswd.Visible)
+                    {
+                        Application.DoEvents();
+                    }
+                    string str = DateTime.Now.ToString("MMdd");
+                    int psswdInt=0;
+                    int.TryParse(str, out psswdInt);
+                    psswdInt = psswdInt + 1000;
+                    if (psswd.userInput.Equals(psswdInt.ToString()))
+                    {
+
+                    }
+                    else
+                    {
+                        MessageBox.Show(Constant.pwdWrong);
+                        return false;
+                    }
+                    psswd.Close();
+                }
+
                 evokDevice.shiftDataForm(pageid);
+                                                                            
                 FindPlcSimpleInPlcInfoLst(pageid);
+
                 ConstantMethod.Delay(50);
+
                 return true;
             }
           

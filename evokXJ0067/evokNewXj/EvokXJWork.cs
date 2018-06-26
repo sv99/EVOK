@@ -3,6 +3,7 @@ using FastReport.Barcode;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using xjplc;
 
-namespace evokNew0066
+namespace evokNew0067
 {
     public class EvokXJWork
     {
@@ -30,6 +31,15 @@ namespace evokNew0066
         //显示优化文本框
         RichTextBox rtbResult;
 
+        ConfigFileManager paramFile;
+
+        //打条码模式
+        int printBarCodeMode = 0;
+        public int PrintBarCodeMode
+        {
+            get { return printBarCodeMode; }
+            set { printBarCodeMode = value; }
+        }
         //
         List<List<PlcInfoSimple>> AllPlcSimpleLst;
         public DataTable UserDataTable
@@ -52,12 +62,12 @@ namespace evokNew0066
         {
             get
             {
-
-                if (barCodePrintOutInPs.ShowValue == Constant.M_ON)
+                if (PrintBarCodeMode != Constant.NoPrintBarCode)
                 {
                     return true;
                 }
                 else return false;
+
             }
         }
         bool mRunFlag ;
@@ -69,9 +79,31 @@ namespace evokNew0066
         ThreadStart CutThreadStart;
         //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
         Thread CutThread;   //需要引入System.Threading命名空间
+        public bool shiftDataFormSplit(int formid, int rowSt, int count)
+        {
+            evokDevice.shiftDataFormSplit(formid,rowSt, count);
+            return true;
+        }
         public void SetEvokDevice(EvokXJDevice evokDevice0)
         {
             evokDevice = evokDevice0;
+            //手动页面的操作功能在这里进行
+                      
+            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[1].Rows.Count > 0)
+            {
+                psLstHand.Clear();
+                foreach (DataRow dr in evokDevice.DataFormLst[1].Rows)
+                {
+                    if (dr == null) continue;
+                    string name = dr["bin"].ToString();
+                    if (!string.IsNullOrWhiteSpace(name))
+                    {
+                        PlcInfoSimple p = new PlcInfoSimple(name);
+                        psLstHand.Add(p);
+                    }
+                }               
+            }
+           
         }
 
         public void SetOptSize(OptSize optSize0)
@@ -98,7 +130,111 @@ namespace evokNew0066
         public void SetPrintReport(FastReport.Report r1)
         {
             if (r1 != null)
-            printReport = r1;
+                printReport = r1;
+
+            string filter = "*.frx";
+            string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
+            string[] getbarcodepath;
+            getbarcodepath = Directory.GetFiles(FilePath, filter);
+            if (Directory.GetFiles(FilePath, filter).Length == 0)
+            {
+                MessageBox.Show("条码文件不存在");
+            }
+            else
+            {
+                if (Directory.GetFiles(FilePath, filter).Length > 1)
+                {
+                    MessageBox.Show("多个条码文件，请点击条码查看选择");
+                }
+                if (Directory.GetFiles(FilePath, filter).Length == 1)
+                {
+                    printReport.Load(getbarcodepath[0]);
+                }
+            }
+         
+        }
+
+
+        #region 锯片旋转带打孔
+        public void DowLoadDataHole()
+        {
+           /****
+            //
+            List<int> DataList = new List<int>();
+            DataList.Add(optSize.ProdInfoLst.Cut.Count);  //段数//添加料长
+
+            XJPD_LenDownLoad_R_W[0].Absolute_Addr = 3000;
+
+            if (prod[i].hole.Count > 0 && prod[i].angle.Count > 0)
+                for (int sizeid = 0; sizeid < prod[i].Cut.Count; sizeid++)
+                {
+
+                    DataList.Add(prod[i].Cut[sizeid]);  //段长
+                    DataList.Add(1);  //段长
+                    int holecount0 = 0;
+                    //总共10个孔 取前面 5个
+                    //前角度
+                    for (int holecount = 0; holecount < prod[i].hole[sizeid].Count() / 2; holecount = holecount + 3)
+                    {
+                        if (prod[i].hole[sizeid][holecount] > 0)
+                            holecount0++;
+                    }
+                    DataList.Add(prod[i].angle[sizeid][0]);
+                    DataList.Add(holecount0);
+
+                    for (int addhole = 0; addhole < holecount0 * 3; addhole++)
+                    {
+                        DataList.Add(prod[i].hole[sizeid][addhole]);
+
+                    }
+                    //后角度
+                    int holecount1 = 0;
+                    for (int holecount = 15; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
+                    {
+                        if (prod[i].hole[sizeid][holecount] > 0)
+                            holecount1++;
+                    }
+
+                    DataList.Add(prod[i].angle[sizeid][1]);
+                    DataList.Add(holecount1);
+
+                    for (int addhole = 15; addhole < 15 + holecount1 * 3; addhole++)
+                    {
+                        DataList.Add(prod[i].hole[sizeid][addhole]);
+
+                    }
+
+                    xjpsp.Write(XJPD_LenDownLoad_R_W[0], DataList.ToArray());
+                    DataList.Clear();
+
+                    if (i == 0)
+                    {
+                        XJPD_LenDownLoad_R_W[0].Absolute_Addr = XJPD_LenDownLoad_R_W[0].Absolute_Addr + 134;
+                    }
+                    else
+                        XJPD_LenDownLoad_R_W[0].Absolute_Addr = XJPD_LenDownLoad_R_W[0].Absolute_Addr + 132;
+
+                }
+            DataProcess.Delay(1000);
+            ****/
+        }
+        #endregion
+        public void ChangePrintMode(int value)
+        {
+            paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
+
+            printBarCodeMode = value;//
+
+            if (printBarCodeMode == Constant.AutoBarCode)
+            {
+                evokDevice.SetMValueON(plcHandlebarCodeOutInPs);               
+            }
+            else
+            {
+                evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
+            }
+
+                        
         }
         #region 自动
         //自动页面
@@ -118,7 +254,7 @@ namespace evokNew0066
         public PlcInfoSimple lcOutInPs      = new PlcInfoSimple("料长读写");
         public PlcInfoSimple stopOutInPs    = new PlcInfoSimple("停止读写");
         public PlcInfoSimple cutDoneOutInPs = new PlcInfoSimple("切割完毕读写");
-        public PlcInfoSimple barCodePrintOutInPs = new PlcInfoSimple("条码打印读写");
+        public PlcInfoSimple plcHandlebarCodeOutInPs = new PlcInfoSimple("条码打印读写");
 
         public PlcInfoSimple pauseOutPs     = new PlcInfoSimple("暂停写");
         public PlcInfoSimple startOutPs     = new PlcInfoSimple("启动写");             
@@ -161,51 +297,92 @@ namespace evokNew0066
         public PlcInfoSimple clzOutPs = new PlcInfoSimple("出料左写");
         public PlcInfoSimple clyOutPs = new PlcInfoSimple("出料右写");
         public PlcInfoSimple jlzOutPs = new PlcInfoSimple("锯料正写");
-        public PlcInfoSimple jlfOutPs = new PlcInfoSimple("检测正写");
-        public PlcInfoSimple jcfOutPs = new PlcInfoSimple("检测负写");
-        public PlcInfoSimple sldjjOutPs = new PlcInfoSimple("上料电机写");
+        public PlcInfoSimple jllfOutPs = new PlcInfoSimple("锯料负写");
+        public PlcInfoSimple slzzOutPs = new PlcInfoSimple("上料左写");
+        public PlcInfoSimple slffOutPs = new PlcInfoSimple("上料右写");
+        public PlcInfoSimple zzzOutPs = new PlcInfoSimple("旋转左写");
+        public PlcInfoSimple zzfOutPs = new PlcInfoSimple("旋转右写");
+        public PlcInfoSimple xzzOutPs = new PlcInfoSimple("Z轴左写");
+        public PlcInfoSimple xzfOutPs = new PlcInfoSimple("Z轴右写");
+        public PlcInfoSimple zdkzOutPs = new PlcInfoSimple("左打孔左写");
+        public PlcInfoSimple zdkfOutPs = new PlcInfoSimple("左打孔右写");
+        public PlcInfoSimple ydkzOutPs = new PlcInfoSimple("右打孔左写");
+        public PlcInfoSimple ydkfOutPs = new PlcInfoSimple("右打孔右写");
+        public PlcInfoSimple jlfOutPs = new PlcInfoSimple("检测左写");
+        public PlcInfoSimple jcfOutPs = new PlcInfoSimple("检测右写");
+        public PlcInfoSimple sldjjOutPs = new PlcInfoSimple("锯料下降写");
         public PlcInfoSimple sldjOutPs = new PlcInfoSimple("送料侧压写");
-        public PlcInfoSimple qlqgOutPs = new PlcInfoSimple("切料气缸写");
-        public PlcInfoSimple tmzkxffOutPs = new PlcInfoSimple("条码真空吸附阀写");
-        public PlcInfoSimple qddjOutPs = new PlcInfoSimple("切刀电机写");
-        public PlcInfoSimple qlcyzOutPs = new PlcInfoSimple("切料侧压左写");
-        public PlcInfoSimple slksOutPs = new PlcInfoSimple("上料靠栅写");
-        public PlcInfoSimple sljsjOutPs = new PlcInfoSimple("上料架升降写");
-        public PlcInfoSimple qlylOutPs = new PlcInfoSimple("切料压料写");
-        public PlcInfoSimple qlcyyOutPs = new PlcInfoSimple("切料侧压右写");
-        public PlcInfoSimple sfslwOutPs = new PlcInfoSimple("伺服上料位写");
-        public PlcInfoSimple tmccfOutPs = new PlcInfoSimple("条码吹尘阀写");
-        public PlcInfoSimple cldjOutPs = new PlcInfoSimple("出料电机写");
-        public PlcInfoSimple tmtgcqfOutPs = new PlcInfoSimple("条码铜管吹气阀写");
-        public PlcInfoSimple cljlOutPs = new PlcInfoSimple("出料夹料写");
-        public PlcInfoSimple tmxyqgOutPs = new PlcInfoSimple("条码下压气缸写");
-        public PlcInfoSimple tmspjcqgOutPs = new PlcInfoSimple("条码水平进出气缸写");
-        public PlcInfoSimple sljccOutPs = new PlcInfoSimple("上料架检测吹尘写");
-        public PlcInfoSimple slsyOutPs = new PlcInfoSimple("送料上压写");
+        public PlcInfoSimple qlqgOutPs = new PlcInfoSimple("锯料左侧压写");
+        public PlcInfoSimple tmzkxffOutPs = new PlcInfoSimple("锯料右侧压写");
+        public PlcInfoSimple qddjOutPs = new PlcInfoSimple("打孔下降气缸写");
+        public PlcInfoSimple qlcyzOutPs = new PlcInfoSimple("出料电机写");
+        public PlcInfoSimple slksOutPs = new PlcInfoSimple("锯料电机写");
+        public PlcInfoSimple sljsjOutPs = new PlcInfoSimple("上料架升降气缸写");
+        public PlcInfoSimple qlylOutPs = new PlcInfoSimple("压料2写");
+        public PlcInfoSimple qlcyyOutPs = new PlcInfoSimple("压料3写");
+        public PlcInfoSimple sfslwOutPs = new PlcInfoSimple("送料压料写");
+        public PlcInfoSimple tmccfOutPs = new PlcInfoSimple("出料夹料写");
+        public PlcInfoSimple cldjOutPs = new PlcInfoSimple("右打孔电机135写");
+        public PlcInfoSimple tmtgcqfOutPs = new PlcInfoSimple("左打孔电机45写");
+        public PlcInfoSimple tmspjcqgOutPs = new PlcInfoSimple("条码水平气缸写");
+        public PlcInfoSimple tmxyqgOutPs = new PlcInfoSimple("打码下压气缸写");
+        public PlcInfoSimple cljlOutPs = new PlcInfoSimple("打码吹气写");             
+        public PlcInfoSimple sljccOutPs = new PlcInfoSimple("打码吹尘写");
+        public PlcInfoSimple slsyOutPs = new PlcInfoSimple("打码吸气写");
+        public PlcInfoSimple slsyInPs = new PlcInfoSimple("中间侧压写");
+        public PlcInfoSimple sljccInPs = new PlcInfoSimple("护罩1写");
+        public PlcInfoSimple slInPs0 = new PlcInfoSimple("护罩2写");      
+        public PlcInfoSimple clInPs0 = new PlcInfoSimple("压料1写");   
+        public PlcInfoSimple jlInPs = new PlcInfoSimple("打孔升降气缸上升写");
+        public PlcInfoSimple jcInPs = new PlcInfoSimple("锯料升降气缸上升写"); 
 
-        public PlcInfoSimple slsyInPs = new PlcInfoSimple("送料上压读");
-        public PlcInfoSimple sljccInPs = new PlcInfoSimple("上料架检测吹尘读");
-        public PlcInfoSimple slInPs0 = new PlcInfoSimple("送料读");      
-        public PlcInfoSimple clInPs0 = new PlcInfoSimple("出料读");   
-        public PlcInfoSimple jlInPs = new PlcInfoSimple("锯料读");
-        public PlcInfoSimple jcInPs = new PlcInfoSimple("检测读");     
-        public PlcInfoSimple sldjjInPs = new PlcInfoSimple("上料电机读");
-        public PlcInfoSimple sldjInPs = new PlcInfoSimple("送料侧压读");
-        public PlcInfoSimple qlqgInPs = new PlcInfoSimple("切料气缸读");
-        public PlcInfoSimple tmzkxffInPs = new PlcInfoSimple("条码真空吸附阀读");
-        public PlcInfoSimple qddjInPs = new PlcInfoSimple("切刀电机读");
-        public PlcInfoSimple qlcyzInPs = new PlcInfoSimple("切料侧压左读");
-        public PlcInfoSimple slksInPs = new PlcInfoSimple("上料靠栅读");
-        public PlcInfoSimple sljsjInPs = new PlcInfoSimple("上料架升降读");
-        public PlcInfoSimple qlylInPs = new PlcInfoSimple("切料压料读");
-        public PlcInfoSimple qlcyyInPs = new PlcInfoSimple("切料侧压右读");
-        public PlcInfoSimple sfslwInPs = new PlcInfoSimple("伺服上料位读");
-        public PlcInfoSimple tmccfInPs = new PlcInfoSimple("条码吹尘阀读");
-        public PlcInfoSimple cldjInPs = new PlcInfoSimple("出料电机读");
-        public PlcInfoSimple tmtgcqfInPs = new PlcInfoSimple("条码铜管吹气阀读");
-        public PlcInfoSimple cljlInPs = new PlcInfoSimple("出料夹料读");
-        public PlcInfoSimple tmxyqgInPs = new PlcInfoSimple("条码下压气缸读");
-        public PlcInfoSimple tmspjcqgInPs = new PlcInfoSimple("条码水平进出气缸读");
+           
+        public PlcInfoSimple sldjjInPs = new PlcInfoSimple("送料读");
+        public PlcInfoSimple sldjInPs = new PlcInfoSimple("锯料读");
+        public PlcInfoSimple qlqgInPs = new PlcInfoSimple("出料读");
+        public PlcInfoSimple tmzkxffInPs = new PlcInfoSimple("上料读");
+        public PlcInfoSimple qddjInPs = new PlcInfoSimple("Z轴读");
+        public PlcInfoSimple qlcyzInPs = new PlcInfoSimple("旋转读");
+        public PlcInfoSimple slksInPs = new PlcInfoSimple("左打孔读");
+        public PlcInfoSimple sljsjInPs = new PlcInfoSimple("右打孔读");
+        public PlcInfoSimple qlylInPs = new PlcInfoSimple("检测读");
+
+
+        public PlcInfoSimple qlcyyInPs = new PlcInfoSimple("锯料下降读");
+        public PlcInfoSimple sfslwInPs = new PlcInfoSimple("锯料左侧压读");
+        public PlcInfoSimple tmccfInPs = new PlcInfoSimple("锯料右侧压读");
+        public PlcInfoSimple cldjInPs = new PlcInfoSimple("打孔下降气缸读");
+        public PlcInfoSimple tmtgcqfInPs = new PlcInfoSimple("出料电机读");
+        public PlcInfoSimple cljlInPs = new PlcInfoSimple("锯料电机读");
+        public PlcInfoSimple tmxyqgInPs = new PlcInfoSimple("压料2读");
+        public PlcInfoSimple tmspjcqgInPs = new PlcInfoSimple("压料3读");
+        public PlcInfoSimple tmspjcqgInPs1 = new PlcInfoSimple("送料侧压读");
+        public PlcInfoSimple tmspjcqgInPs2 = new PlcInfoSimple("送料压料读");
+        public PlcInfoSimple tmspjcqgInPs3 = new PlcInfoSimple("出料夹料读");
+        public PlcInfoSimple tmspjcqgInPs4 = new PlcInfoSimple("右打孔电机135读");
+        public PlcInfoSimple tmspjcqgInPs5 = new PlcInfoSimple("左打孔电机45读");
+        public PlcInfoSimple tmspjcqgInPs6 = new PlcInfoSimple("条码水平气缸读");
+        public PlcInfoSimple tmspjcqgInPs7 = new PlcInfoSimple("打码下压气缸读");
+        public PlcInfoSimple tmspjcqgInPs8 = new PlcInfoSimple("打码吹气读");
+        public PlcInfoSimple tmspjcqgInPs9 = new PlcInfoSimple("打码吹尘读");
+        public PlcInfoSimple tmspjcqgInPs10 = new PlcInfoSimple("打码吸气读");
+        public PlcInfoSimple tmspjcqgInPs11 = new PlcInfoSimple("中间侧压读");
+        public PlcInfoSimple tmspjcqgInPs12 = new PlcInfoSimple("护罩1读");
+        public PlcInfoSimple tmspjcqgInPs13 = new PlcInfoSimple("护罩2读");
+        public PlcInfoSimple tmspjcqgInPs14 = new PlcInfoSimple("压料1读");
+        public PlcInfoSimple tmspjcqgInPs15 = new PlcInfoSimple("上料架升降气缸读");
+        public PlcInfoSimple tmspjcqgInPs16 = new PlcInfoSimple("打孔升降气缸上升读");
+        public PlcInfoSimple tmspjcqgInPs17 = new PlcInfoSimple("锯料升降气缸上升读");
+        public PlcInfoSimple tmspjcqgInPs18 = new PlcInfoSimple("送料读");
+        public PlcInfoSimple tmspjcqgInPs19 = new PlcInfoSimple("锯料读");
+        public PlcInfoSimple tmspjcqgInPs20 = new PlcInfoSimple("出料读");
+        public PlcInfoSimple tmspjcqgInPs21 = new PlcInfoSimple("上料读");
+        public PlcInfoSimple tmspjcqgInPs22 = new PlcInfoSimple("Z轴读");
+        public PlcInfoSimple tmspjcqgInPs23 = new PlcInfoSimple("旋转读");
+        public PlcInfoSimple tmspjcqgInPs24 = new PlcInfoSimple("左打孔读");
+        public PlcInfoSimple tmspjcqgInPs25 = new PlcInfoSimple("右打孔读");
+        public PlcInfoSimple tmspjcqgInPs26 = new PlcInfoSimple("检测读");
+
 
         public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstHand
         {
@@ -240,7 +417,7 @@ namespace evokNew0066
             PsLstAuto.Add(lcOutInPs);
             PsLstAuto.Add(stopOutInPs);
             PsLstAuto.Add(cutDoneOutInPs);
-            PsLstAuto.Add(barCodePrintOutInPs);
+            PsLstAuto.Add(plcHandlebarCodeOutInPs);
            
             PsLstAuto.Add(pauseOutPs);
             PsLstAuto.Add(startOutPs);
@@ -275,11 +452,23 @@ namespace evokNew0066
 
 
             PsLstHand = new List<PlcInfoSimple>();
+
             PsLstHand.Add(slzOutPs);
             PsLstHand.Add(slyOutPs);
             PsLstHand.Add(clzOutPs);
             PsLstHand.Add(clyOutPs);
             PsLstHand.Add(jlzOutPs);
+            PsLstHand.Add(jllfOutPs);
+            PsLstHand.Add(slzzOutPs);
+            PsLstHand.Add(slffOutPs);
+            PsLstHand.Add(zzzOutPs);
+            PsLstHand.Add(zzfOutPs);
+            PsLstHand.Add(xzzOutPs);
+            PsLstHand.Add(xzfOutPs);
+            PsLstHand.Add(zdkzOutPs);
+            PsLstHand.Add(zdkfOutPs);
+            PsLstHand.Add(ydkzOutPs);
+            PsLstHand.Add(ydkfOutPs);
             PsLstHand.Add(jlfOutPs);
             PsLstHand.Add(jcfOutPs);
             PsLstHand.Add(sldjjOutPs);
@@ -296,18 +485,16 @@ namespace evokNew0066
             PsLstHand.Add(tmccfOutPs);
             PsLstHand.Add(cldjOutPs);
             PsLstHand.Add(tmtgcqfOutPs);
-            PsLstHand.Add(cljlOutPs);
-            PsLstHand.Add(tmxyqgOutPs);
             PsLstHand.Add(tmspjcqgOutPs);
-            PsLstHand.Add(pageShiftOutPs);
+            PsLstHand.Add(tmxyqgOutPs);
+            PsLstHand.Add(cljlOutPs);
             PsLstHand.Add(sljccOutPs);
             PsLstHand.Add(slsyOutPs);
-
             PsLstHand.Add(slsyInPs);
             PsLstHand.Add(sljccInPs);
-            PsLstHand.Add(slInPs0);          
-            PsLstHand.Add(clInPs0);          
-            PsLstHand.Add(jlInPs);           
+            PsLstHand.Add(slInPs0);
+            PsLstHand.Add(clInPs0);
+            PsLstHand.Add(jlInPs);
             PsLstHand.Add(jcInPs);
             PsLstHand.Add(sldjjInPs);
             PsLstHand.Add(sldjInPs);
@@ -317,7 +504,7 @@ namespace evokNew0066
             PsLstHand.Add(qlcyzInPs);
             PsLstHand.Add(slksInPs);
             PsLstHand.Add(sljsjInPs);
-            PsLstHand.Add(qlylInPs);
+            PsLstHand.Add(qlylInPs); 
             PsLstHand.Add(qlcyyInPs);
             PsLstHand.Add(sfslwInPs);
             PsLstHand.Add(tmccfInPs);
@@ -326,23 +513,33 @@ namespace evokNew0066
             PsLstHand.Add(cljlInPs);
             PsLstHand.Add(tmxyqgInPs);
             PsLstHand.Add(tmspjcqgInPs);
+            PsLstHand.Add(tmspjcqgInPs1);
+            PsLstHand.Add(tmspjcqgInPs2);
+            PsLstHand.Add(tmspjcqgInPs3);
+            PsLstHand.Add(tmspjcqgInPs4);
+            PsLstHand.Add(tmspjcqgInPs5);
+            PsLstHand.Add(tmspjcqgInPs6);
+            PsLstHand.Add(tmspjcqgInPs7);
+            PsLstHand.Add(tmspjcqgInPs8);
+            PsLstHand.Add(tmspjcqgInPs9);
+            PsLstHand.Add(tmspjcqgInPs10);
+            PsLstHand.Add(tmspjcqgInPs11);
+            PsLstHand.Add(tmspjcqgInPs12);
+            PsLstHand.Add(tmspjcqgInPs13);
+            PsLstHand.Add(tmspjcqgInPs14);
+            PsLstHand.Add(tmspjcqgInPs15);
+            PsLstHand.Add(tmspjcqgInPs16);
+            PsLstHand.Add(tmspjcqgInPs17);
+            PsLstHand.Add(tmspjcqgInPs18);
+            PsLstHand.Add(tmspjcqgInPs19);
+            PsLstHand.Add(tmspjcqgInPs20);
+            PsLstHand.Add(tmspjcqgInPs21);
+            PsLstHand.Add(tmspjcqgInPs22);
+            PsLstHand.Add(tmspjcqgInPs23);
+            PsLstHand.Add(tmspjcqgInPs24);
+            PsLstHand.Add(tmspjcqgInPs25);
+            PsLstHand.Add(tmspjcqgInPs26);
 
-            PsLstHand.Add(alarm1InPs);
-            PsLstHand.Add(alarm2InPs);
-            PsLstHand.Add(alarm3InPs);
-            PsLstHand.Add(alarm4InPs);
-            PsLstHand.Add(alarm5InPs);
-            PsLstHand.Add(alarm6InPs);
-            PsLstHand.Add(alarm7InPs);
-            PsLstHand.Add(alarm8InPs);
-            PsLstHand.Add(alarm9InPs);
-            PsLstHand.Add(alarm10InPs);
-            PsLstHand.Add(alarm11InPs);
-            PsLstHand.Add(alarm12InPs);
-            PsLstHand.Add(alarm13InPs);
-            PsLstHand.Add(alarm14InPs);
-            PsLstHand.Add(alarm15InPs);
-            PsLstHand.Add(alarm16InPs);
 
             PsLstParam = new List<PlcInfoSimple>();
             PsLstIO = new List<PlcInfoSimple>();
@@ -355,6 +552,24 @@ namespace evokNew0066
             AllPlcSimpleLst.Add(psLstParam);
             AllPlcSimpleLst.Add(PsLstIO);
 
+            paramFile = new ConfigFileManager();
+
+            if (File.Exists(Constant.ConfigParamFilePath))
+            {
+                paramFile.LoadFile(Constant.ConfigParamFilePath);
+                if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
+                {
+                    MessageBox.Show(Constant.ErrorParamConfigFile);
+                    Application.Exit();
+                    System.Environment.Exit(0);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.ErrorParamConfigFile);
+                Application.Exit();
+                System.Environment.Exit(0);
+            }
         }
         public bool RestartDevice(int id)
         {
@@ -474,13 +689,13 @@ namespace evokNew0066
             }
         }
         //打印条码打开
-        public void printBarCodeON()
+        public void plcHandleBarCodeON()
         {
-            evokDevice.SetMValueON(barCodePrintOutInPs);
+            evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
         }
-        public void printBarCodeOFF()
+        public void plcHandleBarCodeOFF()
         {
-            evokDevice.SetMValueOFF(barCodePrintOutInPs);
+            evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
         }
 
         #endregion
@@ -720,7 +935,6 @@ namespace evokNew0066
 
         public void InitControl()
         {
-
             if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[0] != null))
             {
                 ConstantMethod.FindPos(evokDevice.DataFormLst[0], PsLstAuto);
@@ -733,30 +947,55 @@ namespace evokNew0066
             {
                 ConstantMethod.FindPos(evokDevice.DataFormLst[2], PsLstParam);
             }
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[3] != null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[3], PsLstIO);
+            }
         }
         public bool ShiftPage(int pageid)
         {
             if (evokDevice.Status == Constant.DeviceConnected)
             {
                 //页面切换需要告诉下位机
-                if (pageid == 0)
+                if (pageid == Constant.AutoPage)
                 {
                     evokDevice.SetDValue(pageShiftOutPs, 2);
                 }
-                if (pageid == 1)
+                if (pageid == Constant.HandPage)
                 {
                     evokDevice.SetDValue(pageShiftOutPs, 3);
                 }
+                if (pageid == Constant.ParamPage)
+                {
+                    passWdForm psswd = new passWdForm();
+                    psswd.ShowDialog();
 
+                    while (psswd.Visible)
+                    {
+                        Application.DoEvents();
+                    }
+                    string str = DateTime.Now.ToString("MMdd");
+                    int psswdInt = 0;
+                    int.TryParse(str, out psswdInt);
+                    psswdInt = psswdInt + 1000;
+                    if (psswd.userInput.Equals(psswdInt.ToString()))
+                    {
+
+                    }
+                    else
+                    {
+                        MessageBox.Show(Constant.pwdWrong);
+                        return false;
+                    }
+                    psswd.Close();
+                }
                 evokDevice.shiftDataForm(pageid);
                 FindPlcSimpleInPlcInfoLst(pageid);
                 ConstantMethod.Delay(50);
                 return true;
             }
-          
-            
+                     
            return false;       
-
         }
 
         #region 寄存器操作部分
@@ -764,7 +1003,8 @@ namespace evokNew0066
         {
             foreach (PlcInfoSimple simple in pslLst)
             {
-                if (simple.Name.ToString().Contains(tag0) && simple.Name.Contains(str0))
+                //if (simple.Name.ToString().Contains(tag0) && simple.Name.Contains(str0))
+                if(simple.Name.Equals(tag0+str0))
                 {
                     return simple;
                 }
@@ -867,6 +1107,7 @@ namespace evokNew0066
         {
             if (evokDevice.DataFormLst.Count > 2)
             {
+                dgvParam.ClearSelection();
                 dgvParam.AutoGenerateColumns = false;
                 dgvParam.DataSource = evokDevice.DataFormLst[2];
                 dgvParam.Columns["bin"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
@@ -877,6 +1118,7 @@ namespace evokNew0066
         {
             if (evokDevice.DataFormLst.Count > 3)
             {
+                dgvIO.ClearSelection();           
                 dgvIO.AutoGenerateColumns = false;
                 dgvIO.DataSource = evokDevice.DataFormLst[3];
                 dgvIO.Columns["bin0"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
@@ -924,23 +1166,7 @@ namespace evokNew0066
                     FindPlcInfo(p, evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
                 }
             }
-            /****
-            if (m == 0)
-                for (int i = 0; i <  PsLstAuto.Count; i++)
-                {
-                    FindPlcInfo( PsLstAuto[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
-            if (m == 1)
-                for (int i = 0; i <  PsLstHand.Count; i++)
-                {
-                    FindPlcInfo(PsLstHand[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
-            if (m == 2)
-                for (int i = 0; i <  PsLstParam.Count; i++)
-                {
-                    FindPlcInfo(PsLstParam[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
-                ***/
+            
 
         }
         private void FindPlcInfo(PlcInfoSimple p, List<PlcInfo> dplc, List<List<PlcInfo>> mplc)

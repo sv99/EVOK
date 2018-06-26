@@ -63,7 +63,12 @@ namespace xjplc
         public static readonly int ExcelFile = 1;
         public static readonly int CsvFile = 2;
         public static readonly int ErrorFile = 0;
+        public static readonly int AutoPage = 0;
+        public static readonly int HandPage = 1;
+        public static readonly int ParamPage = 2;
+        public static readonly int IOPage = 3;
         public static readonly string Alarm = "报警";
+        public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
@@ -73,11 +78,14 @@ namespace xjplc
         public static readonly string PlcDataFilePathHand = AppFilePath + "Plc Data\\plc_data_hand.csv";
         public static readonly string PlcDataFilePathParam = AppFilePath + "Plc Data\\plc_data_param.csv";
         public static readonly string PlcDataFilePathIO = AppFilePath + "Plc Data\\plc_data_IO.csv";
-        public static readonly string PlcDataFilePath3 = AppFilePath + "Plc Data\\plc_data3.csv";
+        public static readonly string PlcDataFilePath3 = AppFilePath + "Plc Data\\plc_data3.csv";     
         public static readonly string ErrorMValue = "位值只能为1或者0！";
         public static readonly string AppFilePath = System.AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string ConfigFilePath = AppFilePath + "config\\config.xml";
-        public static readonly string ErrorConfigFile = "配置文件不存在，请检查config文件夹，软件即将关闭！";
+        public static readonly string ConfigSerialportFilePath = AppFilePath + "config\\configSerialport.xml";
+        public static readonly string ConfigParamFilePath = AppFilePath + "config\\configParam.xml";
+        public static readonly string ConfigPassWdFilePath = AppFilePath + "config\\configPwd.xml";
+        public static readonly string ErrorSerialportConfigFile = "端口配置文件不存在，请检查config文件夹，软件即将关闭！";
+        public static readonly string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorPlcFile = "设备数据文件不存在，请检查plc data文件夹，软件即将关闭！";
         public static readonly string strValue = "value";
         public static readonly string strParam1 = "param1";
@@ -86,14 +94,24 @@ namespace xjplc
         public static readonly string strParam4 = "param4";
         public static readonly string strParam5 = "param5";
         public static readonly string strParam6 = "param6";
+        public static readonly string passwdTime = "passwdTime"; 
+        public static readonly string passwd = "passwd";
+        public static readonly string passwdCount = "passwdCount";
         public static readonly string PortName = "PortName";
         public static readonly string Bin = "bin";
         public static readonly string Read= "读";
         public static readonly string Write = "写";
+        public static readonly string printBarcodeMode = "printBarcodeMode";
+        public static readonly int NoPrintBarCode = 0;
+        public static readonly int AutoBarCode = 1;
+        public static readonly int HandBarCode = 2;
+        public static readonly string[] printBarcodeModeStr = {"无条码","自动贴条码","手动贴条码" };
 
         public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1" };
         public static readonly string[] strformatZh = { "尺寸", "设定数量", "已切数量", "条码", "参数1" };
-
+        public static readonly string pwdWrong = "密码错误！";
+        public static readonly string pwdOk = "密码正确！";
+        public static readonly int pwdCountMax = 6;
         #region  优化数据
         //优化错误返回值
         public static readonly string prodLstNoData = "数据收集错误！";
@@ -182,6 +200,12 @@ namespace xjplc
         public static string[] strDMArea = { "D", "HD", "HSD", "M", "HM", "X", "Y" };
 
         #endregion 信捷PLC 专用
+
+        #region 锯片旋转带打孔
+        public static readonly char Angle45 = '/';
+        public static readonly char Angle135 = '\\';
+        public static readonly char Angle90 = '|';
+        #endregion
         public const int DeviceNoConnection = -1;
         public const int DeviceConnected = 0;
         //

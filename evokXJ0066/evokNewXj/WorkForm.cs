@@ -24,7 +24,8 @@ namespace evokNew0066
 
         public WorkForm()
         {
-             InitializeComponent();
+            ConstantMethod.InitPassWd();
+            InitializeComponent();
         }
 
         private void autoSLBtn_Click(object sender, EventArgs e)
@@ -154,9 +155,11 @@ namespace evokNew0066
 
         private void Form1_Load(object sender, EventArgs e)
         {
-             InitParam();
-             InitControl();
-             InitView0();
+            this.Visible = false;               
+            InitParam();
+            InitControl();
+            InitView0();
+            this.Visible = true;
         }
 
         private PlcInfoSimple getPsFromPslLst(string tag0, string str0, List<PlcInfoSimple> pslLst)
@@ -181,11 +184,19 @@ namespace evokNew0066
             evokWork.InitControl();
             evokWork.ShiftPage(0);
             SetControlInEvokWork();
+                      
+            printcb.SelectedIndex = evokWork.PrintBarCodeMode;
+            evokWork.ChangePrintMode(printcb.SelectedIndex);
+
         }
 
 
         public void InitParam()
         {
+            //datasource 改变会出发 selectindex 改变事件  这样就会打条码导致 模式被自动修改
+            //所以早点设置好 然后在 那个selectindexchanged事件里增加 通讯正常判断
+            printcb.DataSource = Constant.printBarcodeModeStr;
+
             optSize = new OptSize( UserData);
             strDataFormPath = new List<string>();
             strDataFormPath.Add(Constant.PlcDataFilePathAuto);
@@ -400,8 +411,8 @@ namespace evokNew0066
              qClr.Enabled = false;
              autoSLBtn.Enabled = false;
              ccBtn.Enabled = false;
-             printBarCodeBtn.Enabled = false;
-             UserData.ReadOnly = true;            
+             UserData.ReadOnly = true;
+             printcb.Enabled = false;
         }
         private void startOptShow()
         {
@@ -412,11 +423,11 @@ namespace evokNew0066
             qClr.Enabled = false;
             autoSLBtn.Enabled = false;
             ccBtn.Enabled = false;
-            printBarCodeBtn.Enabled = false;
             UserData.ReadOnly = true;
             stopBtn.Enabled = false;
             pauseBtn.Enabled = false;
             resetBtn.Enabled = false;
+            printcb.Enabled = false;
             if (rtbResult != null) rtbResult.Clear();
             ConstantMethod.ShowInfo(rtbResult, Constant.InOPT);
 
@@ -430,11 +441,11 @@ namespace evokNew0066
             qClr.Enabled = true;
             autoSLBtn.Enabled = true;
             ccBtn.Enabled = true;
-            printBarCodeBtn.Enabled = true;
             UserData.ReadOnly = true;
             stopBtn.Enabled = true;
             pauseBtn.Enabled = true;
             resetBtn.Enabled = true;
+            printcb.Enabled = true;
 
         }
 
@@ -467,7 +478,8 @@ namespace evokNew0066
              autoSLBtn.Enabled = true;
              ccBtn.Enabled = true;
              UserData.ReadOnly = false;
-            printBarCodeBtn.Enabled = true;
+             printcb.Enabled = true;
+
         }
 
         private void tc1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -475,21 +487,22 @@ namespace evokNew0066
             if ( evokWork.RunFlag)
             {
                 MessageBox.Show(Constant.IsWorking);
-                e.Cancel = true;
+                e.Cancel = true;               
             }
             else if (!evokWork.ShiftPage(tc1.SelectedIndex))
             {
                 e.Cancel = true;
-                MessageBox.Show(Constant.ConnectMachineFail);
             }
         }
 
+        #region 定时更新页面信息
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
              UpdataError();
              UpdataAuto();
              UpdataHand();
              UpdataParam();
+             UpdataIO();
         }
 
         private void FileSave_Tick(object sender, EventArgs e)
@@ -500,8 +513,7 @@ namespace evokNew0066
         private void UpdataAuto()
         {
             if ( tc1.SelectedIndex == 0)
-            {
-                               
+            {                               
                 IsoptBtnShow( evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
@@ -584,7 +596,30 @@ namespace evokNew0066
         private void UpdataParam()
         {
         }
-
+        private void UpdataIO()
+        {
+            if (tc1.SelectedIndex == 3)
+            {
+                int valueId = 0;
+                foreach (DataGridViewRow dr in dgvIO.Rows)
+                {
+                    if(dr.Cells["value0"].Value !=null)
+                    if (int.TryParse(dr.Cells["value0"].Value.ToString(),out valueId))
+                    {
+                        if (valueId == Constant.M_ON)
+                        {
+                            dr.DefaultCellStyle.BackColor = Color.Red;
+                        }
+                        else
+                        {
+                            dr.DefaultCellStyle.BackColor =dgvIO.RowsDefaultCellStyle.ForeColor;
+                        }
+                    }
+                    
+                }
+            }
+        }
+        #endregion
         private void UserData_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
              optSize.DtData.Rows[e.RowIndex][e.ColumnIndex] =  UserData.SelectedCells[0].Value;
@@ -624,11 +659,11 @@ namespace evokNew0066
         {
             if (evokWork.IsPrintBarCode)
             {
-                evokWork.printBarCodeOFF();
+                evokWork.plcHandleBarCodeOFF();
             }
             else
             {
-                evokWork.printBarCodeON();
+                evokWork.plcHandleBarCodeON();
             }
         }
 
@@ -637,6 +672,29 @@ namespace evokNew0066
             evokWork.SetMPsOff(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
         }
 
-       
+        private void printcb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (evokWork.DeviceStatus)
+            {
+                evokWork.ChangePrintMode(printcb.SelectedIndex);
+            }
+            
+            optBtn.Focus();
+        }
+
+        private void tabPage4_Enter(object sender, EventArgs e)
+        {
+            dgvIO.ClearSelection();
+        }
+
+        private void tabPage3_Enter(object sender, EventArgs e)
+        {
+            dgvParam.ClearSelection();
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            report1.Show();
+        }
     }
 }

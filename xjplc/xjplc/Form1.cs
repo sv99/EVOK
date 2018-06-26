@@ -50,7 +50,7 @@ namespace xjplc
                 Application.Exit();
             }
 
-            portparam = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+            portparam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             device = new XJDevice(strDataFormPath);
 
@@ -110,7 +110,7 @@ namespace xjplc
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PortParam p = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+            PortParam p = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             device.RestartConneect(device.DataFormLst[0]);
 

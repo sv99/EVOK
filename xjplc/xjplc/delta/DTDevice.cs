@@ -101,7 +101,7 @@ namespace xjplc
                 System.Environment.Exit(0);
             }
 
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);          
+            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);          
 
             //监控第一个列表数据
             if (dataFormLst.Count>0)                
@@ -179,7 +179,7 @@ namespace xjplc
 
             ConstantMethod.Delay(50);
 
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigFilePath);
+            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             if (!ConstantMethod.XJFindPort())
             {
