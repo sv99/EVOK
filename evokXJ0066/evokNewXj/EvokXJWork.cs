@@ -380,6 +380,12 @@ namespace evokNew0066
             return evokDevice.getDeviceData();
         }
         #region 运行部分
+
+        public void ProClr()
+        {
+            evokDevice.SetDValue(prodOutInPs,0);
+            optSize.prodClear();
+        }
         //启动
         public void start()
         {
@@ -633,6 +639,8 @@ namespace evokNew0066
                 if (autoCCInPs.ShowValue ==Constant.M_ON)
                 {
                     evokDevice.SetMValueOFF(autoCCInPs);
+
+                    optSize.Len = lcOutInPs.ShowValue;
                     //开始优化 
                     optSize.OptMeasure(rtbResult);
 

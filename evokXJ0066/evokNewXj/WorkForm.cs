@@ -24,6 +24,7 @@ namespace evokNew0066
 
         public WorkForm()
         {
+           
             ConstantMethod.InitPassWd();
             InitializeComponent();
         }
@@ -158,7 +159,8 @@ namespace evokNew0066
             this.Visible = false;               
             InitParam();
             InitControl();
-            InitView0();
+            InitView0();            
+            Application.DoEvents();
             this.Visible = true;
         }
 
@@ -184,7 +186,7 @@ namespace evokNew0066
             evokWork.InitControl();
             evokWork.ShiftPage(0);
             SetControlInEvokWork();
-                      
+                     
             printcb.SelectedIndex = evokWork.PrintBarCodeMode;
             evokWork.ChangePrintMode(printcb.SelectedIndex);
 
@@ -215,6 +217,7 @@ namespace evokNew0066
             }          
 
             evokDevice = new EvokXJDevice(strDataFormPath);
+
             if (! evokDevice.getDeviceData())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
@@ -241,7 +244,21 @@ namespace evokNew0066
             DialogExcelDataLoad.FileName = "请选择数据文件";
             wForm = new WatchForm();
             wForm.Visible = false;
-        }
+
+            errorTimer.Enabled = true;
+
+
+        }/********************************************************************
+        	created:	2018/06/27
+        	created:	27:6:2018   10:15
+        	filename: 	E:\project\2018\中意木工\evok\EVOK\evokXJ0066\evokNewXj\WorkForm.cs
+        	file path:	E:\project\2018\中意木工\evok\EVOK\evokXJ0066\evokNewXj
+        	file base:	WorkForm
+        	file ext:	cs
+        	author:		Author
+        	
+        	purpose:	
+        *********************************************************************/
 
         private void IsoptBtnShow(bool showvalue)
         {
@@ -264,8 +281,9 @@ namespace evokNew0066
                 if (int.TryParse(((TextBox)sender).Text, out num) && num >-1)
                 {
                     evokWork.SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto,num);
-                }                            
-                optBtn.Focus();
+                }   
+                                         
+                resetBtn.Focus();
             }
         }
 
@@ -322,7 +340,7 @@ namespace evokNew0066
 
         private void qClr_Click(object sender, EventArgs e)
         {
-             optSize.prodClear();
+            evokWork.ProClr();
         }
 
         private int ReadCSVData()
@@ -540,6 +558,10 @@ namespace evokNew0066
                 {
                     if (p.Name.Contains(Constant.Alarm)&& p.ShowStr != null && p.ShowStr.Count > 0)
                     {
+                        if (p.Addr == 1004)
+                        {
+                            p.Addr = 1004;
+                        }
                         for (int i = 0; i < p.ShowStr.Count; i++)
                         {
                             int index = errorList.IndexOf(p.ShowStr[i]);
@@ -547,7 +569,7 @@ namespace evokNew0066
                             {
                                 errorList.Add(p.ShowStr[i]);
                             }
-                            if (p.ShowValue == Constant.M_OFF && index > 0 && index <p.ShowStr.Count)
+                            if (p.ShowValue == Constant.M_OFF && index > -1 && index < errorList.Count)
                             {
                                 errorList.RemoveAt(index);
                             }                            
@@ -644,15 +666,19 @@ namespace evokNew0066
 
         private void errorTimer_Tick(object sender, EventArgs e)
         {
-            if (errorList.Count >0)
+            if (errorList.Count > 0)
             {
-                infolbl.Text = errorList[errorId];
-                errorId++;
                 if (errorId >= errorList.Count)
                 {
                     errorId = 0;
                 }
+
+                infoLbl.Text = errorList[errorId];
+
+                errorId++;
+
             }
+            else infoLbl.Text = "";
         }
 
         private void printBarCodeBtn_Click(object sender, EventArgs e)

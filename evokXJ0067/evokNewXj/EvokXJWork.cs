@@ -830,6 +830,7 @@ namespace evokNew0067
                 if (autoCCInPs.ShowValue ==Constant.M_ON)
                 {
                     evokDevice.SetMValueOFF(autoCCInPs);
+                    optSize.Len = lcOutInPs.ShowValue;
                     //开始优化 
                     optSize.OptMeasure(rtbResult);
 

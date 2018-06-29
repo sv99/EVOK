@@ -109,7 +109,7 @@
             this.value0 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.infolbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.infoLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.DialogExcelDataLoad = new System.Windows.Forms.OpenFileDialog();
             this.report1 = new FastReport.Report();
@@ -1058,27 +1058,26 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
-            this.infolbl});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 846);
+            this.infoLbl});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 843);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1789, 33);
+            this.statusStrip1.Size = new System.Drawing.Size(1789, 36);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // statusLabel
             // 
+            this.statusLabel.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(79, 28);
+            this.statusLabel.Size = new System.Drawing.Size(134, 31);
             this.statusLabel.Text = "设备无通信";
             // 
-            // infolbl
+            // infoLbl
             // 
-            this.infolbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.infolbl.ForeColor = System.Drawing.Color.Red;
-            this.infolbl.Name = "infolbl";
-            this.infolbl.Size = new System.Drawing.Size(1695, 28);
-            this.infolbl.Spring = true;
-            this.infolbl.Text = "信息";
+            this.infoLbl.BackColor = System.Drawing.Color.Red;
+            this.infoLbl.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.infoLbl.Name = "infoLbl";
+            this.infoLbl.Size = new System.Drawing.Size(0, 31);
             // 
             // UpdateTimer
             // 
@@ -1096,7 +1095,6 @@
             // 
             // errorTimer
             // 
-            this.errorTimer.Enabled = true;
             this.errorTimer.Interval = 1000;
             this.errorTimer.Tick += new System.EventHandler(this.errorTimer_Tick);
             // 
@@ -1173,7 +1171,6 @@
         private System.Windows.Forms.DataGridView dgvParam;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
-        private System.Windows.Forms.ToolStripStatusLabel infolbl;
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.OpenFileDialog DialogExcelDataLoad;
         private System.Windows.Forms.DataGridViewTextBoxColumn bin;
@@ -1222,6 +1219,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn bin0;
         private System.Windows.Forms.DataGridViewTextBoxColumn value0;
         private System.Windows.Forms.ComboBox printcb;
+        private System.Windows.Forms.ToolStripStatusLabel infoLbl;
     }
 }
 
