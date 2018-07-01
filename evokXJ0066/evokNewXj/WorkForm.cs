@@ -109,6 +109,7 @@ namespace evokNew0066
              
             if (evokWork.RestartDevice(tc1.SelectedIndex))
             {
+                InitControl();
                 UpdateTimer.Enabled = true;
             }
             else
@@ -220,11 +221,12 @@ namespace evokNew0066
 
             if (! evokDevice.getDeviceData())
             {
+               
                 MessageBox.Show(Constant.ConnectMachineFail);
                 Environment.Exit(0);
             }
-
-             UpdateTimer.Enabled = true;
+            LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
+            UpdateTimer.Enabled = true;
              optSize = new OptSize( UserData);
              evokWork = new EvokXJWork();
              evokWork.SetEvokDevice( evokDevice);
@@ -242,8 +244,11 @@ namespace evokNew0066
             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
             DialogExcelDataLoad.FileName = "请选择数据文件";
-            wForm = new WatchForm();
-            wForm.Visible = false;
+
+            logOPF.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory+"Log";
+            logOPF.Filter = "文件(*.log)|*.log";
+            logOPF.FileName = "请选择日志文件";
+
 
             errorTimer.Enabled = true;
 
@@ -289,13 +294,26 @@ namespace evokNew0066
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-             UpdateTimer.Enabled = false;
-             FileSaveTimer.Enabled = false;
+
+            DialogResult dr = MessageBox.Show("是否继续关闭程序？", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+            if (dr == DialogResult.No)
+            {
+                e.Cancel = true;//就不退了
+                return;
+            }
+            else
+            {
+                e.Cancel = false;//退了
+            }
+
+            UpdateTimer.Enabled = false;
+            FileSaveTimer.Enabled = false;
             if ( evokWork != null)
             {
                  evokWork.Dispose();
             }
             ConstantMethod.Delay(100);
+           
             Environment.Exit(0);
         }
 
@@ -336,6 +354,7 @@ namespace evokNew0066
         private void pauseBtn_Click(object sender, EventArgs e)
         {
              evokWork.pause();
+          
         }
 
         private void qClr_Click(object sender, EventArgs e)
@@ -473,17 +492,26 @@ namespace evokNew0066
             if ( evokWork.AutoMes)
             {
                  evokWork.CutStartMeasure();
+                //测试代码 后续回复弹窗
+                qClr_Click(sender, e);
+                stbtn_Click(sender, e);
             }
             else
             {
-                 evokWork.CutStartNormal();
+                evokWork.CutStartNormal();
+                //测试代码 后续回复弹窗
+                qClr_Click(sender, e);
+                optBtn_Click(sender, e);
+                stbtn_Click(sender, e);
             }
+            //测试代码 后续回复弹窗
              stopBtnShow();
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
-             evokWork.stop();
+             evokWork.stop();        
+
         }
 
         private void stopBtnShow()
@@ -658,9 +686,33 @@ namespace evokNew0066
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(tc1.SelectedIndex< evokDevice.DataFormLst.Count)
-            wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
-            wForm.ShowDialog();
+                      
+            passWdForm psswd = new passWdForm();
+            psswd.Show();
+
+            while (psswd.Visible)
+            {
+                Application.DoEvents();
+            }
+            string str = DateTime.Now.ToString("MMdd");
+            int psswdInt = 0;
+            int.TryParse(str, out psswdInt);
+            psswdInt = psswdInt + 1000;
+            if (psswd.userInput.Equals(psswdInt.ToString()))
+            {
+                if (tc1.SelectedIndex < evokDevice.DataFormLst.Count)
+                {
+                    wForm = new WatchForm();
+                    wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
+                    wForm.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.pwdWrong);
+                return ;
+            }
+
 
         }
 
@@ -721,6 +773,21 @@ namespace evokNew0066
         private void button10_Click(object sender, EventArgs e)
         {
             report1.Show();
+        }
+
+        private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            evokWork.ShowNowLog(LogManager.LogFileName);
+        }
+
+        private void 加载历史日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (logOPF.ShowDialog() == DialogResult.OK)
+            {
+             
+                evokWork.ShowNowLog(logOPF.FileName);
+            }
         }
     }
 }

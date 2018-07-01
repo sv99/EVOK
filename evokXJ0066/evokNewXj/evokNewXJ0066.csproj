@@ -99,7 +99,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EvokXJWork.cs" />
     <Compile Include="WorkForm.cs">
       <SubType>Form</SubType>
     </Compile>

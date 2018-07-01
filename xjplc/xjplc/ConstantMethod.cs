@@ -17,6 +17,42 @@ using System.IO;
 
 namespace xjplc
 {
+    public class LogManager
+    {
+        static object locker = new object();
+
+       public  static string LogFileName ;
+        /// <summary>
+        /// 重要信息写入日志
+        /// </summary>
+        /// <param name="logs">日志列表，每条日志占一行</param>
+        public static void WriteProgramLog(params string[] logs)
+        {
+            lock (locker)
+            {
+                string LogAddress = Constant.AppFilePath + "Log";
+                if (!Directory.Exists(LogAddress))
+                {
+                    Directory.CreateDirectory(LogAddress);
+                }
+                LogAddress = string.Concat(LogAddress,"\\",
+                DateTime.Now.Year, '-', DateTime.Now.Month, '-',
+                DateTime.Now.Day, ".log");
+                if (!File.Exists(LogAddress))
+                {
+                  var newFile=  File.Create(LogAddress);
+                    newFile.Close();
+                }
+                StreamWriter sw = new StreamWriter(LogAddress, true,System.Text.Encoding.Default);
+                foreach (string log in logs)
+                {
+                    sw.WriteLine(string.Format("[{0}] {1}", DateTime.Now.ToString(), log));
+                }
+                LogFileName = LogAddress;
+                sw.Close();
+            }
+        }
+    }
     public class ConstantMethod
     {
         #region 信捷PLC 使用
@@ -209,6 +245,18 @@ namespace xjplc
         public static void ShowInfo(RichTextBox r1, string s)
         {
             if (r1 != null && r1.IsHandleCreated )
+            {
+                r1.Invoke((EventHandler)(delegate
+                {
+                    r1.ScrollToCaret();
+                    r1.AppendText(s + "\n");
+                }));
+            }
+
+        }
+        public static void ShowInfoNoScrollEnd(RichTextBox r1, string s)
+        {
+            if (r1 != null && r1.IsHandleCreated)
             {
                 r1.Invoke((EventHandler)(delegate
                 {

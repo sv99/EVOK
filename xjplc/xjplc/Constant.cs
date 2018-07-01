@@ -130,6 +130,25 @@ namespace xjplc
         public static readonly string measureOutOfTime = "测量超时！";
         public static readonly string IsWorking = "设备生产中！";
         public static readonly string CutEnd = "生产结束！";
+        public static readonly string Start = "软件启动！";
+        public static readonly string Quit = "软件退出！";
+        public static readonly string MachineAlarm = "设备报警！";
+        public static readonly string CommManageError = "接收数据超时，重新连接！";
+        public static readonly string DeviceConnectionError = "通讯超时，重置连接！";
+        public static readonly string DeviceStartCut = "设备启动！";
+        public static readonly string DevicePause = "设备暂停！";
+        public static readonly string DeviceStop = "设备停止！";
+        public static readonly string DeviceReset = "设备复位！";
+        public static readonly string DeviceNoPrinter = "无打印机！";
+        public static readonly string DeviceNoLogFile = "无日志文件！";
+        public static readonly string PlcReadDataError= "设备读取数据超时！";
+        public static readonly string LoadFileSt = "加载文件开始！";
+        public static readonly string LoadFileEd = "加载文件结束！";
+        public static readonly string MeasureSt = "开始测量！";
+        public static readonly string MeasureEd = "结束测量！";
+        public static readonly string DataDownLoad = "数据下发！";
+        public static readonly string AutoMeasureMode = "自动测长模式！";
+        public static readonly string NormalMode = "正常优化模式！";
         #endregion
         #region 台达PLC专用
         //台达PLC 发送命令 判断是否存在 存在则回复以下
@@ -162,12 +181,16 @@ namespace xjplc
         public static readonly int XJINTDoubleMode = 2;
 
         public static readonly int XJConnectMaxCount = 5;
+        public static readonly int XJConnectTimeOut = 300;
+        public static readonly int XJRestartTimeOut =2000;
         //读取超时 
         public static readonly int ReadTimeOut = 1000; //这里0.5 秒别改 工控机性能不行
 
         //写入超时 
         public static readonly int WriteTimeOut = 500;
 
+        //PLC 数据反馈 在切割的时候 数据发送 超时
+        public static readonly int   PlcCountTimeOut = 2000;
         public static readonly byte[] XJReadDataCmdCheck = { 0x01, 0x19 };
 
 

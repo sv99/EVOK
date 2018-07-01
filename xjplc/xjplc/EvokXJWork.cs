@@ -3,15 +3,15 @@ using FastReport.Barcode;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using xjplc;
 
-namespace evokNew0066
+namespace xjplc
 {
     public class EvokXJWork
     {
@@ -144,10 +144,28 @@ namespace evokNew0066
             }
            
         }
-
+        public void ShowNowLog(string filename0)
+        {
+            if (!File.Exists(filename0))
+            {
+                MessageBox.Show(Constant.DeviceNoLogFile);
+                return;
+            } 
+            
+            LogForm log1 = new LogForm();
+            log1.fileName = filename0;
+            log1.LoadData();
+            log1.ShowDialog();
+        }
         public void ChangePrintMode(int value)
         {
-           paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
+            if (PrinterSettings.InstalledPrinters.Count == 0)
+            {
+                value = 0;
+                LogManager.WriteProgramLog(Constant.DeviceNoPrinter);
+            }
+
+            paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
 
              printBarCodeMode = value;//
 
@@ -181,12 +199,15 @@ namespace evokNew0066
         public PlcInfoSimple stopOutInPs    = new PlcInfoSimple("停止读写");
         public PlcInfoSimple cutDoneOutInPs = new PlcInfoSimple("切割完毕读写");
         public PlcInfoSimple plcHandlebarCodeOutInPs = new PlcInfoSimple("条码打印读写");
+        public PlcInfoSimple startCountInOutPs = new PlcInfoSimple("开始计数读写");
+        public PlcInfoSimple ldsCountInOutPs = new PlcInfoSimple("料段数读写");
 
         public PlcInfoSimple pauseOutPs     = new PlcInfoSimple("暂停写");
         public PlcInfoSimple startOutPs     = new PlcInfoSimple("启动写");             
         public PlcInfoSimple resetOutPs     = new PlcInfoSimple("复位写");
         public PlcInfoSimple autoSLOutPs    = new PlcInfoSimple("自动上料写");
         public PlcInfoSimple pageShiftOutPs = new PlcInfoSimple("页面切换写");
+
         
 
         public PlcInfoSimple emgStopInPs    = new PlcInfoSimple("急停读");
@@ -303,7 +324,8 @@ namespace evokNew0066
             PsLstAuto.Add(stopOutInPs);
             PsLstAuto.Add(cutDoneOutInPs);
             PsLstAuto.Add(plcHandlebarCodeOutInPs);
-           
+            PsLstAuto.Add(ldsCountInOutPs);
+            
             PsLstAuto.Add(pauseOutPs);
             PsLstAuto.Add(startOutPs);
             PsLstAuto.Add(resetOutPs);
@@ -334,6 +356,8 @@ namespace evokNew0066
             PsLstAuto.Add(alarm14InPs);
             PsLstAuto.Add(alarm15InPs);
             PsLstAuto.Add(alarm16InPs);
+
+            PsLstAuto.Add(startCountInOutPs);
 
 
             PsLstHand = new List<PlcInfoSimple>();            
@@ -372,12 +396,15 @@ namespace evokNew0066
                 System.Environment.Exit(0);
             }
 
+            LogManager.WriteProgramLog(Constant.Start);
 
         }
         public bool RestartDevice(int id)
         {
+
             evokDevice.RestartConneect(evokDevice.DataFormLst[id]);
             return evokDevice.getDeviceData();
+
         }
         #region 运行部分
 
@@ -398,6 +425,8 @@ namespace evokNew0066
 
             rtbWork.Clear();
 
+            LogManager.WriteProgramLog(Constant.DeviceStartCut);
+
         }
         public void stop()
         {
@@ -405,18 +434,24 @@ namespace evokNew0066
             evokDevice.SetMValueOFF2ON(stopOutInPs);
             optSize.SingleSizeLst.Clear();
             optSize.ProdInfoLst.Clear();
+            LogManager.WriteProgramLog(Constant.DeviceStop);
         }
 
         public bool IsInEmg {
             get
             {
-                if (emgStopInPs.ShowValue == Constant.M_ON) return true; else return false;
+                if (emgStopInPs.ShowValue == Constant.M_ON)
+                {
+                    return true;
+                }
+                else return false;
             }
         }
         //停止 
         public void pause()
         {
             evokDevice.SetMValueOFF2ON(pauseOutPs);
+            LogManager.WriteProgramLog(Constant.DevicePause);
         }
         //自动上料
         public void autoSL()
@@ -428,6 +463,7 @@ namespace evokNew0066
         {
             stop();
             evokDevice.SetMValueOFF2ON(resetOutPs);
+            LogManager.WriteProgramLog(Constant.DeviceReset);
         }
         #endregion
         public void SaveFile()
@@ -508,87 +544,293 @@ namespace evokNew0066
         }
 
         #endregion
-        
+
 
         #region 切割过程
-        private void CutWork0()
+        public void CutRotateWithHole()
         {
+            //从哪一根开始切 暂定 从第一根 开始
             int CutProCnt = 0;
-            List<string[]> lstStr = new List<string[]>();
-            string[] s1 = new string[19];           
 
             if (optSize.ProdInfoLst.Count > 0)
-            {             
+            {
                 for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
                 {
-                    //plc 计数器 清零
-                    evokDevice.SetDValue(cutDoneOutInPs, 0);
-
                     ConstantMethod.ShowInfo(rtbWork, "第" + (i + 1).ToString() + "根木料开始切割");
-                    List<int> DataList = new List<int>();
-                    //添加料长
-                    DataList.Add(optSize.ProdInfoLst[i].Len);
-                    //D4998-》0
-                    int value = 1;
-                    DataList.Add(value);
-                    DataList.Add(optSize.ProdInfoLst[i].WL);
-                    //添加段数
-                    DataList.Add(optSize.ProdInfoLst[i].Cut.Count);
 
-                    DataList.AddRange(optSize.ProdInfoLst[i].Cut);
+                    //plc 计数器 清零
+                    CountClr();
+                    // 每根数据下发                   
+                    DownLoadDataWithHoleAngle(i);
+                    //开始切割进程
+                    CutLoop(i);
 
-                    evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray());
-
-                    //打第一条条码
-                    if ( optSize.SingleSizeLst[i].Count>0)                                                            
-                    printBarcode(printReport,optSize.SingleSizeLst[i][0].ParamStrLst.ToArray());
-
-                    int oldcCount = 0;//保存的老计数值
-
-                    while (RunFlag)
-                    {
-                        Application.DoEvents();
-
-                        Thread.Sleep(10);
-                        int newCount = cutDoneOutInPs.ShowValue;
-                        
-                        //这里整理成函数
-                        if ((!RunFlag || IsInEmg))
-                        {
-                            ConstantMethod.ShowInfo(rtbWork, Constant.emgStopTip);
-                            stop();
-                            return;
-                        }
-
-                        if (newCount != oldcCount && oldcCount < optSize.ProdInfoLst[i].Cut.Count)
-                        {
-                            int oldCutCount = 0;
-
-                            if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao]["已切数量"].ToString(), out oldCutCount))
-                            {
-                                oldCutCount++;
-                                optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao]["已切数量"] = oldCutCount;
-                            }
-
-                            ConstantMethod.ShowInfo(rtbWork, "第" + (oldcCount + 1).ToString() + "段尺寸：" + optSize.ProdInfoLst[i].Cut[oldcCount].ToString() + "-----完成");
-
-                            oldcCount = newCount;
-                            if (newCount < optSize.SingleSizeLst[i].Count)
-                            {                             
-                                //打条码
-                                printBarcode(printReport, optSize.SingleSizeLst[i][newCount].ParamStrLst.ToArray());
-                            }
-                        }
-                        if (newCount >= optSize.ProdInfoLst[i].Cut.Count) break;
-                    }
                 }
-
-                
             }
             else
             {
                 MessageBox.Show(Constant.noData);
             }
+        }
+        private void DownLoadDataWithHoleAngle(int i)
+        {
+            List<int> DataList = new List<int>();
+            List<ProdInfo> prod = optSize.ProdInfoLst;
+
+
+            #region 带孔的参数下发
+
+            //先提取孔参数
+            for (int m = 0; m < optSize.SingleSizeLst.Count; m++)
+            {
+                for (int n = 0; n < optSize.SingleSizeLst[m].Count; n++)
+                {
+
+                }
+            }
+
+
+            DataList.Add(optSize.ProdInfoLst[i].Cut.Count);  //段数
+            //保存下地址
+            int lcOutInPsAddr = lcOutInPs.Addr;
+            if (prod[i].hole.Count > 0 && prod[i].angle.Count > 0)
+                for (int sizeid = 0; sizeid < prod[i].Cut.Count; sizeid++)
+                {
+
+                    DataList.Add(prod[i].Cut[sizeid]);  //段长
+                    DataList.Add(1);  //段长
+                    int holecount0 = 0;
+                    //总共10个孔 取前面 5个
+                    //前角度
+                    for (int holecount = 0; holecount < prod[i].hole[sizeid].Count() / 2; holecount = holecount + 3)
+                    {
+                        if (prod[i].hole[sizeid][holecount] > 0)
+                            holecount0++;
+                    }
+                    DataList.Add(prod[i].angle[sizeid][0]);
+                    DataList.Add(holecount0);
+
+                    for (int addhole = 0; addhole < holecount0 * 3; addhole++)
+                    {
+                        DataList.Add(prod[i].hole[sizeid][addhole]);
+
+                    }
+                    //后角度
+                    int holecount1 = 0;
+                    for (int holecount = 15; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
+                    {
+                        if (prod[i].hole[sizeid][holecount] > 0)
+                            holecount1++;
+                    }
+
+                    DataList.Add(prod[i].angle[sizeid][1]);
+                    DataList.Add(holecount1);
+
+                    for (int addhole = 15; addhole < 15 + holecount1 * 3; addhole++)
+                    {
+                        DataList.Add(prod[i].hole[sizeid][addhole]);
+
+                    }
+
+                    if (ldsCountInOutPs.ShowValue == 0)
+                    {
+                        evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray());
+                        LogManager.WriteProgramLog(Constant.DataDownLoad);
+                    }
+
+                    DataList.Clear();
+
+                    if (i == 0)
+                    {
+                        lcOutInPs.Addr +=  134;
+                    }
+                    else
+                        lcOutInPs.Addr +=  132;
+
+                }
+
+            #endregion
+
+            //恢复地址
+            lcOutInPs.Addr = lcOutInPsAddr;
+
+            int valueWriteOk = 1;
+            //数据下发 确保正确 下位机需要给一个M16 高电平 我这边来置OFF
+            //发数据三次 M16 如果还没有给高电平
+            bool plcgetData = false;
+
+            //  先单次可以发现  然后循环确认发送
+            for (int m = 0; m < 3; m++)
+            {
+                if (ldsCountInOutPs.ShowValue == 0)
+                {
+                    evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray());
+                    LogManager.WriteProgramLog(Constant.DataDownLoad + m.ToString());
+                }
+
+                ConstantMethod.DelayWriteCmdOk(Constant.PlcCountTimeOut, ref valueWriteOk, ref startCountInOutPs);
+
+                if (startCountInOutPs.ShowValue == valueWriteOk)
+                {
+                    StartCountClr();
+                    if (startCountInOutPs.ShowValue == Constant.M_OFF)
+                    {
+                        plcgetData = true;
+                    }
+                    break;
+                }
+
+            }
+            if (!plcgetData)
+            {
+                MessageBox.Show(Constant.PlcReadDataError);
+                LogManager.WriteProgramLog(Constant.PlcReadDataError);
+                RunFlag = false;
+                Environment.Exit(0);
+                return;
+            }
+                
+        }
+        private void DownLoadDataNormal(int i)
+        {
+            List<int> DataList = new List<int>();
+            //添加料长
+            DataList.Add(optSize.ProdInfoLst[i].Len);
+            //D4998-》0
+            int value = 1;
+            DataList.Add(value);
+            DataList.Add(optSize.ProdInfoLst[i].WL);
+            //添加段数
+            DataList.Add(optSize.ProdInfoLst[i].Cut.Count);
+
+            DataList.AddRange(optSize.ProdInfoLst[i].Cut);
+
+            int valueWriteOk = 1;
+            //数据下发 确保正确 下位机需要给一个M16 高电平 我这边来置OFF
+            //发数据三次 M16 如果还没有给高电平
+            bool plcgetData = false;
+
+            for (int m = 0; m < 3; m++)
+            {
+                if (ldsCountInOutPs.ShowValue == 0)
+                {
+                    evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray());
+                    LogManager.WriteProgramLog(Constant.DataDownLoad + m.ToString());
+                }
+
+                ConstantMethod.DelayWriteCmdOk(Constant.PlcCountTimeOut, ref valueWriteOk, ref startCountInOutPs);
+
+                if (startCountInOutPs.ShowValue == valueWriteOk)
+                {
+                    StartCountClr();
+                    if (startCountInOutPs.ShowValue == Constant.M_OFF)
+                    {
+                        plcgetData = true;
+                    }
+                    break;
+                }
+
+            }
+            if (!plcgetData)
+            {
+                MessageBox.Show(Constant.PlcReadDataError);
+                LogManager.WriteProgramLog(Constant.PlcReadDataError);
+                RunFlag = false;
+                Environment.Exit(0);
+                return;
+            }
+        }
+        private void CutLoop(int i)
+        {
+            //打第一条条码
+            if (optSize.SingleSizeLst[i].Count > 0)
+                printBarcode(printReport, optSize.SingleSizeLst[i][0].ParamStrLst.ToArray());
+
+            int oldcCount = 0;//保存的老计数值
+
+            while (RunFlag)
+            {
+                Application.DoEvents();
+
+                Thread.Sleep(10);
+                int newCount = cutDoneOutInPs.ShowValue;
+
+                //这里整理成函数
+                if ((!RunFlag || IsInEmg))
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.emgStopTip);
+                    LogManager.WriteProgramLog(Constant.emgStopTip);
+                    stop();
+                    return;
+                }
+
+                if (newCount != oldcCount && oldcCount < optSize.ProdInfoLst[i].Cut.Count)
+                {
+                    int oldCutCount = 0;
+
+                    if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao]["已切数量"].ToString(), out oldCutCount))
+                    {
+                        oldCutCount++;
+                        optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao]["已切数量"] = oldCutCount;
+                    }
+
+                    ConstantMethod.ShowInfo(rtbWork, "第" + (oldcCount + 1).ToString() + "段尺寸：" + optSize.ProdInfoLst[i].Cut[oldcCount].ToString() + "-----完成");
+
+                    oldcCount = newCount;
+                    if (newCount < optSize.SingleSizeLst[i].Count)
+                    {
+                        //打条码
+                        printBarcode(printReport, optSize.SingleSizeLst[i][newCount].ParamStrLst.ToArray());
+                    }
+                }
+                if (newCount >= optSize.ProdInfoLst[i].Cut.Count) break;
+            }
+        }
+        private void  CountClr()
+        {
+            evokDevice.SetDValue(cutDoneOutInPs, 0);
+        }
+        /// <summary>
+        /// 正常测长切割
+        /// </summary>
+        private void CutWork0()
+        {
+            //从哪一根开始切 暂定 从第一根 开始
+            int CutProCnt = 0;          
+
+            if (optSize.ProdInfoLst.Count > 0)
+            {             
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    ConstantMethod.ShowInfo(rtbWork, "第" + (i + 1).ToString() + "根木料开始切割");
+                    
+                    //plc 计数器 清零
+                    CountClr();                  
+                    // 每根数据下发                   
+                    DownLoadDataNormal(i);
+                    //开始切割进程
+                    CutLoop(i);
+
+                }                
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+
+
+        }
+
+        /// <summary>
+        /// 数据发送完成  可以一起同步计数了哦
+        /// </summary>
+        public void StartCountClr()
+        {
+            if (!evokDevice.SetMValueOFF(startCountInOutPs))
+            {
+                ConstantMethod.Delay(100);  //延时一下 判断是否没读到
+            }
+
         }
         #endregion
         #region 优化
@@ -620,6 +862,8 @@ namespace evokNew0066
                 return;
             }
 
+            LogManager.WriteProgramLog(Constant.AutoMeasureMode);
+
             //启动
             start();
 
@@ -628,22 +872,21 @@ namespace evokNew0066
             {
                                 
                 int valueOld = 1;
-
+                LogManager.WriteProgramLog(Constant.MeasureSt);
                 ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs,ref emgStopInPs,ref mRunFlag);
-
+               
                 if (IsInEmg)
                 {
                     stop();
                 }
-
+                LogManager.WriteProgramLog(Constant.MeasureEd);
                 if (autoCCInPs.ShowValue ==Constant.M_ON)
                 {
                     evokDevice.SetMValueOFF(autoCCInPs);
 
                     optSize.Len = lcOutInPs.ShowValue;
                     //开始优化 
-                    optSize.OptMeasure(rtbResult);
-
+                    optSize.OptMeasure(rtbResult);                   
                     if (optSize.ProdInfoLst.Count < 1)
                     {
                         break;
@@ -680,7 +923,8 @@ namespace evokNew0066
             }
 
             stop();
-            MessageBox.Show(Constant.CutEnd);
+           //测试先隐藏
+          // MessageBox.Show(Constant.CutEnd);
         }
         public void CutStartNormal()
         {
@@ -696,6 +940,9 @@ namespace evokNew0066
                 MessageBox.Show(Constant.noData);
                 return;
             }
+
+            LogManager.WriteProgramLog(Constant.NormalMode);
+
             start();
                         
             try
@@ -712,7 +959,7 @@ namespace evokNew0066
                 CutThread = null;
                 CutThreadStart = null;            
                 stop();
-                MessageBox.Show(Constant.CutEnd);
+               // MessageBox.Show(Constant.CutEnd);
             }
         }
         //自动测长开
@@ -739,6 +986,8 @@ namespace evokNew0066
             {
                 CutThread.Join();
             }
+
+            LogManager.WriteProgramLog(Constant.Quit);
 
         }
 
@@ -809,6 +1058,12 @@ namespace evokNew0066
             
            return false;       
 
+        }
+
+        public bool shiftDataFormSplit(int formid, int rowSt, int count)
+        {
+            evokDevice.shiftDataFormSplit(formid, rowSt, count);
+            return true;
         }
 
         #region 寄存器操作部分

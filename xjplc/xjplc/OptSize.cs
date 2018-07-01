@@ -323,6 +323,11 @@ namespace xjplc
         public List<string> Param19;    //参数19
         public List<string> Param20;	//参数20
 
+
+        public List<int[]> angle;
+        public List<int[]> hole;
+
+
         public ProdInfo(List<SingleSize> ssLst)
         {
             Barc = new List<string>();  //条码
@@ -348,6 +353,9 @@ namespace xjplc
             Param18 = new List<string>();   //参数18
             Param19 = new List<string>();   //参数19
             Param20 = new List<string>();   //参数20
+
+            angle = new List<int[]>();
+            hole = new List<int[]>();
 
             if (ssLst.Count > 0)
             {
@@ -489,6 +497,93 @@ namespace xjplc
             set { safe = value; }
         }
         #region 优化
+
+        /// <summary>
+        /// 测量结果显示
+        /// </summary>
+        /// <param name="resultOpt 数据结果"></param>
+        /// <param name="prodLst 单行数据的总和 "></param>
+        /// <param name="rt1"></param>
+        private void ShowMeasureResult(List<int> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+        {
+            List<SingleSize> resultSingleSize = new List<SingleSize>();
+            resultOpt.Sort();
+            for (int i = 0; i < resultOpt.Count; i++)
+            {
+                for (int k = 0; k < prodLst.Count; k++)
+                {
+                    if (prodLst[k].Cut == resultOpt[i])
+                    {
+                        resultSingleSize.Add(prodLst[k]);
+                        ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀:" + resultOpt[i].ToString() + "---------条码：" + prodLst[k].Barc);
+                        prodLst.RemoveAt(k);
+                        break;
+                    }
+
+                }
+            }
+            //一根 一根进行汇总
+            if (resultSingleSize.Count > 0)
+            {
+                ProdInfo prodInfo = new ProdInfo(resultSingleSize);
+                prodInfo.DBC = dbc;
+                prodInfo.LBC = ltbc;
+                prodInfo.Len = len;
+                ConstantMethod.ShowInfo(rt1, "尾料：" + prodInfo.WL.ToString());
+                ProdInfoLst.Add(prodInfo);
+                singleSizeLst.Add(resultSingleSize);
+                ConstantMethod.ShowInfo(rt1, "------------------------------------");
+            }
+        }
+        /// <summary>
+        /// 测量结果显示
+        /// </summary>
+        /// <param name="resultOpt 数据结果"></param>
+        /// <param name="prodLst 单行数据的总和 "></param>
+        /// <param name="rt1"></param>
+        private void ShowNormalResult(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+        {
+            ConstantMethod.ShowInfo(rt1, "--------------");
+
+            for (int i = 0; i < resultOpt.Count; i++)
+            {
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (i + 1).ToString() + "根：");
+                List<SingleSize> resultSingleSize = new List<SingleSize>();
+                //排个序
+                resultOpt[i].Sort();
+                for (int j = 0; j < resultOpt[i].Count; j++)
+                {
+                    for (int k = 0; k < prodLst.Count; k++)
+                    {
+                        if (prodLst[k].Cut == resultOpt[i][j])
+                        {
+                            resultSingleSize.Add(prodLst[k]);
+                            ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (j + 1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].Barc);
+                            prodLst.RemoveAt(k);
+                            break;
+                        }
+                    }
+
+                }
+
+                if (resultSingleSize.Count > 0)
+                {
+                    ProdInfo prodInfo = new ProdInfo(resultSingleSize);
+                    prodInfo.DBC = dbc;
+                    prodInfo.LBC = ltbc;
+                    prodInfo.Len = len;
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
+                    ProdInfoLst.Add(prodInfo);
+                    singleSizeLst.Add(resultSingleSize);
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                }
+
+            }
+
+            ConstantMethod.ShowInfo(rt1, "需要料数：" + resultOpt.Count.ToString() + "根");
+
+        }
         public OptSize(DataGridView UserData0)
         {
             CSVop = new CsvStreamReader();
@@ -548,6 +643,7 @@ namespace xjplc
 
         public bool LoadExcelData(string filename)
         {
+            LogManager.WriteProgramLog(Constant.LoadFileSt+filename);
             while (IsSaving)
             {
                 Application.DoEvents();
@@ -574,6 +670,7 @@ namespace xjplc
 
             IsLoadData = false;
 
+            LogManager.WriteProgramLog(Constant.LoadFileEd);
             return true;
         }
 
@@ -584,7 +681,7 @@ namespace xjplc
         /// <returns></returns>
         public bool LoadCsvData(string filename)
         {
-
+            LogManager.WriteProgramLog(Constant.LoadFileSt+filename);
             while (IsSaving)
             {
                 Application.DoEvents();
@@ -605,7 +702,7 @@ namespace xjplc
             UserDataView.DataSource= dtData;
             ShowErrorRow();
             IsLoadData = false;
-
+            LogManager.WriteProgramLog(Constant.LoadFileEd);
             return true;
         }
         #endregion
@@ -617,6 +714,7 @@ namespace xjplc
                     dr["已切数量"] = 0;
                 }
         }
+       
         public string OptMeasure(RichTextBox rt1)
         {
 
@@ -654,35 +752,7 @@ namespace xjplc
                                                         
             if (resultOpt.Count > 0)
             {
-                List<SingleSize> resultSingleSize = new List<SingleSize>();
-
-                for (int i = 0; i < resultOpt.Count; i++)
-                {                                    
-                    for (int k = 0; k < prodLst.Count; k++)
-                    {
-                        if (prodLst[k].Cut == resultOpt[i])
-                        {
-                            resultSingleSize.Add(prodLst[k]);
-                            ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀:" + resultOpt[i].ToString() + "---------条码：" + prodLst[k].Barc);
-                            prodLst.RemoveAt(k);
-                            break;
-                        }
-
-                    }
-                }
-
-                if (resultSingleSize.Count > 0)
-                {
-                    ProdInfo prodInfo = new ProdInfo(resultSingleSize);
-                    prodInfo.DBC = dbc;
-                    prodInfo.LBC = ltbc;
-                    prodInfo.Len = len;
-                    ConstantMethod.ShowInfo(rt1, "尾料：" + prodInfo.WL.ToString());
-                    ProdInfoLst.Add(prodInfo);
-                    singleSizeLst.Add(resultSingleSize);
-                    ConstantMethod.ShowInfo(rt1, "------------------------------------");
-                }          
-        
+                 ShowMeasureResult(resultOpt, prodLst, rt1);
             }
             else return Constant.optResultNoData;
 
@@ -730,41 +800,7 @@ namespace xjplc
                     
             if (resultOpt.Count > 0 )
             {
-                ConstantMethod.ShowInfo(rt1, "需要料数："+resultOpt.Count.ToString()+ "根");
-                ConstantMethod.ShowInfo(rt1, "--------------");
-                for (int i = 0; i < resultOpt.Count; i++)
-                {
-                    ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "根：");
-                    List<SingleSize> resultSingleSize = new List<SingleSize>();
-                                        
-                    for (int j = 0; j < resultOpt[i].Count; j++)
-                    {                       
-                        for (int k = 0; k < prodLst.Count; k++)
-                        {
-                            if (prodLst[k].Cut == resultOpt[i][j])
-                            {
-                                resultSingleSize.Add(prodLst[k]);
-                                ConstantMethod.ShowInfo(rt1, "第" + (j+1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].Barc);
-                                prodLst.RemoveAt(k);
-                                break;
-                            }
-                        }                                                                                      
-                       
-                    }
-                                       
-                    if (resultSingleSize.Count > 0)
-                    {
-                        ProdInfo prodInfo = new ProdInfo(resultSingleSize);
-                        prodInfo.DBC = dbc;
-                        prodInfo.LBC = ltbc;
-                        prodInfo.Len = len;
-                        ConstantMethod.ShowInfo(rt1, "尾料：" + prodInfo.WL.ToString());
-                        ProdInfoLst.Add(prodInfo);
-                        singleSizeLst.Add(resultSingleSize);
-                        ConstantMethod.ShowInfo(rt1, "--------------");
-                        ConstantMethod.ShowInfo(rt1, "--------------");
-                    }
-                }
+                ShowNormalResult(resultOpt, prodLst, rt1);              
             }
             else return Constant.optResultNoData; 
                 

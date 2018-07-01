@@ -21,11 +21,11 @@ namespace xjplc
                 WriteSingleDData(p.Addr,value0,p.Area,p.Mode);
             }
                       
-            ConstantMethod.DelayWriteCmdOk(300, ref value0,ref p);
+            ConstantMethod.DelayWriteCmdOk(Constant.XJConnectTimeOut, ref value0,ref p);
 
         }
 
-        public void SetMValueON(PlcInfoSimple p)
+        public bool SetMValueON(PlcInfoSimple p)
         {
             int value0 = 1;
             if (p != null && p.BelongToDataform != null)
@@ -33,15 +33,20 @@ namespace xjplc
                 WriteSingleMData(p.Addr, value0, p.Area, p.Mode);
             }
 
-            ConstantMethod.DelayWriteCmdOk(300, ref value0, ref p);
+            ConstantMethod.DelayWriteCmdOk(Constant.XJConnectTimeOut, ref value0, ref p);
+
+            if (value0 == p.ShowValue) return true; else return false;
         }
-        public void SetMValueOFF(PlcInfoSimple p)
+        public bool SetMValueOFF(PlcInfoSimple p)
         {
             int value0 = 0;
             if (p != null && p.BelongToDataform != null)
             {
                 WriteSingleMData(p.Addr, value0, p.Area, p.Mode);
             }
+            ConstantMethod.DelayWriteCmdOk(Constant.XJConnectTimeOut, ref value0, ref p);
+
+            if (value0 == p.ShowValue) return true; else return false;
         }
         public void SetMValueON2OFF(PlcInfoSimple p)
         {
@@ -62,7 +67,8 @@ namespace xjplc
                     value0, 
                     stPlcInfoSimple.Area, 
                     stPlcInfoSimple.Mode);
-                ConstantMethod.DelayWriteCmdOk(300, ref value0[0], ref stPlcInfoSimple);
+                ConstantMethod.DelayWriteCmdOk(Constant.WriteTimeOut, ref value0[0], ref stPlcInfoSimple);
+                
 
             }
         }

@@ -108,6 +108,7 @@ namespace evokNew0067
              
             if (evokWork.RestartDevice(tc1.SelectedIndex))
             {
+                InitControl();
                 UpdateTimer.Enabled = true;
             }
             else
@@ -237,8 +238,14 @@ namespace evokNew0067
             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
             DialogExcelDataLoad.FileName = "请选择数据文件";
-            wForm = new WatchForm();
-            wForm.Visible = false;
+
+            logOPF.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "Log";
+            logOPF.Filter = "文件(*.log)|*.log";
+            logOPF.FileName = "请选择日志文件";
+
+            errorTimer.Enabled = true;
+
+
         }
 
         private void IsoptBtnShow(bool showvalue)
@@ -637,9 +644,32 @@ namespace evokNew0067
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(tc1.SelectedIndex< evokDevice.DataFormLst.Count)
-            wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
-            wForm.ShowDialog();
+            
+            passWdForm psswd = new passWdForm();
+            psswd.Show();
+
+            while (psswd.Visible)
+            {
+                Application.DoEvents();
+            }
+            string str = DateTime.Now.ToString("MMdd");
+            int psswdInt = 0;
+            int.TryParse(str, out psswdInt);
+            psswdInt = psswdInt + 1000;
+            if (psswd.userInput.Equals(psswdInt.ToString()))
+            {
+                if (tc1.SelectedIndex < evokDevice.DataFormLst.Count)
+                {
+                    wForm = new WatchForm();
+                    wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
+                    wForm.Show();
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.pwdWrong);
+                return;
+            }
 
         }
 
@@ -690,6 +720,20 @@ namespace evokNew0067
         private void dgvParam_Scroll(object sender, ScrollEventArgs e)
         {
             evokWork.shiftDataFormSplit(tc1.SelectedIndex,dgvParam.FirstDisplayedScrollingRowIndex,dgvParam.DisplayedRowCount(true));
+        }
+
+        private void 查看当前日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            evokWork.ShowNowLog(LogManager.LogFileName);
+        }
+
+        private void 查看历史日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (logOPF.ShowDialog() == DialogResult.OK)
+            {
+
+                evokWork.ShowNowLog(logOPF.FileName);
+            }
         }
     }
 }

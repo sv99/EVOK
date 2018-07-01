@@ -73,7 +73,7 @@ namespace xjplc
 
             m_buffer = new List<byte>();     
 
-            ErrorConnTimer = new System.Timers.Timer(100);  //这里0.3 秒别改 加到常量里 工控机性能不行 
+            ErrorConnTimer = new System.Timers.Timer(Constant.XJConnectTimeOut);  //这里0.3 秒别改 加到常量里 工控机性能不行 
 
             ErrorConnTimer.Enabled = false;
 
@@ -142,10 +142,10 @@ namespace xjplc
             isDeviceReady = false;
             isGoToGetData = false;
             isWriteCmd    = false;
+            status = false;
             m_buffer.Clear();
-            ConstantMethod.Delay(150);
-            closePort();
-            
+            ConstantMethod.Delay(50);
+            closePort();           
            
         }
         
@@ -156,9 +156,10 @@ namespace xjplc
                 return;
             ErrorConnCount++;
             //通讯错误次数太多 就直接停了吧
-            if (ErrorConnCount < Constant.ErrorConnCountMax && ErrorConnCount > 2)
+            if (ErrorConnCount < Constant.ErrorConnCountMax && ErrorConnCount > 1)
             {
                 GetData();
+                LogManager.WriteProgramLog(Constant.CommManageError);
                 return;
             }
             else if (ErrorConnCount > Constant.ErrorConnCountMax)
@@ -174,9 +175,11 @@ namespace xjplc
         {
             if (IsGoToGetData)
             {
-                if(XJPLCcmd.CmdOut!=null && XJPLCcmd.CmdOut.Count()>0)
+                m_buffer.Clear();
+                if (XJPLCcmd.CmdOut!=null && XJPLCcmd.CmdOut.Count()>0)
                 m_SerialPort.Send(XJPLCcmd.CmdOut.ToArray());
             }
+            
         }
               
         /// <summary>

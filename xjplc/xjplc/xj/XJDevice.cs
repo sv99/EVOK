@@ -111,7 +111,7 @@ namespace xjplc
             SetComm(portParam);
 
             //监控通讯
-            WatchCommTimer = new System.Timers.Timer(1500);  //这里1.5 秒别改 加到常量里 工控机性能不行 
+            WatchCommTimer = new System.Timers.Timer(Constant.XJRestartTimeOut);  //这里1.5 秒别改 加到常量里 工控机性能不行 
 
             WatchCommTimer.Enabled = false;
 
@@ -129,7 +129,7 @@ namespace xjplc
             {          
                 status = Constant.DeviceNoConnection;
                 CommError++;
-              
+                LogManager.WriteProgramLog(Constant.DeviceConnectionError);
                 //先停了再说省的下一个定时事件又来
                 WatchCommTimer.Enabled = false;
                 if (CommError < Constant.DeviceErrorConnCountMax)
@@ -226,6 +226,7 @@ namespace xjplc
         {
             DeviceShutDown();
 
+            
             ConstantMethod.Delay(50);
 
             portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
@@ -266,7 +267,7 @@ namespace xjplc
                     status = Constant.DeviceConnected;
                     WatchCommTimer.Enabled = true;
                     return true;
-                }
+             }
 
             return false;
         }
