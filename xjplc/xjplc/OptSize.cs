@@ -22,32 +22,198 @@ namespace xjplc
             get { return dtUser; }
             set { dtUser = value; }
         }
-        public string Barc;  //条码
-        public int Cut;    //切割长度
-        public string ParamStr1;
-        public string ParamStr2;
-        public string ParamStr3;
-        public string ParamStr4;
-        public string ParamStr5;
-        public string ParamStr6;
-        public string ParamStr7;
-        public string ParamStr8;
-        public string ParamStr9;
-        public string ParamStr10;
-        public string ParamStr11;
-        public string ParamStr12;
-        public string ParamStr13;
-        public string ParamStr14;
-        public string ParamStr15;
-        public string ParamStr16;
-        public string ParamStr17;
-        public string ParamStr18;
-        public string ParamStr19;
-        public string ParamStr20;
+        private  string barc;  //条码
+        public string Barc
+        {
+            get { return barc; }
+            set { barc = value; }
+        }
+        private int cut;    //切割长度
+        public int Cut
+        {
+            get { return cut; }
+            set { cut = value; }
+        }
+        private string paramStr1;
+        public string ParamStr1
+        {
+            get { return paramStr1; }
+            set { paramStr1 = value; }
+        }
+        private string paramStr2;
+        public string ParamStr2
+        {
+            get { return paramStr2; }
+            set { paramStr2 = value; }
+        }
+        private string paramStr3;
+        public string ParamStr3
+        {
+            get { return paramStr3; }
+            set { paramStr3 = value; }
+        }
+        private string paramStr4;
+        public string ParamStr4
+        {
+            get { return paramStr4; }
+            set { paramStr4 = value; }
+        }
+        private string paramStr5;
+        public string ParamStr5
+        {
+            get { return paramStr5; }
+            set { paramStr5 = value; }
+        }
+        private string paramStr6;
+        public string ParamStr6
+        {
+            get { return paramStr6; }
+            set { paramStr6 = value; }
+        }
+        private string paramStr7;
+        public string ParamStr7
+        {
+            get { return paramStr7; }
+            set { paramStr7 = value; }
+        }
+        private string paramStr8;
+        public string ParamStr8
+        {
+            get { return paramStr8; }
+            set { paramStr8 = value; }
+        }
+        private string paramStr9;
+        public string ParamStr9
+        {
+            get { return paramStr9; }
+            set { paramStr9 = value; }
+        }
+        private string paramStr10;
+        public string ParamStr10
+        {
+            get { return paramStr10; }
+            set { paramStr10 = value; }
+        }
+        private string paramStr11;
+        public string ParamStr11
+        {
+            get { return paramStr11; }
+            set { paramStr11 = value; }
+        }
+        private string paramStr12;
+        public string ParamStr12
+        {
+            get { return paramStr12; }
+            set { paramStr12 = value; }
+        }
+        private string paramStr13;
+        public string ParamStr13
+        {
+            get { return paramStr13; }
+            set { paramStr13 = value; }
+        }
+        private string paramStr14;
+        public string ParamStr14
+        {
+            get { return paramStr14; }
+            set { paramStr14 = value; }
+        }
+        private string paramStr15;
+        public string ParamStr15
+        {
+            get { return paramStr15; }
+            set { paramStr15 = value; }
+        }
+        private string paramStr16;
+        public string ParamStr16
+        {
+            get { return paramStr16; }
+            set { paramStr16 = value; }
+        }
+        private string paramStr17;
+        public string ParamStr17
+        {
+            get { return paramStr17; }
+            set { paramStr17 = value; }
+        }
+        private string paramStr18;
+        public string ParamStr18
+        {
+            get { return paramStr18; }
+            set { paramStr18 = value; }
+        }
+        private string paramStr19;
+        public string ParamStr19
+        {
+            get { return paramStr19; }
+            set { paramStr19 = value; }
+        }
+        private string paramStr20;
+        public string ParamStr20
+        {
+            get { return paramStr20; }
+            set { paramStr20 = value; }
+        }
 
         public int Xuhao; //在dttable里是哪个行号
 
-        public List<string> ParamStrLst;
+        private List<string> paramStrLst;
+        public List<string> ParamStrLst
+        {
+            get { return paramStrLst; }
+            set {
+                paramStrLst = value;
+            }
+        }
+        public SingleSize()
+        {
+            Barc = "";
+            Cut = 0;      //切割长度
+            Xuhao = 0;
+            ParamStr1 = "";
+            ParamStr2 = "";
+            ParamStr3 = "";
+            ParamStr4 = "";
+            ParamStr5 = "";
+            ParamStr6 = "";
+            ParamStr7 = "";
+            ParamStr8 = "";
+            ParamStr9 = "";
+            ParamStr10 = "";
+            ParamStr11 = "";
+            ParamStr12 = "";
+            ParamStr13 = "";
+            ParamStr14 = "";
+            ParamStr15 = "";
+            ParamStr16 = "";
+            ParamStr17 = "";
+            ParamStr18 = "";
+            ParamStr19 = "";
+            ParamStr20 = "";
+            paramStrLst = new List<string>();
+            paramStrLst.Add(Barc);
+            paramStrLst.Add(ParamStr1);
+            paramStrLst.Add(ParamStr2);
+            paramStrLst.Add(ParamStr3);
+            paramStrLst.Add(ParamStr4);
+            paramStrLst.Add(ParamStr5);
+            paramStrLst.Add(ParamStr6);
+            paramStrLst.Add(ParamStr7);
+            paramStrLst.Add(ParamStr8);
+            paramStrLst.Add(ParamStr9);
+            paramStrLst.Add(ParamStr10);
+            paramStrLst.Add(ParamStr11);
+            paramStrLst.Add(ParamStr12);
+            paramStrLst.Add(ParamStr12);
+            paramStrLst.Add(ParamStr13);
+            paramStrLst.Add(ParamStr14);
+            paramStrLst.Add(ParamStr15);
+            paramStrLst.Add(ParamStr16);
+            paramStrLst.Add(ParamStr17);
+            paramStrLst.Add(ParamStr18);
+            paramStrLst.Add(ParamStr19);
+            paramStrLst.Add(ParamStr20);
+        }
         public SingleSize(DataTable dt,int xuhao0)
         {
             Barc = "";
@@ -109,7 +275,14 @@ namespace xjplc
     {
         public SingleSizeWithHoleAngle(DataTable dt, int xuhao) : base(dt, xuhao)
         {
+
         }
+        public SingleSizeWithHoleAngle() : base()
+        {
+
+        }
+
+
 
         int holeCount = 0;
         public int HoleCount
@@ -147,6 +320,7 @@ namespace xjplc
 
                 hole = getHoleData(strparam.ToArray());
 
+
                 return hole;
             }
         }
@@ -165,6 +339,7 @@ namespace xjplc
 
 
         #region 涉及打孔的一些参数函数
+        //孔的格式 55-80-60 参数3 ~ 参数10
         private int[] getHoleData(string[] s)
         {
             List<int> data = new List<int>();
@@ -198,6 +373,7 @@ namespace xjplc
             return data.ToArray();
 
         }
+        //角度格式 L/45_R\45 参数2
         private int[] getAngleData(string s)
         {
             List<int> data = new List<int>();
@@ -223,8 +399,8 @@ namespace xjplc
 
             Last:
             {
-                data.Add(0);
-                data.Add(0);
+                data.Add(90);
+                data.Add(90);
                 return data.ToArray();
             }
 
@@ -326,7 +502,6 @@ namespace xjplc
 
         public List<int[]> angle;
         public List<int[]> hole;
-
 
         public ProdInfo(List<SingleSize> ssLst)
         {
@@ -529,10 +704,11 @@ namespace xjplc
                 prodInfo.DBC = dbc;
                 prodInfo.LBC = ltbc;
                 prodInfo.Len = len;
-                ConstantMethod.ShowInfo(rt1, "尾料：" + prodInfo.WL.ToString());
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
                 ProdInfoLst.Add(prodInfo);
                 singleSizeLst.Add(resultSingleSize);
-                ConstantMethod.ShowInfo(rt1, "------------------------------------");
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
             }
         }
         /// <summary>
@@ -1175,6 +1351,32 @@ namespace xjplc
                         {
                             if ((m+4)<dt.Rows[i].ItemArray.Count() && dt.Rows[i][4 + m] != null)  //参数
                                 pi.ParamStrLst[m] = dt.Rows[i][4 + m].ToString();
+                        }
+
+                        if (pi.ParamStrLst.Count > 20)
+                        {
+                            pi.ParamStr1 = pi.ParamStrLst[0];
+                            pi.ParamStr2 = pi.ParamStrLst[1];
+                            pi.ParamStr3 = pi.ParamStrLst[2];
+                            pi.ParamStr4 = pi.ParamStrLst[3];
+                            pi.ParamStr5 = pi.ParamStrLst[4];
+                            pi.ParamStr6 = pi.ParamStrLst[5];
+                            pi.ParamStr7 = pi.ParamStrLst[6];
+                            pi.ParamStr8 = pi.ParamStrLst[7];
+                            pi.ParamStr9 = pi.ParamStrLst[8];
+                            pi.ParamStr10 = pi.ParamStrLst[9];
+                            pi.ParamStr11 = pi.ParamStrLst[10];
+                            pi.ParamStr12 = pi.ParamStrLst[11];
+                            pi.ParamStr13 = pi.ParamStrLst[12];
+                            pi.ParamStr14 = pi.ParamStrLst[13];
+                            pi.ParamStr15 = pi.ParamStrLst[14];
+                            pi.ParamStr16 = pi.ParamStrLst[15];
+                            pi.ParamStr17 = pi.ParamStrLst[16];
+                            pi.ParamStr18 = pi.ParamStrLst[17];
+                            pi.ParamStr19 = pi.ParamStrLst[18];
+                            pi.ParamStr20 = pi.ParamStrLst[19];
+
+
                         }
                         pi.ParamStrLst.Insert(0,pi.Barc);
 

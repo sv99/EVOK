@@ -459,11 +459,11 @@ namespace evokNew0067
             startBtnShow();
             if ( evokWork.AutoMes)
             {
-                 evokWork.CutStartMeasure();
+                 evokWork.CutStartMeasure(Constant.CutMeasureRotateWithHoleMode);
             }
             else
             {
-                 evokWork.CutStartNormal();
+                 evokWork.CutStartNormal(Constant.CutNormalMode);
             }
              stopBtnShow();
         }

@@ -491,14 +491,14 @@ namespace evokNew0066
             startBtnShow();
             if ( evokWork.AutoMes)
             {
-                 evokWork.CutStartMeasure();
+                 evokWork.CutStartMeasure(Constant.CutMeasureMode);
                 //测试代码 后续回复弹窗
                 qClr_Click(sender, e);
                 stbtn_Click(sender, e);
             }
             else
             {
-                evokWork.CutStartNormal();
+                evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
                 qClr_Click(sender, e);
                 optBtn_Click(sender, e);

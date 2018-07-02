@@ -13,7 +13,7 @@ namespace xjplc
         {
              
         }
-        public void SetDValue(PlcInfoSimple p,int value0)
+        public bool  SetDValue(PlcInfoSimple p,int value0)
         {
 
             if (p != null && p.BelongToDataform !=null)
@@ -23,6 +23,7 @@ namespace xjplc
                       
             ConstantMethod.DelayWriteCmdOk(Constant.XJConnectTimeOut, ref value0,ref p);
 
+            if (value0 == p.ShowValue) return true; else return false;
         }
 
         public bool SetMValueON(PlcInfoSimple p)
@@ -58,7 +59,7 @@ namespace xjplc
             SetMValueOFF(p);
             SetMValueON(p);
         }
-        public void SetMultiPleDValue(PlcInfoSimple stPlcInfoSimple, int[] value0)
+        public bool SetMultiPleDValue(PlcInfoSimple stPlcInfoSimple, int[] value0)
         {
             if (stPlcInfoSimple != null && stPlcInfoSimple.BelongToDataform != null)
             {
@@ -68,9 +69,11 @@ namespace xjplc
                     stPlcInfoSimple.Area, 
                     stPlcInfoSimple.Mode);
                 ConstantMethod.DelayWriteCmdOk(Constant.WriteTimeOut, ref value0[0], ref stPlcInfoSimple);
-                
+                //可能时间太久 要等下 
+                if (value0[0] == stPlcInfoSimple.ShowValue) return true; else return false;
 
             }
+            return false;
         }
 
     }

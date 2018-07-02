@@ -149,6 +149,9 @@ namespace xjplc
         public static readonly string DataDownLoad = "数据下发！";
         public static readonly string AutoMeasureMode = "自动测长模式！";
         public static readonly string NormalMode = "正常优化模式！";
+        public const  int CutMeasureRotateWithHoleMode = 2;
+        public const   int CutNormalMode = 0;
+        public const  int CutMeasureMode = 1;
         #endregion
         #region 台达PLC专用
         //台达PLC 发送命令 判断是否存在 存在则回复以下
@@ -187,7 +190,7 @@ namespace xjplc
         public static readonly int ReadTimeOut = 1000; //这里0.5 秒别改 工控机性能不行
 
         //写入超时 
-        public static readonly int WriteTimeOut = 500;
+        public static readonly int WriteTimeOut = 1000;
 
         //PLC 数据反馈 在切割的时候 数据发送 超时
         public static readonly int   PlcCountTimeOut = 2000;

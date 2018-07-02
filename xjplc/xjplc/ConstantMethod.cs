@@ -14,11 +14,15 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Reflection;
 
 namespace xjplc
 {
     public class LogManager
     {
+
+
+
         static object locker = new object();
 
        public  static string LogFileName ;
@@ -242,6 +246,35 @@ namespace xjplc
         }
 
         #endregion
+
+        //两个类之间相同的属性赋值 反射原理 要好好研究下
+        public static D Mapper<D, S>(S s)
+        {
+            D d = Activator.CreateInstance<D>(); //构造新实例
+            try
+            {
+               
+
+                var Types = s.GetType();//获得类型  
+                var Typed = typeof(D);
+              
+                foreach (PropertyInfo sp in Types.GetProperties())//获得类型的属性字段  
+                {
+                    foreach (PropertyInfo dp in Typed.GetProperties())
+                    {
+                        if (dp.Name == sp.Name && dp.PropertyType == sp.PropertyType && dp.Name != "Error" && dp.Name != "Item")//判断属性名是否相同  
+                        {
+                            dp.SetValue(d, sp.GetValue(s, null), null);//获得s对象属性的值复制给d对象的属性  
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return d;
+        }
         public static void ShowInfo(RichTextBox r1, string s)
         {
             if (r1 != null && r1.IsHandleCreated )

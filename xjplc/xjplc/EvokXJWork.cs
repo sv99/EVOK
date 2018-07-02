@@ -414,13 +414,11 @@ namespace xjplc
             optSize.prodClear();
         }
         //启动
-        public void start()
+        public void start(int id)
         {
             evokDevice.SetMValueOFF2ON(startOutPs);
-            //切割类
-            CutThreadStart = new ThreadStart(CutWork0);
-            //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
-            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
+           
+            
             RunFlag = true;
 
             rtbWork.Clear();
@@ -547,7 +545,7 @@ namespace xjplc
 
 
         #region 切割过程
-        public void CutRotateWithHole()
+        public void CutRotateWithHoleThread()
         {
             //从哪一根开始切 暂定 从第一根 开始
             int CutProCnt = 0;
@@ -577,110 +575,108 @@ namespace xjplc
             List<int> DataList = new List<int>();
             List<ProdInfo> prod = optSize.ProdInfoLst;
 
-
-            #region 带孔的参数下发
-
-            //先提取孔参数
-            for (int m = 0; m < optSize.SingleSizeLst.Count; m++)
-            {
-                for (int n = 0; n < optSize.SingleSizeLst[m].Count; n++)
-                {
-
-                }
-            }
-
-
-            DataList.Add(optSize.ProdInfoLst[i].Cut.Count);  //段数
-            //保存下地址
-            int lcOutInPsAddr = lcOutInPs.Addr;
-            if (prod[i].hole.Count > 0 && prod[i].angle.Count > 0)
-                for (int sizeid = 0; sizeid < prod[i].Cut.Count; sizeid++)
-                {
-
-                    DataList.Add(prod[i].Cut[sizeid]);  //段长
-                    DataList.Add(1);  //段长
-                    int holecount0 = 0;
-                    //总共10个孔 取前面 5个
-                    //前角度
-                    for (int holecount = 0; holecount < prod[i].hole[sizeid].Count() / 2; holecount = holecount + 3)
-                    {
-                        if (prod[i].hole[sizeid][holecount] > 0)
-                            holecount0++;
-                    }
-                    DataList.Add(prod[i].angle[sizeid][0]);
-                    DataList.Add(holecount0);
-
-                    for (int addhole = 0; addhole < holecount0 * 3; addhole++)
-                    {
-                        DataList.Add(prod[i].hole[sizeid][addhole]);
-
-                    }
-                    //后角度
-                    int holecount1 = 0;
-                    for (int holecount = 15; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
-                    {
-                        if (prod[i].hole[sizeid][holecount] > 0)
-                            holecount1++;
-                    }
-
-                    DataList.Add(prod[i].angle[sizeid][1]);
-                    DataList.Add(holecount1);
-
-                    for (int addhole = 15; addhole < 15 + holecount1 * 3; addhole++)
-                    {
-                        DataList.Add(prod[i].hole[sizeid][addhole]);
-
-                    }
-
-                    if (ldsCountInOutPs.ShowValue == 0)
-                    {
-                        evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray());
-                        LogManager.WriteProgramLog(Constant.DataDownLoad);
-                    }
-
-                    DataList.Clear();
-
-                    if (i == 0)
-                    {
-                        lcOutInPs.Addr +=  134;
-                    }
-                    else
-                        lcOutInPs.Addr +=  132;
-
-                }
-
-            #endregion
-
-            //恢复地址
-            lcOutInPs.Addr = lcOutInPsAddr;
-
-            int valueWriteOk = 1;
-            //数据下发 确保正确 下位机需要给一个M16 高电平 我这边来置OFF
-            //发数据三次 M16 如果还没有给高电平
             bool plcgetData = false;
 
-            //  先单次可以发现  然后循环确认发送
             for (int m = 0; m < 3; m++)
             {
-                if (ldsCountInOutPs.ShowValue == 0)
+                #region 带孔的参数下发
+
+                //先提取孔参数  当前这根料的数据 提取孔参数 角度参数 角度没有默认为90度          
+                for (int n = 0; n < optSize.SingleSizeLst[i].Count; n++)
                 {
-                    evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray());
-                    LogManager.WriteProgramLog(Constant.DataDownLoad + m.ToString());
+                    
+                    SingleSizeWithHoleAngle p = new SingleSizeWithHoleAngle(
+                        optSize.SingleSizeLst[i][n].DtUser, optSize.SingleSizeLst[i][n].Xuhao
+                        );
+
+                    p = ConstantMethod.Mapper<SingleSizeWithHoleAngle, SingleSize>(optSize.SingleSizeLst[i][n]);
+                    
+                    optSize.ProdInfoLst[i].hole.Add(p.Hole);
+                    optSize.ProdInfoLst[i].angle.Add(p.Angle);
                 }
 
-                ConstantMethod.DelayWriteCmdOk(Constant.PlcCountTimeOut, ref valueWriteOk, ref startCountInOutPs);
 
+                //段数为起始地址 ：数据格式 D3000段数	D3002段长	D3004是否打印	前角度	孔数	孔位置	边长	深度
+                DataList.Add(optSize.ProdInfoLst[i].Cut.Count);  //段数
+                                                                 //保存下地址
+                int ldsCountInOutPsAddr = ldsCountInOutPs.Addr;
+                #region 开始下发孔和角度 尺寸等数据
+                if (prod[i].hole.Count > 0 && prod[i].angle.Count > 0)
+                    for (int sizeid = 0; sizeid < prod[i].Cut.Count; sizeid++)
+                    {
+                        DataList.Add(prod[i].Cut[sizeid]);  //段长
+                        DataList.Add(1);  //条码打印标志
+                        int holecount0 = 0;
+                        //总共10个孔 取前面 5个
+                        //前角度
+                        for (int holecount = 0; holecount < prod[i].hole[sizeid].Count() / 2; holecount = holecount + 3)
+                        {
+                            if (prod[i].hole[sizeid][holecount] > 0)
+                                holecount0++;
+                        }
+                        DataList.Add(prod[i].angle[sizeid][0]);
+                        DataList.Add(holecount0);
+
+                        for (int addhole = 0; addhole < holecount0 * 3; addhole++)
+                        {
+                            DataList.Add(prod[i].hole[sizeid][addhole]);
+                        }
+                        //后角度
+                        int holecount1 = 0;
+                        for (int holecount = 15; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
+                        {
+                            if (prod[i].hole[sizeid][holecount] > 0)
+                                holecount1++;
+                        }
+
+                        DataList.Add(prod[i].angle[sizeid][1]);
+                        DataList.Add(holecount1);
+
+                        for (int addhole = 15; addhole < 15 + holecount1 * 3; addhole++)
+                        {
+                            DataList.Add(prod[i].hole[sizeid][addhole]);
+
+                        }
+
+                        //段数为起始地址                      
+                        evokDevice.SetMultiPleDValue(ldsCountInOutPs, DataList.ToArray());
+                                                        
+                        LogManager.WriteProgramLog(Constant.DataDownLoad + ldsCountInOutPs.Addr.ToString());                                           
+
+                        DataList.Clear();
+
+                        if (sizeid == 0)
+                        {
+                            ldsCountInOutPs.Addr += 134;
+                        }
+                        else
+                            ldsCountInOutPs.Addr += 132;
+
+                    }
+                //恢复地址
+                ldsCountInOutPs.Addr = ldsCountInOutPsAddr;
+                #endregion
+
+                #endregion
+
+                //数据下发 确保正确 下位机需要给一个M16 高电平 我这边来置OFF
+                //发数据三次 M16 如果还没有给高电平 就退出
+                int valueWriteOk = 1;
+                
+                ConstantMethod.DelayWriteCmdOk(Constant.PlcCountTimeOut, ref valueWriteOk, ref startCountInOutPs);
+             
                 if (startCountInOutPs.ShowValue == valueWriteOk)
                 {
                     StartCountClr();
                     if (startCountInOutPs.ShowValue == Constant.M_OFF)
                     {
-                        plcgetData = true;
+                        plcgetData = true;                       
                     }
                     break;
-                }
 
+                }          
             }
+
             if (!plcgetData)
             {
                 MessageBox.Show(Constant.PlcReadDataError);
@@ -689,7 +685,6 @@ namespace xjplc
                 Environment.Exit(0);
                 return;
             }
-                
         }
         private void DownLoadDataNormal(int i)
         {
@@ -726,11 +721,13 @@ namespace xjplc
                     if (startCountInOutPs.ShowValue == Constant.M_OFF)
                     {
                         plcgetData = true;
+                       
                     }
                     break;
                 }
 
             }
+
             if (!plcgetData)
             {
                 MessageBox.Show(Constant.PlcReadDataError);
@@ -793,7 +790,7 @@ namespace xjplc
         /// <summary>
         /// 正常测长切割
         /// </summary>
-        private void CutWork0()
+        private void CutWorkThread()
         {
             //从哪一根开始切 暂定 从第一根 开始
             int CutProCnt = 0;          
@@ -818,7 +815,6 @@ namespace xjplc
                 MessageBox.Show(Constant.noData);
             }
 
-
         }
 
         /// <summary>
@@ -830,7 +826,6 @@ namespace xjplc
             {
                 ConstantMethod.Delay(100);  //延时一下 判断是否没读到
             }
-
         }
         #endregion
         #region 优化
@@ -853,7 +848,56 @@ namespace xjplc
         #endregion
 
         #region 自动测长
-        public void CutStartMeasure()
+
+        private void SelectCutThread(int cutid)
+        {
+            switch (cutid)
+            {
+                case Constant.CutNormalMode:
+                    {
+                        if (CutThreadStart == null)
+                            CutThreadStart = new ThreadStart(CutWorkThread);
+                        //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
+                        if (CutThread == null)
+                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
+
+                        if (!CutThread.IsAlive)
+                            CutThread.Start();
+                    
+                    break;
+                    }
+                case Constant.CutMeasureMode:
+                    {
+                        if (CutThreadStart == null)
+                            CutThreadStart = new ThreadStart(CutWorkThread);
+                        //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
+                        if (CutThread == null)
+                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
+
+                        if (!CutThread.IsAlive)
+                            CutThread.Start();
+                        break;
+                    }
+                case Constant.CutMeasureRotateWithHoleMode:
+                    {
+
+                        if (CutThreadStart == null)
+                            CutThreadStart = new ThreadStart(CutRotateWithHoleThread);
+                        //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
+                        if (CutThread == null)
+                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
+
+                        if (!CutThread.IsAlive)
+                            CutThread.Start();
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+        }
+        public void CutStartMeasure(int cutid)
         {
          
             if (IsInEmg)
@@ -865,7 +909,7 @@ namespace xjplc
             LogManager.WriteProgramLog(Constant.AutoMeasureMode);
 
             //启动
-            start();
+            start(cutid);
 
             //等待 测量
             while (mRunFlag)
@@ -890,8 +934,7 @@ namespace xjplc
                     if (optSize.ProdInfoLst.Count < 1)
                     {
                         break;
-                    }
-                 
+                    }                 
                 }
                 else
                 {
@@ -901,14 +944,9 @@ namespace xjplc
 
                 try
                 {
-                    if(CutThreadStart ==null)            
-                    CutThreadStart = new ThreadStart(CutWork0);
-                    //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
-                    if (CutThread == null)
-                        CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
 
-                    if (!CutThread.IsAlive)
-                        CutThread.Start();
+                    SelectCutThread(cutid);
+
                     while (CutThread.IsAlive)
                     {
                         Application.DoEvents();
@@ -926,7 +964,7 @@ namespace xjplc
            //测试先隐藏
           // MessageBox.Show(Constant.CutEnd);
         }
-        public void CutStartNormal()
+        public void CutStartNormal(int cutid)
         {
 
             if (IsInEmg)
@@ -943,10 +981,13 @@ namespace xjplc
 
             LogManager.WriteProgramLog(Constant.NormalMode);
 
-            start();
-                        
+            start(cutid);
+                                   
             try
-            {               
+            {
+
+                SelectCutThread(cutid);
+
                 if (!CutThread.IsAlive)
                     CutThread.Start();
                 while (CutThread.IsAlive)
