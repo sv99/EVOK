@@ -252,8 +252,12 @@ namespace xjplc
         public const int PLCXY = 7;
 
 
+
         #region 远邦台技数据
         public static readonly string[] strformatYB = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具" };
+        public static readonly int ServerPort = 8899;
+        public static readonly string BeginToListen = "开始搜寻设备！";
+        public static readonly string ErrorSocConnection = "网络连接错误！";
         #endregion
     }
 

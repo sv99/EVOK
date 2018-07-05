@@ -39,6 +39,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -128,6 +129,10 @@
     <Compile Include="delta\EvokDTWork.cs" />
     <Compile Include="delta\EvokDTDevice.cs" />
     <Compile Include="delta\DTDevice.cs" />
+    <Compile Include="delta\SocServerManger.cs" />
+    <Compile Include="delta\YBDTDevice.cs" />
+    <Compile Include="delta\YBDTWork.cs" />
+    <Compile Include="delta\YBDTWorkManger.cs" />
     <Compile Include="xj\EvokXJWork.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>

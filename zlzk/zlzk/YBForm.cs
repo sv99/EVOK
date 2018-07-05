@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using xjplc;
 
 namespace zlzk
 {
@@ -20,63 +21,10 @@ namespace zlzk
 
         System.Timers.Timer commTimer = new System.Timers.Timer(2000);
 
-        dataProc dpro =null;
 
 
-        YBDTWork ybDtWork;
+        YBDTWorkManger ybdtWorkManger;
 
-        public class dataProc : SocServer.DataProc
-        {
-            RichTextBox rstr;
-            SocServer socserver ;
-            DeltaPlcCommand plccmd;
-            List<byte> mbuffer;
-            Label cl;
-            public  bool IsSend = false;
-            public dataProc(RichTextBox rstr0, SocServer s1, DeltaPlcCommand plccmd0,Label c0)
-            {
-                rstr = rstr0;
-                socserver = s1;
-                plccmd = plccmd0;
-                mbuffer = new List<byte>();
-                cl = c0;
-
-            }
-            void SocServer.DataProc.dataProc(byte[] data)
-            {                
-                //设备连接ID                
-                if ((data.Length > 3) && (data[0] == 0x01) && (data[1] == 0x05) && (data[2] == 0x0c))
-                {
-                    socserver.IsDeviceOk = true;
-                }
-                if ((data.Length > 3) && (data[0] == 0x01) && (data[1] == 0x10) && (data[2] == 0x40) && (data[3] == 0xDC))
-                {
-                    socserver.IsSetDRead = true;
-                }
-                if (socserver.IsSetDRead)
-                {
-                    if ((data[0] == 0x01) && (data[1] == 0x10))
-                    {
-                        IsSend = false;
-                    }
-                     if (IsSend)
-                    {
-                        socserver.SendMsgByte(plccmd.deltaCmdSendByte(plccmd.byteDeltaCmdSetD0));
-                        return;
-                    }
-                     
-                    //DataProcess.ShowInfo(rstr, DataProcess.byteToHexStr(data));
-                    socserver.SendMsgByte(plccmd.deltaCmdSendByte(plccmd.byteDeltaCmdRead));
-                    cl.Invoke((EventHandler)(delegate
-                    {
-                        cl.Text = plccmd.Pack4BytesToInt(data[4], data[5]).ToString();
-
-                    }));                  
-
-                }
-
-            }
-        }
         public YBForm()
         {
             InitializeComponent();
@@ -92,8 +40,9 @@ namespace zlzk
 
 
             //加载文件信息 默认为程序文件夹吧 
-            ybDtWork = new YBDTWork();
+            ybdtWorkManger = new YBDTWorkManger();
 
+           
 
             /****
             deviceDataFileName = System.AppDomain.CurrentDomain.BaseDirectory + "device.xlsx";
@@ -111,17 +60,7 @@ namespace zlzk
             plccmd = new DeltaPlcCommand();
 
             
-
-            if (socserver == null)
-            {
-                socserver = new SocServer();
-                socserver.Setsenmsg(sendmsg);
-                socserver.SetRecRichBox(recmsg);
-                socserver.Setiptext(listBox1);
-                socserver.startconn_Click();
-                
-            }
-
+         
             dpro = new dataProc(recmsg, socserver,plccmd,label12);
             commTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimeEvent);
             commTimer.AutoReset = true;
@@ -136,7 +75,7 @@ namespace zlzk
 
         private void TimeEvent(object source, System.Timers.ElapsedEventArgs e)
         {
-
+            /***
             if (socserver.IsDeviceOk)
             {
                
@@ -159,7 +98,7 @@ namespace zlzk
                 socserver.SendMsgByte(plccmd.deltaCmdSendByte(plccmd.byteDeltaCmd));
                 
             }
-
+            ***/
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -172,8 +111,7 @@ namespace zlzk
         {
             // 01 10 10 00 00 01 02 00 00 DC
 
-            dpro.IsSend = true;
-
+           // dpro.IsSend = true;
             
         }
 
@@ -198,9 +136,9 @@ namespace zlzk
             if (socserver == null)
             {
                 socserver = new SocServer();
-                socserver.Setsenmsg(sendmsg);
-                socserver.SetRecRichBox(recmsg);
-                socserver.Setiptext(listBox1);
+                //socserver.Setsenmsg(sendmsg);
+               // socserver.SetRecRichBox(recmsg);
+               // socserver.Setiptext(deviceLB);
                 socserver.startconn_Click();
             }
         }
@@ -217,7 +155,7 @@ namespace zlzk
         {
             //socserver.SendMsgByte(plccmd.deltaCmdSendByte(plccmd.byteDelta10));
 
-            socserver.SendMsgByte(plccmd.deltaCmdSendByte(plccmd.byteDeltaCmd));
+            //socserver.SendMsgByte(plccmd.deltaCmdSendByte(plccmd.byteDeltaCmd));
 
         }
         //临时打包命令 读取D区

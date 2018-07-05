@@ -500,8 +500,7 @@ namespace xjplc
         }
         //处理数据 委托
         public event commDataProcess EventDataProcess;//利用委托来声明事件
-
-      
+    
         
         #endregion 数据接收处理
       

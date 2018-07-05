@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using xjplc;
 using System.Windows.Forms;
-namespace zlzk
+using xjplc.delta;
+
+namespace xjplc
 {
-    class YBDTWork
+    //每个work 有一个device 就是socclient啦
+    public class YBDTWork
     {
         ExcelNpoi Excelop;
         DataTable UserDt;
@@ -17,9 +20,14 @@ namespace zlzk
             Constant.AppFilePath,DateTime.Now.ToString("yyyMMdd"), ".xlsx");
         bool IsLoadData;
 
-        SocServer socserver ;
-
-        public YBDTWork()
+        YBDTDevice ybtdDevice;
+        public xjplc.delta.YBDTDevice YbtdDevice
+        {
+            get { return ybtdDevice; }
+            set { ybtdDevice = value; }
+        }      
+     
+        public YBDTWork(Socket soc)
         {
             Excelop = new ExcelNpoi();
             UserDt = new DataTable();
@@ -27,6 +35,7 @@ namespace zlzk
             //加载数据如果不对 那就用户自己加载
             if (!LoadExcelData(UserDtFileName))
             {
+                /***
                 OpenFileDialog op = new OpenFileDialog();
                 op.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
                 op.Filter = "文件(*.xls,*.xlsx)|*.xls;*.xlsx";
@@ -38,21 +47,15 @@ namespace zlzk
                         MessageBox.Show(Constant.ErrorPlcFile);
                         ConstantMethod.AppExit();
                     }
-                }              
+                }   
+                ***/           
             }
-        
-     
-        }
-        public void StartServer()
-        {
-            if (socserver == null)
-            {
-                socserver = new SocServer();                          
-                socserver.startconn_Click();
-            }
-        }
 
-       
+            YbtdDevice = new YBDTDevice(soc);                       
+
+        }
+        
+
         public bool LoadExcelData(string filename)
         {
         LogManager.WriteProgramLog(Constant.LoadFileSt + filename);

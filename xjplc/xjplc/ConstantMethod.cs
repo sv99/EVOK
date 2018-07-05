@@ -101,6 +101,12 @@ namespace xjplc
                 }
 
         }
+
+        public static void ShowInfo(string beginToListen)
+        {
+            throw new NotImplementedException();
+        }
+
         public static bool XJFindPort() //如果可以连接 则写到config里
         {
             SerialPort m_serialPort = new SerialPort();
@@ -1002,5 +1008,6 @@ namespace xjplc
             return bLst.ToArray();
 
         }
+
     }
 }
