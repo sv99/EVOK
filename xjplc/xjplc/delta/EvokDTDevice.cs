@@ -7,13 +7,13 @@ using System.Windows.Forms;
 namespace xjplc
 {
     
-    public class EvokXJDevice:XJDevice
+    public class EvokDTDevice:DTDevice
     {
-        public EvokXJDevice(List<string> strfile):base(strfile)
+        public EvokDTDevice(List<string> strfile):base(strfile)
         {
              
         }
-        public bool  SetDValue(PlcInfoSimple p,int value0)
+        public bool  SetDValue(DTPlcInfoSimple p,int value0)
         {
 
             if (p != null && p.BelongToDataform !=null)
@@ -26,7 +26,7 @@ namespace xjplc
             if (value0 == p.ShowValue) return true; else return false;
         }
 
-        public bool SetMValueON(PlcInfoSimple p)
+        public bool SetMValueON(DTPlcInfoSimple p)
         {
             int value0 = 1;
             if (p != null && p.BelongToDataform != null)
@@ -38,7 +38,7 @@ namespace xjplc
 
             if (value0 == p.ShowValue) return true; else return false;
         }
-        public bool SetMValueOFF(PlcInfoSimple p)
+        public bool SetMValueOFF(DTPlcInfoSimple p)
         {
             int value0 = 0;
             if (p != null && p.BelongToDataform != null)
@@ -50,28 +50,28 @@ namespace xjplc
 
             if (value0 == p.ShowValue) return true; else return false;
         }
-        public void SetMValueON2OFF(PlcInfoSimple p)
+        public void SetMValueON2OFF(DTPlcInfoSimple p)
         {
             SetMValueON(p);
             SetMValueOFF(p);
         }
-        public void SetMValueOFF2ON(PlcInfoSimple p)
+        public void SetMValueOFF2ON(DTPlcInfoSimple p)
         {
             SetMValueOFF(p);
             SetMValueON(p);
         }
-        public bool SetMultiPleDValue(PlcInfoSimple stPlcInfoSimple, int[] value0)
+        public bool SetMultiPleDValue(DTPlcInfoSimple stDTPlcInfoSimple, int[] value0)
         {
-            if (stPlcInfoSimple != null && stPlcInfoSimple.BelongToDataform != null)
+            if (stDTPlcInfoSimple != null && stDTPlcInfoSimple.BelongToDataform != null)
             {
                 WriteMultiPleDMData(
-                    stPlcInfoSimple.Addr, 
+                    stDTPlcInfoSimple.Addr, 
                     value0, 
-                    stPlcInfoSimple.Area, 
-                    stPlcInfoSimple.Mode);
-                ConstantMethod.DelayWriteCmdOk(Constant.WriteTimeOut, ref value0[0], ref stPlcInfoSimple);
+                    stDTPlcInfoSimple.Area, 
+                    stDTPlcInfoSimple.Mode);
+                ConstantMethod.DelayWriteCmdOk(Constant.WriteTimeOut, ref value0[0], ref stDTPlcInfoSimple);
                 //可能时间太久 要等下 
-                if (value0[0] == stPlcInfoSimple.ShowValue) return true; else return false;
+                if (value0[0] == stDTPlcInfoSimple.ShowValue) return true; else return false;
 
             }
             return false;

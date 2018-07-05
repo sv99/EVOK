@@ -1,4 +1,4 @@
-﻿namespace evokNew
+﻿namespace evokNewDT
 {
     partial class WatchForm
     {

@@ -276,7 +276,18 @@ namespace evokNew0067
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-             UpdateTimer.Enabled = false;
+            DialogResult dr = MessageBox.Show("是否继续关闭程序？", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+            if (dr == DialogResult.No)
+            {
+                e.Cancel = true;//就不退了
+                return;
+            }
+            else
+            {
+                e.Cancel = false;//退了
+            }
+
+            UpdateTimer.Enabled = false;
              FileSaveTimer.Enabled = false;
             if ( evokWork != null)
             {
@@ -418,6 +429,7 @@ namespace evokNew0067
              ccBtn.Enabled = false;
              UserData.ReadOnly = true;
              printcb.Enabled = false;
+            设备ToolStripMenuItem.Enabled = false;
         }
         private void startOptShow()
         {
@@ -435,6 +447,7 @@ namespace evokNew0067
             printcb.Enabled = false;
             if (rtbResult != null) rtbResult.Clear();
             ConstantMethod.ShowInfo(rtbResult, Constant.InOPT);
+            设备ToolStripMenuItem.Enabled = false;
 
         }
         private void stopOptShow()
@@ -451,6 +464,7 @@ namespace evokNew0067
             pauseBtn.Enabled = true;
             resetBtn.Enabled = true;
             printcb.Enabled = true;
+            设备ToolStripMenuItem.Enabled = true;
 
         }
 
@@ -463,7 +477,7 @@ namespace evokNew0067
             }
             else
             {
-                 evokWork.CutStartNormal(Constant.CutNormalMode);
+                 evokWork.CutStartNormal(Constant.CutNormalWithHoleMode);
             }
              stopBtnShow();
         }
@@ -484,6 +498,7 @@ namespace evokNew0067
              ccBtn.Enabled = true;
              UserData.ReadOnly = false;
              printcb.Enabled = true;
+            设备ToolStripMenuItem.Enabled = true;
 
         }
 

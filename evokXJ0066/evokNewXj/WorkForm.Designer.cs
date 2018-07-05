@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,6 +39,7 @@
             this.connectMachine = new System.Windows.Forms.ToolStripMenuItem();
             this.showCurrentDataForm = new System.Windows.Forms.ToolStripMenuItem();
             this.查看日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.加载历史日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.使用说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于程序版本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -110,12 +112,11 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.infoLbl = new System.Windows.Forms.ToolStripStatusLabel();
-            this.UpdateTimer = new System.Windows.Forms.Timer();
+            this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.DialogExcelDataLoad = new System.Windows.Forms.OpenFileDialog();
             this.report1 = new FastReport.Report();
-            this.FileSaveTimer = new System.Windows.Forms.Timer();
-            this.errorTimer = new System.Windows.Forms.Timer();
-            this.加载历史日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
+            this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.logOPF = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
@@ -169,6 +170,7 @@
             this.设备ToolStripMenuItem.Name = "设备ToolStripMenuItem";
             this.设备ToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.设备ToolStripMenuItem.Text = "设备";
+            this.设备ToolStripMenuItem.Click += new System.EventHandler(this.设备ToolStripMenuItem_Click);
             // 
             // connectMachine
             // 
@@ -190,6 +192,13 @@
             this.查看日志文件ToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
             this.查看日志文件ToolStripMenuItem.Text = "查看当前日志文件";
             this.查看日志文件ToolStripMenuItem.Click += new System.EventHandler(this.查看日志文件ToolStripMenuItem_Click);
+            // 
+            // 加载历史日志文件ToolStripMenuItem
+            // 
+            this.加载历史日志文件ToolStripMenuItem.Name = "加载历史日志文件ToolStripMenuItem";
+            this.加载历史日志文件ToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
+            this.加载历史日志文件ToolStripMenuItem.Text = "查看历史日志文件";
+            this.加载历史日志文件ToolStripMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
             // 
             // 帮助ToolStripMenuItem
             // 
@@ -1003,8 +1012,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1046,8 +1055,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;
@@ -1108,13 +1117,6 @@
             // 
             this.errorTimer.Interval = 1000;
             this.errorTimer.Tick += new System.EventHandler(this.errorTimer_Tick);
-            // 
-            // 加载历史日志文件ToolStripMenuItem
-            // 
-            this.加载历史日志文件ToolStripMenuItem.Name = "加载历史日志文件ToolStripMenuItem";
-            this.加载历史日志文件ToolStripMenuItem.Size = new System.Drawing.Size(196, 26);
-            this.加载历史日志文件ToolStripMenuItem.Text = "查看历史日志文件";
-            this.加载历史日志文件ToolStripMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
             // 
             // logOPF
             // 

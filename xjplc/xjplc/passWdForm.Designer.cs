@@ -41,6 +41,7 @@
             this.pwdTxt.ShortcutsEnabled = false;
             this.pwdTxt.Size = new System.Drawing.Size(204, 42);
             this.pwdTxt.TabIndex = 0;
+            this.pwdTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.pwdTxt_KeyPress);
             // 
             // button1
             // 

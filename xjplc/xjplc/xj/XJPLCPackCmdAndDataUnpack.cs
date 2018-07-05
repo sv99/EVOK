@@ -40,7 +40,7 @@ namespace xjplc
 
         //发送读取命令后 需要返回数据的长度 名称需要改
       public int ReceivedDMDataCount = 0;
-      public int[] UnPackCmdReadDMDataIn(DataTable datform,byte[] m_buffer,List<PlcInfo> dplcInfoLst, List<List<PlcInfo>> mplcInfoLst)
+      public int[] UnPackCmdReadDMDataIn(DataTable datform,byte[] m_buffer,List<XJPlcInfo> dplcInfoLst, List<List<XJPlcInfo>> mplcInfoLst)
       {
 
             List<int> UpDateRow = new List<int>();
@@ -625,17 +625,17 @@ namespace xjplc
         /// <returns></returns>
      
 
-        public PlcInfo[] GetPlcInfo(int addr, int count ,string XYM,string mode)
+        public XJPlcInfo[] GetPlcInfo(int addr, int count ,string XYM,string mode)
         {
-            List<PlcInfo> plcinforlst = new List<PlcInfo>();
+            List<XJPlcInfo> plcinforlst = new List<XJPlcInfo>();
             int addrreal=addr;
-            if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(XYM) > Constant.HM_ID)
+            if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(XYM.Trim()) > Constant.HM_ID)
             {
                 addrreal = ConstantMethod.GetXYAddr8To10(addr);
             }
             for (int i = 0; i < count; i++)
             {
-                PlcInfo tmpInfo = new PlcInfo(addrreal, XYM,mode);                          
+                XJPlcInfo tmpInfo = new XJPlcInfo(addrreal, XYM.Trim(),mode);                          
                 tmpInfo.Xuhao = -1;
                 plcinforlst.Add(tmpInfo);
                 addrreal++;

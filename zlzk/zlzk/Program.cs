@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace evokNew
+namespace zlzk
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace evokNew
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new WorkForm());
+            Application.Run(new YBForm());
         }
     }
 }

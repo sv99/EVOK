@@ -124,7 +124,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="delta\DTCommManager.cs" />
-    <Compile Include="EvokXJWork.cs" />
+    <Compile Include="delta\DTPlcInfo.cs" />
+    <Compile Include="delta\EvokDTWork.cs" />
+    <Compile Include="delta\EvokDTDevice.cs" />
+    <Compile Include="delta\DTDevice.cs" />
+    <Compile Include="xj\EvokXJWork.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,7 +145,6 @@
     <Compile Include="ConfigFileManager.cs" />
     <Compile Include="ConstantMethod.cs" />
     <Compile Include="CSVUtility.cs" />
-    <Compile Include="delta\DTDevice.cs" />
     <Compile Include="PlcPackCmdAndUnpack.cs" />
     <Compile Include="xj\XJDevice.cs" />
     <Compile Include="xj\EvokXJDevice.cs" />
@@ -153,7 +156,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="OptSize.cs" />
-    <Compile Include="PlcInfo.cs" />
+    <Compile Include="xj\XJPlcInfo.cs" />
     <Compile Include="PlcInfoCompare.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -22,7 +22,25 @@ namespace xjplc
         //信捷专用的码 要读取哪些数据 发这个命令 回复的命令 在打包函数打包好
         public byte[] CmdReadDMDataOut = null;
 
-        
+        //台达专用的码 要读取哪些数据 发这个命令 回复的命令 在打包函数打包好
+        public byte[] CmdSetReadMDataOut = null;
+
+        //台达专用的码 要读取哪些数据 发这个命令 回复的命令 在打包函数打包好
+        public byte[] CmdSetReadDDataOut = null;
+
+        //台达专用的码 设置命令后 返回这个
+        public byte[] CmdSetReadMDataIn = null;
+
+        //台达专用的码 设置命令后 返回这个
+        public byte[] CmdSetReadDDataIn = null;
+
+        //台达专用的码 要读取哪些数据 发这个命令 回复的命令 在打包函数打包好
+        public byte[] CmdReadMDataOut = null;
+
+        //台达专用的码 要读取哪些数据 发这个命令 回复的命令 在打包函数打包好
+        public byte[] CmdReadDDataOut = null;
+
+
         //写B区 和D 区的命令 缓冲区 不然直接操作cmdout 会出错 矛盾
         public byte[] CmdSetBDREGOut = null;
         public byte[] CmdSetBDREGIn = null;
@@ -30,17 +48,23 @@ namespace xjplc
         public byte[] CmdSetBREGOut = null;
 
         //信捷专用的码 写B区回复的码
-      public byte[] CmSetBREGIn = new byte[8];
+        public byte[] CmSetBREGIn = new byte[7];
 
         //信捷专用的码 写D区 多个 从pack10命令演变过来
-      public byte[] CmdSetDREGOut = null;
+        public byte[] CmdSetDREGOut = null;
 
         //信捷专用的码 写D区回复的码
-      public byte[] CmSetDREGIn = new byte[8];
+         public byte[] CmSetDREGIn = new byte[7];
 
         //发送读取命令后 需要返回数据的长度 名称需要改
       public int ReceivedDMDataCount = 0;
-      public int[] UnPackCmdReadDMDataIn(DataTable datform,byte[] m_buffer,List<PlcInfo> dplcInfoLst, List<List<PlcInfo>> mplcInfoLst)
+
+     //台达 D M区分开
+      public int ReceivedMDataCount = 0;
+
+      public int ReceivedDDataCount = 0;
+
+        public int[] UnPackCmdReadDMDataIn(DataTable datform,byte[] m_buffer,List<DTPlcInfo> dplcInfoLst, List<List<DTPlcInfo>> mplcInfoLst)
       {
 
             List<int> UpDateRow = new List<int>();
@@ -169,6 +193,168 @@ namespace xjplc
             return UpDateRow.ToArray();
 
         }
+        public int[] UnPackCmdReadMDataIn(DataTable datform, byte[] m_buffer, List<List<DTPlcInfo>> mplcInfoLst)
+        {
+
+            List<int> UpDateRow = new List<int>();
+            if (mplcInfoLst == null)
+            {
+                UpDateRow.Add(-1);
+                return UpDateRow.ToArray();
+            }
+            if (m_buffer.Count() < 1)
+            {
+                UpDateRow.Add(-2);
+                return UpDateRow.ToArray();
+            }
+
+            //完整性检查
+            if (m_buffer.Count() < 4)
+            {
+                UpDateRow.Add(-3);
+                return UpDateRow.ToArray();
+            }
+            //台达专用
+            if (!(m_buffer[0] == 0x01 && m_buffer[1] == 0x03))
+            {
+                UpDateRow.Add(-4);
+                return UpDateRow.ToArray();
+            }
+            //统计个数
+            int mCount = 0;
+            List<DTPlcInfo> mpLst = new List<DTPlcInfo>();
+            for (int i = 0; i < mplcInfoLst.Count; i++)
+            {         
+                mpLst.AddRange(mplcInfoLst[i]);
+            }
+            mCount = mpLst.Count;
+            mCount = (int)Math.Ceiling((double)mCount / 16);
+            mCount = mCount * 2;
+            byte[] mArea_buffer= new byte[mCount];
+            
+            Array.Copy(m_buffer,3, mArea_buffer,0,m_buffer.Length-4);
+           
+            if ((mCount > 0) &&(mArea_buffer !=null)&& (mCount == mArea_buffer.Count()))
+            {
+                int s = 0;                                       
+                        for (int m = 0; m < mpLst.Count; m++)
+                        {
+                          if (m > (8 * (s + 1)-1)) s++; //8个为一个字节                   
+                           
+                          mpLst[m].ByteValue[0] = mArea_buffer[s];
+                          mpLst[m].Xuhao = m % 8;   // 8个一组 进行解析                                                  
+                      
+                            //更新表格数据 不相等的 就更新下
+                            if (!datform.Rows[mpLst[m].Row]["value"].ToString().Equals(mpLst[m].PlcValue.ToString())
+                                    && !mpLst[m].IsInEdit)
+                            {
+                                string m10addr = mpLst[m].RelAddr.ToString();
+                                if (mpLst[m].IntArea > Constant.HM_ID)
+                                    m10addr = ConstantMethod.GetXYAddr10To8(mpLst[m].RelAddr).ToString();
+
+                                if (datform.Rows[mpLst[m].Row]["addr"].ToString().Contains(m10addr)
+                                    &&
+                                    datform.Rows[mpLst[m].Row]["addr"].ToString().Contains(mpLst[m].StrArea)
+                                    )
+                                {
+                                    datform.Rows[mpLst[m].Row]["value"] = mpLst[m].PlcValue.ToString();
+                                    UpDateRow.Add(mpLst[m].Row);
+                                }
+                            }
+
+                        }
+                
+
+            }
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+            return UpDateRow.ToArray();
+
+        }
+        public int[] UnPackCmdReadDDataIn(DataTable datform, byte[] m_buffer, List<DTPlcInfo> dplcInfoLst)
+        {
+           
+            List<int> UpDateRow = new List<int>();
+            if (dplcInfoLst == null )
+            {
+                UpDateRow.Add(-1);
+                return UpDateRow.ToArray();
+            }
+            if (m_buffer.Count() < 1)
+            {
+                UpDateRow.Add(-2);
+                return UpDateRow.ToArray();
+            }
+
+            //完整性检查
+            if (m_buffer.Count() < 4)
+            {
+                UpDateRow.Add(-3);
+                return UpDateRow.ToArray();
+            }
+            if (!(m_buffer[0] == 0x01 && m_buffer[1] == 0x03))
+            {
+                UpDateRow.Add(-4);
+                return UpDateRow.ToArray();
+            }
+            int dCount = dplcInfoLst.Count;
+
+       
+           
+            byte[] dArea_buffer;
+           
+            if ((dCount * 4) < m_buffer.Count())
+                dArea_buffer = m_buffer.Skip(3).Take(dCount * 4).ToArray();
+            else
+            {
+                UpDateRow.Add(-5);
+                return UpDateRow.ToArray();
+            }
+            
+            //分类读取 D区在前 按序号读取
+
+            if (dCount > 0)
+                for (int i = 0; i < dCount; i++)
+                {
+                    if (dplcInfoLst[i].IntArea < (Constant.M_ID))
+                    {
+                        if (
+                            (i * 4) < dArea_buffer.Count() && 
+                            (i * 4 + 1) < dArea_buffer.Count() &&
+                            (i * 4 + 2) < dArea_buffer.Count()&&
+                            (i * 4 + 3) < dArea_buffer.Count()
+                            )
+                        {
+                            dplcInfoLst[i].ByteValue[0] = dArea_buffer[i*4];
+                            dplcInfoLst[i].ByteValue[1] = dArea_buffer[i*4 + 1];
+                            dplcInfoLst[i].DoubleModeHigh.ByteValue[0] = dArea_buffer[i*4 +2];
+                            dplcInfoLst[i].DoubleModeHigh.ByteValue[1] = dArea_buffer[i * 4 + 3];
+
+                            //更新监控表格数据
+                            if (!datform.Rows[dplcInfoLst[i].Row]["value"].ToString().Equals(dplcInfoLst[i].PlcValue.ToString())
+                                && !dplcInfoLst[i].IsInEdit)
+                            {
+                                if (datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].RelAddr.ToString())
+                                    && datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].StrArea)
+                                    )
+                                {
+                                    string s = dplcInfoLst[i].PlcValue.ToString();
+                                    datform.Rows[dplcInfoLst[i].Row]["value"] = s;
+                                    UpDateRow.Add(dplcInfoLst[i].Row);
+
+                                }
+                            }
+                        }
+                    }
+                }            
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+            return UpDateRow.ToArray();
+
+        }
+
         public int PackCmSetDREGIn(int Addr, int count, string Area)
         {
             int ByteLen = count;
@@ -193,8 +379,8 @@ namespace xjplc
             Array.Copy(CmSetDREGIn, 0, byteCrcData, 0, 6);
 
             //crc
-            CmSetDREGIn[6] = CRC16_C(byteCrcData)[1];
-            CmSetDREGIn[7] = CRC16_C(byteCrcData)[0];
+            CmSetDREGIn[6] = LRC16_C(byteCrcData);
+           
 
             CmdSetBDREGIn = CmSetDREGIn;
 
@@ -224,8 +410,8 @@ namespace xjplc
             Array.Copy(CmSetBREGIn, 0, byteCrcData, 0, 6);
 
             //crc
-            CmSetBREGIn[6] = CRC16_C(byteCrcData)[1];
-            CmSetBREGIn[7] = CRC16_C(byteCrcData)[0];
+            CmSetBREGIn[6] = LRC16_C(byteCrcData);
+        
 
             CmdSetBDREGIn = CmSetBREGIn;
 
@@ -239,30 +425,23 @@ namespace xjplc
                 case "X":
                     {
                         addr = ConstantMethod.GetXYAddr8To10(addr);
-                        addr = addr + Constant.X_addr;
-                       
-                       
+                        addr = addr + Constant.Delta_X_addr;                                            
                         break;
                     }
                 case "Y":
                     {
                         addr = ConstantMethod.GetXYAddr8To10(addr);
-                        addr = addr + Constant.Y_addr;
+                        addr = addr + Constant.Delta_Y_addr;
                         break;
                     }
                 case "M":
                     {
-                        addr = addr + Constant.M_addr;
+                        addr = addr + Constant.Delta_M_addr;
                         break;
-                    }
-                case "HM":
-                    {
-                        addr = addr + Constant.HM_addr;
-                        break;
-                    }
+                    }               
                 default:
                     {
-                        addr = addr + Constant.M_addr;
+                        addr = addr + Constant.Delta_M_addr;
                         break;
                     }
 
@@ -276,7 +455,7 @@ namespace xjplc
                 ByteLen = (count / 8) + 1;
             }
 
-            CmdSetBREGOut = new byte[9 + ByteLen];
+            CmdSetBREGOut = new byte[8 + ByteLen];
             int addr_high = (addr & 0xFF00) >> 8;
             int addr_low = addr & 0xFF;
             int count_high = (count & 0xFF00) >> 8;
@@ -303,9 +482,8 @@ namespace xjplc
             Array.Copy(CmdSetBREGOut, 0, byteCrcData, 0, 7 + ByteLen);
 
             //crc
-            CmdSetBREGOut[7 + ByteLen] = CRC16_C(byteCrcData)[1];
-            CmdSetBREGOut[8 + ByteLen] = CRC16_C(byteCrcData)[0];
-
+            CmdSetBREGOut[7 + ByteLen] = LRC16_C(byteCrcData);
+            
             PackCmSetBREGIn(addr, count, XYM);
 
             CmdSetBDREGOut = CmdSetBREGOut;
@@ -316,10 +494,10 @@ namespace xjplc
         public int PackCmdSetDREGOut(int Addr, int count, int[] value, string Area)
         {
             int ByteLen = count ;
-            CmdSetDREGOut = new byte[9 + ByteLen*2];
-            if (Area == "HD")
+            CmdSetDREGOut = new byte[8 + ByteLen*2];
+            if (Area == "D")
             {
-                Addr += Constant.HD_addr;
+                Addr += Constant.Delta_D_addr;
             }
             int addr_high = (Addr & 0xFF00) >> 8;
             int addr_low = Addr & 0xFF;
@@ -349,8 +527,8 @@ namespace xjplc
             Array.Copy(CmdSetDREGOut, 0, byteCrcData, 0, 7 + ByteLen*2);
 
             //crc
-            CmdSetDREGOut[7 + ByteLen*2] = CRC16_C(byteCrcData)[1];
-            CmdSetDREGOut[8 + ByteLen*2] = CRC16_C(byteCrcData)[0];
+            CmdSetDREGOut[7 + ByteLen*2] = LRC16_C(byteCrcData);
+            
 
             PackCmSetDREGIn(Addr, count, Area);
 
@@ -438,50 +616,34 @@ namespace xjplc
 
                 case "X":
                     {                                                                 
-                        addr = addr + Constant.X_addr;
+                        addr = addr + Constant.Delta_X_addr;
 
                         break;
                     }
                 case "Y":
                     {
                        
-                        addr = addr + Constant.Y_addr;
+                        addr = addr + Constant.Delta_Y_addr;
               
                         break;
                     }
                 case "M":
                     {
-                        addr = addr + Constant.M_addr;
+                        addr = addr + Constant.Delta_M_addr;
                       
                         break;
-                    }
-                case "HM":
-                    {
-                        addr = addr + Constant.HM_addr;
-                    
-                        break;
-                    }
-                case "HD":
-                    {
-                        addr = addr + Constant.HD_addr;
-                     
-                        break;
-                    }
+                    }               
+                
                 case "D":
                     {
-                        addr = addr + Constant.D_addr;
+                        addr = addr + Constant.Delta_D_addr;
                        
                         break;
                     }
-                case "HSD":
-                    {
-                        addr = addr + Constant.HSD_addr;
-                       
-                        break;
-                    }
+                
                 default:
                     {
-                        addr = addr + Constant.M_addr;
+                        addr = addr + Constant.Delta_M_addr;
                       
                         break;
                     }
@@ -503,49 +665,33 @@ namespace xjplc
 
                 case Constant.X_ID:
                     {
-                        addr = addr + Constant.X_addr;
+                        addr = addr + Constant.Delta_X_addr;
 
                         break;
                     }
                 case Constant.Y_ID:
                     {
-                        addr = addr + Constant.Y_addr;
+                        addr = addr + Constant.Delta_Y_addr;
 
                         break;
                     }
                 case Constant.M_ID:
                     {
-                        addr = addr + Constant.M_addr;
+                        addr = addr + Constant.Delta_M_addr;
 
                         break;
                     }
-                case Constant.HM_ID:
-                    {
-                        addr = addr + Constant.HM_addr;
-
-                        break;
-                    }
-                case Constant.HD_ID:
-                    {
-                        addr = addr + Constant.HD_addr;
-
-                        break;
-                    }
+               
                 case Constant.D_ID:
                     {
-                        addr = addr + Constant.D_addr;
+                        addr = addr + Constant.Delta_D_addr;
 
                         break;
                     }
-                case Constant.HSD_ID:
-                    {
-                        addr = addr + Constant.HSD_addr;
-
-                        break;
-                    }
+         
                 default:
                     {
-                        addr = addr + Constant.M_addr;
+                        addr = addr + Constant.Delta_M_addr;
 
                         break;
                     }
@@ -568,46 +714,30 @@ namespace xjplc
 
                 case Constant.X_ID:
                     {
-                        addr = addr - Constant.X_addr;
+                        addr = addr - Constant.Delta_X_addr;
 
                         break;
                     }
                 case Constant.Y_ID:
                     {
-                        addr = addr - Constant.Y_addr;
+                        addr = addr - Constant.Delta_Y_addr;
 
                         break;
                     }
                 case Constant.M_ID:
                     {
-                        addr = addr - Constant.M_addr;
+                        addr = addr - Constant.Delta_M_addr;
 
                         break;
                     }
-                case Constant.HM_ID:
-                    {
-                        addr = addr - Constant.HM_addr;
-
-                        break;
-                    }
-                case Constant.HD_ID:
-                    {
-                        addr = addr - Constant.HD_addr;
-
-                        break;
-                    }
+            
                 case Constant.D_ID:
                     {
-                        addr = addr - Constant.D_addr;
+                        addr = addr - Constant.Delta_D_addr;
 
                         break;
                     }
-                case Constant.HSD_ID:
-                    {
-                        addr = addr - Constant.HSD_addr;
-
-                        break;
-                    }
+                
                 default:
                     {
                         addr = addr + Constant.M_addr;
@@ -625,17 +755,17 @@ namespace xjplc
         /// <returns></returns>
      
 
-        public PlcInfo[] GetPlcInfo(int addr, int count ,string XYM,string mode)
+        public DTPlcInfo[] GetPlcInfo(int addr, int count ,string XYM,string mode)
         {
-            List<PlcInfo> plcinforlst = new List<PlcInfo>();
+            List<DTPlcInfo> plcinforlst = new List<DTPlcInfo>();
             int addrreal=addr;
-            if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(XYM) > Constant.HM_ID)
+            if (DTPLCPackCmdAndDataUnpack.AreaGetFromStr(XYM.Trim()) > Constant.HM_ID)
             {
                 addrreal = ConstantMethod.GetXYAddr8To10(addr);
             }
             for (int i = 0; i < count; i++)
             {
-                PlcInfo tmpInfo = new PlcInfo(addrreal, XYM,mode);                          
+                DTPlcInfo tmpInfo = new DTPlcInfo(addrreal, XYM.Trim(),mode);                          
                 tmpInfo.Xuhao = -1;
                 plcinforlst.Add(tmpInfo);
                 addrreal++;
@@ -646,8 +776,169 @@ namespace xjplc
             
             return plcinforlst.ToArray();
 
-        }       
-   
+        }
+
+
+        public int PackSetCmdReadMDataOut(List<List<DTPlcInfo>> addrLst)
+        {
+            List<DTPlcInfo> mplcLst = new List<DTPlcInfo>();
+
+            for (int i = 0; i < addrLst.Count; i++)
+            {
+                mplcLst.AddRange(addrLst[i]);
+            }
+
+            if (!(mplcLst.Count > 0))
+            {
+                CmdSetReadMDataOut = null;
+                CmdSetReadMDataIn = null;
+                CmdReadMDataOut = null;
+    
+                return -1;
+
+            }
+
+            List<byte> cmdByte = new List<byte>();
+            for (int i = 0; i < mplcLst.Count; i++)
+            {
+                int addr_high = (mplcLst[i].AbsAddr & 0xFF00) >> 8;
+                int addr_low = mplcLst[i].AbsAddr & 0xFF;
+                cmdByte.Add((byte)addr_high);
+                cmdByte.Add((byte)addr_low);
+            }
+
+            List<byte> byteLst = new List<byte>();
+            List<byte> byteLstIn = new List<byte>();
+            List<byte> byteLstOut = new List<byte>();
+            byteLst.Add(0x01);
+            byteLst.Add(0x10);
+            byteLst.Add(0x40);
+            byteLst.Add(0x00);
+
+            byteLstIn.Add(0x01);
+            byteLstIn.Add(0x10);
+            byteLstIn.Add(0x40);
+            byteLstIn.Add(0x00);
+
+            byteLstOut.Add(0x01);
+            byteLstOut.Add(0x03);
+            byteLstOut.Add(0x40);
+            byteLstOut.Add(0xC8);
+
+
+            int addrcount_high = ((mplcLst.Count + 1) & 0xFF00) >> 8;
+            int addrcount_low = (mplcLst.Count + 1) & 0xFF;
+            
+            int c = (int)Math.Ceiling((double)mplcLst.Count/16); //多少个16位的数据 至少是16位 
+            int addrcount_high0 = ((c) & 0xFF00) >> 8;
+            int addrcount_low0 = (c) & 0xFF;
+
+            int count = (mplcLst.Count + 1) * 2;
+
+            byteLst.Add((byte)addrcount_high);
+            byteLst.Add((byte)addrcount_low);
+            byteLstIn.Add((byte)addrcount_high);
+            byteLstIn.Add((byte)addrcount_low);
+
+            byteLstOut.Add((byte)addrcount_high0);
+            byteLstOut.Add((byte)addrcount_low0);
+            byteLst.Add((byte)((mplcLst.Count + 1) * 2));
+
+            addrcount_high = ((mplcLst.Count) & 0xFF00) >> 8;
+            addrcount_low = (mplcLst.Count) & 0xFF;
+
+            byteLst.Add((byte)addrcount_high);
+            byteLst.Add((byte)addrcount_low);
+
+            byteLst.AddRange(cmdByte);
+
+            byteLst.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLst.ToArray()));
+            byteLstIn.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLstIn.ToArray()));
+            byteLstOut.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLstOut.ToArray()));
+            //开始拼接 台达设置读取D区命令
+            CmdSetReadMDataOut = byteLst.ToArray();
+
+            CmdSetReadMDataIn = byteLstIn.ToArray();
+
+            CmdReadMDataOut = byteLstOut.ToArray();
+            return 0;
+        }
+        
+        public int PackSetCmdReadDDataOut(List<DTPlcInfo> addrLst)
+        {
+            List<byte> byteLst = new List<byte>();
+            List<byte> byteLstIn = new List<byte>();
+            List<byte> byteLstOut = new List<byte>();
+            if (!(addrLst.Count > 0))
+            {
+                CmdSetReadDDataOut = null;
+                CmdSetReadDDataIn  = null;
+                CmdReadDDataOut    = null;
+         
+                return -1;
+            }
+
+            List<byte> cmdByte = new List<byte>();
+            for (int i = 0; i < addrLst.Count; i++)
+            {
+                int addr_high = (addrLst[i].AbsAddr & 0xFF00) >> 8;
+                int addr_low = addrLst[i].AbsAddr & 0xFF;
+                cmdByte.Add((byte)addr_high);
+                cmdByte.Add((byte)addr_low);
+            }
+
+            int addrcount_high = ((addrLst.Count+1) & 0xFF00) >> 8;
+            int addrcount_low = (addrLst.Count+1) & 0xFF;
+
+            int count = (addrLst.Count+1) * 2;
+            
+            byteLst.Add(0x01);
+            byteLst.Add(0x10);
+            byteLst.Add(0x40);
+            byteLst.Add(0xDC);
+            byteLstIn.Add(0x01);
+            byteLstIn.Add(0x10);
+            byteLstIn.Add(0x40);
+            byteLstIn.Add(0xDC);
+
+            byteLstOut.Add(0x01);
+            byteLstOut.Add(0x03);
+            byteLstOut.Add(0x41);
+            byteLstOut.Add(0x90);
+            int addrcount_high0 = ((addrLst.Count ) & 0xFF00) >> 8;
+            int addrcount_low0 = (addrLst.Count) & 0xFF;
+            byteLstOut.Add((byte)addrcount_high0);
+            byteLstOut.Add((byte)addrcount_low0);
+
+            byteLst.Add((byte)addrcount_high);
+            byteLst.Add((byte)addrcount_low);
+            byteLstIn.Add((byte)addrcount_high);
+            byteLstIn.Add((byte)addrcount_low);
+            byteLst.Add((byte) ((addrLst.Count + 1) * 2));
+
+            addrcount_high = ((addrLst.Count ) & 0xFF00) >> 8;
+            addrcount_low = (addrLst.Count ) & 0xFF;
+
+            byteLst.Add((byte)addrcount_high);
+            byteLst.Add((byte)addrcount_low);
+
+            byteLst.AddRange(cmdByte);
+
+            byteLst.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLst.ToArray()));
+
+            byteLstIn.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLstIn.ToArray()));
+            byteLstOut.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLstOut.ToArray()));
+            //开始拼接 台达设置读取D区命令
+            CmdSetReadDDataOut = byteLst.ToArray();
+
+            CmdSetReadDDataIn = byteLstIn.ToArray();
+
+            CmdReadDDataOut = byteLstOut.ToArray();
+
+            return 0;
+
+
+        }
         /// <summary>
         /// 1.在这里 前面已经打包过了 这里不需要再换算成绝对地址了
         /// 2.要读取哪些数据啊 就在这里打包了 
@@ -685,11 +976,11 @@ namespace xjplc
                 #endregion
 
             }
-                //开始拼接
+                //开始拼接 台达设置读取D区命令
                 CmdReadDMDataOut = new byte[7 + addrLst.Count * 4];
 
                 CmdReadDMDataOut[0] = 0x01;
-                CmdReadDMDataOut[1] = 0x19;
+                CmdReadDMDataOut[1] = 0x10;
                 CmdReadDMDataOut[2] = 0x00;
                 CmdReadDMDataOut[3] = (byte)addrLst.Count;
                 CmdReadDMDataOut[4] = (byte)(Dcount+1);
@@ -711,25 +1002,23 @@ namespace xjplc
         }
     
      
-      //判断传入的数据是否完整 根据CRC 校验判别
+      //判断传入的数据是否完整 根据LRC 校验判别
       public static Boolean IsEnd(Byte[] BufList)
       {
 
           if (BufList.Count() < 5 ) return false;
 
-
           byte[] buf = BufList;
           
+          byte[] buf1 = new byte[buf.Count() - 1];//去掉末尾两个数据
 
-          byte[] buf1 = new byte[buf.Count() - 2];//去掉末尾两个数据
+          Array.Copy(buf, 0,buf1,0, buf.Count() - 1);
 
-          Array.Copy(buf, buf1, buf.Count() - 2);
-
-          byte[] buf2 = new byte[2];
-          buf2[0] = CRC16_C(buf1)[0];
-          buf2[1] = CRC16_C(buf1)[1];
-      
-          if ((buf[(buf.Count() - 1)] == buf2[0]) && (buf[(buf.Count() - 2)] == buf2[1]))
+          byte[] buf2 = new byte[1];
+          byte[] bufTest = {0x01,0x03,0x04,0x01,0x00,0x01 };
+          buf2[0] = LRC16_C(buf1);
+    
+          if ((buf[(buf.Count() - 1)] == buf2[0]))
           {
               return true;
           }
@@ -738,6 +1027,21 @@ namespace xjplc
               return false;
           }
       }
+
+      public static byte LRC16_C(byte[] data)
+      {
+            byte sum = 0;
+            foreach (byte b in data)
+            {
+                sum += b;
+            }
+
+            sum =(byte)(sum % 0x100);//模FF
+            sum = (byte)(0x100 -sum);//取反+1
+
+            return (byte)sum;
+        }
+
       public static byte[] CRC16_C(byte[] data)
       {
           byte CRC16Lo;

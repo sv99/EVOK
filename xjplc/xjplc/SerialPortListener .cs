@@ -55,7 +55,11 @@ namespace xjplc
         //定义串口对象 
 
         SerialPort m_serialPort = null;
-
+        public System.IO.Ports.SerialPort m_SerialPort
+        {
+            get { return m_serialPort; }
+            set { m_serialPort = value; }
+        }
 
         //结束符号
         char m_endChar = '\0';
@@ -176,7 +180,7 @@ namespace xjplc
         }
 
         //获取当前是否打开
-        public bool IsOpen { get { return m_serialPort == null ? false : m_serialPort.IsOpen; } }
+        public bool IsOpen { get { return m_SerialPort == null ? false : m_SerialPort.IsOpen; } }
         #endregion
         //构造函数
 
@@ -186,8 +190,8 @@ namespace xjplc
             m_portName = portName;
             m_baudRate = baudRate;
             m_buffer = new List<byte>();
-            m_serialPort = new SerialPort(portName,BaudRate);
-            m_serialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
+            m_SerialPort = new SerialPort(portName,BaudRate);
+            m_SerialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
         }
         public SerialPortListener()
         {
@@ -206,17 +210,17 @@ namespace xjplc
                 //如果之前端口没变 且端口打开的 那就不改了 不去停止
                
                     Stop();
-                    m_serialPort.PortName = m_portName;
-                    m_serialPort.BaudRate = m_baudRate;
-                    m_serialPort.Parity = m_parity;
-                    m_serialPort.StopBits = m_stopBits;
-                    m_serialPort.Handshake = m_handshake;
-                    m_serialPort.DataBits = m_dataBits;
-                    m_serialPort.ReadBufferSize = m_readBufferSize;
-                    m_serialPort.ReceivedBytesThreshold = m_receivedBytesThreshold;
-                    m_serialPort.WriteBufferSize = m_writeBufferSize;
-                    if (!m_serialPort.IsOpen)
-                        m_serialPort.Open();
+                m_SerialPort.PortName = m_portName;
+                m_SerialPort.BaudRate = m_baudRate;
+                m_SerialPort.Parity = m_parity;
+                m_SerialPort.StopBits = m_stopBits;
+                m_SerialPort.Handshake = m_handshake;
+                m_SerialPort.DataBits = m_dataBits;
+                m_SerialPort.ReadBufferSize = m_readBufferSize;
+                m_SerialPort.ReceivedBytesThreshold = m_receivedBytesThreshold;
+                m_SerialPort.WriteBufferSize = m_writeBufferSize;
+                    if (!m_SerialPort.IsOpen)
+                    m_SerialPort.Open();
                 
                 //会出现超时现象 死循环 容易造成内存泄露
                //m_threadMonitor = new Thread(new ThreadStart(SerialPortMonitor));
@@ -227,7 +231,7 @@ namespace xjplc
 
             catch
             {
-                throw new SerialPortException(string.Format("无法打开串口:{0}", m_serialPort.PortName));
+                throw new SerialPortException(string.Format("无法打开串口:{0}", m_SerialPort.PortName));
             }
         }
 
@@ -235,7 +239,7 @@ namespace xjplc
         {
             //防止上次数据还在传输
             ConstantMethod.Delay(100);
-            m_serialPort.Close();
+            m_SerialPort.Close();
             m_buffer.Clear();
             //GC.Collect();
             //GC.WaitForPendingFinalizers();
@@ -246,13 +250,13 @@ namespace xjplc
         //接收数据
         void SerialPort_DataReceived(object sender,EventArgs e)
         {
-            StartReceive();
-            int availCount = m_serialPort.BytesToRead;
+            StartReceive();      
+            int availCount = m_SerialPort.BytesToRead;
             byte[] bs = new byte[availCount];
             bool bend = false;
             for (int i = 0; i < availCount;i++)
             {
-                byte b = (byte)m_serialPort.ReadByte();
+                byte b = (byte)m_SerialPort.ReadByte();
                 if (m_useEndChar && b == m_endChar)
                 {
                    
@@ -263,6 +267,7 @@ namespace xjplc
                 bs[i] = b;
             }
             lock (m_buffer) m_buffer.AddRange(bs);
+          
             EndReceive(bs);
             if (bend) CallEndResult();
         }
@@ -340,7 +345,7 @@ namespace xjplc
         #region 发送数据 
         public void Send(byte[] bs)
         {
-            if (!m_serialPort.IsOpen)
+            if (!m_SerialPort.IsOpen)
             {
                 throw new SerialPortException("不能在串口关闭状态发送数据");
             }
@@ -349,7 +354,7 @@ namespace xjplc
             AsyncSend call = new AsyncSend(DoAsyncSend);
            
             call.BeginInvoke(bs, null, null);
-            bs = null;
+           //bs = null;
             //GC.Collect();
             //GC.WaitForPendingFinalizers();
         }
@@ -385,7 +390,7 @@ namespace xjplc
                         sendCount += m_writeBufferSize;
                     }
                     //发送数据  
-                    m_serialPort.Write(sendBytes, 0, sendBytes.Length);
+                    m_SerialPort.Write(sendBytes, 0, sendBytes.Length);
                     s += sendBytes.Length;
                     if (OnSerialPortSend != null)
                         OnSerialPortSend(this, new SerialPortEvents(sendBytes));
@@ -396,7 +401,7 @@ namespace xjplc
             else
             {
                 //一次发送  
-                m_serialPort.Write(data, 0, data.Length);
+                m_SerialPort.Write(data, 0, data.Length);
             }
             if (OnSerialPortSend != null)
                 OnSerialPortSend(this, new SerialPortEvents(data));

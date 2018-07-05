@@ -172,6 +172,44 @@ namespace xjplc
         }
         #endregion
         #region 台达PLC 
+        public static void FindPos(DataTable dt, List<DTPlcInfoSimple> psLst)
+        {
+            if (dt != null && psLst.Count > 0)
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < psLst.Count; j++)
+                    {
+                        if (dt.Rows[i]["bin"].ToString().Equals(psLst[j].Name))
+                        {
+
+                            psLst[j].Mode = dt.Rows[i]["mode"].ToString();
+                            psLst[j].RowIndex = i;
+                            psLst[j].BelongToDataform = dt;
+                            int addrInt = 0;
+                            string areaStr = "D";
+                            string userdata = dt.Rows[i]["addr"].ToString();
+                            string param3 = dt.Rows[i]["param3"].ToString();
+                            string param4 = dt.Rows[i]["param4"].ToString();
+                            if (!string.IsNullOrWhiteSpace(param3))
+                            {
+                                psLst[j].ShowStr.Add(param3);
+                            }
+                            if (!string.IsNullOrWhiteSpace(param4))
+                            {
+                                psLst[j].ShowStr.Add(param4);
+                            }
+                            ConstantMethod.SplitAreaAndAddr(userdata, ref addrInt, ref areaStr);
+                            //区域符号在前面 后面地址就可以计算了
+                            psLst[j].Area = areaStr;
+                            psLst[j].Addr = addrInt;
+
+
+                        }
+                    }
+                }
+
+        }
+
         /// <summary>
         /// 这里检测台达PLC 是否存在 并发送 可以设置读取命令的数据
         /// </summary>
@@ -210,16 +248,16 @@ namespace xjplc
                     {
                         m_serialPort.Open();
                     }
-                    byte[] resultByte = new byte[Constant.DTExistByteOutIn.Count()];
+                    byte[] resultByte = new byte[Constant.DTExistByteOutIn0.Count()];
 
-                    m_serialPort.Write(Constant.DTExistByteOutIn, 0, Constant.DTExistByteOutIn.Length);
+                    m_serialPort.Write(Constant.DTExistByteOutIn0, 0, Constant.DTExistByteOutIn0.Length);
 
                     ConstantMethod.Delay(200);
 
-                    m_serialPort.Read(resultByte, 0, Constant.DTExistByteOutIn.Count());
 
+                    m_serialPort.Read(resultByte, 0, Constant.DTExistByteOutIn0.Count());
 
-                    if (ConstantMethod.compareByteStrictly(resultByte, Constant.DTExistByteOutIn))
+                    if (ConstantMethod.compareByteStrictly(resultByte, Constant.DTExistByteOutIn0))
                     {
                         //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
                         ConstantMethod.SetPortParam(Constant.ConfigSerialportFilePath, Constant.PortName, m_serialPort.PortName);
@@ -812,6 +850,33 @@ namespace xjplc
                 Application.DoEvents();
             }
         }
+        public static void DelayWriteCmdOk(int milliSecond, ref int valueOld, ref DTPlcInfoSimple p)
+        {
+            int start = Environment.TickCount;
+
+            while ((Math.Abs(Environment.TickCount - start) < milliSecond))
+            {
+                if (valueOld == p.ShowValue)
+                {
+                    break;
+                }
+                Application.DoEvents();
+            }
+        }
+        public static void DelayMeasure(int milliSecond, ref int valueOld, ref DTPlcInfoSimple p, ref DTPlcInfoSimple emg, ref bool jump)
+        {
+            int start = Environment.TickCount;
+
+            while ((Math.Abs(Environment.TickCount - start) < milliSecond))
+            {
+                if (valueOld == p.ShowValue || (emg.ShowValue == 1) || !jump)  //测量好 或者 急停 都退出
+                {
+                    break;
+                }
+                Application.DoEvents();
+            }
+        }
+
         public static void DelayMeasure(int milliSecond, ref int valueOld, ref PlcInfoSimple p, ref PlcInfoSimple emg,ref bool jump)
         {
             int start = Environment.TickCount;
@@ -884,6 +949,58 @@ namespace xjplc
             ReturnData[0] = CRC16Hi;       //CRC高位 
             ReturnData[1] = CRC16Lo;       //CRC低位 
             return ReturnData;
-        } 
+        }
+        public static byte[] DeltaByteToCmd(byte[] cmd)
+        {
+            List<byte> bLst = new List<byte>();
+            bLst.Add((byte)Constant.DTHeader);
+
+            bLst.AddRange(cmd);
+
+            string str = System.Text.Encoding.Default.GetString(cmd);
+
+            return bLst.ToArray();
+
+        }
+        /// <summary>
+        /// 台达数据处理 串口缓冲区 
+        /// </summary>
+        /// <param name="sLst"></param>
+        /// <returns></returns>
+        public static List<byte> DeltaBufferPro(List<byte> sLst)
+        {
+            List<byte> bLst = new List<byte>();
+            sLst.RemoveAt(0);
+            string str = System.Text.Encoding.Default.GetString(sLst.ToArray()).Trim();
+            byte[] byteArray = ConstantMethod.StrToHexByte(str);
+            bLst.AddRange(byteArray);
+            return bLst;
+
+        }
+        //台达上层数据转换为底层数据
+        public static byte[] DeltaCmdPro(byte[] sLst)
+        {
+            string str = ConstantMethod.byteToHexStr(sLst);
+
+            List<byte> bLst = new List<byte>();
+            bLst.Add(Constant.DTHeader);
+
+            byte[] byteArray = System.Text.Encoding.ASCII.GetBytes(str);
+            bLst.AddRange(byteArray);
+
+            bLst.AddRange(Constant.DTEnd.ToArray());
+            
+            return bLst.ToArray();
+
+        }
+        //台达底层数据转换为上层数据
+        public static byte[] DeltaBufferPro(byte[] sLst)
+        {
+            List<byte> bLst = new List<byte>();
+            bLst.AddRange(sLst);
+            bLst = ConstantMethod.DeltaBufferPro(bLst);
+            return bLst.ToArray();
+
+        }
     }
 }

@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using xjplc;
 using System.IO;
 
-namespace evokNew0066
+namespace evokNewDT
 {
     public partial class WorkForm : Form
     {
@@ -14,8 +14,8 @@ namespace evokNew0066
 
         List<string> errorList = new List<string>();
         int errorId = 0;
-        private EvokXJDevice evokDevice;
-        private EvokXJWork evokWork;
+        private EvokDTDevice evokDevice;
+        private EvokDTWork evokWork;
         private OptSize optSize;
 
         private List<string> strDataFormPath;
@@ -165,9 +165,9 @@ namespace evokNew0066
             this.Visible = true;
         }
 
-        private PlcInfoSimple getPsFromPslLst(string tag0, string str0, List<PlcInfoSimple> pslLst)
+        private DTPlcInfoSimple getPsFromPslLst(string tag0, string str0, List<DTPlcInfoSimple> pslLst)
         {
-            foreach (PlcInfoSimple simple in pslLst)
+            foreach (DTPlcInfoSimple simple in pslLst)
             {
                 if (simple.Name.ToString().Contains(tag0) && simple.Name.Contains(str0))
                 {
@@ -217,24 +217,24 @@ namespace evokNew0066
                 }                   
             }          
 
-            evokDevice = new EvokXJDevice(strDataFormPath);
-
-            if (! evokDevice.getDeviceData())
-            {
-               
+            evokDevice = new EvokDTDevice(strDataFormPath);
+           
+            if (!evokDevice.getDeviceData())
+            {            
                 MessageBox.Show(Constant.ConnectMachineFail);
                 Environment.Exit(0);
             }
+           
             LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
             UpdateTimer.Enabled = true;
-             optSize = new OptSize( UserData);
-             evokWork = new EvokXJWork();
-             evokWork.SetEvokDevice( evokDevice);
-             evokWork.SetOptSize( optSize);
-             evokWork.SetRtbWork( rtbWork);
-             evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
-
+            optSize = new OptSize(UserData);
+            evokWork = new EvokDTWork();
+            evokWork.SetEvokDevice(evokDevice);
+            evokWork.SetOptSize(optSize);
+            evokWork.SetRtbWork(rtbWork);
+            evokWork.SetRtbResult(rtbResult);
+            evokWork.SetPrintReport(report1);
+                  
         }
 
         private void InitView0()
@@ -249,21 +249,11 @@ namespace evokNew0066
             logOPF.Filter = "文件(*.log)|*.log";
             logOPF.FileName = "请选择日志文件";
 
+            //测试先隐藏
+           // errorTimer.Enabled = true;
 
-            errorTimer.Enabled = true;
 
-
-        }/********************************************************************
-        	created:	2018/06/27
-        	created:	27:6:2018   10:15
-        	filename: 	E:\project\2018\中意木工\evok\EVOK\evokXJ0066\evokNewXj\WorkForm.cs
-        	file path:	E:\project\2018\中意木工\evok\EVOK\evokXJ0066\evokNewXj
-        	file base:	WorkForm
-        	file ext:	cs
-        	author:		Author
-        	
-        	purpose:	
-        *********************************************************************/
+        }
 
         private void IsoptBtnShow(bool showvalue)
         {
@@ -353,8 +343,7 @@ namespace evokNew0066
 
         private void pauseBtn_Click(object sender, EventArgs e)
         {
-             evokWork.pause();
-          
+             evokWork.pause();        
         }
 
         private void qClr_Click(object sender, EventArgs e)
@@ -397,7 +386,7 @@ namespace evokNew0066
                 {
                     if ((control.Parent ==  tabPage1) || (control.Parent ==  groupBox1))
                     {
-                        foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
+                        foreach (DTPlcInfoSimple simple in  evokWork.PsLstAuto)
                         {
                             if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
                             {
@@ -407,7 +396,7 @@ namespace evokNew0066
                     }
                     if (control.Parent ==  tabPage2)
                     {
-                        foreach (PlcInfoSimple simple2 in  evokWork.PsLstHand)
+                        foreach (DTPlcInfoSimple simple2 in  evokWork.PsLstHand)
                         {
                             if (simple2.Name.Contains(control.Tag.ToString()) && simple2.Name.Contains(Constant.Read))
                             {
@@ -417,7 +406,7 @@ namespace evokNew0066
                     }
                     if (control.Parent ==  tabPage3)
                     {
-                        foreach (PlcInfoSimple simple3 in  evokWork.PsLstParam)
+                        foreach (DTPlcInfoSimple simple3 in  evokWork.PsLstParam)
                         {
                             if ((simple3.Name.Contains(control.Tag.ToString()) && simple3.Name.Contains(Constant.Read)) && (control.Parent ==  tabPage3))
                             {
@@ -427,7 +416,7 @@ namespace evokNew0066
                     }
                     if (control.Parent == tabPage4)
                     {
-                        foreach (PlcInfoSimple simple4 in evokWork.PsLstIO)
+                        foreach (DTPlcInfoSimple simple4 in evokWork.PsLstIO)
                         {
                             if ((simple4.Name.Contains(control.Tag.ToString()) && simple4.Name.Contains(Constant.Read)) && (control.Parent == tabPage4))
                             {
@@ -502,7 +491,7 @@ namespace evokNew0066
             }
             else
             {
-                evokWork.CutStartNormal(Constant.CutNormalMode);
+                evokWork.CutStartNormal(Constant.CutNormalWithHoleMode);
                 //测试代码 后续回复弹窗
                 qClr_Click(sender, e);
                 optBtn_Click(sender, e);
@@ -566,7 +555,7 @@ namespace evokNew0066
             if ( tc1.SelectedIndex == 0)
             {                               
                 IsoptBtnShow( evokWork.AutoMes);
-                foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
+                foreach (DTPlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
                 }
@@ -587,7 +576,7 @@ namespace evokNew0066
             }
             if (tc1.SelectedIndex == 0)
             {
-                foreach(PlcInfoSimple p in evokWork.PsLstAuto)
+                foreach(DTPlcInfoSimple p in evokWork.PsLstAuto)
                 {
                     if (p.Name.Contains(Constant.Alarm)&& p.ShowStr != null && p.ShowStr.Count > 0)
                     {
@@ -613,7 +602,7 @@ namespace evokNew0066
             }
             if (tc1.SelectedIndex == 1)
             {
-                foreach (PlcInfoSimple p in evokWork.PsLstHand)
+                foreach (DTPlcInfoSimple p in evokWork.PsLstHand)
                 {
                     if (p.Name.Contains(Constant.Alarm) && p.ShowStr != null && p.ShowStr.Count > 0)
                     {
@@ -641,7 +630,7 @@ namespace evokNew0066
         {
             if ( tc1.SelectedIndex == 1)
             {
-                foreach (PlcInfoSimple simple in  evokWork.PsLstHand)
+                foreach (DTPlcInfoSimple simple in  evokWork.PsLstHand)
                 {
                     int showValue = simple.ShowValue;
                 }
@@ -797,8 +786,7 @@ namespace evokNew0066
 
         private void 设备ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
-
+            
         }
     }
 }

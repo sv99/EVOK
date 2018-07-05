@@ -282,7 +282,7 @@ namespace xjplc
                 {                    
                     m_buffer.AddRange(e.BufferData);
                     //返回命令统一都是0X01开头 如果不是则移除
-                    if (m_buffer[0] != 0x01) m_buffer.RemoveAt(0);         
+                    if (m_buffer[0] != Constant.XJHeader) m_buffer.RemoveAt(0);         
                     if ((m_buffer.Count > receivedByteCount))               
                         m_buffer.Clear();
                     //收到数据就清空错误指示器，如果长时间通讯错误 肯定会一直往上加

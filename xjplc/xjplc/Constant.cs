@@ -42,6 +42,7 @@ namespace xjplc
             get { return byte_buffer; }
             set { byte_buffer = value; }
         }
+        
         public commEventArgs()
         {
 
@@ -152,14 +153,22 @@ namespace xjplc
         public const  int CutMeasureRotateWithHoleMode = 2;
         public const   int CutNormalMode = 0;
         public const  int CutMeasureMode = 1;
+        public const int  CutNormalWithHoleMode = 3;
         #endregion
         #region 台达PLC专用
         //台达PLC 发送命令 判断是否存在 存在则回复以下
         // 3a 30 31 30 35 30 43 30 30 46 46 30 30 45 46 0d 0a
         public static readonly byte[] DTExistByteOutIn = 
-            { 0x3a,0x30,0x31 ,0x30 ,0x35 ,0x30 ,0x43 ,0x30 ,0x30 ,0x46 ,0x46 ,0x30 ,0x30 ,0x45 ,0x46 ,0x0d ,0x0a };       
+            { 0x01,0x05,0x0C,0x00,0xFF,0x00,0xEF};
+        public static readonly byte[] DTExistByteOutIn0 =
+           { 0x3a,0x30 ,0x31 ,0x30 ,0x35 ,0x30 ,0x43 ,0x30 ,0x30 ,0x46 ,0x46 ,0x30 ,0x30 ,0x45 ,0x46 ,0x0d ,0x0a};
+        public static readonly byte DTHeader = 0x3a;
+        public static readonly byte[] DTReadDataCmdCheck = { 0x01, 0x03 };
+        public static readonly byte[] DTEnd = { 0x0d, 0x0a };
         #endregion
         #region 信捷PLC 专用
+        //固定头
+        public static readonly int XJHeader = 0x01;
         //信捷PLC 发送命令 判断是否存在 存在则回复以下
         // 01 03 f5 c0 00 01 b7 fa
         public static readonly byte[] XJExistByteOut = { 0x01, 0x03, 0xf5, 0xc0, 0x00, 0x01, 0xb7, 0xfa };
@@ -193,12 +202,12 @@ namespace xjplc
         public static readonly int WriteTimeOut = 1000;
 
         //PLC 数据反馈 在切割的时候 数据发送 超时
-        public static readonly int   PlcCountTimeOut = 2000;
+        public static readonly int   PlcCountTimeOut = 90000;
         public static readonly byte[] XJReadDataCmdCheck = { 0x01, 0x19 };
 
 
 
-        //地址偏移常量
+        //信捷地址偏移常量
         public static readonly int M_addr = 0;
         public static readonly int D_addr = 0;
         public static readonly int X_addr = 0x5000;
@@ -206,7 +215,12 @@ namespace xjplc
         public static readonly int HD_addr = 0xA080;
         public static readonly int HSD_addr = 0xB880;
         public static readonly int HM_addr = 0xC100;
+
+        //地址偏移常量
         public static readonly int Delta_D_addr = 0x1000;
+        public static readonly int Delta_X_addr = 0x0400;
+        public static readonly int Delta_Y_addr = 0x0500;
+        public static readonly int Delta_M_addr = 0x0800;
         //
         //寄存器ID常量  实例化时需要定义
         public const int D_ID = 0;   //默认占两个通道
@@ -237,6 +251,10 @@ namespace xjplc
         //
         public const int PLCXY = 7;
 
+
+        #region 远邦台技数据
+        public static readonly string[] strformatYB = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具" };
+        #endregion
     }
 
 }

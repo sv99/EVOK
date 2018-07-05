@@ -7,13 +7,25 @@ using System.Threading.Tasks;
 namespace xjplc
 {
     //比较去重复PLCINFO
-    public class ModelComparer : IEqualityComparer<PlcInfo>
+    public class ModelComparer : IEqualityComparer<XJPlcInfo>
     {
-        public bool Equals(PlcInfo x, PlcInfo y)
+        public bool Equals(XJPlcInfo x, XJPlcInfo y)
         {
             return ((x.RelAddr == y.RelAddr) && (x.IntArea == y.IntArea));
         }
-        public int GetHashCode(PlcInfo obj)
+        public int GetHashCode(XJPlcInfo obj)
+        {
+            return obj.RelAddr.GetHashCode();
+        }
+    }
+
+    public class ModelComparerDT : IEqualityComparer<DTPlcInfo>
+    {
+        public bool Equals(DTPlcInfo x, DTPlcInfo y)
+        {
+            return ((x.RelAddr == y.RelAddr) && (x.IntArea == y.IntArea));
+        }
+        public int GetHashCode(DTPlcInfo obj)
         {
             return obj.RelAddr.GetHashCode();
         }

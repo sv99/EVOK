@@ -37,9 +37,9 @@ namespace xjplc
         //List<List<PlcInfo>> DPlcInfoLst;
         //List<List<List<PlcInfo>>> MPlcInfoAllLst;
         //信捷使用 监控的数据都放在这里      
-        public List<PlcInfo> DPlcInfo ;
+        public List<XJPlcInfo> DPlcInfo ;
         //这里为什么要这样？ 因为M值不连续的分一组 再整理起来
-        public List<List<PlcInfo>> MPlcInfoAll;
+        public List<List<XJPlcInfo>> MPlcInfoAll;
 
         XJPLCPackCmdAndDataUnpack XJPLCcmd ;
 
@@ -265,7 +265,6 @@ namespace xjplc
             {
                     CommError = 0;
                     status = Constant.DeviceConnected;
-                    WatchCommTimer.Enabled = true;
                     return true;
              }
 
@@ -379,6 +378,12 @@ namespace xjplc
                         dataForm0 = CSVData.OpenCSV(CSVData.FileName);
                         if (dataForm0 != null && dataForm0.Rows.Count > 0)
                             DataFormLst.Add(dataForm0);
+                        else
+                        {
+                            MessageBox.Show(Constant.ReadPlcInfoFail);
+                            ConstantMethod.AppExit();
+                        }
+
                     }
                     else
                     {
@@ -404,8 +409,8 @@ namespace xjplc
         /// </summary>
         void PackCmdReadDMDataOut(DataTable dataForm0)
         {
-            List<PlcInfo> plcInfoLst = new List<PlcInfo>();
-            List<PlcInfo> MPlcInfo   = new List<PlcInfo>();
+            List<XJPlcInfo> plcInfoLst = new List<XJPlcInfo>();
+            List<XJPlcInfo> MPlcInfo   = new List<XJPlcInfo>();
             foreach (DataRow row in dataForm0.Rows)
             {
                 int mAddr = 0;
@@ -447,7 +452,7 @@ namespace xjplc
                     count = count * 2;
                 }
                 //传入数据起始地址 个数 区域 模式
-                PlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr,count,strSplit2, DSmode);
+                XJPlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr,count,strSplit2, DSmode);
 
                 if (tmpInfoLst.Count() > 0) plcInfoLst.AddRange(tmpInfoLst);
                 #endregion
@@ -466,7 +471,7 @@ namespace xjplc
             MPlcInfo = InsertPlcInfo(MPlcInfo);
 
 
-            plcInfoLst = DPlcInfo.Union(MPlcInfo).ToList<PlcInfo>();
+            plcInfoLst = DPlcInfo.Union(MPlcInfo).ToList<XJPlcInfo>();
             #endregion
             #region  根据断点 建立命令的表格缓冲lst 然后创建读取DM区域的命令
             //开始打包
@@ -506,15 +511,15 @@ namespace xjplc
             FindHighPlcInfo(DPlcInfo);
 
             //这里M区麻烦一点 分成n个M单元组 每个单元组 有个起始地址
-            MPlcInfoAll = new List<List<PlcInfo>>();
+            MPlcInfoAll = new List<List<XJPlcInfo>>();
             for (int i = 0; i < addrLst.Count; i++)
             {
-                List<PlcInfo> mplst = new List<PlcInfo>();
+                List<XJPlcInfo> mplst = new List<XJPlcInfo>();
                 if (idLst[i] > Constant.HSD_ID)
                 {
                     for (int k = 0; k < addrcount[i]; k++)
                     {
-                        PlcInfo p = new PlcInfo();
+                        XJPlcInfo p = new XJPlcInfo();
                         p.ValueMode = Constant.BitMode;
                         p.ByteValue = new byte[1];
                         p.IntArea = idLst[i];
@@ -554,8 +559,8 @@ namespace xjplc
         /// <param name="dataForm0"></param>
         void SplitPackCmdReadDMDataOut(DataTable dataForm0, DataTable dataForm1)
         {
-            List<PlcInfo> plcInfoLst = new List<PlcInfo>();
-            List<PlcInfo> MPlcInfo = new List<PlcInfo>();
+            List<XJPlcInfo> plcInfoLst = new List<XJPlcInfo>();
+            List<XJPlcInfo> MPlcInfo = new List<XJPlcInfo>();
             foreach (DataRow row in dataForm0.Rows)
             {
                 int mAddr = 0;
@@ -597,7 +602,7 @@ namespace xjplc
                     count = count * 2;
                 }
                 //传入数据起始地址 个数 区域 模式
-                PlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr, count, strSplit2, DSmode);
+                XJPlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr, count, strSplit2, DSmode);
 
                 if (tmpInfoLst.Count() > 0) plcInfoLst.AddRange(tmpInfoLst);
                 #endregion
@@ -616,7 +621,7 @@ namespace xjplc
             MPlcInfo = InsertPlcInfo(MPlcInfo);
 
 
-            plcInfoLst = DPlcInfo.Union(MPlcInfo).ToList<PlcInfo>();
+            plcInfoLst = DPlcInfo.Union(MPlcInfo).ToList<XJPlcInfo>();
             #endregion
             #region  根据断点 建立命令的表格缓冲lst 然后创建读取DM区域的命令
             //开始打包
@@ -656,15 +661,15 @@ namespace xjplc
             FindHighPlcInfo(DPlcInfo);
 
             //这里M区麻烦一点 分成n个M单元组 每个单元组 有个起始地址
-            MPlcInfoAll = new List<List<PlcInfo>>();
+            MPlcInfoAll = new List<List<XJPlcInfo>>();
             for (int i = 0; i < addrLst.Count; i++)
             {
-                List<PlcInfo> mplst = new List<PlcInfo>();
+                List<XJPlcInfo> mplst = new List<XJPlcInfo>();
                 if (idLst[i] > Constant.HSD_ID)
                 {
                     for (int k = 0; k < addrcount[i]; k++)
                     {
-                        PlcInfo p = new PlcInfo();
+                        XJPlcInfo p = new XJPlcInfo();
                         p.ValueMode = Constant.BitMode;
                         p.ByteValue = new byte[1];
                         p.IntArea = idLst[i];
@@ -705,7 +710,7 @@ namespace xjplc
         /// <param name="dAll"></param>
         /// <param name="mAll"></param>
         /// <returns></returns>
-        private bool FindIndexInPlcInfo(DataTable datafm, List<PlcInfo> dAll, List<List<PlcInfo>> mAll)
+        private bool FindIndexInPlcInfo(DataTable datafm, List<XJPlcInfo> dAll, List<List<XJPlcInfo>> mAll)
         {
             foreach (DataRow row in datafm.Rows)
             {
@@ -789,13 +794,13 @@ namespace xjplc
 
             result[1] = -1;
             //寻找地址和字母都对的
-            List<PlcInfo> dpResultLow = null;
+            List<XJPlcInfo> dpResultLow = null;
 
 
             if (area < Constant.HSD_ID + 1)
             {
                 dpResultLow = DPlcInfo.FindAll(
-                delegate (PlcInfo pf)
+                delegate (XJPlcInfo pf)
                 {
                     return (pf.AbsAddr == addr) && (pf.IntArea.Equals(area));
                 });
@@ -809,7 +814,7 @@ namespace xjplc
                 {
 
                     dpResultLow = MPlcInfoAll[i].FindAll(
-                    delegate (PlcInfo pf)
+                    delegate (XJPlcInfo pf)
                     {
                         return (pf.AbsAddr == addr) && (pf.IntArea.Equals(area));
                     });
@@ -835,10 +840,10 @@ namespace xjplc
         /// 在传入的集合里找到 高字节位置 针对双字寄存器
         /// </summary>
         /// <returns></returns>
-        private bool FindHighPlcInfo(List<PlcInfo> dAll)
+        private bool FindHighPlcInfo(List<XJPlcInfo> dAll)
         {
             
-            List<PlcInfo> dpResultHigh = null;
+            List<XJPlcInfo> dpResultHigh = null;
             if(dAll.Count>0)           
             for (int i = 0; i < dAll.Count; i++)
             {
@@ -847,7 +852,7 @@ namespace xjplc
                     int addr = dAll[i].AbsAddr + 1;
                     int area = dAll[i].IntArea;
                     dpResultHigh = dAll.FindAll(
-                    delegate (PlcInfo pf)
+                    delegate (XJPlcInfo pf)
                     {
                         return ((pf.AbsAddr == (addr)) && (pf.IntArea == area));
                     });
@@ -866,9 +871,9 @@ namespace xjplc
         //忘了XY 是 从0~7的 
         /// </summary>
         /// <param name="plcInfoLst0"></param>
-        private List<PlcInfo> InsertPlcInfo(List<PlcInfo> plcInfoLst0)
+        private List<XJPlcInfo> InsertPlcInfo(List<XJPlcInfo> plcInfoLst0)
         {
-            List<PlcInfo> plcInfoLst1 = new List<PlcInfo>();
+            List<XJPlcInfo> plcInfoLst1 = new List<XJPlcInfo>();
             if (plcInfoLst0.Count < 1) return plcInfoLst1;
             for (int i = 0; i < plcInfoLst0.Count - 1; i++)
             {
@@ -879,7 +884,7 @@ namespace xjplc
                     m = plcInfoLst0[i + 1].RelAddr - plcInfoLst0[i].RelAddr;
                     if (m > 1)
                     {
-                        PlcInfo[] tmpPlcInfoLst = XJPLCcmd.GetPlcInfo(plcInfoLst0[i].RelAddr, m, plcInfoLst0[i].StrArea, plcInfoLst0[i].ValueMode);
+                        XJPlcInfo[] tmpPlcInfoLst = XJPLCcmd.GetPlcInfo(plcInfoLst0[i].RelAddr, m, plcInfoLst0[i].StrArea, plcInfoLst0[i].ValueMode);
                         if (tmpPlcInfoLst.Count() > 0)
                         {
                             plcInfoLst1.AddRange(tmpPlcInfoLst);                         
@@ -889,7 +894,7 @@ namespace xjplc
                 }
             }
                                   
-            plcInfoLst1 = plcInfoLst1.Union(plcInfoLst0.ToArray()).ToList<PlcInfo>();
+            plcInfoLst1 = plcInfoLst1.Union(plcInfoLst0.ToArray()).ToList<XJPlcInfo>();
 
             //排序
             plcInfoLst1= plcInfoLst1.OrderBy(x => x.AbsAddr).ToList();

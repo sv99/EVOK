@@ -11,7 +11,7 @@ namespace xjplc
 {
     public class PlcInfoSimple
     {
-        PlcInfo pInfo;
+        XJPlcInfo pInfo;
 
         Control showControl;
 
@@ -27,7 +27,7 @@ namespace xjplc
             set { showControl = value; }
         }
 
-        public void SetPlcInfo(PlcInfo pInfo0)
+        public void SetPlcInfo(XJPlcInfo pInfo0)
         {
             pInfo = pInfo0;
         }
@@ -145,18 +145,19 @@ namespace xjplc
         }
 
     }
-    public class PlcInfo: INotifyPropertyChanged
+    public class XJPlcInfo: INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
 
         //传入相对地址 和区域 单双字
-        public PlcInfo(int addr, string areaIn, string valuemode)
+        public XJPlcInfo(int addr, string areaIn, string valuemode)
         {
             this.relativeaddr = addr;
-
+       
             this.StrArea = areaIn;
             absAddr = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(relativeaddr, StrArea);
             intArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(StrArea);
+          
             valueMode = valuemode;
             //D区两个字节 
             if (intArea < Constant.M_ID)
@@ -164,7 +165,7 @@ namespace xjplc
             else ByteValue = new byte[1];
 
         }
-        public PlcInfo()
+        public XJPlcInfo()
         {
 
         }
@@ -202,8 +203,8 @@ namespace xjplc
             set { valueMode = value; }
         }
         //如果是双字 高字节 是哪个哦
-        PlcInfo doubleModeHigh;
-        public PlcInfo DoubleModeHigh
+        XJPlcInfo doubleModeHigh;
+        public XJPlcInfo DoubleModeHigh
         {
             get { return doubleModeHigh; }
             set { doubleModeHigh = value; }

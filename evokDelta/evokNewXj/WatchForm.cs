@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace evokNew
+namespace evokNewDT
 {
     public partial class WatchForm : Form
     {
