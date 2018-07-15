@@ -25,7 +25,7 @@ namespace xjplc
 
         static object locker = new object();
 
-       public  static string LogFileName ;
+        public  static string LogFileName ;
         /// <summary>
         /// 重要信息写入日志
         /// </summary>
@@ -319,6 +319,18 @@ namespace xjplc
             }
             return d;
         }
+
+        public  static void CheckAllCtrls(Control item, Queue<Control> allCtrls)
+        {
+            for (int i = 0; i < item.Controls.Count; i++)
+            {
+                if (item.Controls[i].HasChildren)
+                {
+                    CheckAllCtrls(item.Controls[i], allCtrls);
+                }
+                allCtrls.Enqueue(item.Controls[i]);
+            }
+        }
         public static void ShowInfo(RichTextBox r1, string s)
         {
             if (r1 != null && r1.IsHandleCreated )
@@ -327,6 +339,17 @@ namespace xjplc
                 {
                     r1.ScrollToCaret();
                     r1.AppendText(s + "\n");
+                }));
+            }
+
+        }
+        public static void SetText(Control  r1, string s)
+        {
+            if (r1 != null && r1.IsHandleCreated)
+            {
+                r1.Invoke((EventHandler)(delegate
+                {
+                    r1.Text = s;
                 }));
             }
 
@@ -342,6 +365,43 @@ namespace xjplc
             }
 
         }
+        
+        #region 加密
+
+        /// <summary>
+        /// 一般用户界面密码 动态密码 日期加1000
+        /// </summary>
+        /// <returns></returns>
+        public static bool UserPassWd()
+        {
+            passWdForm psswd = new passWdForm();
+            psswd.ShowDialog();
+            while (psswd.Visible)
+            {
+                Application.DoEvents();
+            }
+            string str = DateTime.Now.ToString("MMdd");
+            int psswdInt = 0;
+            int.TryParse(str, out psswdInt);
+            psswdInt = psswdInt + Constant.PwdOffSet;
+            if (psswd.userInput.Equals(psswdInt.ToString()))
+            {
+                psswd.Close();
+                return true;              
+            }
+            else
+            {
+                MessageBox.Show(Constant.pwdWrong);
+                psswd.Close();
+                return false;
+            }
+
+           
+        }
+        /// <summary>
+        /// 程序 根据日期加密 日期乘以后面的count为密码
+        /// </summary>
+        /// <returns></returns>
         public static bool InitPassWd()
         {
             ConfigFileManager passWdFile  = new ConfigFileManager();
@@ -350,7 +410,7 @@ namespace xjplc
 
             string readTimeStr = passWdFile.ReadConfig(Constant.passwdTime);
             string readCountStr = passWdFile.ReadConfig(Constant.passwdCount);
-            //统计下密码和设置时间
+            //统计下密码和设置时间 
             int readTimeInt = 0;
             int readCountInt = 0;
             passWdFile.Dispose();
@@ -373,6 +433,8 @@ namespace xjplc
             }
             return true;
         }
+       
+        #endregion
         public static void Optimize(int n, int[] w, int[] v, int[] x, int C)
       {
 

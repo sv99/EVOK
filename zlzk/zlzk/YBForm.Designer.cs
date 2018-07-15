@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(YBForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.deviceGroupBox = new System.Windows.Forms.GroupBox();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.label42 = new System.Windows.Forms.Label();
@@ -66,6 +67,11 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label30 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label24 = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
@@ -80,13 +86,9 @@
             this.button2 = new System.Windows.Forms.Button();
             this.label20 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.dgvDevice = new System.Windows.Forms.DataGridView();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.button8 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
@@ -101,22 +103,20 @@
             this.打开数据文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectMachine = new System.Windows.Forms.ToolStripMenuItem();
-            this.showCurrentDataForm = new System.Windows.Forms.ToolStripMenuItem();
             this.查看当前日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.查看历史日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.使用说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于程序版本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deviceLstTimer = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.deviceGroupBox.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDevice)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -125,20 +125,19 @@
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(12, 34);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1455, 714);
+            this.tabControl1.Size = new System.Drawing.Size(1560, 714);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.label22);
             this.tabPage1.Controls.Add(this.label21);
-            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.deviceGroupBox);
             this.tabPage1.Controls.Add(this.deviceLB);
             this.tabPage1.Controls.Add(this.button9);
             this.tabPage1.Controls.Add(this.button3);
@@ -148,7 +147,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1447, 685);
+            this.tabPage1.Size = new System.Drawing.Size(1552, 685);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "设备";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -173,21 +172,20 @@
             this.label21.TabIndex = 8;
             this.label21.Text = "当前时间:";
             // 
-            // groupBox1
+            // deviceGroupBox
             // 
-            this.groupBox1.Controls.Add(this.progressBar1);
-            this.groupBox1.Controls.Add(this.groupBox4);
-            this.groupBox1.Controls.Add(this.groupBox3);
-            this.groupBox1.Controls.Add(this.groupBox2);
-            this.groupBox1.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.groupBox1.Location = new System.Drawing.Point(194, 62);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(1208, 613);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = " 192.168.1.1";
+            this.deviceGroupBox.Controls.Add(this.progressBar1);
+            this.deviceGroupBox.Controls.Add(this.groupBox4);
+            this.deviceGroupBox.Controls.Add(this.groupBox3);
+            this.deviceGroupBox.Controls.Add(this.groupBox2);
+            this.deviceGroupBox.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.deviceGroupBox.Location = new System.Drawing.Point(200, 62);
+            this.deviceGroupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.deviceGroupBox.Name = "deviceGroupBox";
+            this.deviceGroupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.deviceGroupBox.Size = new System.Drawing.Size(1328, 545);
+            this.deviceGroupBox.TabIndex = 7;
+            this.deviceGroupBox.TabStop = false;
             // 
             // progressBar1
             // 
@@ -211,9 +209,9 @@
             this.groupBox4.Controls.Add(this.label52);
             this.groupBox4.Controls.Add(this.label53);
             this.groupBox4.Controls.Add(this.label54);
-            this.groupBox4.Location = new System.Drawing.Point(839, 28);
+            this.groupBox4.Location = new System.Drawing.Point(945, 28);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(351, 423);
+            this.groupBox4.Size = new System.Drawing.Size(377, 423);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "其他";
@@ -363,9 +361,9 @@
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label36);
             this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Location = new System.Drawing.Point(427, 28);
+            this.groupBox3.Location = new System.Drawing.Point(505, 28);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(391, 423);
+            this.groupBox3.Size = new System.Drawing.Size(425, 423);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "产品信息";
@@ -511,6 +509,11 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label30);
+            this.groupBox2.Controls.Add(this.label11);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label31);
             this.groupBox2.Controls.Add(this.label24);
             this.groupBox2.Controls.Add(this.label25);
@@ -521,7 +524,7 @@
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Location = new System.Drawing.Point(11, 28);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(392, 423);
+            this.groupBox2.Size = new System.Drawing.Size(488, 423);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "时间数据";
@@ -530,17 +533,67 @@
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label30.Location = new System.Drawing.Point(15, 91);
+            this.label30.Location = new System.Drawing.Point(6, 91);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(174, 27);
             this.label30.TabIndex = 6;
             this.label30.Text = "日计划单号：";
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label11.Location = new System.Drawing.Point(170, 291);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(93, 27);
+            this.label11.TabIndex = 5;
+            this.label11.Text = "机加工";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.Location = new System.Drawing.Point(170, 342);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(93, 27);
+            this.label9.TabIndex = 5;
+            this.label9.Text = "机加工";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(170, 240);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(82, 24);
+            this.label6.TabIndex = 5;
+            this.label6.Text = "机加工";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(170, 183);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(82, 24);
+            this.label5.TabIndex = 5;
+            this.label5.Text = "机加工";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(170, 138);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(82, 24);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "机加工";
+            // 
             // label31
             // 
             this.label31.AutoSize = true;
             this.label31.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label31.Location = new System.Drawing.Point(195, 91);
+            this.label31.Location = new System.Drawing.Point(173, 90);
             this.label31.Name = "label31";
             this.label31.Size = new System.Drawing.Size(93, 27);
             this.label31.TabIndex = 5;
@@ -550,7 +603,7 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label24.Location = new System.Drawing.Point(15, 40);
+            this.label24.Location = new System.Drawing.Point(6, 40);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(147, 27);
             this.label24.TabIndex = 4;
@@ -560,7 +613,7 @@
             // 
             this.label25.AutoSize = true;
             this.label25.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label25.Location = new System.Drawing.Point(195, 40);
+            this.label25.Location = new System.Drawing.Point(170, 40);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(93, 27);
             this.label25.TabIndex = 3;
@@ -570,7 +623,7 @@
             // 
             this.label35.AutoSize = true;
             this.label35.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label35.Location = new System.Drawing.Point(15, 342);
+            this.label35.Location = new System.Drawing.Point(6, 342);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(147, 27);
             this.label35.TabIndex = 0;
@@ -581,7 +634,7 @@
             // 
             this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label34.Location = new System.Drawing.Point(15, 291);
+            this.label34.Location = new System.Drawing.Point(6, 291);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(147, 27);
             this.label34.TabIndex = 0;
@@ -592,29 +645,29 @@
             // 
             this.label33.AutoSize = true;
             this.label33.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label33.Location = new System.Drawing.Point(15, 240);
+            this.label33.Location = new System.Drawing.Point(6, 240);
             this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(201, 27);
+            this.label33.Size = new System.Drawing.Size(147, 27);
             this.label33.TabIndex = 0;
-            this.label33.Text = "实际结束时间：";
+            this.label33.Text = "实际结束：";
             this.label33.Click += new System.EventHandler(this.label16_Click);
             // 
             // label32
             // 
             this.label32.AutoSize = true;
             this.label32.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label32.Location = new System.Drawing.Point(15, 186);
+            this.label32.Location = new System.Drawing.Point(6, 186);
             this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(201, 27);
+            this.label32.Size = new System.Drawing.Size(147, 27);
             this.label32.TabIndex = 0;
-            this.label32.Text = "理论结束时间：";
+            this.label32.Text = "理论结束：";
             this.label32.Click += new System.EventHandler(this.label16_Click);
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label16.Location = new System.Drawing.Point(15, 138);
+            this.label16.Location = new System.Drawing.Point(6, 138);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(147, 27);
             this.label16.TabIndex = 0;
@@ -630,6 +683,7 @@
             this.deviceLB.Name = "deviceLB";
             this.deviceLB.Size = new System.Drawing.Size(161, 619);
             this.deviceLB.TabIndex = 6;
+            this.deviceLB.DoubleClick += new System.EventHandler(this.deviceLB_DoubleClick);
             // 
             // button9
             // 
@@ -678,17 +732,26 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button11);
             this.tabPage2.Controls.Add(this.textBox1);
-            this.tabPage2.Controls.Add(this.label19);
             this.tabPage2.Controls.Add(this.label18);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1447, 685);
+            this.tabPage2.Size = new System.Drawing.Size(1552, 685);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "参数设置";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(33, 82);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(154, 50);
+            this.button11.TabIndex = 3;
+            this.button11.Text = "重启服务器";
+            this.button11.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
@@ -697,16 +760,6 @@
             this.textBox1.Size = new System.Drawing.Size(128, 25);
             this.textBox1.TabIndex = 2;
             this.textBox1.Text = "192.168.100.3";
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Font = new System.Drawing.Font("宋体", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label19.Location = new System.Drawing.Point(28, 74);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(147, 27);
-            this.label19.TabIndex = 1;
-            this.label19.Text = "设备查询：";
             // 
             // label18
             // 
@@ -717,48 +770,6 @@
             this.label18.Size = new System.Drawing.Size(228, 27);
             this.label18.TabIndex = 1;
             this.label18.Text = "服务器网络设置：";
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.button4);
-            this.tabPage3.Controls.Add(this.button1);
-            this.tabPage3.Controls.Add(this.dgvDevice);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1447, 685);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "设备管理";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(135, 545);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 1;
-            this.button4.Text = "刷新";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(34, 545);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "保存";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // dgvDevice
-            // 
-            this.dgvDevice.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDevice.Location = new System.Drawing.Point(6, 6);
-            this.dgvDevice.Name = "dgvDevice";
-            this.dgvDevice.RowTemplate.Height = 27;
-            this.dgvDevice.Size = new System.Drawing.Size(1405, 506);
-            this.dgvDevice.TabIndex = 0;
             // 
             // tabPage4
             // 
@@ -772,7 +783,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1447, 685);
+            this.tabPage4.Size = new System.Drawing.Size(1552, 685);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "test";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -856,7 +867,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1556, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1600, 28);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -878,7 +889,6 @@
             // 
             this.设备ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectMachine,
-            this.showCurrentDataForm,
             this.查看当前日志文件ToolStripMenuItem,
             this.查看历史日志文件ToolStripMenuItem});
             this.设备ToolStripMenuItem.Name = "设备ToolStripMenuItem";
@@ -889,13 +899,7 @@
             // 
             this.connectMachine.Name = "connectMachine";
             this.connectMachine.Size = new System.Drawing.Size(196, 26);
-            this.connectMachine.Text = "连接设备";
-            // 
-            // showCurrentDataForm
-            // 
-            this.showCurrentDataForm.Name = "showCurrentDataForm";
-            this.showCurrentDataForm.Size = new System.Drawing.Size(196, 26);
-            this.showCurrentDataForm.Text = "监控当前页面数据";
+            this.connectMachine.Text = "设备列表";
             // 
             // 查看当前日志文件ToolStripMenuItem
             // 
@@ -937,11 +941,17 @@
             this.关于意利欧机械有限公司ToolStripMenuItem.Size = new System.Drawing.Size(238, 26);
             this.关于意利欧机械有限公司ToolStripMenuItem.Text = "关于意利欧机械有限公司";
             // 
+            // deviceLstTimer
+            // 
+            this.deviceLstTimer.Enabled = true;
+            this.deviceLstTimer.Interval = 1000;
+            this.deviceLstTimer.Tick += new System.EventHandler(this.deviceLstTimer_Tick);
+            // 
             // YBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1556, 734);
+            this.ClientSize = new System.Drawing.Size(1600, 734);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -952,7 +962,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            this.deviceGroupBox.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -961,8 +971,6 @@
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvDevice)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -976,19 +984,14 @@
 
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox deviceGroupBox;
         private System.Windows.Forms.ListBox deviceLB;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.DataGridView dgvDevice;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.OpenFileDialog op1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabPage tabPage4;
@@ -1046,13 +1049,19 @@
         private System.Windows.Forms.ToolStripMenuItem 打开数据文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 设备ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectMachine;
-        private System.Windows.Forms.ToolStripMenuItem showCurrentDataForm;
         private System.Windows.Forms.ToolStripMenuItem 查看当前日志文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 查看历史日志文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 使用说明ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关于程序版本ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 关于意利欧机械有限公司ToolStripMenuItem;
+        private System.Windows.Forms.Timer deviceLstTimer;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
     }
 }
 

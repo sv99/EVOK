@@ -14,11 +14,10 @@ namespace evokNew0066
 
         List<string> errorList = new List<string>();
         int errorId = 0;
-        private EvokXJDevice evokDevice;
+    
         private EvokXJWork evokWork;
         private OptSize optSize;
 
-        private List<string> strDataFormPath;
 
         private WatchForm wForm;
 
@@ -115,9 +114,7 @@ namespace evokNew0066
             else
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
-            }
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
+            }         
         }
 
         private void dgvParam_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
@@ -183,11 +180,8 @@ namespace evokNew0066
         }
 
         private void InitControl()
-        {
-            evokWork.InitControl();
-            evokWork.ShiftPage(0);
+        {        
             SetControlInEvokWork();
-                     
             printcb.SelectedIndex = evokWork.PrintBarCodeMode;
             evokWork.ChangePrintMode(printcb.SelectedIndex);
 
@@ -200,47 +194,21 @@ namespace evokNew0066
             //所以早点设置好 然后在 那个selectindexchanged事件里增加 通讯正常判断
             printcb.DataSource = Constant.printBarcodeModeStr;
 
-            optSize = new OptSize( UserData);
-            strDataFormPath = new List<string>();
-            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
-            strDataFormPath.Add(Constant.PlcDataFilePathHand);
-            strDataFormPath.Add(Constant.PlcDataFilePathParam);
-            strDataFormPath.Add(Constant.PlcDataFilePathIO);
-
-            for (int i = strDataFormPath.Count - 1; i >=0; i--)
-            {
-                if (!File.Exists(strDataFormPath[i]))
-                {
-                    strDataFormPath.RemoveAt(i);
-                    MessageBox.Show(Constant.ErrorPlcFile);
-                    Environment.Exit(0);
-                }                   
-            }          
-
-            evokDevice = new EvokXJDevice(strDataFormPath);
-
-            if (! evokDevice.getDeviceData())
-            {
-               
-                MessageBox.Show(Constant.ConnectMachineFail);
-                Environment.Exit(0);
-            }
             LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
-            UpdateTimer.Enabled = true;
+                        
              optSize = new OptSize( UserData);
              evokWork = new EvokXJWork();
-             evokWork.SetEvokDevice( evokDevice);
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
              evokWork.SetPrintReport(report1);
-
+             evokWork.InitDgvParam(dgvParam);
+             evokWork.InitDgvIO(dgvIO);
+             UpdateTimer.Enabled = true;
         }
 
         private void InitView0()
-        {
-            evokWork.InitDgvParam(dgvParam);
-            evokWork.InitDgvIO(dgvIO);
+        {         
             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
             DialogExcelDataLoad.FileName = "请选择数据文件";
@@ -249,21 +217,9 @@ namespace evokNew0066
             logOPF.Filter = "文件(*.log)|*.log";
             logOPF.FileName = "请选择日志文件";
 
-
             errorTimer.Enabled = true;
 
-
-        }/********************************************************************
-        	created:	2018/06/27
-        	created:	27:6:2018   10:15
-        	filename: 	E:\project\2018\中意木工\evok\EVOK\evokXJ0066\evokNewXj\WorkForm.cs
-        	file path:	E:\project\2018\中意木工\evok\EVOK\evokXJ0066\evokNewXj
-        	file base:	WorkForm
-        	file ext:	cs
-        	author:		Author
-        	
-        	purpose:	
-        *********************************************************************/
+        }
 
         private void IsoptBtnShow(bool showvalue)
         {
@@ -390,7 +346,8 @@ namespace evokNew0066
         /// </summary>
         public void SetControlInEvokWork()
         {
-            CheckAllCtrls(this);
+            ConstantMethod.
+            CheckAllCtrls(this, allCtrls);
             foreach (Control control in allCtrls)
             {
                 if (control.Tag != null)
@@ -402,6 +359,7 @@ namespace evokNew0066
                             if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
                             {
                                 simple.ShowControl = control;
+                                break;
                             }
                         }
                     }
@@ -412,6 +370,7 @@ namespace evokNew0066
                             if (simple2.Name.Contains(control.Tag.ToString()) && simple2.Name.Contains(Constant.Read))
                             {
                                 simple2.ShowControl = control;
+                                break;
                             }
                         }
                     }
@@ -422,6 +381,7 @@ namespace evokNew0066
                             if ((simple3.Name.Contains(control.Tag.ToString()) && simple3.Name.Contains(Constant.Read)) && (control.Parent ==  tabPage3))
                             {
                                 simple3.ShowControl = control;
+                                break;
                             }
                         }
                     }
@@ -432,6 +392,7 @@ namespace evokNew0066
                             if ((simple4.Name.Contains(control.Tag.ToString()) && simple4.Name.Contains(Constant.Read)) && (control.Parent == tabPage4))
                             {
                                 simple4.ShowControl = control;
+                                break;
                             }
                         }
                     }
@@ -691,31 +652,18 @@ namespace evokNew0066
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                      
-            passWdForm psswd = new passWdForm();
-            psswd.Show();
 
-            while (psswd.Visible)
+            if (!ConstantMethod.UserPassWd())
             {
-                Application.DoEvents();
+                return;
             }
-            string str = DateTime.Now.ToString("MMdd");
-            int psswdInt = 0;
-            int.TryParse(str, out psswdInt);
-            psswdInt = psswdInt + 1000;
-            if (psswd.userInput.Equals(psswdInt.ToString()))
+
+            if (tc1.SelectedIndex < evokWork.DataFormCount)
             {
-                if (tc1.SelectedIndex < evokDevice.DataFormLst.Count)
-                {
-                    wForm = new WatchForm();
-                    wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
-                    wForm.Show();
-                }
-            }
-            else
-            {
-                MessageBox.Show(Constant.pwdWrong);
-                return ;
+                wForm = new WatchForm();
+                wForm.SetShowDataTable(evokWork.GetDataForm(tc1.SelectedIndex));
+                wForm.Show();
+
             }
 
 
@@ -798,6 +746,11 @@ namespace evokNew0066
         private void 设备ToolStripMenuItem_Click(object sender, EventArgs e)
         {
            
+
+        }
+
+        private void ScrollTimer_Tick(object sender, EventArgs e)
+        {
 
         }
     }

@@ -167,7 +167,7 @@ namespace xjplc
 
             paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
 
-             printBarCodeMode = value;//
+             printBarCodeMode = value;
 
             if (printBarCodeMode == Constant.AutoBarCode)
             {
@@ -872,8 +872,11 @@ namespace xjplc
 
                         if (!CutThread.IsAlive)
                             CutThread.Start();
-                    
-                    break;
+
+                       
+                        
+
+                        break;
                     }
                 case Constant.CutMeasureMode:
                     {
@@ -885,6 +888,8 @@ namespace xjplc
 
                         if (!CutThread.IsAlive)
                             CutThread.Start();
+                       
+                       
                         break;
                     }
                 case Constant.CutMeasureRotateWithHoleMode:
@@ -897,7 +902,8 @@ namespace xjplc
                             CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
 
                         if (!CutThread.IsAlive)
-                            CutThread.Start();
+                            CutThread.Start();                       
+                       
                         break;
                     }
                 case Constant.CutNormalWithHoleMode:
@@ -910,7 +916,8 @@ namespace xjplc
                             CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
 
                         if (!CutThread.IsAlive)
-                            CutThread.Start();
+                            CutThread.Start();                 
+                       
                         break;
                     }
                 default:
@@ -1009,7 +1016,10 @@ namespace xjplc
             {
 
                 SelectCutThread(cutid);
-            
+                while (CutThread.IsAlive)
+                {
+                    Application.DoEvents();
+                }
             }
             finally
             {

@@ -70,6 +70,11 @@ namespace xjplc
                     }
             }
         }
+
+        public void AddDataRow(DataRow dr)
+        {
+
+        }
         public DataTable ImportExcel(string filePath)
         {
             DataTable dt = new DataTable();

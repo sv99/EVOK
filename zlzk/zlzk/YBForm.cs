@@ -8,12 +8,13 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using xjplc;
+using System.Net;
 
 namespace zlzk
 {
     public partial class YBForm : Form
     {
-        CsvStreamReader CSVop = null;
+        
         string deviceDataFileName = null;
         DataTable devicedt=null;
         SocServer socserver = null;
@@ -21,10 +22,9 @@ namespace zlzk
 
         System.Timers.Timer commTimer = new System.Timers.Timer(2000);
 
-
-
         YBDTWorkManger ybdtWorkManger;
 
+        List<string> deviceIpLstStr;
         public YBForm()
         {
             InitializeComponent();
@@ -41,9 +41,10 @@ namespace zlzk
 
             //加载文件信息 默认为程序文件夹吧 
             ybdtWorkManger = new YBDTWorkManger();
-
-           
-
+            ybdtWorkManger.ydtdWorkChangedEvent += this.ydbtWorkChangedEvent;
+            deviceIpLstStr = new List<string>();
+            deviceLB.DataSource = deviceIpLstStr;
+           // deviceLstTimer.Enabled = true;
             /****
             deviceDataFileName = System.AppDomain.CurrentDomain.BaseDirectory + "device.xlsx";
             if (!File.Exists(deviceDataFileName))
@@ -109,9 +110,7 @@ namespace zlzk
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // 01 10 10 00 00 01 02 00 00 DC
-
-           // dpro.IsSend = true;
+           
             
         }
 
@@ -125,7 +124,7 @@ namespace zlzk
 
                 devicedt = NPOI.ImportExcel(op1.FileName);
 
-                dgvDevice.DataSource = devicedt;
+                //dgvDevice.DataSource = devicedt;
 
             }
 
@@ -139,7 +138,7 @@ namespace zlzk
                 //socserver.Setsenmsg(sendmsg);
                // socserver.SetRecRichBox(recmsg);
                // socserver.Setiptext(deviceLB);
-                socserver.startconn_Click();
+                socserver.startServer();
             }
         }
 
@@ -219,6 +218,91 @@ namespace zlzk
         private void label10_Click(object sender, EventArgs e)
         {
 
+        }
+        void ydbtWorkChangedEvent(object sender,  YBDTWork ybtdWork0)
+        {
+            if (ybdtWorkManger.YbdtWorkLst != null && ybdtWorkManger.YbdtWorkLst.Count > 0)
+            {
+                List<string> tempLst = new List<string>();
+                foreach (YBDTWork ybw in ybdtWorkManger.YbdtWorkLst)
+                {
+                    string strIp = (ybw.YbtdDevice.SocClient.RemoteEndPoint as IPEndPoint).Address.ToString();
+                    YBDTWork yw = ybdtWorkManger.GetYBDTWorkFromLst(ybdtWorkManger.YbdtWorkLst, strIp);
+                    if (yw != null)
+                    {
+                        tempLst.Add(yw.YbdtWorkInfo.DeviceId);
+                    }
+                    else
+                    {
+                        tempLst.Add(Constant.NoIdDevice);
+                    }
+                }
+                deviceIpLstStr = tempLst;
+                this.Invoke((EventHandler)(delegate
+                {
+                    deviceLB.DataSource = deviceIpLstStr;
+                    deviceLB.Refresh();
+                }));
+                
+              
+            }
+            else
+            {
+                this.Invoke((EventHandler)(delegate
+                {
+                    deviceLB.DataSource = null;
+                    deviceLB.Refresh();
+                }));
+            }
+        }
+        private void deviceLstTimer_Tick(object sender, EventArgs e)
+        {
+            int id = deviceLB.SelectedIndex;
+            if (id>-1&&id < ybdtWorkManger.YbdtWorkLst.Count && ybdtWorkManger.YbdtWorkLst.Count>0)
+            {
+                UpdateWorkInfo(ybdtWorkManger.YbdtWorkLst[id]);
+            }
+        }
+
+        private void UpdateWorkInfo(YBDTWork yw)
+        {
+            label25.Text = yw.YbdtWorkInfo.Department;
+            label31.Text = yw.YbdtWorkInfo.DanHao;
+            label3.Text = yw.StartTime.Date.ToString(); ; 
+            label5.Text = yw.EndNeedTime.ToLocalTime().ToString();
+            label6.Text = yw.EndRealTime.ToLocalTime().ToString();
+            label11.Text = yw.YbdtWorkInfo.Speed;
+            label9.Text = yw.ReadSpeed.ToString();
+            label7.Text = yw.YbdtWorkInfo.SetProdQuantity;
+            label37.Text = yw.ProdQuantity.ToString();
+            label8.Text = yw.YbdtWorkInfo.TuHao;
+            label39.Text = yw.YbdtWorkInfo.ProdName;
+            label10.Text = yw.YbdtWorkInfo.GongXu;
+            label41.Text = yw.YbdtWorkInfo.GyTx;
+            label52.Text = yw.YbdtWorkInfo.OperatorName;
+            label51.Text = yw.YbdtWorkInfo.DeviceId;
+            label48.Text = yw.YbdtWorkInfo.CadPath;
+            label47.Text = yw.YbdtWorkInfo.Ddsm;
+            label41.Text = yw.YbdtWorkInfo.Jshu;
+            label43.Text = yw.YbdtWorkInfo.Gmj;
+            deviceGroupBox.Text = yw.YbdtWorkInfo.DeviceIP;
+        }
+        private void ShowWork(YBDTWork yw)
+        {
+            //MessageBox.Show(deviceLB.SelectedItem.ToString());
+            ybdtWorkForm ydForm = new ybdtWorkForm();
+            ydForm.SetYbtdWork(yw);
+            ydForm.Show();
+        }
+        private void deviceLB_Click(object sender, EventArgs e)
+        {
+            
+            //MessageBox.Show(deviceLB.SelectedItem.ToString());
+        }
+
+        private void deviceLB_DoubleClick(object sender, EventArgs e)
+        {
+            ShowWork(ybdtWorkManger.YbdtWorkLst[deviceLB.SelectedIndex]);
         }
     }
 }

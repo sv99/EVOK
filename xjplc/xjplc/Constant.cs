@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,8 +34,24 @@ namespace xjplc
         //发送时间间隔
         public int m_sendInterval;
     }
+    //网络处理数据参数
+    public class SocEventArgs : EventArgs
+    {
+        byte[] byte_buffer;
+        public byte[] Byte_buffer
+        {
+            get { return byte_buffer; }
+            set { byte_buffer = value; }
+        }
+
+
+        public SocEventArgs()
+        {
+
+        }
+    }
     //委托事件传递类 这里用作传递数据接收后处理的参数
-    public class commEventArgs : EventArgs
+    public class CommEventArgs : EventArgs
     {
         byte[] byte_buffer;
         public byte[] Byte_buffer
@@ -43,12 +60,20 @@ namespace xjplc
             set { byte_buffer = value; }
         }
         
-        public commEventArgs()
+        public CommEventArgs()
         {
 
         }
     }
-    public delegate void commDataProcess(object s, commEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
+    //串口数据处理
+    public delegate void commDataProcess(object s, CommEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
+    //网络数据处理
+    public delegate void socDataProcess(object s, SocEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
+    //网络客户端进来
+    public delegate void socketClientChanged(object s, Socket client);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
+                                                                      //
+                                                                     //网络客户端进来
+    public delegate void ydtdWorkChanged(object s, YBDTWork ybtdWork0);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     public class Constant
         {
         public static readonly string ConnectMachineSuccess = "设备连接成功！";
@@ -68,6 +93,8 @@ namespace xjplc
         public static readonly int HandPage = 1;
         public static readonly int ParamPage = 2;
         public static readonly int IOPage = 3;
+        public static readonly int AutoPageID = 2;
+        public static readonly int HandPageID = 3;
         public static readonly string Alarm = "报警";
         public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
         //线圈值常量
@@ -113,6 +140,8 @@ namespace xjplc
         public static readonly string pwdWrong = "密码错误！";
         public static readonly string pwdOk = "密码正确！";
         public static readonly int pwdCountMax = 6;
+        public static readonly int PwdOffSet = 1000;
+        public static readonly string prodResult = "生产结果";
         #region  优化数据
         //优化错误返回值
         public static readonly string prodLstNoData = "数据收集错误！";
@@ -196,10 +225,10 @@ namespace xjplc
         public static readonly int XJConnectTimeOut = 300;
         public static readonly int XJRestartTimeOut =2000;
         //读取超时 
-        public static readonly int ReadTimeOut = 1000; //这里0.5 秒别改 工控机性能不行
+        public static readonly int ReadCommTimeOut = 1000; //这里0.5 秒别改 工控机性能不行
 
         //写入超时 
-        public static readonly int WriteTimeOut = 1000;
+        public static readonly int WriteCommTimeOut = 1000;
 
         //PLC 数据反馈 在切割的时候 数据发送 超时
         public static readonly int   PlcCountTimeOut = 90000;
@@ -245,19 +274,28 @@ namespace xjplc
         public static readonly char Angle45 = '/';
         public static readonly char Angle135 = '\\';
         public static readonly char Angle90 = '|';
+        public static readonly  int Angle90Int = 90000;
         #endregion
         public const int DeviceNoConnection = -1;
         public const int DeviceConnected = 0;
         //
         public const int PLCXY = 7;
-
+        //D区数据太多 要分开显示 那滚动条结束后 才能显示 不然会出错
+        public const int ScrollTimerValue = 200;
 
 
         #region 远邦台技数据
-        public static readonly string[] strformatYB = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具" };
+        public static readonly string[] strformatYB = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备地址", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具" };
+        public static readonly string[] strformatYBSave = { "计划单号", "日期", "车间", "图号", "名称", "工序", "姓名",  "设备编号", "实产量", "开始时间", "实际结束时间", "停机时间", "不正常原因"};
+
         public static readonly int ServerPort = 8899;
         public static readonly string BeginToListen = "开始搜寻设备！";
         public static readonly string ErrorSocConnection = "网络连接错误！";
+        public static readonly string NoIdDevice = "未知设备！";
+        public static readonly int ReadSocTimeOut = 2000;
+        public static readonly int WriteSocTimeOut = 2000;
+        public const  int AddWork = 0;
+        public const  int DelWork = 1;
         #endregion
     }
 

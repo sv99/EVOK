@@ -305,18 +305,31 @@ namespace xjplc
             get
             {
                 List<string> strparam = new List<string>();
-
+                string nullHoleSre = "0";
                 strparam.Add(ParamStr3);
                 strparam.Add(ParamStr4);
                 strparam.Add(ParamStr5);
                 strparam.Add(ParamStr6);
                 strparam.Add(ParamStr7);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                
+
+
                 strparam.Add(ParamStr8);
                 strparam.Add(ParamStr9);
                 strparam.Add(ParamStr10);
                 strparam.Add(ParamStr11);
                 strparam.Add(ParamStr12);
-                strparam.Add(ParamStr13);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+
 
                 hole = getHoleData(strparam.ToArray());
 
@@ -360,12 +373,13 @@ namespace xjplc
                 }
                 else
                 {
+                    //孔乘以100
                     if (!int.TryParse(sArray[0], out holeX)) data.Add(0);
-                    else data.Add(holeX);
+                    else data.Add(holeX*100);
                     if (!int.TryParse(sArray[1], out holeY)) data.Add(0);
-                    else data.Add(holeY);
+                    else data.Add(holeY*100);
                     if (!int.TryParse(sArray[2], out holeZ)) data.Add(0);
-                    else data.Add(holeZ);
+                    else data.Add(holeZ*100);
 
                 }
             }
@@ -386,9 +400,9 @@ namespace xjplc
              Regex.Replace(s, @"[^0-9]+", "");
 
             if (strAngle.Count() != 4) goto Last; //这里得出的角度暂时没有用起来
-
-            int intLAngle = getAngleDirectionFromStr(s[1], strAngle.Substring(0, 2));
-            int intRAngle = getAngleDirectionFromStr(s[6], strAngle.Substring(2, 2));
+            //角度乘以1000
+            int intLAngle = getAngleDirectionFromStr(s[1], strAngle.Substring(0, 2))*1000;
+            int intRAngle = getAngleDirectionFromStr(s[6], strAngle.Substring(2, 2))*1000;
 
             if ((intLAngle > 0) && (intRAngle > 0))
             {
@@ -399,8 +413,8 @@ namespace xjplc
 
             Last:
             {
-                data.Add(90);
-                data.Add(90);
+                data.Add(Constant.Angle90Int);
+                data.Add(Constant.Angle90Int);
                 return data.ToArray();
             }
 

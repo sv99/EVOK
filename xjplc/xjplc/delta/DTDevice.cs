@@ -119,8 +119,7 @@ namespace xjplc
             WatchCommTimer.AutoReset = true;
 
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
-
-           
+                      
         }
         #region 通讯错误
         //通讯错误引发的事件
@@ -226,8 +225,7 @@ namespace xjplc
         public void RestartConneect(DataTable dt)
         {
             DeviceShutDown();
-
-            
+          
             ConstantMethod.Delay(50);
 
             portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
@@ -944,10 +942,9 @@ namespace xjplc
 
         #endregion PLC数据需要采集的准备
 
-        #region 处理数据 及更新表格
-       
+        #region 处理数据 及更新表格      
      
-        void  Dataprocess(object sender, commEventArgs e)
+        void  Dataprocess(object sender, CommEventArgs e)
         {
             isShiftDataForm = false;
 

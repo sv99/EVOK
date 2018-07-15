@@ -36,7 +36,7 @@ namespace xjplc
         //台达专用命令类
         DTPLCPackCmdAndDataUnpack DTPLCcmd = null;
         //数据处理好之后 传递到device
-        commEventArgs DataProcessEventArgs;
+        CommEventArgs DataProcessEventArgs;
 
         bool isRePackCmdReadDMDataOut = false;
         bool IsRePackymp = false;
@@ -105,7 +105,7 @@ namespace xjplc
             ErrorConnCount = 0;
 
 
-            DataProcessEventArgs = new commEventArgs();
+            DataProcessEventArgs = new CommEventArgs();
 
         } 
         /// <summary>
@@ -224,7 +224,7 @@ namespace xjplc
                                       
                     m_SerialPortListener.Send(DTPLCcmd.CmdOut.ToArray());
 
-                    ConstantMethod.Delay(Constant.ReadTimeOut, ref isDeviceReady);
+                    ConstantMethod.Delay(Constant.ReadCommTimeOut, ref isDeviceReady);
 
                     if (isDeviceReady)
                     {
@@ -529,7 +529,7 @@ namespace xjplc
 
                 isWriteCmd = true;               
 
-                ConstantMethod.DelayWriteCmd(Constant.WriteTimeOut,ref isWriteCmd);
+                ConstantMethod.DelayWriteCmd(Constant.WriteCommTimeOut,ref isWriteCmd);
 
                 
                 return (!isWriteCmd);
@@ -545,7 +545,7 @@ namespace xjplc
 
                 isWriteCmd = true;
 
-                ConstantMethod.DelayWriteCmd(Constant.WriteTimeOut, ref isWriteCmd);
+                ConstantMethod.DelayWriteCmd(Constant.WriteCommTimeOut, ref isWriteCmd);
 
                 return (!isWriteCmd);
             }

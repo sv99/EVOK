@@ -49,6 +49,7 @@ namespace xjplc
             ConstantMethod.DelayWriteCmdOk(Constant.XJConnectTimeOut, ref value0, ref p);
 
             if (value0 == p.ShowValue) return true; else return false;
+
         }
         public void SetMValueON2OFF(PlcInfoSimple p)
         {
@@ -69,7 +70,7 @@ namespace xjplc
                     value0, 
                     stPlcInfoSimple.Area, 
                     stPlcInfoSimple.Mode);
-                ConstantMethod.DelayWriteCmdOk(Constant.WriteTimeOut, ref value0[0], ref stPlcInfoSimple);
+                ConstantMethod.DelayWriteCmdOk(Constant.WriteCommTimeOut, ref value0[0], ref stPlcInfoSimple);
                 //可能时间太久 要等下 
                 if (value0[0] == stPlcInfoSimple.ShowValue) return true; else return false;
 

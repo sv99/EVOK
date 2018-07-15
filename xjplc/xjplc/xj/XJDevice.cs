@@ -103,7 +103,7 @@ namespace xjplc
 
             portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);          
 
-            //监控第一个列表数据
+            //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
             if (dataFormLst.Count>0)                
             SetPlcReadDMData(dataFormLst[0]);
 
@@ -149,10 +149,11 @@ namespace xjplc
         {
             DataTable dt = dataFormLst[formid].Clone();
 
-            if((rowSt >0) && ((rowSt+count-1)< dataFormLst[formid].Rows.Count) && count>0)
+            if((rowSt >0) && ((rowSt+count-1)<= dataFormLst[formid].Rows.Count) && count>0)
             {
-                for (int i = rowSt; i < rowSt+count; i++)
+                for (int i = rowSt; i < rowSt+count-1; i++)
                 {
+                    
                     dt.ImportRow(dataFormLst[formid].Rows[i]);
                 }
             }
@@ -199,7 +200,7 @@ namespace xjplc
                     PackCmdReadDMDataOut(dataForm);
                 
                 isShiftDataForm = true; 
-                                                                                                                                                 
+                                                                                                                                                                 
                 comManager.IsRePackCmdReadDMDataOut = true;                   
 
                 return true;
@@ -304,16 +305,8 @@ namespace xjplc
                 if (dt != null && dt.Rows.Count > 0)
                 {
                      dataForm = dt;
-                    //dgShow = dg;
-                     PackCmdReadDMDataOut(dataForm);
-                    //在建立连接的时候 切换表格数据源
-                    //if (dgShow != null)
-                   // dgShow.DataSource = dataForm;
-                
-
-               }
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+                     PackCmdReadDMDataOut(dataForm);              
+                }           
         }
         /// <summary>
         /// 如果用户需要重新制定读取一些D区 M区的话可以先设置保存读取PLC 内容的文件
@@ -930,7 +923,7 @@ namespace xjplc
         #region 处理数据 及更新表格
        
      
-        void  Dataprocess(object sender, commEventArgs e)
+        void  Dataprocess(object sender, CommEventArgs e)
         {
             isShiftDataForm = false;
             //数据处理 以及更新 datagridview

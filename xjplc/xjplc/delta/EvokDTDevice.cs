@@ -69,7 +69,7 @@ namespace xjplc
                     value0, 
                     stDTPlcInfoSimple.Area, 
                     stDTPlcInfoSimple.Mode);
-                ConstantMethod.DelayWriteCmdOk(Constant.WriteTimeOut, ref value0[0], ref stDTPlcInfoSimple);
+                ConstantMethod.DelayWriteCmdOk(Constant.WriteCommTimeOut, ref value0[0], ref stDTPlcInfoSimple);
                 //可能时间太久 要等下 
                 if (value0[0] == stDTPlcInfoSimple.ShowValue) return true; else return false;
 

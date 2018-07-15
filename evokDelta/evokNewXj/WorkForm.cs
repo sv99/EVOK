@@ -379,7 +379,8 @@ namespace evokNewDT
         /// </summary>
         public void SetControlInEvokWork()
         {
-            CheckAllCtrls(this);
+            ConstantMethod.
+            CheckAllCtrls(this, allCtrls);
             foreach (Control control in allCtrls)
             {
                 if (control.Tag != null)
@@ -491,7 +492,7 @@ namespace evokNewDT
             }
             else
             {
-                evokWork.CutStartNormal(Constant.CutNormalWithHoleMode);
+                evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
                 qClr_Click(sender, e);
                 optBtn_Click(sender, e);
@@ -680,33 +681,18 @@ namespace evokNewDT
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-                      
-            passWdForm psswd = new passWdForm();
-            psswd.Show();
 
-            while (psswd.Visible)
+            if (!ConstantMethod.UserPassWd())
             {
-                Application.DoEvents();
+                return;
             }
-            string str = DateTime.Now.ToString("MMdd");
-            int psswdInt = 0;
-            int.TryParse(str, out psswdInt);
-            psswdInt = psswdInt + 1000;
-            if (psswd.userInput.Equals(psswdInt.ToString()))
+            if (tc1.SelectedIndex < evokDevice.DataFormLst.Count)
             {
-                if (tc1.SelectedIndex < evokDevice.DataFormLst.Count)
-                {
-                    wForm = new WatchForm();
-                    wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
-                    wForm.Show();
-                }
-            }
-            else
-            {
-                MessageBox.Show(Constant.pwdWrong);
-                return ;
-            }
+                wForm = new WatchForm();
+                wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
+                wForm.Show();
 
+            }
 
         }
 

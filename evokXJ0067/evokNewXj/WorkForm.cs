@@ -14,12 +14,14 @@ namespace evokNew0067
 
         List<string> errorList = new List<string>();
         int errorId = 0;
-        private EvokXJDevice evokDevice;
+       
         private EvokXJWork evokWork;
         private OptSize optSize;
-
+        //存储PLC数据
         private List<string> strDataFormPath;
 
+
+        
         private WatchForm wForm;
 
         public WorkForm()
@@ -77,30 +79,9 @@ namespace evokNew0067
                  evokWork.autoMesON();
             }
         }
+        
 
-        private static void CheckAllCtrls(Control item)
-        {
-            for (int i = 0; i < item.Controls.Count; i++)
-            {
-                if (item.Controls[i].HasChildren)
-                {
-                    CheckAllCtrls(item.Controls[i]);
-                }
-                allCtrls.Enqueue(item.Controls[i]);
-            }
-        }
-
-        private void ClrData()
-        {
-            if (( optSize.DtData != null) && ( optSize.DtData.Rows.Count > 0))
-            {
-                foreach (DataRow row in  optSize.DtData.Rows)
-                {
-                    row["已切数量"] = 0;
-                }
-            }
-        }
-
+        
         private void connectMachine_Click(object sender, EventArgs e)
         {
              
@@ -182,8 +163,7 @@ namespace evokNew0067
 
         private void InitControl()
         {
-            evokWork.InitControl();
-            evokWork.ShiftPage(0);
+
             SetControlInEvokWork();           
             printcb.SelectedIndex = evokWork.PrintBarCodeMode;
             evokWork.ChangePrintMode(printcb.SelectedIndex);
@@ -197,44 +177,21 @@ namespace evokNew0067
             printcb.DataSource = Constant.printBarcodeModeStr;
 
             optSize = new OptSize( UserData);
-            strDataFormPath = new List<string>();
-            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
-            strDataFormPath.Add(Constant.PlcDataFilePathHand);
-            strDataFormPath.Add(Constant.PlcDataFilePathParam);
-            strDataFormPath.Add(Constant.PlcDataFilePathIO);
+            evokWork = new EvokXJWork();
+            evokWork.SetOptSize(optSize);
+            evokWork.SetRtbWork(rtbWork);
+            evokWork.SetRtbResult(rtbResult);
+            evokWork.SetPrintReport(report1);
+            evokWork.InitDgvParam(dgvParam);
+            evokWork.InitDgvIO(dgvIO);
 
-            for (int i = strDataFormPath.Count - 1; i >=0; i--)
-            {
-                if (!File.Exists(strDataFormPath[i]))
-                {
-                    strDataFormPath.RemoveAt(i);
-                    MessageBox.Show(Constant.ErrorPlcFile);
-                    Environment.Exit(0);
-                }                   
-            }          
-
-            evokDevice = new EvokXJDevice(strDataFormPath);
-            if (! evokDevice.getDeviceData())
-            {
-                MessageBox.Show(Constant.ConnectMachineFail);
-                Environment.Exit(0);
-            }
-
-             UpdateTimer.Enabled = true;
-             optSize = new OptSize( UserData);
-             evokWork = new EvokXJWork();
-             evokWork.SetEvokDevice( evokDevice);
-             evokWork.SetOptSize( optSize);
-             evokWork.SetRtbWork( rtbWork);
-             evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
+            UpdateTimer.Enabled = true;
 
         }
 
         private void InitView0()
         {
-            evokWork.InitDgvParam(dgvParam);
-            evokWork.InitDgvIO(dgvIO);
+                       
             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
             DialogExcelDataLoad.FileName = "请选择数据文件";
@@ -369,7 +326,8 @@ namespace evokNew0067
         /// </summary>
         public void SetControlInEvokWork()
         {
-            CheckAllCtrls(this);
+            ConstantMethod.
+            CheckAllCtrls(this,allCtrls);
             foreach (Control control in allCtrls)
             {
                 if (control.Tag != null)
@@ -659,32 +617,21 @@ namespace evokNew0067
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
-            passWdForm psswd = new passWdForm();
-            psswd.Show();
 
-            while (psswd.Visible)
+            if (!ConstantMethod.UserPassWd())
             {
-                Application.DoEvents();
-            }
-            string str = DateTime.Now.ToString("MMdd");
-            int psswdInt = 0;
-            int.TryParse(str, out psswdInt);
-            psswdInt = psswdInt + 1000;
-            if (psswd.userInput.Equals(psswdInt.ToString()))
-            {
-                if (tc1.SelectedIndex < evokDevice.DataFormLst.Count)
-                {
-                    wForm = new WatchForm();
-                    wForm.SetShowDataTable(evokDevice.DataFormLst[tc1.SelectedIndex]);
-                    wForm.Show();
-                }
-            }
-            else
-            {
-                MessageBox.Show(Constant.pwdWrong);
                 return;
             }
+
+            if (tc1.SelectedIndex < evokWork.DataFormCount)
+            {
+
+                wForm = new WatchForm();            
+                wForm.SetShowDataTable(evokWork.GetDataForm(tc1.SelectedIndex));
+                wForm.Show();
+             }
+
+            
 
         }
 
@@ -734,7 +681,11 @@ namespace evokNew0067
 
         private void dgvParam_Scroll(object sender, ScrollEventArgs e)
         {
-            evokWork.shiftDataFormSplit(tc1.SelectedIndex,dgvParam.FirstDisplayedScrollingRowIndex,dgvParam.DisplayedRowCount(true));
+            ScrollTimer.Enabled = false;
+            ScrollTimer.Interval = Constant.ScrollTimerValue;
+            ConstantMethod.Delay(50);
+            ScrollTimer.Enabled = true;
+            //evokWork.shiftDataFormSplit(tc1.SelectedIndex,dgvParam.FirstDisplayedScrollingRowIndex,dgvParam.DisplayedRowCount(true));
         }
 
         private void 查看当前日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -750,5 +701,20 @@ namespace evokNew0067
                 evokWork.ShowNowLog(logOPF.FileName);
             }
         }
+
+        private void ScrollTimer_Tick(object sender, EventArgs e)
+        {
+            dgvParam.Refresh();
+            ScrollTimer.Enabled = false;
+            evokWork.shiftDataFormSplit(tc1.SelectedIndex, dgvParam.FirstDisplayedScrollingRowIndex, dgvParam.DisplayedRowCount(true));
+           
+            //MessageBox.Show("刷新");
+        }
+
+        private void tabPage3_Leave(object sender, EventArgs e)
+        {
+            ScrollTimer.Enabled = false;
+        }
+
     }
 }

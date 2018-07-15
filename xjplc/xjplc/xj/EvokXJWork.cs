@@ -71,6 +71,13 @@ namespace xjplc
             }
         }
         bool mRunFlag ;
+
+        public int DataFormCount
+        {
+            get { return evokDevice.DataFormLst.Count; }            
+        }
+
+       
         public bool RunFlag
         {
             get { return mRunFlag; }
@@ -81,11 +88,18 @@ namespace xjplc
         Thread CutThread;   //需要引入System.Threading命名空间
         public void SetEvokDevice(EvokXJDevice evokDevice0)
         {
-            evokDevice = evokDevice0;
-            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[1].Rows.Count > 0)
+            evokDevice = evokDevice0;           
+        }
+        /// <summary>
+        /// 设定手动页面 通过表格bin字符进行自动生成plcinfosimple变量
+        /// </summary>
+        /// <param name="evokDevice0"></param>
+        public void SetHandPage(int id)
+        {         
+            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[id].Rows.Count > 0)
             {
                 psLstHand.Clear();
-                foreach (DataRow dr in evokDevice.DataFormLst[1].Rows)
+                foreach (DataRow dr in evokDevice.DataFormLst[id].Rows)
                 {
                     if (dr == null) continue;
                     string name = dr["bin"].ToString();
@@ -180,6 +194,15 @@ namespace xjplc
 
                         
         }
+
+        public DataTable GetDataForm(int id)
+        {
+            if (id < DataFormCount)
+            {
+                return evokDevice.DataFormLst[id];
+            }
+            else return null;
+        }
         #region 自动
         //自动页面
         List<PlcInfoSimple> psLstAuto;
@@ -234,7 +257,6 @@ namespace xjplc
         public PlcInfoSimple alarm14InPs = new PlcInfoSimple("报警14");
         public PlcInfoSimple alarm15InPs = new PlcInfoSimple("报警15");
         public PlcInfoSimple alarm16InPs = new PlcInfoSimple("报警16");
-
 
         #endregion
         #region 手动
@@ -314,7 +336,27 @@ namespace xjplc
         #endregion
         public EvokXJWork()
         {
+            //初始化设备
+            List<string> strDataFormPath = new List<string>();
+            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
+            strDataFormPath.Add(Constant.PlcDataFilePathHand);
+            strDataFormPath.Add(Constant.PlcDataFilePathParam);
+            strDataFormPath.Add(Constant.PlcDataFilePathIO);
+
+            for (int i = strDataFormPath.Count - 1; i >= 0; i--)
+            {
+                if (!File.Exists(strDataFormPath[i]))
+                {
+                    strDataFormPath.RemoveAt(i);
+                    MessageBox.Show(Constant.ErrorPlcFile);
+                    Environment.Exit(0);
+                }
+            }
+
+            evokDevice = new EvokXJDevice(strDataFormPath);         
+
             PsLstAuto = new List<PlcInfoSimple>();
+
             PsLstAuto.Add(autoMesOutInPs);
             PsLstAuto.Add(dbcOutInPs);
             PsLstAuto.Add(ltbcOutInPs);
@@ -360,8 +402,8 @@ namespace xjplc
             PsLstAuto.Add(startCountInOutPs);
 
 
-            PsLstHand = new List<PlcInfoSimple>();            
-
+            PsLstHand = new List<PlcInfoSimple>();
+            SetHandPage(Constant.HandPage);
 
             PsLstParam = new List<PlcInfoSimple>();
             PsLstIO = new List<PlcInfoSimple>();
@@ -398,6 +440,17 @@ namespace xjplc
 
             LogManager.WriteProgramLog(Constant.Start);
 
+            InitControl();
+
+            ShiftPage(Constant.AutoPage);
+
+            if (!evokDevice.getDeviceData())
+            {
+
+                MessageBox.Show(Constant.ConnectMachineFail);
+                Environment.Exit(0);
+            }
+
         }
         public bool RestartDevice(int id)
         {
@@ -417,8 +470,7 @@ namespace xjplc
         public void start(int id)
         {
             evokDevice.SetMValueOFF2ON(startOutPs);
-           
-            
+                      
             RunFlag = true;
 
             rtbWork.Clear();
@@ -606,7 +658,7 @@ namespace xjplc
                         DataList.Add(1);  //条码打印标志
                         int holecount0 = 0;
                         //总共10个孔 取前面 5个
-                        //前角度
+                        //前角度 前角度和孔数30 要填满
                         for (int holecount = 0; holecount < prod[i].hole[sizeid].Count() / 2; holecount = holecount + 3)
                         {
                             if (prod[i].hole[sizeid][holecount] > 0)
@@ -615,13 +667,14 @@ namespace xjplc
                         DataList.Add(prod[i].angle[sizeid][0]);
                         DataList.Add(holecount0);
 
-                        for (int addhole = 0; addhole < holecount0 * 3; addhole++)
+                        for (int addhole = 0; addhole < 10 * 3; addhole++)
                         {
+                           
                             DataList.Add(prod[i].hole[sizeid][addhole]);
                         }
-                        //后角度
+                        //后角度 第三十个数据才是后角度孔的开始 后面不需要填满
                         int holecount1 = 0;
-                        for (int holecount = 15; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
+                        for (int holecount = 30; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
                         {
                             if (prod[i].hole[sizeid][holecount] > 0)
                                 holecount1++;
@@ -629,8 +682,8 @@ namespace xjplc
 
                         DataList.Add(prod[i].angle[sizeid][1]);
                         DataList.Add(holecount1);
-
-                        for (int addhole = 15; addhole < 15 + holecount1 * 3; addhole++)
+                        //默认取后面三个个数据
+                        for (int addhole = 30; addhole < 30 + holecount1 * 3; addhole++)
                         {
                             DataList.Add(prod[i].hole[sizeid][addhole]);
 
@@ -806,8 +859,7 @@ namespace xjplc
             {             
                 for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
                 {
-                    ConstantMethod.ShowInfo(rtbWork, "第" + (i + 1).ToString() + "根木料开始切割");
-                    
+                    ConstantMethod.ShowInfo(rtbWork, "第" + (i + 1).ToString() + "根木料开始切割");                                      
                     //plc 计数器 清零
                     CountClr();                  
                     // 每根数据下发                   
@@ -1053,18 +1105,17 @@ namespace xjplc
 
         public void InitControl()
         {
-
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[0] != null))
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[Constant.AutoPage] != null))
             {
-                ConstantMethod.FindPos(evokDevice.DataFormLst[0], PsLstAuto);
+                ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.AutoPage], PsLstAuto);
             }
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[1] != null))
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[Constant.HandPage] != null))
             {
-                ConstantMethod.FindPos(evokDevice.DataFormLst[1], PsLstHand);
+                ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.HandPage], PsLstHand);
             }
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[2] != null))
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[Constant.ParamPage] != null))
             {
-                ConstantMethod.FindPos(evokDevice.DataFormLst[2], PsLstParam);
+                ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.ParamPage], PsLstParam);
             }
         }
         public bool ShiftPage(int pageid)
@@ -1074,48 +1125,28 @@ namespace xjplc
                 //页面切换需要告诉下位机
                 if (pageid == Constant.AutoPage)
                 {
-                    evokDevice.SetDValue(pageShiftOutPs, 2);
+                    evokDevice.SetDValue(pageShiftOutPs, Constant.AutoPageID);
                 }
                 if (pageid == Constant.HandPage)
                 {
-                    evokDevice.SetDValue(pageShiftOutPs, 3);
+                    evokDevice.SetDValue(pageShiftOutPs, Constant.HandPageID);
                 }
 
                 if (pageid == Constant.ParamPage)
                 {
-                    passWdForm psswd = new passWdForm();
-                    psswd.ShowDialog();
-
-                    while (psswd.Visible)
-                    {
-                        Application.DoEvents();
-                    }
-                    string str = DateTime.Now.ToString("MMdd");
-                    int psswdInt=0;
-                    int.TryParse(str, out psswdInt);
-                    psswdInt = psswdInt + 1000;
-                    if (psswd.userInput.Equals(psswdInt.ToString()))
-                    {
-
-                    }
-                    else
-                    {
-                        MessageBox.Show(Constant.pwdWrong);
-                        return false;
-                    }
-                    psswd.Close();
+                    if (!ConstantMethod.UserPassWd()) return false;
                 }
 
                 evokDevice.shiftDataForm(pageid);
-                                                                            
+
                 FindPlcSimpleInPlcInfoLst(pageid);
 
                 ConstantMethod.Delay(50);
 
                 return true;
+
             }
-          
-            
+                     
            return false;       
 
         }

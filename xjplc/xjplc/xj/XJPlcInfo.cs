@@ -55,6 +55,8 @@ namespace xjplc
             get { return isInEdit; }
             set { isInEdit = value; }
         }
+
+        
         int showvalue;
         public int ShowValue //从表格读取数据回来
         {
@@ -74,7 +76,9 @@ namespace xjplc
                                     showControl.BackColor = System.Drawing.Color.Transparent;
                                     if (showStr.Count > showvalue)
                                     {
-                                        showControl.Text = showStr[showvalue];
+                                        ConstantMethod.
+                                        SetText(showControl, showStr[showvalue]);
+                                       
                                     }
                                 }
                                 else
@@ -82,18 +86,16 @@ namespace xjplc
                                     showControl.BackColor = System.Drawing.Color.Red;
                                     if (showStr.Count > showvalue)
                                     {
-                                        showControl.Text = showStr[showvalue];
+                                        ConstantMethod.
+                                         SetText(showControl, showStr[showvalue]);
                                     }
                                 }
                             }
 
                             if (showControl != null && (showControl is TextBox || showControl is Label))
                             {
-                                showControl.Invoke((EventHandler)(delegate
-                                {
-                                    showControl.Text = showvalue.ToString();
-
-                                }));
+                                ConstantMethod.
+                                SetText(showControl,showvalue.ToString() );
                             }
                         }
                     }
