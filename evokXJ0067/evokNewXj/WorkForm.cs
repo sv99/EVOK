@@ -217,18 +217,10 @@ namespace evokNew0067
             }
         }
    
-
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '\r')
-            {
-                int num;
-                if (int.TryParse(((TextBox)sender).Text, out num) && num >-1)
-                {
-                    evokWork.SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto,num);
-                }                            
-                optBtn.Focus();
-            }
+            if(evokWork.lcTxt_KeyPress(sender, e))
+            resetBtn.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

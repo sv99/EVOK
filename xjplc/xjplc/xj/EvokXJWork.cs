@@ -58,6 +58,18 @@ namespace xjplc
                 else return false;
             }
         }
+        public bool lliao
+        {
+            get
+            {
+
+                if (lliaoOutInPs.ShowValue == Constant.M_ON)
+                {
+                    return true;
+                }
+                else return false;
+            }
+        }
         public bool IsPrintBarCode
         {
             get
@@ -217,21 +229,24 @@ namespace xjplc
         public PlcInfoSimple dbcOutInPs     = new PlcInfoSimple("刀补偿读写");
         public PlcInfoSimple ltbcOutInPs    = new PlcInfoSimple("料头补偿读写");
         public PlcInfoSimple safeOutInPs    = new PlcInfoSimple("安全距离读写");
-        public PlcInfoSimple prodOutInPs    = new PlcInfoSimple("总产量读写"); 
+        public PlcInfoSimple prodOutInPs    = new PlcInfoSimple("总产量读写");
+        
         public PlcInfoSimple lcOutInPs      = new PlcInfoSimple("料长读写");
         public PlcInfoSimple stopOutInPs    = new PlcInfoSimple("停止读写");
         public PlcInfoSimple cutDoneOutInPs = new PlcInfoSimple("切割完毕读写");
         public PlcInfoSimple plcHandlebarCodeOutInPs = new PlcInfoSimple("条码打印读写");
         public PlcInfoSimple startCountInOutPs = new PlcInfoSimple("开始计数读写");
         public PlcInfoSimple ldsCountInOutPs = new PlcInfoSimple("料段数读写");
+        public PlcInfoSimple lliaoOutInPs = new PlcInfoSimple("拉料开关读写");
+
 
         public PlcInfoSimple pauseOutPs     = new PlcInfoSimple("暂停写");
         public PlcInfoSimple startOutPs     = new PlcInfoSimple("启动写");             
         public PlcInfoSimple resetOutPs     = new PlcInfoSimple("复位写");
         public PlcInfoSimple autoSLOutPs    = new PlcInfoSimple("自动上料写");
         public PlcInfoSimple pageShiftOutPs = new PlcInfoSimple("页面切换写");
-
         
+
 
         public PlcInfoSimple emgStopInPs    = new PlcInfoSimple("急停读");
         public PlcInfoSimple startInPs      = new PlcInfoSimple("启动读");
@@ -362,6 +377,7 @@ namespace xjplc
             PsLstAuto.Add(ltbcOutInPs);
             PsLstAuto.Add(safeOutInPs);
             PsLstAuto.Add(prodOutInPs);
+            prodOutInPs.IsParam = false;
             PsLstAuto.Add(lcOutInPs);
             PsLstAuto.Add(stopOutInPs);
             PsLstAuto.Add(cutDoneOutInPs);
@@ -398,7 +414,7 @@ namespace xjplc
             PsLstAuto.Add(alarm14InPs);
             PsLstAuto.Add(alarm15InPs);
             PsLstAuto.Add(alarm16InPs);
-
+            PsLstAuto.Add(lliaoOutInPs);
             PsLstAuto.Add(startCountInOutPs);
 
 
@@ -1032,7 +1048,7 @@ namespace xjplc
 
             stop();
            //测试先隐藏
-          // MessageBox.Show(Constant.CutEnd);
+           MessageBox.Show(Constant.CutEnd);
         }
         public void CutStartNormal(int cutid)
         {
@@ -1071,7 +1087,7 @@ namespace xjplc
                 CutThread = null;
                 CutThreadStart = null;            
                 stop();
-               // MessageBox.Show(Constant.CutEnd);
+                MessageBox.Show(Constant.CutEnd);
             }
         }
         //自动测长开
@@ -1083,6 +1099,15 @@ namespace xjplc
         public void autoMesOFF()
         {
             evokDevice.SetMValueON(autoMesOutInPs);
+        }
+        public void lliaoON()
+        {
+            evokDevice.SetMValueON(lliaoOutInPs);
+        }
+
+        public void lliaoOFF()
+        {
+            evokDevice.SetMValueOFF(lliaoOutInPs);
         }
         #endregion
         public void Dispose()
@@ -1218,13 +1243,26 @@ namespace xjplc
                 MessageBox.Show(Constant.SetDataFail);
             }
         }
-     
+        public bool lcTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                if (double.TryParse(((TextBox)sender).Text, out num) && num > -1)
+                {
+                    num = num * Constant.dataMultiple;
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, (int)num);
+                }
+                return true;              
+            }
+            return false;
+        }
         public void SetDValue(string str1, string str2, List<PlcInfoSimple> pLst,int num)
         {
             PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
             if (p != null)
             {
-                
+              
               evokDevice.SetDValue(p, num);
                 
             }

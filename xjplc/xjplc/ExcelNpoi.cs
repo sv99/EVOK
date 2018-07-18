@@ -10,7 +10,9 @@ using NPOI.XSSF.UserModel;
 using NPOI.HSSF.UserModel;
 using System.Windows.Forms;
 using System.Diagnostics;
-
+using NPOI.POIFS.FileSystem;
+using NPOI;
+using NPOI.OpenXml4Net.OPC;
 
 namespace xjplc
 {
@@ -71,9 +73,131 @@ namespace xjplc
             }
         }
 
-        public void AddDataRow(DataRow dr)
+        public void ChangeCellValue(string[] data,string key)
         {
+            IWorkbook workbook = NPOIOpenExcel(FileName);
+            if (workbook == null)
+            {
+                return;
+            }
 
+            int sheetNum = workbook.NumberOfSheets;
+
+            bool IsExist = false;
+
+            ISheet mysheet = workbook.GetSheetAt(0);
+            for (int m=0; m <= mysheet.LastRowNum; m++)
+            {
+                IRow mySourceRow = mysheet.GetRow(m); //默认只有一个页
+                string key0 = mySourceRow.GetCell(7).StringCellValue; //设备编号来区分
+                if (key0.Equals(key))
+                {
+                    IsExist = true;
+                    data[0] = "20180716fsdfd";
+                    IrowFromString(mySourceRow, data);
+
+                    WriteToFile(workbook, FileName);
+
+                    break;                    
+                }
+            }
+            if (!IsExist)
+            {
+                AddRow(data);
+            }
+           //获取原格式行                                
+
+        }
+        private void IrowFromString(IRow irow,string[] data)
+        {
+            for (int m = 0; m < irow.LastCellNum; m++)
+            {
+                if(m<data.Length)
+                irow.GetCell(m).SetCellValue(data[m]);
+            }
+        }
+        /// <summary>
+        /// 在第一行之前插入
+        /// </summary>
+        public void AddRow(string[] data)
+        {
+            try
+            {
+                IWorkbook workbook = NPOIOpenExcel(FileName);
+                if (workbook == null)
+                {
+                    return;
+                }
+                int sheetNum = workbook.NumberOfSheets;
+
+                for (int i = 0; i < sheetNum; i++)
+                {
+                    ISheet mysheet = workbook.GetSheetAt(i);
+                    //获取原格式行
+                    IRow mySourceRow = mysheet.GetRow(1);
+                                     
+                    InsertRow(mysheet, 1, 1, mySourceRow,data);
+                }
+
+                WriteToFile(workbook, fileName);
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }        
+
+        }   
+        //插入
+        private void InsertRow(ISheet sheet, int insertRowIndex, int insertRowCount, IRow formatRow, string[] insertdata)
+        {
+            sheet.ShiftRows(insertRowIndex, sheet.LastRowNum, insertRowCount, true, false);
+            for (int i = insertRowIndex; i < insertRowIndex + insertRowCount; i++)
+            {
+                IRow targetRow = null;
+                ICell sourceCell = null;
+                ICell targetCell = null;
+
+                targetRow = sheet.CreateRow(i);
+
+                for (int m = formatRow.FirstCellNum; m < formatRow.LastCellNum; m++)
+                {
+                    sourceCell = formatRow.GetCell(m);
+                    if (sourceCell == null)
+                    {
+                        continue;
+                    }
+                    targetCell = targetRow.CreateCell(m);
+                    targetCell.CellStyle = sourceCell.CellStyle;
+                    targetCell.SetCellType(sourceCell.CellType);
+
+                }
+            }
+
+            for (int i = insertRowIndex; i < insertRowIndex + insertRowCount; i++)
+            {
+                IRow firstTargetRow = sheet.GetRow(i);
+                ICell firstSourceCell = null;
+                ICell firstTargetCell = null;
+
+                for (int m = formatRow.FirstCellNum; m < formatRow.LastCellNum; m++)
+                {
+                    firstSourceCell = formatRow.GetCell(m, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    if (firstSourceCell == null)
+                    {
+                        continue;
+                    }
+                    firstTargetCell = firstTargetRow.GetCell(m, MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    firstTargetCell.CellStyle = firstSourceCell.CellStyle;
+                    firstTargetCell.SetCellType(firstSourceCell.CellType);
+
+                    if (insertdata != null && insertdata.Length > 0 && m<insertdata.Length)
+                    {
+                        firstTargetCell.SetCellValue(insertdata[m]);
+                    }
+                   // firstTargetCell.SetCellValue("test");
+                }
+            }
         }
         public DataTable ImportExcel(string filePath)
         {
@@ -134,6 +258,43 @@ namespace xjplc
 
             }
             return dt;
+        }
+        private Stream OpenResource(string filename)
+        {
+            FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
+            return fs;
+        }
+        private IWorkbook NPOIOpenExcel(string filename)
+        {
+            IWorkbook myworkBook;
+            Stream excelStream = OpenResource(filename);
+            if (POIFSFileSystem.HasPOIFSHeader(excelStream))
+                return new HSSFWorkbook(excelStream);
+            if (POIXMLDocument.HasOOXMLHeader(excelStream))
+            {
+                return new XSSFWorkbook(OPCPackage.Open(excelStream));
+            }
+            if (filename.EndsWith(".xlsx"))
+            {
+                return new XSSFWorkbook(excelStream);
+            }
+            if (filename.EndsWith(".xls"))
+            {
+                new HSSFWorkbook(excelStream);
+            }
+            throw new Exception("Your InputStream was neither an OLE2 stream, nor an OOXML stream");
+        }
+        public void WriteToFile(IWorkbook workbook, string filename)
+        {
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                workbook.Write(fs);
+                fs.Close();
+            }
         }
 
         public void ExportDataToExcelNoDialog(DataTable TableName, string FilePath, Label lblStatus, ProgressBar barStatus)

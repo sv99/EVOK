@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +46,7 @@
             this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.button5 = new System.Windows.Forms.Button();
             this.printcb = new System.Windows.Forms.ComboBox();
             this.rtbWork = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -53,7 +54,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.slLbl = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -245,6 +248,7 @@
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage1.Controls.Add(this.button5);
             this.tabPage1.Controls.Add(this.printcb);
             this.tabPage1.Controls.Add(this.rtbWork);
             this.tabPage1.Controls.Add(this.button1);
@@ -269,6 +273,19 @@
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button5.Location = new System.Drawing.Point(822, 130);
+            this.button5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(164, 52);
+            this.button5.TabIndex = 123;
+            this.button5.Tag = "拉料开关";
+            this.button5.Text = "拉料";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
             // printcb
             // 
             this.printcb.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -292,10 +309,10 @@
             this.button1.Enabled = false;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(822, 133);
+            this.button1.Location = new System.Drawing.Point(1020, 133);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(550, 52);
+            this.button1.Size = new System.Drawing.Size(352, 52);
             this.button1.TabIndex = 121;
             this.button1.Tag = "急停";
             this.button1.Text = "急停";
@@ -337,7 +354,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.lcTxt);
+            this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.slLbl);
             this.groupBox1.Controls.Add(this.label3);
@@ -350,6 +369,20 @@
             this.groupBox1.Size = new System.Drawing.Size(1332, 60);
             this.groupBox1.TabIndex = 117;
             this.groupBox1.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox1.Location = new System.Drawing.Point(1139, 17);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(112, 38);
+            this.textBox1.TabIndex = 111;
+            this.textBox1.Tag = "料头补偿";
+            this.textBox1.Text = "100";
+            this.textBox1.Enter += new System.EventHandler(this.AutoTextBox_Enter);
+            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lcTxt_KeyPress);
+            this.textBox1.Leave += new System.EventHandler(this.AutoTxt_Leave);
             // 
             // lcTxt
             // 
@@ -364,6 +397,17 @@
             this.lcTxt.Enter += new System.EventHandler(this.AutoTextBox_Enter);
             this.lcTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lcTxt_KeyPress);
             this.lcTxt.Leave += new System.EventHandler(this.AutoTxt_Leave);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(1008, 21);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(152, 28);
+            this.label2.TabIndex = 110;
+            this.label2.Text = "料头补偿：";
             // 
             // label10
             // 
@@ -1012,8 +1056,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1055,8 +1099,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;
@@ -1247,6 +1291,9 @@
         private System.Windows.Forms.ToolStripMenuItem 查看日志文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 加载历史日志文件ToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog logOPF;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button button5;
     }
 }
 

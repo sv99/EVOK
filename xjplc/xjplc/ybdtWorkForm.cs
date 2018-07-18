@@ -20,6 +20,7 @@ namespace xjplc
         public ybdtWorkForm()
         {
             InitializeComponent();
+            
         }
         public void SetDataFormShow(DataTable dt)
         {
@@ -40,6 +41,16 @@ namespace xjplc
         private void button2_Click(object sender, EventArgs e)
         {
             YbdtWork.TestSetMOFF();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            
         }
     }
 }

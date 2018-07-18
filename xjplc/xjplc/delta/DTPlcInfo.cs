@@ -26,7 +26,12 @@ namespace xjplc
             get { return showControl; }
             set { showControl = value; }
         }
-
+        bool isParam = true;
+        public bool IsParam
+        {
+            get { return isParam; }
+            set { isParam = value; }
+        }
         public void SetPlcInfo(DTPlcInfo pInfo0)
         {
             pInfo = pInfo0;
@@ -89,11 +94,15 @@ namespace xjplc
 
                             if (showControl != null && (showControl is TextBox || showControl is Label))
                             {
-                                showControl.Invoke((EventHandler)(delegate
-                                {
+                               
+                                    if (IsParam)
+                                        ConstantMethod.
+                                        SetText(showControl, ((double)showvalue / Constant.dataMultiple).ToString());
+                                    else
+                                        ConstantMethod.
+                                        SetText(showControl, showvalue.ToString());
                                     showControl.Text = showvalue.ToString();
-
-                                }));
+                           
                             }
                         }
                     }

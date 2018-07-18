@@ -142,6 +142,7 @@ namespace xjplc
         public static readonly int pwdCountMax = 6;
         public static readonly int PwdOffSet = 1000;
         public static readonly string prodResult = "生产结果";
+        public static readonly int dataMultiple = 100;
         #region  优化数据
         //优化错误返回值
         public static readonly string prodLstNoData = "数据收集错误！";
@@ -294,6 +295,9 @@ namespace xjplc
         public static readonly string NoIdDevice = "未知设备！";
         public static readonly int ReadSocTimeOut = 2000;
         public static readonly int WriteSocTimeOut = 2000;
+        public static readonly string sqlDataName = "deviceInfo";
+        public static readonly string sqlGetDataTable = "SELECT * FROM deviceinfo";
+        public static readonly string sqlDeviceIp = "设备地址";
         public const  int AddWork = 0;
         public const  int DelWork = 1;
         #endregion

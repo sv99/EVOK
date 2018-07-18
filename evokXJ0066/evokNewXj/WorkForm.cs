@@ -236,16 +236,8 @@ namespace evokNew0066
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == '\r')
-            {
-                int num;
-                if (int.TryParse(((TextBox)sender).Text, out num) && num >-1)
-                {
-                    evokWork.SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto,num);
-                }   
-                                         
-                resetBtn.Focus();
-            }
+            if(evokWork.lcTxt_KeyPress(sender,e))
+            resetBtn.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -302,6 +294,7 @@ namespace evokNew0066
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
             }
+
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
@@ -458,16 +451,20 @@ namespace evokNew0066
             {
                  evokWork.CutStartMeasure(Constant.CutMeasureMode);
                 //测试代码 后续回复弹窗
+                /**
                 qClr_Click(sender, e);
                 stbtn_Click(sender, e);
+              **/
             }
             else
             {
                 evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
+                /***
                 qClr_Click(sender, e);
                 optBtn_Click(sender, e);
                 stbtn_Click(sender, e);
+                ***/
             }
             //测试代码 后续回复弹窗
              stopBtnShow();
@@ -752,6 +749,18 @@ namespace evokNew0066
         private void ScrollTimer_Tick(object sender, EventArgs e)
         {
 
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (evokWork.lliao)
+            {
+                evokWork.lliaoOFF();
+            }
+            else
+            {
+                evokWork.lliaoON();
+            }
         }
     }
 }

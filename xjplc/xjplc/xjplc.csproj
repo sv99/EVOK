@@ -112,6 +112,7 @@
       <HintPath>bin\Debug\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
@@ -132,6 +133,7 @@
     <Compile Include="delta\SocServerManger.cs" />
     <Compile Include="delta\YBDTDevice.cs" />
     <Compile Include="delta\YBDTWorkManger.cs" />
+    <Compile Include="SqlHelper.cs" />
     <Compile Include="xj\EvokXJWork.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>

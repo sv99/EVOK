@@ -304,5 +304,30 @@ namespace zlzk
         {
             ShowWork(ybdtWorkManger.YbdtWorkLst[deviceLB.SelectedIndex]);
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            string sql = " SELECT * FROM deviceinfo";
+
+            DataTable testDatatable = new DataTable();
+
+            testDatatable = SqlHelper.ExecuteDataTable(sql);
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Enter(object sender, EventArgs e)
+        {
+            deviceLstTimer.Enabled =true;
+        }
+
+        private void tabPage1_Leave(object sender, EventArgs e)
+        {
+            deviceLstTimer.Enabled = false;
+        }
     }
 }

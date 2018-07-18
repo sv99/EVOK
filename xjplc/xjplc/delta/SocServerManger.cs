@@ -68,6 +68,7 @@ namespace xjplc
             LogManager.WriteProgramLog(Constant.ErrorSocConnection);
             //从通信套接字集合中删除被中断连接的通信套接字对象 
             ErrorConnTimer.Enabled = false;
+            if(WorkManger !=null)
             foreach (YBDTWork y in WorkManger.YbdtWorkLst)
             {
                 if (y.YbtdDevice.SocClient.RemoteEndPoint.ToString().Equals(this.SocClient.RemoteEndPoint.ToString()))
@@ -82,6 +83,7 @@ namespace xjplc
             }
             catch
             {
+
             }
             try
             {
@@ -170,6 +172,7 @@ namespace xjplc
 
                     if (IsDeviceReady)
                     {
+                        ErrorConnTimer.Enabled = true;
                         //设备准好后
                         // IsSetReadDDataOut = true;
                         break;
@@ -222,7 +225,7 @@ namespace xjplc
             Socket socketRec = socketClientPara as Socket;
 
             List<byte> m_buffer = new List<byte>();
-            ErrorConnTimer.Enabled= true;
+            
 
             while (true)
             {
@@ -251,6 +254,7 @@ namespace xjplc
                 {
 
                     
+
                     byte[] data = new byte[length];
 
                     Array.Copy(arrRecMsg, data, length);

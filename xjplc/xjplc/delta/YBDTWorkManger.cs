@@ -23,7 +23,7 @@ namespace xjplc
 
         ExcelNpoi excelop;
         private List<string> strDataFormPath;
-
+        System.Timers.Timer UpdateTimer;
         DateTime startTime;
         public DateTime StartTime
         {
@@ -89,8 +89,6 @@ namespace xjplc
             get { return stopTime; }
             set { stopTime = value; }
         }
-
-
         public System.Collections.Generic.List<string> StrDataFormPath
         {
             get { return strDataFormPath; }
@@ -140,15 +138,10 @@ namespace xjplc
             YbtdDevice = new YBDTDevice(StrDataFormPath,soc);
 
             excelop = new ExcelNpoi();
+
             excelop.FileName = string.Concat(
             Constant.AppFilePath, DateTime.Now.ToString("yyyMMdd"), Constant.prodResult,".xlsx"); ////"\\configParam.xml"
-            if (!YbtdDevice.getDeviceData())
-            {
-                MessageBox.Show(Constant.ConnectMachineFail);
-                
-                return ;
-            }
-
+          
             YbdtWorkInfo = y0;
 
             AllPlcSimpleLst = new List<List<DTPlcInfoSimple>>();
@@ -182,10 +175,22 @@ namespace xjplc
             AllPlcSimpleLst.Add(PsLstAuto);
             StopTime = new List<int>();
             SaveData();
+            //设置数据库定时更新
+            UpdateTimer = new System.Timers.Timer();
+            UpdateTimer.Elapsed += UpdateSqlTimeEvent;
+            UpdateTimer.Interval = 1000;
+            UpdateTimer.AutoReset = true;
 
+            if (!YbtdDevice.getDeviceData())
+            {
+                //MessageBox.Show(Constant.ConnectMachineFail);
+                Dispose();              
+                return;
+            }
+
+            UpdateTimer.Enabled = true;
         }
-
-        
+            
         YBDTWorkInfo ybdtWorkInfo;
         
         public xjplc.YBDTWorkInfo YbdtWorkInfo
@@ -194,7 +199,10 @@ namespace xjplc
             set { ybdtWorkInfo = value; }
         }
 
-
+        private void UpdateSqlTimeEvent(object source, System.Timers.ElapsedEventArgs e)
+        {
+            UpdateSql();
+        }
         private List<DTPlcInfoSimple> psLstAuto;
         public System.Collections.Generic.List<xjplc.DTPlcInfoSimple> PsLstAuto
         {
@@ -218,12 +226,13 @@ namespace xjplc
         }
         public void Dispose()
         {
-            if (YbtdDevice != null && YbtdDevice.Status == Constant.DeviceConnected)
+            if (YbtdDevice != null || YbtdDevice.Status == Constant.DeviceConnected)
             {
-                YbtdDevice.SocManager.Dispose();
-                this.Dispose();
+                YbtdDevice.SocManager.Dispose();             
             }
-
+            UpdateTimer.Enabled = false;
+            GC.SuppressFinalize(this);
+         
         }
         #region 数据保存
 
@@ -233,16 +242,15 @@ namespace xjplc
                 && File.Exists(filename)
                 && data.Length>0)
             {
-                IsSaving = true; 
-                
-                              
+                IsSaving = true;
+                excelop.ChangeCellValue(data,data[7]);                             
             }
             else
             {
                 if (!File.Exists(filename))
                 {
                     CreateDataTable(filename, Constant.strformatYBSave.ToArray());
-                }
+                }               
             }
         }
         public List<string> PackDr()
@@ -283,14 +291,10 @@ namespace xjplc
 
                 return true;
             }
-            return false;
-                        
-        }
-
-       
+            return false;                                 
+        }      
         public void SaveData()
-        {
-                       
+        {                      
             try
             {
                 isSaving = true;
@@ -385,6 +389,38 @@ namespace xjplc
 
         }
 
+        public void UpdateSql()
+        {
+            //获取数据库数据
+            //获取加载不需要改的数据
+            //将datarow写回去更新          
+
+            string sql = " SELECT * FROM deviceinfo where 设备地址="+"'"+YbdtWorkInfo.DeviceIP+"'";
+
+            DataTable testDatatable = new DataTable();
+
+            testDatatable = SqlHelper.ExecuteDataTable(sql);
+
+            if (testDatatable.Rows.Count == 1)
+            {
+                testDatatable.Rows[0]["当前产量"] =ProdQuantity.ToString();
+
+                testDatatable.Rows[0]["实际节拍"] = ReadSpeed.ToString();
+
+            }
+            UpdateDeviceInfoLst(testDatatable);
+            // int i = 0;
+
+        }
+        private void UpdateDeviceInfoLst(DataTable dt)
+        {
+            if (dt != null && dt.Rows.Count > 0)
+            {
+
+                SqlHelper.UpdateFromDt(dt);
+            }
+
+        }
         public void TestSetMON()
         {
 
@@ -587,11 +623,11 @@ namespace xjplc
         public YBDTWorkManger()
         {
             YbdtWorkLst = new List<YBDTWork>();
-             
+                         
             socServer = new SocServer();
             socServer.newClientIn += WorkClientAdd;
             
-            UserDt = new DataTable();
+            UserDt = new DataTable(Constant.sqlDataName);
             Excelop = new ExcelNpoi();
             YbdtWorkInfoLst = new List<YBDTWorkInfo>();
 
@@ -601,12 +637,16 @@ namespace xjplc
                 MessageBox.Show(Constant.ErrorPlcFile);
                 ConstantMethod.AppExit();
             }
-            //获取用户导入信息
+
+            //获取用户导入信息 导入到数据库
             if (!GetDeviceData(UserDt))
             {
                 MessageBox.Show(Constant.ErrorPlcFile);
                 ConstantMethod.AppExit();
             }
+
+            UserDt.TableName = Constant.sqlDataName;
+            UpdateDeviceInfoLst(UserDt);
 
             socServer.startServer();
 
@@ -614,6 +654,15 @@ namespace xjplc
 
         }
 
+        private void UpdateDeviceInfoLst(DataTable dt)
+        {
+            if (dt != null && dt.Rows.Count > 0)
+            {
+
+                SqlHelper.UpdateFromDt(dt);
+            }
+
+        }
         public YBDTWorkInfo GetWorkInfoFromLst(List<YBDTWorkInfo> workInfoLst, string deviceIp)
         {
             foreach (YBDTWorkInfo y in workInfoLst)
@@ -639,7 +688,6 @@ namespace xjplc
         }
         void WorkClientAdd(object sender, Socket e)
         {
-
             string strIp = (e.RemoteEndPoint as IPEndPoint).Address.ToString();
             YBDTWorkInfo yw = GetWorkInfoFromLst(YbdtWorkInfoLst, strIp);
             if (yw != null)
@@ -650,7 +698,7 @@ namespace xjplc
                 else
                     ybdtwork.Dispose();
             }
-            
+                      
         }
 
         public void YBDTWorkChanged(int op,YBDTWork ybdtwork)
@@ -739,7 +787,8 @@ namespace xjplc
 
             Excelop.FileName = filename;
 
-
+            UserDt.Columns.Add("实际节拍");
+            UserDt.Columns.Add("当前产量");
             IsLoadData = false;
 
             LogManager.WriteProgramLog(Constant.LoadFileEd);

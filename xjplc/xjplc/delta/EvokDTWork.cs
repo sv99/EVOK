@@ -320,6 +320,7 @@ namespace xjplc
             PsLstAuto.Add(ltbcOutInPs);
             PsLstAuto.Add(safeOutInPs);
             PsLstAuto.Add(prodOutInPs);
+            prodOutInPs.IsParam = false;
             PsLstAuto.Add(lcOutInPs);
             PsLstAuto.Add(stopOutInPs);
             PsLstAuto.Add(cutDoneOutInPs);
@@ -406,8 +407,22 @@ namespace xjplc
             return evokDevice.getDeviceData();
 
         }
-        #region 运行部分
 
+        #region 运行部分
+        public bool lcTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                if (double.TryParse(((TextBox)sender).Text, out num) && num > -1)
+                {
+                    num = num * Constant.dataMultiple;
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, (int)num);
+                }
+                return true;
+            }
+            return false;
+        }
         public void ProClr()
         {
             evokDevice.SetDValue(prodOutInPs,0);
