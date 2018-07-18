@@ -163,9 +163,7 @@ namespace xjplc
                 }
                                               
             }
-            
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+                      
             return UpDateRow.ToArray();
 
         }

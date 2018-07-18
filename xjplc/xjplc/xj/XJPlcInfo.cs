@@ -156,16 +156,15 @@ namespace xjplc
         }
 
     }
-    public class XJPlcInfo: INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-
+    public class XJPlcInfo
+    {       
         //传入相对地址 和区域 单双字
         public XJPlcInfo(int addr, string areaIn, string valuemode)
         {
             this.relativeaddr = addr;
        
             this.StrArea = areaIn;
+
             absAddr = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(relativeaddr, StrArea);
             intArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(StrArea);
           
@@ -310,22 +309,7 @@ namespace xjplc
             }
 
         }
-      
-       private  int testValue;
-        public int TestValue
-        {
-            get { return testValue;
-            }
-            set
-            {
-                testValue = value;
-                
-                if (PropertyChanged != null)
-                {
-                    PropertyChanged.Invoke(this, new PropertyChangedEventArgs("PlcValue"));                 
-                }
-            }
-        }
+             
         //显示的值 目前十进制
         private int plcValue;
         /// <summary>
@@ -341,10 +325,7 @@ namespace xjplc
                         //如果是双字
                         if (valueMode.Equals(Constant.DoubleMode) && (DoubleModeHigh != null))
                         {
-                            if (RelAddr == 4996)
-                            {
-                                RelAddr = 4996;
-                            }
+                         
                             int value0 = ((int)(ByteValue[0] << 8) | (int)(ByteValue[1]));
                             int value1 = ((int)(doubleModeHigh.ByteValue[0] << 8) | (int)(doubleModeHigh.ByteValue[1]));
                             plcValue = ConstantMethod.Pack4BytesToInt(value0, value1);
