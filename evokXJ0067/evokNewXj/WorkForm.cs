@@ -202,7 +202,6 @@ namespace evokNew0067
 
             errorTimer.Enabled = true;
 
-
         }
 
         private void IsoptBtnShow(bool showvalue)

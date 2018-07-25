@@ -44,7 +44,11 @@ namespace zlzk
             ybdtWorkManger.ydtdWorkChangedEvent += this.ydbtWorkChangedEvent;
             deviceIpLstStr = new List<string>();
             deviceLB.DataSource = deviceIpLstStr;
-           // deviceLstTimer.Enabled = true;
+            timer1.Enabled = true;
+
+          
+
+            // deviceLstTimer.Enabled = true;
             /****
             deviceDataFileName = System.AppDomain.CurrentDomain.BaseDirectory + "device.xlsx";
             if (!File.Exists(deviceDataFileName))
@@ -59,8 +63,7 @@ namespace zlzk
             dgvDevice.DataSource = devicedt;
 
             plccmd = new DeltaPlcCommand();
-
-            
+           
          
             dpro = new dataProc(recmsg, socserver,plccmd,label12);
             commTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimeEvent);
@@ -262,6 +265,7 @@ namespace zlzk
             {
                 UpdateWorkInfo(ybdtWorkManger.YbdtWorkLst[id]);
             }
+            
         }
 
         private void UpdateWorkInfo(YBDTWork yw)
@@ -328,6 +332,65 @@ namespace zlzk
         private void tabPage1_Leave(object sender, EventArgs e)
         {
             deviceLstTimer.Enabled = false;
+        }
+        void showItemChanged(object s,ItemChangedArgs e)
+        {
+            //根据显示项目 进行显示
+            ybdtWorkManger.ItemShowStr = e.ItemSelect;
+            ybdtWorkManger.SqlShowDataTable.Rows.Clear();
+
+        }
+
+        private void 设置显示项目ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SetShowForm sform = new SetShowForm();
+            sform.showItemChanged += showItemChanged;
+            sform.Show();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            UpdateRation();
+            ybdtWorkManger.GetDataFromSql(dataGridView1);         
+        }
+        private void UpdateRation()
+        {
+            foreach (DataGridViewRow dr in dataGridView1.Rows)
+            {
+                int fenzi;
+                int fenmu;
+                try
+                {                 
+                   this.Invoke((EventHandler)(delegate
+                   {                                                               
+                    if (int.TryParse(dr.Cells["当前产量"].Value.ToString(), out fenzi) && (int.TryParse(dr.Cells["排产量"].Value.ToString(), out fenmu)))
+                    {
+
+                        if (fenzi <= fenmu)
+                        {
+                            dr.Cells["完成率"].Value = ((double)fenzi / fenmu)*100;
+                        }
+                    }
+                  }));
+                }
+                catch (Exception ex)
+                {
+
+                }                       
+           }
+        }
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            if (SqlHelper.IsDBExist("zlzk"))
+            {
+                MessageBox.Show("数据库存在");
+            }
+           
+        }
+
+        private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+
         }
     }
 }

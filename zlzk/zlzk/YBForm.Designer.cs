@@ -32,7 +32,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(YBForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.完成率 = new xjplc.DataGridViewProgressColumn();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -91,18 +93,11 @@
             this.button11 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.iptext = new System.Windows.Forms.ComboBox();
-            this.sendmsg = new System.Windows.Forms.TextBox();
-            this.recmsg = new System.Windows.Forms.RichTextBox();
             this.op1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.打开数据文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.设置显示项目ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectMachine = new System.Windows.Forms.ToolStripMenuItem();
             this.查看当前日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +107,7 @@
             this.关于程序版本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deviceLstTimer = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -121,7 +117,6 @@
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            this.tabPage4.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -130,34 +125,55 @@
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(12, 34);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1560, 714);
+            this.tabControl1.Size = new System.Drawing.Size(1560, 648);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button1);
             this.tabPage3.Controls.Add(this.dataGridView1);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1552, 685);
+            this.tabPage3.Size = new System.Drawing.Size(1552, 619);
             this.tabPage3.TabIndex = 4;
             this.tabPage3.Text = "设备总览";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(15, 24);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(231, 29);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "修改";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
             // dataGridView1
             // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 81);
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.完成率});
+            this.dataGridView1.Location = new System.Drawing.Point(15, 69);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 27;
-            this.dataGridView1.Size = new System.Drawing.Size(1283, 374);
+            this.dataGridView1.Size = new System.Drawing.Size(1663, 363);
             this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // 完成率
+            // 
+            this.完成率.HeaderText = "完成率[%]";
+            this.完成率.Name = "完成率";
+            this.完成率.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.完成率.ReadOnly = true;
             // 
             // tabPage1
             // 
@@ -173,7 +189,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1552, 685);
+            this.tabPage1.Size = new System.Drawing.Size(1552, 619);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "设备";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -767,7 +783,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1552, 685);
+            this.tabPage2.Size = new System.Drawing.Size(1552, 619);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "参数设置";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -799,89 +815,6 @@
             this.label18.TabIndex = 1;
             this.label18.Text = "服务器网络设置：";
             // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.button8);
-            this.tabPage4.Controls.Add(this.button7);
-            this.tabPage4.Controls.Add(this.button6);
-            this.tabPage4.Controls.Add(this.button5);
-            this.tabPage4.Controls.Add(this.iptext);
-            this.tabPage4.Controls.Add(this.sendmsg);
-            this.tabPage4.Controls.Add(this.recmsg);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1552, 685);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "test";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // button8
-            // 
-            this.button8.Location = new System.Drawing.Point(544, 269);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(118, 23);
-            this.button8.TabIndex = 5;
-            this.button8.Tag = "";
-            this.button8.Text = "打包命令";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(541, 123);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(118, 23);
-            this.button7.TabIndex = 4;
-            this.button7.Tag = "";
-            this.button7.Text = "发送";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(541, 78);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(118, 23);
-            this.button6.TabIndex = 4;
-            this.button6.Text = "关闭监听";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(541, 32);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(118, 23);
-            this.button5.TabIndex = 4;
-            this.button5.Text = "监听设备";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // iptext
-            // 
-            this.iptext.FormattingEnabled = true;
-            this.iptext.Location = new System.Drawing.Point(541, 210);
-            this.iptext.Name = "iptext";
-            this.iptext.Size = new System.Drawing.Size(121, 23);
-            this.iptext.TabIndex = 2;
-            // 
-            // sendmsg
-            // 
-            this.sendmsg.Location = new System.Drawing.Point(541, 163);
-            this.sendmsg.Name = "sendmsg";
-            this.sendmsg.Size = new System.Drawing.Size(310, 25);
-            this.sendmsg.TabIndex = 1;
-            this.sendmsg.TextChanged += new System.EventHandler(this.sendmsg_TextChanged);
-            // 
-            // recmsg
-            // 
-            this.recmsg.Location = new System.Drawing.Point(16, 32);
-            this.recmsg.Name = "recmsg";
-            this.recmsg.Size = new System.Drawing.Size(506, 452);
-            this.recmsg.TabIndex = 0;
-            this.recmsg.Text = "";
-            // 
             // op1
             // 
             this.op1.FileName = "openFileDialog1";
@@ -902,7 +835,8 @@
             // 文件ToolStripMenuItem
             // 
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开数据文件ToolStripMenuItem});
+            this.打开数据文件ToolStripMenuItem,
+            this.设置显示项目ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
             this.文件ToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.文件ToolStripMenuItem.Text = "文件";
@@ -912,6 +846,13 @@
             this.打开数据文件ToolStripMenuItem.Name = "打开数据文件ToolStripMenuItem";
             this.打开数据文件ToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
             this.打开数据文件ToolStripMenuItem.Text = "打开数据文件";
+            // 
+            // 设置显示项目ToolStripMenuItem
+            // 
+            this.设置显示项目ToolStripMenuItem.Name = "设置显示项目ToolStripMenuItem";
+            this.设置显示项目ToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.设置显示项目ToolStripMenuItem.Text = "设置显示项目";
+            this.设置显示项目ToolStripMenuItem.Click += new System.EventHandler(this.设置显示项目ToolStripMenuItem_Click);
             // 
             // 设备ToolStripMenuItem
             // 
@@ -974,6 +915,11 @@
             this.deviceLstTimer.Interval = 1000;
             this.deviceLstTimer.Tick += new System.EventHandler(this.deviceLstTimer_Tick);
             // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // YBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -1000,8 +946,6 @@
             this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1023,14 +967,6 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.OpenFileDialog op1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.ComboBox iptext;
-        private System.Windows.Forms.TextBox sendmsg;
-        private System.Windows.Forms.RichTextBox recmsg;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Label label21;
@@ -1093,6 +1029,10 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.ToolStripMenuItem 设置显示项目ToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button button1;
+        private xjplc.DataGridViewProgressColumn 完成率;
     }
 }
 

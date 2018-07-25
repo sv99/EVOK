@@ -11,6 +11,156 @@ using xjplc.delta;
 
 namespace xjplc
 {
+
+    public class YBDTWorkInfo
+    {
+        public YBDTWorkInfo()
+        {
+
+        }
+        //按照组合好的列名称来
+        public YBDTWorkInfo(DataRow dr)
+        {
+            DanHao = dr[Constant.strformatYB[0]].ToString();
+            DateTimeDanhao = dr[Constant.strformatYB[1]].ToString();
+            Department = dr[Constant.strformatYB[2]].ToString();
+            TuHao = dr[Constant.strformatYB[3]].ToString();
+            ProdName = dr[Constant.strformatYB[4]].ToString();
+            GongXu = dr[Constant.strformatYB[5]].ToString();
+            GyTx = dr[Constant.strformatYB[6]].ToString();
+            OperatorName = dr[Constant.strformatYB[7]].ToString();
+            OperatorTx = dr[Constant.strformatYB[8]].ToString();
+            DeviceClass = dr[Constant.strformatYB[9]].ToString();
+            DeviceId = dr[Constant.strformatYB[10]].ToString();
+            DeviceIP = dr[Constant.strformatYB[11]].ToString();
+            DeviceTx = dr[Constant.strformatYB[12]].ToString();
+            CadPath = dr[Constant.strformatYB[13]].ToString();
+            Ddsm = dr[Constant.strformatYB[14]].ToString();
+            SetProdQuantity = dr[Constant.strformatYB[15]].ToString();
+            Speed = dr[Constant.strformatYB[16]].ToString();
+            Jshu = dr[Constant.strformatYB[17]].ToString();
+            Gmj = dr[Constant.strformatYB[18]].ToString();
+
+        }
+        string danHao;
+        public string DanHao
+        {
+            get { return danHao; }
+            set { danHao = value; }
+        }
+        string dateTimeDanhao;
+        public string DateTimeDanhao
+        {
+            get { return dateTimeDanhao; }
+            set { dateTimeDanhao = value; }
+        }
+        string department;
+        public string Department
+        {
+            get { return department; }
+            set { department = value; }
+        }
+        string tuHao;
+        public string TuHao
+        {
+            get { return tuHao; }
+            set { tuHao = value; }
+        }
+        string prodName;
+        public string ProdName
+        {
+            get { return prodName; }
+            set { prodName = value; }
+        }
+        string gongXu;
+        public string GongXu
+        {
+            get { return gongXu; }
+            set { gongXu = value; }
+        }
+        string gyTx;
+        public string GyTx
+        {
+            get { return gyTx; }
+            set { gyTx = value; }
+        }
+        string operatorName;
+        public string OperatorName
+        {
+            get { return operatorName; }
+            set { operatorName = value; }
+        }
+        string operatorTx;
+        public string OperatorTx
+        {
+            get { return operatorTx; }
+            set { operatorTx = value; }
+        }
+        string deviceClass;
+        public string DeviceClass
+        {
+            get { return deviceClass; }
+            set { deviceClass = value; }
+        }
+        string deviceId;
+        public string DeviceId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
+        }
+        string deviceIP;
+        public string DeviceIP
+        {
+            get { return deviceIP; }
+            set { deviceIP = value; }
+        }
+        string deviceTx;
+        public string DeviceTx
+        {
+            get { return deviceTx; }
+            set { deviceTx = value; }
+        }
+        string cadPath;
+        public string CadPath
+        {
+            get { return cadPath; }
+            set { cadPath = value; }
+        }
+        string ddsm;
+        public string Ddsm
+        {
+            get { return ddsm; }
+            set { ddsm = value; }
+        }
+        string setProdQuantity;
+        public string SetProdQuantity
+        {
+            get { return setProdQuantity; }
+            set { setProdQuantity = value; }
+        }
+        string speed;
+        public string Speed
+        {
+            get { return speed; }
+            set { speed = value; }
+        }
+        string jshu;
+        public string Jshu
+        {
+            get { return jshu; }
+            set { jshu = value; }
+        }
+        string gmj;
+        public string Gmj
+        {
+            get { return gmj; }
+            set { gmj = value; }
+        }
+
+
+
+    }
+
     public class YBDTWork
     {
                   
@@ -40,12 +190,14 @@ namespace xjplc
         public System.DateTime EndRealTime
         {
             get {
-                int s;
-                if (int.TryParse(ybdtWorkInfo.SetProdQuantity, out s))
+
+                int setQuantityInt = 0;
+
+                if (int.TryParse(ybdtWorkInfo.SetProdQuantity, out setQuantityInt))
                 {
-                    if (s > ProdQuantity)
+                    if (setQuantityInt > ProdQuantity && ReadSpeed >0)
                     {
-                        int timeSec = (s - ProdQuantity) * ReadSpeed;
+                        int timeSec = (setQuantityInt - ProdQuantity) * ReadSpeed;
                         endRealTime = StartTime.AddSeconds(timeSec);
                     }
                 }
@@ -57,17 +209,23 @@ namespace xjplc
         }
         
         //理论结束时间
-        DateTime endNeedTime;
+        DateTime endNeedTime ;
         public DateTime EndNeedTime
         {
             get
             {
-                int s=0;
-                int s1=0;
-                if (int.TryParse(ybdtWorkInfo.Speed, out s)&&(int.TryParse(ybdtWorkInfo.SetProdQuantity, out s)))
+                int speedInt=0;
+                int setQuantityInt=0;
+                if (int.TryParse(ybdtWorkInfo.Speed, out speedInt)&&(int.TryParse(ybdtWorkInfo.SetProdQuantity, out setQuantityInt)))
                 {
-                   
-                    endNeedTime = StartTime.AddSeconds(s1 * s);
+                    if (ProdQuantity < setQuantityInt && speedInt > 0)
+                    {
+                        endNeedTime = StartTime.AddSeconds((setQuantityInt - ProdQuantity) * speedInt);
+                    }
+                    else
+                    {
+                        endNeedTime = StartTime;
+                    }
                 }
                 return endNeedTime;
             }            
@@ -83,6 +241,13 @@ namespace xjplc
            
         }
 
+
+        DataTable sqlDeiviceInfoDatatable;
+        public System.Data.DataTable SqlDeiviceInfoDatatable
+        {
+            get { return sqlDeiviceInfoDatatable; }
+            set { sqlDeiviceInfoDatatable = value; }
+        }
         List<int> stopTime;
         public System.Collections.Generic.List<int> StopTime
         {
@@ -110,15 +275,14 @@ namespace xjplc
         public DTPlcInfoSimple startInPs12 = new DTPlcInfoSimple("车床2产品位置检测读");
         public DTPlcInfoSimple startInPs13 = new DTPlcInfoSimple("气缸回位信号1读"); 
         public DTPlcInfoSimple startInPs14 = new DTPlcInfoSimple("气缸回位信号2读");
-        public DTPlcInfoSimple startInPs15 = new DTPlcInfoSimple("复位2读");
+        public DTPlcInfoSimple startInPs15 = new DTPlcInfoSimple("复位读");
         public DTPlcInfoSimple startInPs16 = new DTPlcInfoSimple("1#数控车床报警读");
         public DTPlcInfoSimple startInPs17 = new DTPlcInfoSimple("2#数控车床报警读");
         public DTPlcInfoSimple proQuantityInOutPs = new DTPlcInfoSimple("产量读写");
         public YBDTWork(Socket soc,YBDTWorkInfo y0)
         {
                    
-            //加载数据如果不对 那就用户自己加载
-            
+            //加载数据如果不对 那就用户自己加载           
             StrDataFormPath = new List<string>();
             StrDataFormPath.Add(Constant.PlcDataFilePathAuto);
             StrDataFormPath.Add(Constant.PlcDataFilePathHand);
@@ -187,12 +351,13 @@ namespace xjplc
                 Dispose();              
                 return;
             }
-
+            SqlDeiviceInfoDatatable = new DataTable();
+           
             UpdateTimer.Enabled = true;
         }
             
         YBDTWorkInfo ybdtWorkInfo;
-        
+               
         public xjplc.YBDTWorkInfo YbdtWorkInfo
         {
             get { return ybdtWorkInfo; }
@@ -202,7 +367,10 @@ namespace xjplc
         private void UpdateSqlTimeEvent(object source, System.Timers.ElapsedEventArgs e)
         {
             UpdateSql();
+            CreateSql();
+            SaveDeviceToSql();
         }
+
         private List<DTPlcInfoSimple> psLstAuto;
         public System.Collections.Generic.List<xjplc.DTPlcInfoSimple> PsLstAuto
         {
@@ -210,6 +378,7 @@ namespace xjplc
             set { psLstAuto = value; }
         }
 
+        
         public List<List<DTPlcInfoSimple>> AllPlcSimpleLst { get; private set; }
         public void InitControl()
         {
@@ -231,7 +400,6 @@ namespace xjplc
                 YbtdDevice.SocManager.Dispose();             
             }
             UpdateTimer.Enabled = false;
-            GC.SuppressFinalize(this);
          
         }
         #region 数据保存
@@ -389,6 +557,86 @@ namespace xjplc
 
         }
 
+
+        /// <summary>
+        /// 在数据库中 建立以设备编号为名称的数据库表格
+        /// </summary>
+        public void CreateSql()
+        {
+            if (!SqlHelper.IsTableExist(Constant.sqlDb, YbdtWorkInfo.DeviceId))
+            {
+                Dictionary<string, string> sDic = new Dictionary<string, string>();
+               
+                foreach (string s in Constant.plcDataFile)
+                {
+                    sDic.Add(s, Constant.sqlChar20);
+                }               
+
+                SqlHelper.CreateDataTable(Constant.sqlDb, YbdtWorkInfo.DeviceId, sDic);
+                
+            }
+        }
+        public bool SaveDeviceToSql()
+        {
+            //获取数据库表格数据
+            //获取是否有数据操作
+            //将现有数据更新到表格
+
+            string sql = " SELECT * FROM "+YbdtWorkInfo.DeviceId;
+            DataTable tempDataTable = SqlHelper.ExecuteDataTable(sql);
+
+            foreach (DataRow dr in tempDataTable.Rows)
+            {
+                int opInt=0;
+                int valueInt=0;
+                string binStr = dr[Constant.Bin].ToString();
+
+               if (int.TryParse(dr[Constant.strParam3].ToString(), out opInt) && (int.TryParse(dr[Constant.strParam4].ToString(),out valueInt)))
+               {
+                    if (opInt == Constant.sqlWrite)
+                    {
+
+                        DTPlcInfoSimple p = getPsFromPslLst(binStr,Constant.Read,PsLstAuto);
+                        if (p.Area.Equals(Constant.strDMArea[0]) || p.Area.Equals(Constant.strDMArea[1]))
+                        {
+                            YbtdDevice.SetDValue(p, valueInt);
+                        }
+                        else
+                        {
+                            if (p.Area.Equals(Constant.strDMArea[3]) ||
+                                p.Area.Equals(Constant.strDMArea[4]) ||
+                                p.Area.Equals(Constant.strDMArea[5]) ||
+                                p.Area.Equals(Constant.strDMArea[6]) 
+                                )
+                            {
+                                if (valueInt == Constant.M_ON)
+                                {
+                                    YbtdDevice.SetMValueON(p);
+                                }
+                                if (valueInt == Constant.M_OFF)
+                                {
+                                    YbtdDevice.SetMValueOFF(p);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+            UpdatePlcStatus(YbtdDevice.DataFormLst[0]);
+
+            return true;
+        }
+
+        private void UpdatePlcStatus(DataTable  dt)
+        {
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                SqlHelper.UpdateFromDtByName(YbdtWorkInfo.DeviceId.Trim(), dt);
+            }
+        }
+
         public void UpdateSql()
         {
             //获取数据库数据
@@ -397,30 +645,56 @@ namespace xjplc
 
             string sql = " SELECT * FROM deviceinfo where 设备地址="+"'"+YbdtWorkInfo.DeviceIP+"'";
 
-            DataTable testDatatable = new DataTable();
-
-            testDatatable = SqlHelper.ExecuteDataTable(sql);
-
-            if (testDatatable.Rows.Count == 1)
+            SqlDeiviceInfoDatatable = SqlHelper.ExecuteDataTable(sql);
+            try
             {
-                testDatatable.Rows[0]["当前产量"] =ProdQuantity.ToString();
+                if (SqlDeiviceInfoDatatable.Rows.Count == 1)
+                {
+                    YbdtWorkInfo.DanHao = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[0]].ToString();
+                    YbdtWorkInfo.DateTimeDanhao = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[1]].ToString();
+                    YbdtWorkInfo.Department = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[2]].ToString();
+                    YbdtWorkInfo.TuHao = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[3]].ToString();
+                    YbdtWorkInfo.ProdName = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[4]].ToString();
+                    YbdtWorkInfo.GongXu = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[5]].ToString();
+                    YbdtWorkInfo.GyTx = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[6]].ToString();
+                    YbdtWorkInfo.OperatorName = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[7]].ToString();
+                    YbdtWorkInfo.OperatorTx = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[8]].ToString();
+                    YbdtWorkInfo.DeviceClass = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[9]].ToString();
+                    YbdtWorkInfo.DeviceId = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[10]].ToString();
+                    YbdtWorkInfo.DeviceIP = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[11]].ToString();
+                    YbdtWorkInfo.DeviceTx = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[12]].ToString();
+                    YbdtWorkInfo.CadPath = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[13]].ToString();
+                    YbdtWorkInfo.Ddsm = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[14]].ToString();
+                    YbdtWorkInfo.SetProdQuantity = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[15]].ToString();
+                    YbdtWorkInfo.Speed = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[16]].ToString();
+                    YbdtWorkInfo.Jshu = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[17]].ToString();
+                    YbdtWorkInfo.Gmj = SqlDeiviceInfoDatatable.Rows[0][Constant.strformatYB[18]].ToString();
 
-                testDatatable.Rows[0]["实际节拍"] = ReadSpeed.ToString();
+                    SqlDeiviceInfoDatatable.Rows[0]["当前产量"] = ProdQuantity;
+                    SqlDeiviceInfoDatatable.Rows[0]["实际节拍"] = ReadSpeed;
+                    SqlDeiviceInfoDatatable.Rows[0]["开始时间"] = StartTime;
+                    SqlDeiviceInfoDatatable.Rows[0]["理论结束时间"] = EndNeedTime;
+                    SqlDeiviceInfoDatatable.Rows[0]["实际结束时间"] = EndRealTime;
 
+                }
+
+                UpdateDeviceInfoLst(SqlDeiviceInfoDatatable);
             }
-            UpdateDeviceInfoLst(testDatatable);
-            // int i = 0;
+            catch(Exception ex)
+            { }
+            
 
         }
         private void UpdateDeviceInfoLst(DataTable dt)
         {
+
             if (dt != null && dt.Rows.Count > 0)
             {
-
-                SqlHelper.UpdateFromDt(dt);
+                SqlHelper.UpdateFromDeviceInfo(dt);
             }
 
         }
+        #region 设置寄存器数据
         public void TestSetMON()
         {
 
@@ -432,157 +706,65 @@ namespace xjplc
 
             ybtdDevice.SetMValueOFF(startInPs);
         }
+
+        public void ClrQuantity()
+        {
+            ybtdDevice.SetDValue(proQuantityInOutPs,0);
+        }
+        public void SetDValue(string str1, string str2, List<DTPlcInfoSimple> pLst, int num)
+        {
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+
+            if (p != null)
+            {
+                YbtdDevice.SetDValue(p, num);
+            }
+            else
+            {
+               // MessageBox.Show(Constant.SetDataFail);
+            }
+
+        }
+
+        private DTPlcInfoSimple getPsFromPslLst(string tag0, string str0, List<DTPlcInfoSimple> pslLst)
+        {
+            foreach (DTPlcInfoSimple simple in pslLst)
+            {
+                if (simple.Name.ToString().Contains(tag0) && simple.Name.Contains(str0))
+                {
+                    return simple;
+                }
+            }
+            return null;
+        }
+
+        public void SetMPsOFFToOn(string str1, string str2, List<DTPlcInfoSimple> pLst)
+        {
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p != null)
+            {
+                YbtdDevice.SetMValueOFF2ON(p);
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+        public void SetMPsOn(string str1, string str2, List<DTPlcInfoSimple> pLst)
+        {
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p != null)
+            {
+                YbtdDevice.SetMValueON(p);
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+        #endregion
     }
 
-    public class YBDTWorkInfo
-    {
-        public YBDTWorkInfo()
-        {
-
-        }
-        //按照组合好的列名称来
-        public YBDTWorkInfo(DataRow dr)
-        {
-            DanHao = dr[Constant.strformatYB[0]].ToString();
-            DateTimeDanhao = dr[Constant.strformatYB[1]].ToString();
-            Department = dr[Constant.strformatYB[2]].ToString();
-            TuHao = dr[Constant.strformatYB[3]].ToString();
-            ProdName = dr[Constant.strformatYB[4]].ToString();
-            GongXu = dr[Constant.strformatYB[5]].ToString();
-            GyTx = dr[Constant.strformatYB[6]].ToString();
-            OperatorName = dr[Constant.strformatYB[7]].ToString();
-            OperatorTx = dr[Constant.strformatYB[8]].ToString();
-            DeviceClass = dr[Constant.strformatYB[9]].ToString();
-            DeviceId = dr[Constant.strformatYB[10]].ToString();
-            DeviceIP = dr[Constant.strformatYB[11]].ToString();
-            DeviceTx = dr[Constant.strformatYB[12]].ToString();
-            CadPath = dr[Constant.strformatYB[13]].ToString();
-            Ddsm = dr[Constant.strformatYB[14]].ToString();
-            SetProdQuantity = dr[Constant.strformatYB[15]].ToString();
-            Speed = dr[Constant.strformatYB[16]].ToString();
-            Jshu = dr[Constant.strformatYB[17]].ToString();
-            Gmj = dr[Constant.strformatYB[18]].ToString();
-
-        }
-        string danHao;
-        public string DanHao
-        {
-            get { return danHao; }
-            set { danHao = value; }
-        }
-        string dateTimeDanhao;
-        public string DateTimeDanhao
-        {
-            get { return dateTimeDanhao; }
-            set { dateTimeDanhao = value; }
-        }
-        string department;
-        public string Department
-        {
-            get { return department; }
-            set { department = value; }
-        }
-        string tuHao;
-        public string TuHao
-        {
-            get { return tuHao; }
-            set { tuHao = value; }
-        }
-        string prodName;
-        public string ProdName
-        {
-            get { return prodName; }
-            set { prodName = value; }
-        }
-        string gongXu;
-        public string GongXu
-        {
-            get { return gongXu; }
-            set { gongXu = value; }
-        }
-        string gyTx;
-        public string GyTx
-        {
-            get { return gyTx; }
-            set { gyTx = value; }
-        }
-        string operatorName;
-        public string OperatorName
-        {
-            get { return operatorName; }
-            set { operatorName = value; }
-        }
-        string operatorTx;
-        public string OperatorTx
-        {
-            get { return operatorTx; }
-            set { operatorTx = value; }
-        }
-        string deviceClass;
-        public string DeviceClass
-        {
-            get { return deviceClass; }
-            set { deviceClass = value; }
-        }
-        string deviceId;
-        public string DeviceId
-        {
-            get { return deviceId; }
-            set { deviceId = value; }
-        }
-        string deviceIP;
-        public string DeviceIP
-        {
-            get { return deviceIP; }
-            set { deviceIP = value; }
-        }
-        string deviceTx;
-        public string DeviceTx
-        {
-            get { return deviceTx; }
-            set { deviceTx = value; }
-        }
-        string cadPath;
-        public string CadPath
-        {
-            get { return cadPath; }
-            set { cadPath = value; }
-        }
-        string ddsm;
-        public string Ddsm
-        {
-            get { return ddsm; }
-            set { ddsm = value; }
-        }
-        string setProdQuantity;
-        public string SetProdQuantity
-        {
-            get { return setProdQuantity; }
-            set { setProdQuantity = value; }
-        }
-        string speed;
-        public string Speed
-        {
-            get { return speed; }
-            set { speed = value; }
-        }
-        string jshu;
-        public string Jshu
-        {
-            get { return jshu; }
-            set { jshu = value; }
-        }
-        string gmj;
-        public string Gmj
-        {
-            get { return gmj; }
-            set { gmj = value; }
-        }
-
-
-
-    }
-  
     //一切从这里出发 socserver 负责修改这个worklst集合 传输到 socclient里 进行删除
     public class YBDTWorkManger
     {
@@ -600,6 +782,7 @@ namespace xjplc
             set { ybdtWorkInfoLst = value; }
         }
 
+        
         bool isLoadData;
         public bool IsLoadData
         {
@@ -617,6 +800,19 @@ namespace xjplc
             get { return userDt; }
             set { userDt = value; }
         }
+
+        List<string> itemShowStr;
+        public System.Collections.Generic.List<string> ItemShowStr
+        {
+            get { return itemShowStr; }
+            set { itemShowStr = value; }
+        }
+        DataTable sqlShowDataTable;
+        public System.Data.DataTable SqlShowDataTable
+        {
+            get { return sqlShowDataTable; }
+            set { sqlShowDataTable = value; }
+        }
         SocServer socServer;
 
         public event ydtdWorkChanged ydtdWorkChangedEvent;//利用委托来声明事件
@@ -626,8 +822,8 @@ namespace xjplc
                          
             socServer = new SocServer();
             socServer.newClientIn += WorkClientAdd;
-            
-            UserDt = new DataTable(Constant.sqlDataName);
+                       
+            UserDt = new DataTable(Constant.sqlDataTableName);
             Excelop = new ExcelNpoi();
             YbdtWorkInfoLst = new List<YBDTWorkInfo>();
 
@@ -645,29 +841,150 @@ namespace xjplc
                 ConstantMethod.AppExit();
             }
 
-            UserDt.TableName = Constant.sqlDataName;
-            UpdateDeviceInfoLst(UserDt);
+            UserDt.TableName = Constant.sqlDataTableName;
+            LoadItemShow();
+            UpdateDeviceInfoLstToSql(UserDt);
 
+           
             socServer.startServer();
 
             socServer.YbWorkLst = YbdtWorkLst;
 
         }
+        bool isInEdit;
+        public bool IsInEdit
+        {
+            get { return isInEdit; }
+            set { isInEdit = value; }
+        }
+        private void LoadItemShow()
+        {
+            ExcelNpoi excelop = new ExcelNpoi();
+            DataTable showItemDataTable = excelop.ImportExcel(Constant.showItemPath);
+            ItemShowStr = new List<string>();
+            if (showItemDataTable != null && showItemDataTable.Rows.Count > 0)
+            {
+                foreach (DataRow dr in showItemDataTable.Rows)
+                {
+                    
+                    if (!string.IsNullOrWhiteSpace(dr[1].ToString()))
+                        ItemShowStr.Add(dr[1].ToString());
+                };
+            }
+        }
+        //从软件的数据表格格式转化为sql数据格式
+        public DataTable DataTableShift(DataTable desT)
+        {
 
-        private void UpdateDeviceInfoLst(DataTable dt)
+            DataTable dest = new DataTable();
+            dest = desT.Clone();
+            for (int m = 0; m < dest.Columns.Count; m++)
+            {
+                dest.Columns[m].DataType = Type.GetType(Constant.strformatSqlType[m]);
+            }
+            for (int i = 0; i < desT.Rows.Count; i++)
+            {
+                try
+                {
+
+                    DataRow dr = dest.NewRow();
+
+                    for (int j = 0; j < desT.Columns.Count; j++)
+                    {
+                        dr[j] = desT.Rows[i][j];
+                    }
+
+                    dest.Rows.Add(dr);
+                }
+                catch(Exception ex)
+                {
+
+                }
+
+            }
+            return dest;
+
+        }
+        private void UpdateDeviceInfoLstToSql(DataTable dt)
         {
             if (dt != null && dt.Rows.Count > 0)
             {
+                SqlHelper.UpdateFromDeviceInfo(DataTableShift(dt));
+            }
+        }
 
-                SqlHelper.UpdateFromDt(dt);
+        private void DataTableShowItem(DataTable dt,string[] itemShow)
+        {
+            List<string> colstrLst = new List<string>();
+            foreach (DataColumn dc in dt.Columns)
+            {
+                colstrLst.Add(dc.ColumnName);
+            }
+            foreach(string s in colstrLst)
+            {
+                if (!itemShow.Contains(s))
+                {
+                    dt.Columns.Remove(s);
+                }   
+            }
+        }
+        public void GetDataFromSql(DataGridView dg1)
+        {
+            string sqlStr = "SELECT * FROM deviceinfo" + " WHERE ";
+                      
+            if (ybdtWorkLst.Count == 0)
+            {
+                dg1.DataSource = null;
+                if(SqlShowDataTable !=null)
+                SqlShowDataTable.Rows.Clear();
+                return;
             }
 
+            for(int i=0;i<YbdtWorkLst.Count;i++)
+            {
+                
+
+                if (i == YbdtWorkLst.Count - 1)
+                {
+                    sqlStr += "设备地址=" + "'" + YbdtWorkLst[i].YbdtWorkInfo.DeviceIP + "'";
+                }
+                else
+                {
+                    sqlStr += "设备地址=" + "'" + YbdtWorkLst[i].YbdtWorkInfo.DeviceIP + "'" + " or ";
+                }
+                              
+            }
+        
+            DataTable dt0 = SqlHelper.ExecuteDataTable(sqlStr);
+                      
+
+            if (SqlShowDataTable == null || dt0.Rows.Count != SqlShowDataTable.Rows.Count || SqlShowDataTable.Rows.Count ==0)
+            {
+                SqlShowDataTable = dt0.Copy();
+                DataTableShowItem(SqlShowDataTable, itemShowStr.ToArray());
+                dg1.DataSource = SqlShowDataTable;
+            }
+            else
+            {
+                for (int i = 0; i < dt0.Rows.Count; i++)
+                {
+                    for (int j = 0; j < SqlShowDataTable.Columns.Count; j++)
+                    {
+                        if (j < dt0.Columns.Count)
+                        {
+                            SqlShowDataTable.Rows[i][j] = dt0.Rows[i][SqlShowDataTable.Columns[j].ColumnName];
+                        }
+                    }
+                }
+            }
+           
         }
+
         public YBDTWorkInfo GetWorkInfoFromLst(List<YBDTWorkInfo> workInfoLst, string deviceIp)
         {
             foreach (YBDTWorkInfo y in workInfoLst)
             {
-                if (y.DeviceIP.Equals(deviceIp))
+                if (y.DeviceIP.Trim().Equals(deviceIp.Trim()))
                 {
                     return y;
                 }
@@ -678,10 +995,10 @@ namespace xjplc
         {
             foreach (YBDTWork y in workLst)
             {
-                if (y.YbdtWorkInfo.DeviceIP.Equals(deviceIp))
+                if (y.YbdtWorkInfo.DeviceIP.Trim().Equals(deviceIp.Trim()))
                 {
                     return y;
-                }
+                }         
             }
             return null;
 
@@ -789,6 +1106,10 @@ namespace xjplc
 
             UserDt.Columns.Add("实际节拍");
             UserDt.Columns.Add("当前产量");
+            UserDt.Columns.Add("开始时间");
+            UserDt.Columns.Add("理论结束时间");
+            UserDt.Columns.Add("实际结束时间");
+
             IsLoadData = false;
 
             LogManager.WriteProgramLog(Constant.LoadFileEd);

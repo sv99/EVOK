@@ -352,8 +352,7 @@ namespace xjplc
                                         }
                                         DataProcessEventArgs.Byte_buffer = m_buffer.ToArray();
                                         EventDataProcess(this, DataProcessEventArgs);
-                                    }
-                                   
+                                    }                                                                  
                                 }
                                 #endregion
                             }

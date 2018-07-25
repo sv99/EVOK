@@ -317,7 +317,7 @@ namespace xjplc.delta
             
         }
 
-        
+          
         private bool FindIndexInPlcInfo(DataTable datafm, List<DTPlcInfo> dAll, List<List<DTPlcInfo>> mAll)
         {
             foreach (DataRow row in datafm.Rows)
@@ -529,7 +529,7 @@ namespace xjplc.delta
 
 
                     }
-                    if (File.Exists(s) && (Path.GetExtension(s).Equals(Constant.CSVFiileEX)))
+                    if (File.Exists(s) && (Path.GetExtension(s).Equals(Constant.CSVFileEX)))
                         CSVData.FileName = s;
                     //确认表格 //这个要隔离出来 方便以后可以单独调用 针对用户更改读取内容
                     if (CSVData.CheckCSVFile(Constant.PLCstrCol))

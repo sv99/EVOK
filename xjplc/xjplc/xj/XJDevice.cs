@@ -329,7 +329,7 @@ namespace xjplc
 
             CSVData = new CsvStreamReader();
             string s = Path.GetExtension(filename);
-            if (File.Exists(filename) && (Path.GetExtension(filename).Equals(Constant.CSVFiileEX)))
+            if (File.Exists(filename) && (Path.GetExtension(filename).Equals(Constant.CSVFileEX)))
                 CSVData.FileName = filename;
             //确认表格 //这个要隔离出来 方便以后可以单独调用 针对用户更改读取内容
             if (CSVData.CheckCSVFile(Constant.PLCstrCol))
@@ -362,7 +362,7 @@ namespace xjplc
 
 
                     }
-                    if (File.Exists(s) && (Path.GetExtension(s).Equals(Constant.CSVFiileEX)))
+                    if (File.Exists(s) && (Path.GetExtension(s).Equals(Constant.CSVFileEX)))
                         CSVData.FileName = s;
                     //确认表格 //这个要隔离出来 方便以后可以单独调用 针对用户更改读取内容
                     if (CSVData.CheckCSVFile(Constant.PLCstrCol))

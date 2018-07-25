@@ -65,21 +65,46 @@ namespace xjplc
 
         }
     }
+
+    public class ItemChangedArgs : EventArgs
+    {
+        List<string> itemAll;
+        public System.Collections.Generic.List<string> ItemAll
+        {
+            get { return itemAll; }
+            set { itemAll = value; }
+        }
+
+        List<string> itemSelect;
+        public System.Collections.Generic.List<string> ItemSelect
+        {
+            get { return itemSelect; }
+            set { itemSelect = value; }
+        }
+        public ItemChangedArgs()
+        {
+
+        }
+    }
     //串口数据处理
     public delegate void commDataProcess(object s, CommEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     //网络数据处理
     public delegate void socDataProcess(object s, SocEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     //网络客户端进来
     public delegate void socketClientChanged(object s, Socket client);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
-                                                                      //
-                                                                     //网络客户端进来
+
+    //远邦台技项目
+    public delegate void userShowItemChanged(object s, ItemChangedArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递//
+                                                                      //网络客户端进来
     public delegate void ydtdWorkChanged(object s, YBDTWork ybtdWork0);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     public class Constant
         {
+
+
         public static readonly string ConnectMachineSuccess = "设备连接成功！";
         public static readonly string ConnectMachineFail    = "设备连接失败,请检查设备端口！";
         public static readonly string ReadPlcInfoFail       = "读取设备数据文件失败，软件即将关闭！";
-        public static readonly string CSVFiileEX = ".csv";
+        public static readonly string CSVFileEX = ".csv";
         public static readonly string SingleMode = "单字";
         public static readonly string DoubleMode = "双字";
         public static readonly string BitMode = "位";
@@ -97,6 +122,9 @@ namespace xjplc
         public static readonly int HandPageID = 3;
         public static readonly string Alarm = "报警";
         public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
+        public static readonly string[] plcDataFile = {"addr","mode","bin","count","value","param1","param2","param3","param4","param5","param6"};
+        public static readonly string sqlChar10 = "char(10)";
+        public static readonly string sqlChar20 = "char(20)";
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
@@ -143,6 +171,8 @@ namespace xjplc
         public static readonly int PwdOffSet = 1000;
         public static readonly string prodResult = "生产结果";
         public static readonly int dataMultiple = 100;
+
+
         #region  优化数据
         //优化错误返回值
         public static readonly string prodLstNoData = "数据收集错误！";
@@ -288,18 +318,23 @@ namespace xjplc
         #region 远邦台技数据
         public static readonly string[] strformatYB = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备地址", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具" };
         public static readonly string[] strformatYBSave = { "计划单号", "日期", "车间", "图号", "名称", "工序", "姓名",  "设备编号", "实产量", "开始时间", "实际结束时间", "停机时间", "不正常原因"};
-
+        public static readonly string[] strformatSql = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备地址", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具", "实际节拍", "当前产量", "开始时间", "理论结束时间", "实际结束时间" };
+        public static readonly string[] strformatSqlType = { "System.String", "System.DateTime", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.String", "System.Int32", "System.Int32", "System.String", "System.String", "System.Int32", "System.Int32", "System.DateTime", "System.DateTime", "System.DateTime" };
         public static readonly int ServerPort = 8899;
         public static readonly string BeginToListen = "开始搜寻设备！";
         public static readonly string ErrorSocConnection = "网络连接错误！";
         public static readonly string NoIdDevice = "未知设备！";
         public static readonly int ReadSocTimeOut = 2000;
         public static readonly int WriteSocTimeOut = 2000;
-        public static readonly string sqlDataName = "deviceInfo";
+        public static readonly string sqlDb = "zlzk";
+        public static readonly string sqlDataTableName = "deviceInfo";
         public static readonly string sqlGetDataTable = "SELECT * FROM deviceinfo";
         public static readonly string sqlDeviceIp = "设备地址";
-        public const  int AddWork = 0;
-        public const  int DelWork = 1;
+        public static readonly string showItemPath = AppFilePath + "showItem.xlsx";
+        public const  int AddWork  = 0;
+        public const  int DelWork  = 1;
+        public const  int sqlWrite = 1;
+        public const  int sqlRead  = 0;
         #endregion
     }
 

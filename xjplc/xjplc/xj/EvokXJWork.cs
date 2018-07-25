@@ -89,7 +89,11 @@ namespace xjplc
             get { return evokDevice.DataFormLst.Count; }            
         }
 
-       
+        bool sfslw;
+        public bool Sfslw
+        {
+            get { return sfslw; }           
+        }
         public bool RunFlag
         {
             get { return mRunFlag; }
@@ -138,7 +142,6 @@ namespace xjplc
         {
             rtbResult = richrtbWork0;
         }
-
         public bool DeviceStatus {
             get {
 
@@ -244,10 +247,9 @@ namespace xjplc
         public PlcInfoSimple startOutPs     = new PlcInfoSimple("启动写");             
         public PlcInfoSimple resetOutPs     = new PlcInfoSimple("复位写");
         public PlcInfoSimple autoSLOutPs    = new PlcInfoSimple("自动上料写");
-        public PlcInfoSimple pageShiftOutPs = new PlcInfoSimple("页面切换写");
-        
-
-
+        public PlcInfoSimple pageShiftOutPs = new PlcInfoSimple("页面切换写");     
+       
+        public PlcInfoSimple sfslwInPs      = new PlcInfoSimple("伺服上料位读");
         public PlcInfoSimple emgStopInPs    = new PlcInfoSimple("急停读");
         public PlcInfoSimple startInPs      = new PlcInfoSimple("启动读");
         public PlcInfoSimple resetInPs      = new PlcInfoSimple("复位读");
@@ -319,7 +321,7 @@ namespace xjplc
         public PlcInfoSimple sljsjInPs = new PlcInfoSimple("上料架升降读");
         public PlcInfoSimple qlylInPs = new PlcInfoSimple("切料压料读");
         public PlcInfoSimple qlcyyInPs = new PlcInfoSimple("切料侧压右读");
-        public PlcInfoSimple sfslwInPs = new PlcInfoSimple("伺服上料位读");
+       
         public PlcInfoSimple tmccfInPs = new PlcInfoSimple("条码吹尘阀读");
         public PlcInfoSimple cldjInPs = new PlcInfoSimple("出料电机读");
         public PlcInfoSimple tmtgcqfInPs = new PlcInfoSimple("条码铜管吹气阀读");
@@ -374,10 +376,15 @@ namespace xjplc
 
             PsLstAuto.Add(autoMesOutInPs);
             PsLstAuto.Add(dbcOutInPs);
+
             PsLstAuto.Add(ltbcOutInPs);
+            ltbcOutInPs.IsParam = false;
+
             PsLstAuto.Add(safeOutInPs);
+
             PsLstAuto.Add(prodOutInPs);
             prodOutInPs.IsParam = false;
+
             PsLstAuto.Add(lcOutInPs);
             PsLstAuto.Add(stopOutInPs);
             PsLstAuto.Add(cutDoneOutInPs);
@@ -416,7 +423,8 @@ namespace xjplc
             PsLstAuto.Add(alarm16InPs);
             PsLstAuto.Add(lliaoOutInPs);
             PsLstAuto.Add(startCountInOutPs);
-
+            PsLstAuto.Add(sfslwOutPs);
+            PsLstAuto.Add(sfslwInPs);
 
             PsLstHand = new List<PlcInfoSimple>();
             SetHandPage(Constant.HandPage);
@@ -746,10 +754,10 @@ namespace xjplc
 
                 if (startCountInOutPs.ShowValue != valueWriteOk)
                 {
-                    //MessageBox.Show(Constant.PlcReadDataError);
+                    MessageBox.Show(Constant.PlcReadDataError);
                     LogManager.WriteProgramLog(Constant.PlcReadDataError);
                     RunFlag = false;
-                    Environment.Exit(0);
+                    //Environment.Exit(0);
                     return;
                 }            
         }
@@ -795,23 +803,23 @@ namespace xjplc
 
             //数据下发完成 等待数据接收 M16 为OFF
             int valueWriteOk = 0;
+            
             //使用下测长的延时函数 起始和测长差不多的 就是数据下发 等机器确认
             ConstantMethod.DelayMeasure(Constant.PlcCountTimeOut,
                      ref valueWriteOk,
                      ref startCountInOutPs,
                      ref emgStopInPs, ref mRunFlag);
-
+                       
             if (startCountInOutPs.ShowValue != valueWriteOk)
             {
                 plcgetData = true;
-                //MessageBox.Show(Constant.PlcReadDataError);
+                MessageBox.Show(Constant.PlcReadDataError);
                 LogManager.WriteProgramLog(Constant.PlcReadDataError);
                 RunFlag = false;
-                Environment.Exit(0);
+                //Environment.Exit(0);
                 return;
                                
-            }
-
+            }          
         }
         private void CutLoop(int i)
         {

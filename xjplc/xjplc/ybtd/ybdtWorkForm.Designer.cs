@@ -33,9 +33,9 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -73,6 +73,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "手动操作";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(7, 206);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(187, 81);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "清零";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(6, 24);
@@ -92,16 +102,6 @@
             this.button2.Text = "机床关闭";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(7, 206);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(187, 81);
-            this.button3.TabIndex = 4;
-            this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // timer1
             // 
