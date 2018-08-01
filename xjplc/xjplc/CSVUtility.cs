@@ -134,6 +134,44 @@ namespace xjplc
             fs.Close();
             //MessageBox.Show("CSV文件保存成功！");
         }
+
+        public void SaveCSV0(DataTable dt, string fileName)
+        {
+            FileStream fs = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+            StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);
+            string data = "";
+
+            //写出列名称
+            for (int i = 0; i < dt.Columns.Count; i++)
+            {
+                data += dt.Columns[i].ColumnName.ToString();
+                if (i < dt.Columns.Count - 1)
+                {
+                    data += ";";
+                }
+            }
+            sw.WriteLine(data);
+
+            //写出各行数据
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                data = "";
+                for (int j = 0; j < dt.Columns.Count; j++)
+                {
+                    data += dt.Rows[i][j].ToString();
+                    if (j < dt.Columns.Count - 1)
+                    {
+                        data += ";";
+                    }
+                }
+                sw.WriteLine(data);
+            }
+
+            sw.Close();
+            fs.Close();
+            //MessageBox.Show("CSV文件保存成功！");
+        }
+
         /// <summary>
         /// 文件名,包括文件路径
         /// </summary>
@@ -439,6 +477,59 @@ namespace xjplc
                 sr.Close();
                 fs.Close();
                 return dt;            
+        }
+        //分号
+        public DataTable OpenCSV0(string fileName)
+        {
+            DataTable dt = new DataTable();
+            FileStream fs = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            StreamReader sr = new StreamReader(fs, System.Text.Encoding.Default);
+            //记录每次读取的一行记录
+            string strLine = "";
+            //记录每行记录中的各字段内容
+            string[] aryLine;
+            //标示列数
+            int columnCount = 0;
+            //标示是否是读取的第一行
+            bool IsFirst = true;
+
+            //逐行读取CSV中的数据
+            while ((strLine = sr.ReadLine()) != null)
+            {
+                aryLine = strLine.Split(';');
+
+                if (IsFirst == true)
+                {
+                    IsFirst = false;
+                    columnCount = aryLine.Length;
+                    //创建列
+                    for (int i = 0; i < columnCount; i++)
+                    {
+                        DataColumn dc = new DataColumn(aryLine[i]);
+                        dt.Columns.Add(dc);
+                    }
+                }
+                else
+                {
+
+                    DataRow dr = dt.NewRow();
+                    int maxCol = 0;
+                    if (aryLine.Length < dt.Columns.Count)
+                    {
+                        maxCol = aryLine.Length;
+                    }else
+                    maxCol = dt.Columns.Count;
+                    for (int j = 0; j < maxCol; j++)
+                    {
+                        dr[j] = aryLine[j];
+                    }
+                    dt.Rows.Add(dr);
+
+                }
+            }
+            sr.Close();
+            fs.Close();
+            return dt;
         }
         /// 将CSV文件的数据读取到DataTable中
         ///

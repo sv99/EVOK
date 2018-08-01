@@ -98,7 +98,7 @@ namespace xjplc
             if (!ConstantMethod.XJFindPort())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
-                System.Environment.Exit(0);
+                ConstantMethod.AppExit();
             }
 
             portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);          
@@ -235,8 +235,7 @@ namespace xjplc
             if (!ConstantMethod.XJFindPort())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
-                Application.Exit();
-                System.Environment.Exit(0);
+                ConstantMethod.AppExit();
             }
 
             if (dataFormLst.Count>0)

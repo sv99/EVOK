@@ -385,16 +385,13 @@ namespace xjplc
                 {
                     MessageBox.Show(Constant.ErrorParamConfigFile);
 
-                    Application.Exit();
-
-                    System.Environment.Exit(0);
+                    ConstantMethod.AppExit();
                 }
             }
             else
             {
                 MessageBox.Show(Constant.ErrorParamConfigFile);
-                Application.Exit();
-                System.Environment.Exit(0);
+                ConstantMethod.AppExit();
             }
 
             LogManager.WriteProgramLog(Constant.Start);
@@ -695,7 +692,7 @@ namespace xjplc
                     //MessageBox.Show(Constant.PlcReadDataError);
                     LogManager.WriteProgramLog(Constant.PlcReadDataError);
                     RunFlag = false;
-                    Environment.Exit(0);
+                    ConstantMethod.AppExit();
                     return;
                 } 
 
@@ -755,7 +752,7 @@ namespace xjplc
                 //MessageBox.Show(Constant.PlcReadDataError);
                 LogManager.WriteProgramLog(Constant.PlcReadDataError);
                 RunFlag = false;
-                Environment.Exit(0);
+                ConstantMethod.AppExit();
                 return;
                                
             }

@@ -290,7 +290,10 @@ namespace evokNew0069
                 optSize.Dbc = evokWork.dbcOutInPs.ShowValue;
                 optSize.Ltbc = evokWork.ltbcOutInPs.ShowValue;
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
-                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                //不排版模式
+                //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                ConstantMethod.ShowInfo(rtbResult, optSize.NoOpt(rtbResult));
+               // ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
             }
 
             stopOptShow();

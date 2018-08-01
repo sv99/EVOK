@@ -545,7 +545,11 @@ namespace xjplc
             optSize.SaveCsv();
             optSize.SaveExcel();
         }
-       
+        public void SaveFile0()
+        {
+            optSize.SaveCsv0();
+            optSize.SaveExcel();
+        }
         #region 条码部分
         public void printBarcode(Report rp1, object s2)
         {
@@ -764,11 +768,11 @@ namespace xjplc
         private void DownLoadDataNormal(int i)
         {
             List<int> DataList = new List<int>();
-            //添加料长
-            DataList.Add(optSize.ProdInfoLst[i].Len);
+            //添加料长 20170727 料长不发送了
+           // DataList.Add(optSize.ProdInfoLst[i].Len);
             //D4998-》0
-            int value = 1;
-            DataList.Add(value);
+           // int value = 1;
+            //DataList.Add(value);
             DataList.Add(optSize.ProdInfoLst[i].WL);
             //添加段数
             DataList.Add(optSize.ProdInfoLst[i].Cut.Count);
@@ -787,7 +791,7 @@ namespace xjplc
                 {
                     LogManager.WriteProgramLog(Constant.DataDownLoad + m.ToString());
 
-                    if (evokDevice.SetMultiPleDValue(lcOutInPs, DataList.ToArray()))
+                    if (evokDevice.SetMultiPleDValue(ldsCountInOutPs, DataList.ToArray()))
                     {
                          //发送是料长 但料长不清零 要读取清零的D5000数据 所以只能加延时
                         ConstantMethod.Delay(200);
@@ -801,6 +805,7 @@ namespace xjplc
                  }
             }
 
+            /***** 适用于欧派科凡 
             //数据下发完成 等待数据接收 M16 为OFF
             int valueWriteOk = 0;
             
@@ -817,9 +822,11 @@ namespace xjplc
                 LogManager.WriteProgramLog(Constant.PlcReadDataError);
                 RunFlag = false;
                 //Environment.Exit(0);
-                return;
-                               
-            }          
+                return;                               
+            }   
+            
+            ****/         
+                 
         }
         private void CutLoop(int i)
         {
@@ -849,10 +856,10 @@ namespace xjplc
                 {
                     int oldCutCount = 0;
 
-                    if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao]["已切数量"].ToString(), out oldCutCount))
+                    if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2].ToString(), out oldCutCount))
                     {
                         oldCutCount++;
-                        optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao]["已切数量"] = oldCutCount;
+                        optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2] = oldCutCount;
                     }
 
                     ConstantMethod.ShowInfo(rtbWork, "第" + (oldcCount + 1).ToString() + "段尺寸：" + optSize.ProdInfoLst[i].Cut[oldcCount].ToString() + "-----完成");
@@ -920,6 +927,15 @@ namespace xjplc
             optSize.Safe = safeOutInPs.ShowValue;
             optSize.LoadCsvData(filename);
         }
+        //分号分隔符
+        public void LoadCsvData0(string filename)
+        {
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+            optSize.LoadCsvData0(filename);
+        }
         public void LoadExcelData(string filename)
         {
             optSize.Len = lcOutInPs.ShowValue;
@@ -953,9 +969,7 @@ namespace xjplc
                             CutThreadStart = new ThreadStart(CutWorkThread);
                         //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
                         if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
-
-                
+                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间                
                         break;
                     }
                 case Constant.CutMeasureRotateWithHoleMode:
@@ -1123,7 +1137,7 @@ namespace xjplc
             RunFlag = false;
             ConstantMethod.Delay(100);
             //保存文件
-            SaveFile();
+            SaveFile0();
             if (evokDevice != null)
                 evokDevice.DeviceShutDown();
             printReport.Dispose();

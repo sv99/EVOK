@@ -61,7 +61,7 @@ namespace evokNew0068
             } 
             ****/                     
             loadDataBtn.Enabled = false;
-            ReadCSVData();
+            ReadCSVData0();
             loadDataBtn.Enabled = true;
            
         }
@@ -284,15 +284,17 @@ namespace evokNew0068
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
            // }
            ****/
-
-            if (!evokWork.AutoMes)
-            {
+           //现场 去掉测长
+           // if (!evokWork.AutoMes)
+            //{
                 optSize.Len = evokWork.lcOutInPs.ShowValue;
                 optSize.Dbc = evokWork.dbcOutInPs.ShowValue;
                 optSize.Ltbc = evokWork.ltbcOutInPs.ShowValue;
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
-                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-            }
+                //不排版模式
+                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal0(rtbResult));
+               // ConstantMethod.ShowInfo(rtbResult, optSize.NoOpt(rtbResult));
+           // }
 
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
@@ -309,7 +311,22 @@ namespace evokNew0068
         {
             evokWork.ProClr();
         }
-
+        private int ReadCSVData0()
+        {
+            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
+            {
+                int num = ConstantMethod.IsWhichFile(DialogExcelDataLoad.FileName);
+                if (num == Constant.CsvFile)
+                {
+                    evokWork.LoadCsvData0(DialogExcelDataLoad.FileName);
+                }
+                if (num == Constant.ExcelFile)
+                {
+                    evokWork.LoadExcelData(DialogExcelDataLoad.FileName);
+                }
+            }
+            return 0;
+        }
         private int ReadCSVData()
         {
             if ( DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
@@ -446,17 +463,17 @@ namespace evokNew0068
         private void stbtn_Click(object sender, EventArgs e)
         {
             startBtnShow();
-            if ( evokWork.AutoMes)
-            {
-                 evokWork.CutStartMeasure(Constant.CutMeasureMode);
+           // if ( evokWork.AutoMes)
+          //  {
+              //   evokWork.CutStartMeasure(Constant.CutMeasureMode);
                 //测试代码 后续回复弹窗
                 /**
                 qClr_Click(sender, e);
                 stbtn_Click(sender, e);
               **/
-            }
-            else
-            {
+           // }
+           // else
+           // {
                 evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
                 /***
@@ -464,7 +481,7 @@ namespace evokNew0068
                 optBtn_Click(sender, e);
                 stbtn_Click(sender, e);
                 ***/
-            }
+          //  }
             //测试代码 后续回复弹窗
              stopBtnShow();
         }
@@ -515,14 +532,15 @@ namespace evokNew0068
 
         private void FileSave_Tick(object sender, EventArgs e)
         {
-             evokWork.SaveFile();
+             evokWork.SaveFile0();
         }
 
         private void UpdataAuto()
         {
             if ( tc1.SelectedIndex == 0)
-            {                               
-                IsoptBtnShow( evokWork.AutoMes);
+            {    
+                //现场 测长去掉                           
+               // IsoptBtnShow( evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;

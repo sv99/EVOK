@@ -596,8 +596,7 @@ namespace xjplc
             else
             {
                 MessageBox.Show(Constant.ErrorSerialportConfigFile);
-                Application.Exit();
-                System.Environment.Exit(0);
+                ConstantMethod.AppExit();
 
             }
 

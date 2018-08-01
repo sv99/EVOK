@@ -774,6 +774,50 @@ namespace xjplc
             ConstantMethod.ShowInfo(rt1, "需要料数：" + resultOpt.Count.ToString() + "根");
 
         }
+        private void ShowNormalResultNoSort(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+        {
+            ConstantMethod.ShowInfo(rt1, "--------------");
+
+            for (int i = 0; i < resultOpt.Count; i++)
+            {
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (i + 1).ToString() + "根：");
+                List<SingleSize> resultSingleSize = new List<SingleSize>();
+                //排个序
+               // resultOpt[i].Sort();
+                for (int j = 0; j < resultOpt[i].Count; j++)
+                {
+                    for (int k = 0; k < prodLst.Count; k++)
+                    {
+                        if (prodLst[k].Cut == resultOpt[i][j])
+                        {
+                            resultSingleSize.Add(prodLst[k]);
+                            ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (j + 1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].Barc);
+                            prodLst.RemoveAt(k);
+                            break;
+                        }
+                    }
+
+                }
+
+                if (resultSingleSize.Count > 0)
+                {
+                    ProdInfo prodInfo = new ProdInfo(resultSingleSize);
+                    prodInfo.DBC = dbc;
+                    prodInfo.LBC = ltbc;
+                    prodInfo.Len = len;
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
+                    ProdInfoLst.Add(prodInfo);
+                    singleSizeLst.Add(resultSingleSize);
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                }
+
+            }
+
+            ConstantMethod.ShowInfo(rt1, "需要料数：" + resultOpt.Count.ToString() + "根");
+
+        }
+
         public OptSize(DataGridView UserData0)
         {
             CSVop = new CsvStreamReader();
@@ -814,11 +858,39 @@ namespace xjplc
                 IsSaving = false;
             }
         }
+        public void SaveCsv0()
+        {
+            if (!IsLoadData
+                && !string.IsNullOrWhiteSpace(CSVop.FileName)
+                && File.Exists(CSVop.FileName)
+                && dtData != null
+                && dtData.Rows.Count > 0)
+            {
+                IsSaving = true;
+                CSVop.SaveCSV0(dtData, CSVop.FileName);
+                IsSaving = false;
+            }
+        }
         public void ShowErrorRow()
         {
             List<int> errorId = new List<int>();
             //检查datagridview数据是否违法 得出错误列
             errorId = CheckDataGridViewData(OptRealLen, DtData);
+            for (int i = 0; i < UserDataView.Rows.Count; i++)
+            {
+                UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
+            }
+
+            for (int i = errorId.Count - 1; i >= 0; i--)
+            {
+                UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
+            }
+        }
+        public void ShowErrorRow0()
+        {
+            List<int> errorId = new List<int>();
+            //检查datagridview数据是否违法 得出错误列
+            errorId = CheckDataGridViewData0(OptRealLen, DtData);
             for (int i = 0; i < UserDataView.Rows.Count; i++)
             {
                 UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
@@ -895,13 +967,42 @@ namespace xjplc
             LogManager.WriteProgramLog(Constant.LoadFileEd);
             return true;
         }
+        //分号
+        public bool LoadCsvData0(string filename)
+        {
+            LogManager.WriteProgramLog(Constant.LoadFileSt + filename);
+
+            while (IsSaving)
+            {
+                Application.DoEvents();
+            }
+
+            IsLoadData = true;
+            CSVop.DataClear();
+            if (dtData != null)
+                dtData.Clear();
+
+            CSVop.FileName = filename;
+           //这里回去改 现场不好改 
+           // if (!CSVop.CheckCSVFile(Constant.strformatEh)) return false;
+           
+            dtData = CSVop.OpenCSV0(filename);
+
+            if (dtData.Rows.Count < 2) return false;
+            Excelop.FileName = null;
+            UserDataView.DataSource = dtData;
+            ShowErrorRow0();
+            IsLoadData = false;
+            LogManager.WriteProgramLog(Constant.LoadFileEd);
+            return true;
+        }
         #endregion
         public void prodClear()
         {
             if (DtData != null && DtData.Rows.Count > 0)
                 foreach (DataRow dr in DtData.Rows)
                 {
-                    dr["已切数量"] = 0;
+                    dr[2] = 0;
                 }
         }
        
@@ -954,6 +1055,55 @@ namespace xjplc
             //GC.WaitForPendingFinalizers();     
             return Constant.optSuccess;
         }
+
+        public string NoOpt(RichTextBox rt1)
+        {
+            //干活之前 先清空数据 做好准备工作          
+            singleSizeLst.Clear();
+            ProdInfoLst.Clear();
+
+            if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
+
+            //检查错误行
+            ShowErrorRow();
+            List<SingleSize> prodLst = new List<SingleSize>();
+            GetDataFromDtByDoorType(DtData, prodLst);
+
+            //如果无数据 则返回-1
+            if (prodLst.Count < 1) //
+                return Constant.prodLstNoData;
+
+
+            //进行优化 变成单个模块
+            List<List<int>> resultOpt = new List<List<int>>();
+            List<int> dataOpt = new List<int>();
+
+
+            //进行完整的优化
+            if (prodLst.Count > 0)
+                foreach (SingleSize sss in prodLst)
+                {
+                    dataOpt.Add(sss.Cut);
+                }
+
+            //----
+            resultOpt = NoOptModule(dataOpt.ToList<int>(), len, dbc, ltbc, safe); ;
+
+
+            if (resultOpt.Count > 0)
+            {
+                ShowNormalResultNoSort(resultOpt, prodLst, rt1);
+            }
+            else return Constant.optResultNoData;
+
+            resultOpt = null;
+            prodLst = null;
+            dataOpt = null;
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();     
+            return Constant.optSuccess;
+
+        }
         public string OptNormal(RichTextBox rt1)
         {
             //干活之前 先清空数据 做好准备工作          
@@ -1001,8 +1151,56 @@ namespace xjplc
             //GC.WaitForPendingFinalizers();     
             return Constant.optSuccess;
 
-        }        
-    
+        }
+        //现场 不同的是 CSV文件格式 
+        public string OptNormal0(RichTextBox rt1)
+        {
+            //干活之前 先清空数据 做好准备工作          
+            singleSizeLst.Clear();
+            ProdInfoLst.Clear();
+
+            if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
+
+            //检查错误行
+            ShowErrorRow0(); //这里不同 现场
+            List<SingleSize> prodLst = new List<SingleSize>();
+            GetDataFromDtByDoorType0(DtData, prodLst);
+
+            //如果无数据 则返回-1
+            if (prodLst.Count < 1) //
+                return Constant.prodLstNoData;
+
+
+            //进行优化 变成单个模块
+            List<List<int>> resultOpt = new List<List<int>>();
+            List<int> dataOpt = new List<int>();
+
+
+            //进行完整的优化
+            if (prodLst.Count > 0)
+                foreach (SingleSize sss in prodLst)
+                {
+                    dataOpt.Add(sss.Cut);
+                }
+
+            //----
+            resultOpt = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+
+
+            if (resultOpt.Count > 0)
+            {
+                ShowNormalResult(resultOpt, prodLst, rt1);
+            }
+            else return Constant.optResultNoData;
+
+            resultOpt = null;
+            prodLst = null;
+            dataOpt = null;
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();     
+            return Constant.optSuccess;
+
+        }
         private void GetSmallBigData(int c, List<int> data, List<int> dataBig, List<int> dataSmall, double index)
         {
             int len = (int)(c * index);
@@ -1183,6 +1381,70 @@ namespace xjplc
 
         [DllImport("opt3.dll", EntryPoint = "Optimize", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Cdecl)]
         private static extern int Optimize(int n, int c, int[] w, int[] v, int[] x);
+        private List<List<int>> NoOptModule(List<int> data, int c, int dbc_tmp, int ltbc_tmp, int safe_tmp)
+        {
+            double index = 0;//取值是0~1 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+
+            List<int> dataTmp = data.ToList<int>();
+
+            List<List<int>> dataResult = new List<List<int>>();
+
+            List<List<int>> dataResultM = new List<List<int>>();
+
+            while (dataTmp.Count > 0)
+            {
+                List<int> dataRes = new List<int>();
+
+                int sum = 0;
+                for (int i = 0; i < dataTmp.Count; i++)
+                {
+                    sum += dataTmp[i];
+                    if (sum < (c - ltbc_tmp - dbc_tmp - safe_tmp))
+                    {
+                        dataRes.Add(dataTmp[i]);
+                    }
+                    else
+                        break;
+                }
+                if (dataRes.Count > 0)
+                {
+                    dataResultM.Add(dataRes.ToList<int>());
+                    //删除已经选中的数据
+                    for (int j = 0; j < dataRes.Count; j++)
+                    {
+                        int FindSize = dataTmp.IndexOf(dataRes[j]);
+                        if (FindSize > -1)
+                            dataTmp.RemoveAt(FindSize);
+                    }
+                }
+            }
+                    
+               
+                if (dataResultM.Count > 0)
+                {
+                    if (dataResult.Count > 0)
+                    {
+                        if (dataResult.Count > dataResultM.Count)
+                        {
+                            dataResult = dataResultM.ToList();
+                        }
+                    }
+                    else
+                    {
+                        dataResult = dataResultM.ToList();
+                    }
+                }
+
+            dataResultM = null;
+            dataTmp = null;
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+
+
+            return dataResult.ToList();
+
+        }
 
 
         //单个模块进行排版
@@ -1321,6 +1583,71 @@ namespace xjplc
 
             return errRow;
         }
+        private List<int> CheckDataGridViewData0(int reallen, DataTable dt)
+        {
+            List<int> errRow = new List<int>();
+            double dblevaluesize; //尺寸
+            int intcounttocut; //要切的数量
+            int intcountdone;//已切数量
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int m = i;
+
+                if (dt.Rows[i][Constant.strformatEh[0]] == null)
+                {
+                    errRow.Add(m);
+                    continue;
+                }
+                if (dt.Rows[i][Constant.strformatEh[1]] == null)
+                {
+                    errRow.Add(m);
+                    continue;
+                }
+                if (dt.Rows[i][Constant.strformatEh[2]] == null)
+                {
+                    errRow.Add(m);
+                    continue;
+                }
+                if (!Double.TryParse(dt.Rows[i][Constant.strformatEh[0]].ToString(), out dblevaluesize))
+                {
+                    errRow.Add(m);
+                    continue;
+                }
+                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[1]].ToString(), out intcounttocut))
+                {
+                    errRow.Add(m);
+                    continue;
+                }
+                //已切数量没有 默认为0
+                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[2]].ToString(), out intcountdone))
+                {
+                    dt.Rows[i][Constant.strformatEh[2]] = 0;
+                    intcountdone = 0;
+                    // errRow.Add(m);
+                }
+
+                if (intcounttocut < intcountdone)
+                {
+                    errRow.Add(m);
+                    continue;
+                }
+
+                if ((dblevaluesize > 0) && (intcounttocut > -1) && (intcountdone > -1))
+                {
+
+                    int size = (int)(dblevaluesize * 100);
+                    if (size > reallen)
+                    {
+                        errRow.Add(m);
+                    }
+                }
+                else
+                { errRow.Add(m); continue; }
+            }
+
+            return errRow;
+        }
 
         /// <summary>
         /// 在给定的dt里寻找数据
@@ -1399,7 +1726,77 @@ namespace xjplc
 
             }      
     }
-               
-        
+        private void GetDataFromDtByDoorType0(DataTable dt, List<SingleSize> ProdLst)
+        {
+            double dblevaluesize; //尺寸
+            int intcounttocut; //要切的数量
+            int intcountdone;//已切数量
+
+            ProdLst.Clear();
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                //判断 尺寸 设定数量 已切数量
+                if (!Double.TryParse(dt.Rows[i][Constant.strformatEh[0]].ToString(), out dblevaluesize)) continue;
+                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[1]].ToString(), out intcounttocut)) continue;
+                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[2]].ToString(), out intcountdone)) continue;
+
+                if (intcounttocut <= intcountdone) continue;
+
+                //尺寸需要扩大一下 有精度要求 小数点后面两位            
+                int size = (int)(dblevaluesize * 100);
+
+                if (!(size < OptRealLen)) continue;
+
+                if ((dblevaluesize > 0) && (intcounttocut > 0) && (intcountdone > -1))
+                {
+                    for (int j = 0; j < (intcounttocut - intcountdone); j++)
+                    {
+                        SingleSize pi = new SingleSize(dt, i);
+                        ProdLst.Add(pi);
+
+                        //设定尺寸 条码
+                        pi.Cut = size;
+                        pi.Barc = dt.Rows[i][Constant.strformatEh[3]].ToString();
+                        pi.DtUser = dt;
+                        //添加参数                      
+                        for (int m = 0; m < pi.ParamStrLst.Count; m++)
+                        {
+                            if ((m + 4) < dt.Rows[i].ItemArray.Count() && dt.Rows[i][4 + m] != null)  //参数
+                                pi.ParamStrLst[m] = dt.Rows[i][4 + m].ToString();
+                        }
+
+                        if (pi.ParamStrLst.Count > 20)
+                        {
+                            pi.ParamStr1 = pi.ParamStrLst[0];
+                            pi.ParamStr2 = pi.ParamStrLst[1];
+                            pi.ParamStr3 = pi.ParamStrLst[2];
+                            pi.ParamStr4 = pi.ParamStrLst[3];
+                            pi.ParamStr5 = pi.ParamStrLst[4];
+                            pi.ParamStr6 = pi.ParamStrLst[5];
+                            pi.ParamStr7 = pi.ParamStrLst[6];
+                            pi.ParamStr8 = pi.ParamStrLst[7];
+                            pi.ParamStr9 = pi.ParamStrLst[8];
+                            pi.ParamStr10 = pi.ParamStrLst[9];
+                            pi.ParamStr11 = pi.ParamStrLst[10];
+                            pi.ParamStr12 = pi.ParamStrLst[11];
+                            pi.ParamStr13 = pi.ParamStrLst[12];
+                            pi.ParamStr14 = pi.ParamStrLst[13];
+                            pi.ParamStr15 = pi.ParamStrLst[14];
+                            pi.ParamStr16 = pi.ParamStrLst[15];
+                            pi.ParamStr17 = pi.ParamStrLst[16];
+                            pi.ParamStr18 = pi.ParamStrLst[17];
+                            pi.ParamStr19 = pi.ParamStrLst[18];
+                            pi.ParamStr20 = pi.ParamStrLst[19];
+
+
+                        }
+                        pi.ParamStrLst.Insert(0, pi.Barc);
+
+                    }
+                }
+            }
+        }
+
     }
 }

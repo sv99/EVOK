@@ -74,6 +74,8 @@
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lblY27 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -93,6 +95,7 @@
             this.BtnM102 = new System.Windows.Forms.Button();
             this.BtnM118 = new System.Windows.Forms.Button();
             this.lblY14 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.lblY25 = new System.Windows.Forms.Button();
             this.lblY24 = new System.Windows.Forms.Button();
             this.lblY26 = new System.Windows.Forms.Button();
@@ -285,6 +288,7 @@
             this.button6.Tag = "伺服上料位";
             this.button6.Text = "伺服上料位";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Visible = false;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // button5
@@ -298,6 +302,7 @@
             this.button5.Tag = "拉料开关";
             this.button5.Text = "拉料";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // printcb
@@ -526,6 +531,7 @@
             this.autoSLBtn.Tag = "自动上料";
             this.autoSLBtn.Text = "自动上料";
             this.autoSLBtn.UseVisualStyleBackColor = true;
+            this.autoSLBtn.Visible = false;
             this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
             // 
             // stopBtn
@@ -610,6 +616,8 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.White;
+            this.tabPage2.Controls.Add(this.lblY27);
+            this.tabPage2.Controls.Add(this.button7);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.button3);
@@ -629,6 +637,7 @@
             this.tabPage2.Controls.Add(this.BtnM102);
             this.tabPage2.Controls.Add(this.BtnM118);
             this.tabPage2.Controls.Add(this.lblY14);
+            this.tabPage2.Controls.Add(this.button8);
             this.tabPage2.Controls.Add(this.lblY25);
             this.tabPage2.Controls.Add(this.lblY24);
             this.tabPage2.Controls.Add(this.lblY26);
@@ -647,6 +656,33 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
             // 
+            // lblY27
+            // 
+            this.lblY27.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lblY27.Location = new System.Drawing.Point(769, 334);
+            this.lblY27.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.lblY27.Name = "lblY27";
+            this.lblY27.Size = new System.Drawing.Size(168, 78);
+            this.lblY27.TabIndex = 90;
+            this.lblY27.Tag = "真空泵电源";
+            this.lblY27.Text = "真空泵电源";
+            this.lblY27.UseVisualStyleBackColor = true;
+            this.lblY27.UseWaitCursor = true;
+            this.lblY27.Visible = false;
+            // 
+            // button7
+            // 
+            this.button7.BackColor = System.Drawing.Color.Transparent;
+            this.button7.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button7.Location = new System.Drawing.Point(276, 499);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(168, 78);
+            this.button7.TabIndex = 89;
+            this.button7.Tag = "上料架推料";
+            this.button7.Text = "上料架推料";
+            this.button7.UseVisualStyleBackColor = false;
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -662,13 +698,13 @@
             // 
             this.button4.BackColor = System.Drawing.Color.Transparent;
             this.button4.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button4.Location = new System.Drawing.Point(228, 168);
+            this.button4.Location = new System.Drawing.Point(276, 417);
             this.button4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(168, 78);
             this.button4.TabIndex = 87;
-            this.button4.Tag = "上料架检测吹尘";
-            this.button4.Text = "上料架检测吹尘";
+            this.button4.Tag = "上料靠栅";
+            this.button4.Text = "上料靠栅";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
@@ -676,7 +712,7 @@
             // 
             this.button3.BackColor = System.Drawing.Color.Transparent;
             this.button3.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button3.Location = new System.Drawing.Point(415, 251);
+            this.button3.Location = new System.Drawing.Point(523, 251);
             this.button3.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(168, 78);
@@ -690,7 +726,7 @@
             // 
             this.button2.BackColor = System.Drawing.Color.Transparent;
             this.button2.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button2.Location = new System.Drawing.Point(41, 168);
+            this.button2.Location = new System.Drawing.Point(41, 254);
             this.button2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(168, 78);
@@ -703,7 +739,7 @@
             // button19
             // 
             this.button19.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button19.Location = new System.Drawing.Point(789, 252);
+            this.button19.Location = new System.Drawing.Point(769, 500);
             this.button19.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(168, 78);
@@ -716,20 +752,20 @@
             // button14
             // 
             this.button14.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button14.Location = new System.Drawing.Point(602, 250);
+            this.button14.Location = new System.Drawing.Point(769, 250);
             this.button14.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button14.Name = "button14";
             this.button14.Size = new System.Drawing.Size(168, 78);
             this.button14.TabIndex = 80;
-            this.button14.Tag = "送料上压";
-            this.button14.Text = "送料上压";
+            this.button14.Tag = "送料压料";
+            this.button14.Text = "送料压料";
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // button13
             // 
             this.button13.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button13.Location = new System.Drawing.Point(228, 251);
+            this.button13.Location = new System.Drawing.Point(276, 339);
             this.button13.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(168, 78);
@@ -877,7 +913,7 @@
             // lblY14
             // 
             this.lblY14.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY14.Location = new System.Drawing.Point(41, 334);
+            this.lblY14.Location = new System.Drawing.Point(41, 168);
             this.lblY14.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY14.Name = "lblY14";
             this.lblY14.Size = new System.Drawing.Size(168, 78);
@@ -887,10 +923,23 @@
             this.lblY14.UseVisualStyleBackColor = true;
             this.lblY14.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
+            // button8
+            // 
+            this.button8.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button8.Location = new System.Drawing.Point(523, 500);
+            this.button8.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(168, 78);
+            this.button8.TabIndex = 61;
+            this.button8.Tag = "条码吹气阀";
+            this.button8.Text = "条码吹气阀";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.HandOff2On_Click);
+            // 
             // lblY25
             // 
             this.lblY25.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY25.Location = new System.Drawing.Point(415, 416);
+            this.lblY25.Location = new System.Drawing.Point(523, 416);
             this.lblY25.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY25.Name = "lblY25";
             this.lblY25.Size = new System.Drawing.Size(168, 78);
@@ -903,7 +952,7 @@
             // lblY24
             // 
             this.lblY24.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY24.Location = new System.Drawing.Point(415, 168);
+            this.lblY24.Location = new System.Drawing.Point(523, 168);
             this.lblY24.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY24.Name = "lblY24";
             this.lblY24.Size = new System.Drawing.Size(168, 78);
@@ -916,7 +965,7 @@
             // lblY26
             // 
             this.lblY26.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY26.Location = new System.Drawing.Point(415, 334);
+            this.lblY26.Location = new System.Drawing.Point(523, 334);
             this.lblY26.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY26.Name = "lblY26";
             this.lblY26.Size = new System.Drawing.Size(168, 78);
@@ -929,7 +978,7 @@
             // lblY4
             // 
             this.lblY4.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY4.Location = new System.Drawing.Point(602, 168);
+            this.lblY4.Location = new System.Drawing.Point(769, 168);
             this.lblY4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY4.Name = "lblY4";
             this.lblY4.Size = new System.Drawing.Size(168, 78);
@@ -955,7 +1004,7 @@
             // lblY5
             // 
             this.lblY5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY5.Location = new System.Drawing.Point(789, 168);
+            this.lblY5.Location = new System.Drawing.Point(769, 417);
             this.lblY5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY5.Name = "lblY5";
             this.lblY5.Size = new System.Drawing.Size(168, 78);
@@ -981,7 +1030,7 @@
             // lblY13
             // 
             this.lblY13.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY13.Location = new System.Drawing.Point(41, 251);
+            this.lblY13.Location = new System.Drawing.Point(41, 334);
             this.lblY13.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY13.Name = "lblY13";
             this.lblY13.Size = new System.Drawing.Size(168, 78);
@@ -994,7 +1043,7 @@
             // lblY17
             // 
             this.lblY17.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY17.Location = new System.Drawing.Point(228, 417);
+            this.lblY17.Location = new System.Drawing.Point(276, 168);
             this.lblY17.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY17.Name = "lblY17";
             this.lblY17.Size = new System.Drawing.Size(168, 78);
@@ -1008,7 +1057,7 @@
             // 
             this.lblY16.BackColor = System.Drawing.Color.Transparent;
             this.lblY16.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lblY16.Location = new System.Drawing.Point(228, 334);
+            this.lblY16.Location = new System.Drawing.Point(276, 252);
             this.lblY16.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lblY16.Name = "lblY16";
             this.lblY16.Size = new System.Drawing.Size(168, 78);
@@ -1293,6 +1342,9 @@
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button lblY27;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
     }
 }
 
