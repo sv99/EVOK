@@ -27,7 +27,7 @@ namespace xjplc.ybtd
         public void ShowDeviceInfo()
         {
             textBox1.Text = YtdworkInfo.DanHao;
-            textBox2.Text = YtdworkInfo.DateTimeDanhao;
+            //textBox2.Text = YtdworkInfo.DateTimeDanhao;
             textBox3.Text = YtdworkInfo.Department;
             textBox6.Text = YtdworkInfo.TuHao;
             textBox5.Text = YtdworkInfo.ProdName;

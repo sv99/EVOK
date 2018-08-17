@@ -108,21 +108,8 @@ namespace evokNew0067
 
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            int num3;
-            string s =  dgvParam.SelectedCells[0].Value.ToString();
+            evokWork.dgvParam_CellEndEdit(dgvParam, sender, e);
 
-            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
-            try
-            {
-                if (int.TryParse(s, out num3))
-                {
-                    evokWork.DgvValueEdit(rowIndex, num3);
-                }
-            }
-            catch { }
-            finally{ evokWork.DgvInOutEdit(rowIndex, false); }
-            
-           
         }
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)

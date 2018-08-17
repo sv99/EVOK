@@ -113,6 +113,13 @@ namespace xjplc
                                 {                                
                                     string s = dplcInfoLst[i].PlcValue.ToString();
                                     datform.Rows[dplcInfoLst[i].Row]["value"] = s;
+
+                                    double valueDouble;
+                                    if (double.TryParse(s, out valueDouble))
+                                    {
+                                        valueDouble = valueDouble / Constant.dataMultiple;
+                                        datform.Rows[dplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
+                                    }
                                     UpDateRow.Add(dplcInfoLst[i].Row);
                                                                        
                                 }

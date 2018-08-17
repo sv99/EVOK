@@ -33,8 +33,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.完成率 = new xjplc.DataGridViewProgressColumn();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -108,9 +106,10 @@
             this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deviceLstTimer = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.完成率 = new xjplc.DataGridViewProgressColumn();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.deviceGroupBox.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -118,6 +117,7 @@
             this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -129,7 +129,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1560, 648);
+            this.tabControl1.Size = new System.Drawing.Size(1894, 781);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage3
@@ -139,7 +139,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1552, 619);
+            this.tabPage3.Size = new System.Drawing.Size(1886, 752);
             this.tabPage3.TabIndex = 4;
             this.tabPage3.Text = "设备总览";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -153,27 +153,6 @@
             this.button1.Text = "修改";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_2);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.完成率});
-            this.dataGridView1.Location = new System.Drawing.Point(15, 69);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 27;
-            this.dataGridView1.Size = new System.Drawing.Size(1663, 363);
-            this.dataGridView1.TabIndex = 0;
-            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // 完成率
-            // 
-            this.完成率.HeaderText = "完成率[%]";
-            this.完成率.Name = "完成率";
-            this.完成率.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.完成率.ReadOnly = true;
             // 
             // tabPage1
             // 
@@ -189,7 +168,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1552, 619);
+            this.tabPage1.Size = new System.Drawing.Size(1981, 752);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "设备";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -227,7 +206,7 @@
             this.deviceGroupBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.deviceGroupBox.Name = "deviceGroupBox";
             this.deviceGroupBox.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.deviceGroupBox.Size = new System.Drawing.Size(1328, 545);
+            this.deviceGroupBox.Size = new System.Drawing.Size(1717, 545);
             this.deviceGroupBox.TabIndex = 7;
             this.deviceGroupBox.TabStop = false;
             // 
@@ -255,7 +234,7 @@
             this.groupBox4.Controls.Add(this.label54);
             this.groupBox4.Location = new System.Drawing.Point(945, 28);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(377, 423);
+            this.groupBox4.Size = new System.Drawing.Size(726, 423);
             this.groupBox4.TabIndex = 10;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "其他";
@@ -783,7 +762,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1552, 619);
+            this.tabPage2.Size = new System.Drawing.Size(1981, 752);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "参数设置";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -828,7 +807,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1600, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1940, 28);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -920,21 +899,43 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.完成率});
+            this.dataGridView1.Location = new System.Drawing.Point(15, 69);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowTemplate.Height = 27;
+            this.dataGridView1.Size = new System.Drawing.Size(1834, 659);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // 完成率
+            // 
+            this.完成率.HeaderText = "完成率[%]";
+            this.完成率.Name = "完成率";
+            this.完成率.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.完成率.ReadOnly = true;
+            this.完成率.Width = 82;
+            // 
             // YBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1600, 734);
+            this.ClientSize = new System.Drawing.Size(1940, 826);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "YBForm";
             this.Text = "远邦台技";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.YBForm_FormClosed);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.deviceGroupBox.ResumeLayout(false);
@@ -948,6 +949,7 @@
             this.tabPage2.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

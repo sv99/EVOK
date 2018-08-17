@@ -390,7 +390,7 @@ namespace xjplc
             }
             else
             {
-                MessageBox.Show(Constant.ErrorParamConfigFile);
+                MessageBox.Show(Constant.ConfigParamFilePath + Constant.ErrorParamConfigFile);
                 ConstantMethod.AppExit();
             }
 

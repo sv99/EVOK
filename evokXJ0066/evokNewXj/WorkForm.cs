@@ -125,21 +125,7 @@ namespace evokNew0066
 
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            int num3;
-            string s =  dgvParam.SelectedCells[0].Value.ToString();
-
-            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
-            try
-            {
-                if (int.TryParse(s, out num3))
-                {
-                    evokWork.DgvValueEdit(rowIndex, num3);
-                }
-            }
-            catch { }
-            finally{ evokWork.DgvInOutEdit(rowIndex, false); }
-            
-           
+            evokWork.dgvParam_CellEndEdit(dgvParam, sender, e);
         }
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)
@@ -446,10 +432,19 @@ namespace evokNew0066
 
         private void stbtn_Click(object sender, EventArgs e)
         {
+
             startBtnShow();
+
+            //条码恢复用户设置
+            if (evokWork.DeviceStatus)
+            {
+                evokWork.ChangePrintMode(printcb.SelectedIndex);
+            }
+
             if ( evokWork.AutoMes)
             {
-                 evokWork.CutStartMeasure(Constant.CutMeasureMode);
+                 evokWork.CutStartMeasure(checkBox1.Checked,Constant.CutMeasureMode);
+
                 //测试代码 后续回复弹窗
                 /**
                 qClr_Click(sender, e);
@@ -627,8 +622,7 @@ namespace evokNew0066
                         {
                             dr.DefaultCellStyle.BackColor =dgvIO.RowsDefaultCellStyle.ForeColor;
                         }
-                    }
-                    
+                    }                 
                 }
             }
         }
@@ -654,13 +648,12 @@ namespace evokNew0066
             {
                 return;
             }
-
             if (tc1.SelectedIndex < evokWork.DataFormCount)
             {
                 wForm = new WatchForm();
                 wForm.SetShowDataTable(evokWork.GetDataForm(tc1.SelectedIndex));
+                //wForm.SetShowDataTable(evokWork.GetDataForm(4));
                 wForm.Show();
-
             }
 
 

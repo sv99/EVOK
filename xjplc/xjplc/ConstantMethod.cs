@@ -15,6 +15,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Reflection;
+using Microsoft.Win32;
 
 namespace xjplc
 {
@@ -34,7 +35,7 @@ namespace xjplc
         {
             lock (locker)
             {
-                string LogAddress = Constant.AppFilePath + "Log";
+                string LogAddress = ConstantMethod.GetAppPath() + "Log";
                 if (!Directory.Exists(LogAddress))
                 {
                     Directory.CreateDirectory(LogAddress);
@@ -55,6 +56,34 @@ namespace xjplc
                 LogFileName = LogAddress;
                 sw.Close();
             }
+        }
+    }
+
+    public class RegistryHelpers
+    {
+
+        public static RegistryKey GetRegistryKey()
+        {
+            return GetRegistryKey(null);
+        }
+
+        public static RegistryKey GetRegistryKey(string keyPath)
+        {
+            RegistryKey localMachineRegistry
+                = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser,
+                                          Environment.Is64BitOperatingSystem
+                                              ? RegistryView.Registry64
+                                              : RegistryView.Registry32);
+
+            return string.IsNullOrEmpty(keyPath)
+                ? localMachineRegistry
+                : localMachineRegistry.OpenSubKey(keyPath);
+        }
+
+        public static object GetRegistryValue(string keyPath, string keyName)
+        {
+            RegistryKey registry = GetRegistryKey(keyPath);
+            return registry.GetValue(keyName);
         }
     }
     public class ConstantMethod
@@ -177,7 +206,73 @@ namespace xjplc
 
         }
         #endregion
+
+        public static List<int> DeleteDataFromARefB(List<int> A, List<int> B)
+        {
+
+            foreach (int s in B)
+            {
+                A.Remove(s);
+            }
+
+            return A;
+        }
         #region 台达PLC 
+        public static string GetAppPath()
+        {
+            string softName = Path.GetFileName(Application.ExecutablePath);
+            string keyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run\";
+            string keyName = softName;
+            object connectionString = RegistryHelpers.GetRegistryValue(keyPath, keyName);
+            String dir="";
+            try
+            {
+                dir = Path.GetDirectoryName(connectionString.ToString()) + "\\";
+            }
+            catch (Exception ex)
+            {
+                return System.AppDomain.CurrentDomain.BaseDirectory;
+            }
+
+            if (Directory.Exists(dir))
+                return dir;
+            else return System.AppDomain.CurrentDomain.BaseDirectory;
+        }
+        public static void AutoStart(bool isAuto)
+        {
+                                 
+            try
+            {
+                if (isAuto == true)
+                {
+                    //RegistryKey R_local = Registry.LocalMachine;
+                    RegistryKey R_local = Registry.CurrentUser;
+                    RegistryKey R_run = R_local.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+                    string s = System.IO.Path.GetFileName(Application.ExecutablePath);
+                    R_run.SetValue(s, Application.ExecutablePath);
+                    R_run.Close();
+                    R_local.Close();
+                }
+                else
+                {
+                    RegistryKey R_local = Registry.LocalMachine;//RegistryKey R_local = Registry.CurrentUser;
+                    RegistryKey R_run = R_local.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Run");
+                    R_run.DeleteValue(System.IO.Path.GetFileName(Application.ExecutablePath), false);
+                    R_run.Close();
+                    R_local.Close();
+                }
+
+                //GlobalVariant.Instance.UserConfig.AutoStart = isAuto;
+            }
+            catch (Exception ex)
+            {
+                //MessageBoxDlg dlg = new MessageBoxDlg();
+                //dlg.InitialData("您需要管理员权限修改", "提示", MessageBoxButtons.OK, MessageBoxDlgIcon.Error);
+                //dlg.ShowDialog();
+                MessageBox.Show("您需要管理员权限修改", "提示");
+            }
+        }
+
         public static void FindPos(DataTable dt, List<DTPlcInfoSimple> psLst)
         {
             if (dt != null && psLst.Count > 0)

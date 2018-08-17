@@ -174,7 +174,9 @@ namespace xjplc
         ExcelNpoi excelop;
         private List<string> strDataFormPath;
         System.Timers.Timer UpdateTimer;
-        DateTime startTime;
+
+        System.Timers.Timer UpdateFile;
+         DateTime startTime;
         public DateTime StartTime
         {
             get { return startTime; }
@@ -186,6 +188,8 @@ namespace xjplc
             get { return readSpeed; }
             set { readSpeed = value; }
         }
+        DateTime oldtime=DateTime.Now;
+        int oldQuantity;
         DateTime endRealTime = DateTime.Now;
         public System.DateTime EndRealTime
         {
@@ -197,8 +201,27 @@ namespace xjplc
                 {
                     if (setQuantityInt > ProdQuantity && ReadSpeed >0)
                     {
+
+                       
+                        if (oldQuantity != ProdQuantity)
+                        {
+                            TimeSpan span = new TimeSpan();
+
+                            span = DateTime.Now - oldtime;
+
+                            if (ProdQuantity - oldQuantity == 1)
+                            {
+                                ReadSpeed = span.Seconds;
+                            }                            
+                            oldQuantity = ProdQuantity;
+                            oldtime = DateTime.Now;
+                        }
+
+                     
+                            
+                        
                         int timeSec = (setQuantityInt - ProdQuantity) * ReadSpeed;
-                        endRealTime = StartTime.AddSeconds(timeSec);
+                        endRealTime = DateTime.Now.AddSeconds(timeSec);
                     }
                 }
                 
@@ -220,12 +243,14 @@ namespace xjplc
                 {
                     if (ProdQuantity < setQuantityInt && speedInt > 0)
                     {
-                        endNeedTime = StartTime.AddSeconds((setQuantityInt - ProdQuantity) * speedInt);
+                        endNeedTime = DateTime.Now.AddSeconds((setQuantityInt - ProdQuantity) * speedInt);
                     }
-                    else
-                    {
-                        endNeedTime = StartTime;
-                    }
+                    /***
+                    //else
+                    //{
+                   /   //  endNeedTime = StartTime;
+                    //}
+                    ****/
                 }
                 return endNeedTime;
             }            
@@ -304,7 +329,7 @@ namespace xjplc
             excelop = new ExcelNpoi();
 
             excelop.FileName = string.Concat(
-            Constant.AppFilePath, DateTime.Now.ToString("yyyMMdd"), Constant.prodResult,".xlsx"); ////"\\configParam.xml"
+            ConstantMethod.GetAppPath(), DateTime.Now.ToString("yyyMMdd"), Constant.prodResult,".xlsx"); ////"\\configParam.xml"
           
             YbdtWorkInfo = y0;
 
@@ -338,12 +363,19 @@ namespace xjplc
             PsLstAuto.Add(proQuantityInOutPs);
             AllPlcSimpleLst.Add(PsLstAuto);
             StopTime = new List<int>();
-            SaveData();
+            //SaveData();
             //设置数据库定时更新
             UpdateTimer = new System.Timers.Timer();
             UpdateTimer.Elapsed += UpdateSqlTimeEvent;
             UpdateTimer.Interval = 1000;
             UpdateTimer.AutoReset = true;
+
+
+            //设置数据结果导出
+            UpdateFile = new System.Timers.Timer();
+            UpdateFile.Elapsed += UpdateFileTimeEvent;
+            UpdateFile.Interval = 30000;
+            UpdateFile.AutoReset = true;
 
             if (!YbtdDevice.getDeviceData())
             {
@@ -354,6 +386,8 @@ namespace xjplc
             SqlDeiviceInfoDatatable = new DataTable();
            
             UpdateTimer.Enabled = true;
+
+            UpdateFile.Enabled = true ;
         }
             
         YBDTWorkInfo ybdtWorkInfo;
@@ -369,6 +403,15 @@ namespace xjplc
             UpdateSql();
             CreateSql();
             SaveDeviceToSql();
+          
+
+        }
+
+        private void UpdateFileTimeEvent(object source, System.Timers.ElapsedEventArgs e)
+        {
+      
+             SaveData();
+
         }
 
         private List<DTPlcInfoSimple> psLstAuto;
@@ -400,7 +443,9 @@ namespace xjplc
                 YbtdDevice.SocManager.Dispose();             
             }
             UpdateTimer.Enabled = false;
-         
+            UpdateFile.Enabled = false;
+            SaveData();
+
         }
         #region 数据保存
 
@@ -769,7 +814,7 @@ namespace xjplc
     public class YBDTWorkManger
     {
         string UserDtFileName = string.Concat(
-            Constant.AppFilePath, DateTime.Now.ToString("yyyMMdd"), ".xlsx");
+            ConstantMethod.GetAppPath(), DateTime.Now.ToString("yyyMMdd"), ".xlsx");
 
         ExcelNpoi Excelop;
 

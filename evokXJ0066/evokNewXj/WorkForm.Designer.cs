@@ -54,6 +54,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -75,6 +76,7 @@
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button6 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -354,6 +356,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.lcTxt);
             this.groupBox1.Controls.Add(this.label2);
@@ -370,10 +373,20 @@
             this.groupBox1.TabIndex = 117;
             this.groupBox1.TabStop = false;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(1186, 23);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(128, 28);
+            this.checkBox1.TabIndex = 112;
+            this.checkBox1.Text = "结疤分离";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(1139, 17);
+            this.textBox1.Location = new System.Drawing.Point(1053, 18);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(112, 38);
@@ -387,7 +400,7 @@
             // lcTxt
             // 
             this.lcTxt.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lcTxt.Location = new System.Drawing.Point(845, 18);
+            this.lcTxt.Location = new System.Drawing.Point(759, 19);
             this.lcTxt.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lcTxt.Name = "lcTxt";
             this.lcTxt.Size = new System.Drawing.Size(112, 38);
@@ -402,7 +415,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(1008, 21);
+            this.label2.Location = new System.Drawing.Point(922, 22);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(152, 28);
@@ -413,7 +426,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(760, 20);
+            this.label10.Location = new System.Drawing.Point(674, 21);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(96, 28);
@@ -424,7 +437,7 @@
             // 
             this.slLbl.AutoSize = true;
             this.slLbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.slLbl.Location = new System.Drawing.Point(625, 20);
+            this.slLbl.Location = new System.Drawing.Point(539, 21);
             this.slLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.slLbl.Name = "slLbl";
             this.slLbl.Size = new System.Drawing.Size(68, 28);
@@ -436,7 +449,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(521, 20);
+            this.label3.Location = new System.Drawing.Point(435, 21);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 28);
@@ -447,7 +460,7 @@
             // 
             this.clLbl.AutoSize = true;
             this.clLbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.clLbl.Location = new System.Drawing.Point(388, 21);
+            this.clLbl.Location = new System.Drawing.Point(302, 22);
             this.clLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.clLbl.Name = "clLbl";
             this.clLbl.Size = new System.Drawing.Size(68, 28);
@@ -459,7 +472,7 @@
             // 
             this.clLbl1.AutoSize = true;
             this.clLbl1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.clLbl1.Location = new System.Drawing.Point(302, 20);
+            this.clLbl1.Location = new System.Drawing.Point(216, 21);
             this.clLbl1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.clLbl1.Name = "clLbl1";
             this.clLbl1.Size = new System.Drawing.Size(96, 28);
@@ -536,8 +549,8 @@
             this.autoSLBtn.Name = "autoSLBtn";
             this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
             this.autoSLBtn.TabIndex = 111;
-            this.autoSLBtn.Tag = "自动上料";
-            this.autoSLBtn.Text = "自动上料";
+            this.autoSLBtn.Tag = "结疤测量";
+            this.autoSLBtn.Text = "结疤测量";
             this.autoSLBtn.UseVisualStyleBackColor = true;
             this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
             // 
@@ -622,6 +635,7 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.White;
+            this.tabPage2.Controls.Add(this.button6);
             this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.button2);
@@ -657,6 +671,19 @@
             this.tabPage2.Size = new System.Drawing.Size(1759, 759);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button6.Location = new System.Drawing.Point(602, 334);
+            this.button6.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(168, 78);
+            this.button6.TabIndex = 88;
+            this.button6.Tag = "条码吹气阀";
+            this.button6.Text = "条码吹气阀";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // button4
             // 
@@ -1294,6 +1321,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button button6;
     }
 }
 

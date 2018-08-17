@@ -79,6 +79,7 @@ namespace xjplc
                                 if (showvalue == 0)
                                 {
                                     showControl.BackColor = System.Drawing.Color.Transparent;
+
                                     if (showStr.Count > showvalue)
                                     {
                                         ConstantMethod.
@@ -110,10 +111,7 @@ namespace xjplc
                     }
                 }                                       
                 return showvalue;
-            }
-
-
-            
+            }            
         }
         int addr;
         public int Addr

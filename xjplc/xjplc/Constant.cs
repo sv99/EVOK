@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace xjplc
 {
@@ -100,11 +102,15 @@ namespace xjplc
     public class Constant
         {
 
-
+        public static readonly string CsvSplitComma = ",";
+        public static readonly string CsvSplitSemiColon= ";";
         public static readonly string ConnectMachineSuccess = "设备连接成功！";
         public static readonly string ConnectMachineFail    = "设备连接失败,请检查设备端口！";
         public static readonly string ReadPlcInfoFail       = "读取设备数据文件失败，软件即将关闭！";
         public static readonly string CSVFileEX = ".csv";
+        public static readonly string ExcelFileEX0 = ".xlsx";
+        public static readonly string ExcelFileEX1 = ".xls";
+        public static readonly string SaveFileDemo = ConstantMethod.GetAppPath() + "filedemo.csv";
         public static readonly string SingleMode = "单字";
         public static readonly string DoubleMode = "双字";
         public static readonly string BitMode = "位";
@@ -125,21 +131,56 @@ namespace xjplc
         public static readonly string[] plcDataFile = {"addr","mode","bin","count","value","param1","param2","param3","param4","param5","param6"};
         public static readonly string sqlChar10 = "char(10)";
         public static readonly string sqlChar20 = "char(20)";
+
+        public const int GetScarSuccess = 0;
+        public const int GetScarWrongScar = 1;
+        public static readonly string GetScarWrongScarStr = "结巴数据错误！";
+        public const int GetScarScarNoEven = 2;
+        public static readonly string GetScarScarNoEvenStr = "结巴数据不是偶数！";
+        public const int GetScarScarNoAscend = 4;
+        public static readonly string GetScarScarNoAscendStr = "结巴数据排序错误！";
+        public const int GetScarScarValueError = 5;
+        public static readonly string GetScarScarValueErrorStr = "结巴数据错误值！";
+        public static readonly int MaxScarCount = 20;
+        public static readonly int ScarStartAddress = 6000;
+        public static readonly int ScarPage = 4;
+        public static readonly string ScarName = "结巴";
+        public static readonly string GetScarError = "获取结巴数据错误！";
+
+        public const int LTBCdefault = 700;
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
         //PLC 要读取的数据的文件列名 CSV
         public static readonly string[] PLCstrCol = {"addr","mode", "bin", "count","value","param1","param2","param3","param4","param5","param6"};
-        public static readonly string PlcDataFilePathAuto = AppFilePath + "Plc Data\\plc_data_auto.csv";
-        public static readonly string PlcDataFilePathHand = AppFilePath + "Plc Data\\plc_data_hand.csv";
-        public static readonly string PlcDataFilePathParam = AppFilePath + "Plc Data\\plc_data_param.csv";
-        public static readonly string PlcDataFilePathIO = AppFilePath + "Plc Data\\plc_data_IO.csv";
-        public static readonly string PlcDataFilePath3 = AppFilePath + "Plc Data\\plc_data3.csv";     
+        public static readonly string PlcDataFilePathAuto = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto.csv";
+        public static readonly string PlcDataFilePathHand = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand.csv";
+        public static readonly string PlcDataFilePathParam = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param.csv";
+        public static readonly string PlcDataFilePathIO = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO.csv";
+
+        public static readonly string PlcDataFilePathAuto1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto1.csv";
+        public static readonly string PlcDataFilePathHand1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand1.csv";
+        public static readonly string PlcDataFilePathParam1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param1.csv";
+        public static readonly string PlcDataFilePathIO1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO1.csv";
+
+
+        public static readonly string PlcDataFilePathAuto2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto2.csv";
+        public static readonly string PlcDataFilePathHand2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand2.csv";
+        public static readonly string PlcDataFilePathParam2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param2.csv";
+        public static readonly string PlcDataFilePathIO2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO2.csv";
+
+
+        public static readonly string PlcDataFilePath3 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data3.csv";
+        public static readonly string PlcDataFilePathScar = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_scar.csv";
+
         public static readonly string ErrorMValue = "位值只能为1或者0！";
-        public static readonly string AppFilePath = System.AppDomain.CurrentDomain.BaseDirectory;
-        public static readonly string ConfigSerialportFilePath = AppFilePath + "config\\configSerialport.xml";
-        public static readonly string ConfigParamFilePath = AppFilePath + "config\\configParam.xml";
-        public static readonly string ConfigPassWdFilePath = AppFilePath + "config\\configPwd.xml";
+        
+        //public static readonly string ConstantMethod.GetAppPath() = ConstantMethod.GetAppPath();// System.AppDomain.CurrentDomain.BaseDirectory; //Application.StartupPath + "\\";// Path.GetDirectoryName(Application.ExecutablePath)+"\\";//System.AppDomain.CurrentDomain.BaseDirectory;
+        public static readonly string ConfigSerialportFilePath = ConstantMethod.GetAppPath() + "config\\configSerialport.xml";
+        public static readonly string ConfigSerialportFilePath1 = ConstantMethod.GetAppPath() + "config\\configSerialport1.xml";
+        public static readonly string ConfigSerialportFilePath2 = ConstantMethod.GetAppPath() + "config\\configSerialport2.xml";
+        public static readonly string ConfigParamFilePath = ConstantMethod.GetAppPath() + "config\\configParam.xml";
+        public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
         public static readonly string ErrorSerialportConfigFile = "端口配置文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorPlcFile = "设备数据文件不存在，请检查plc data文件夹，软件即将关闭！";
@@ -171,6 +212,8 @@ namespace xjplc
         public static readonly int PwdOffSet = 1000;
         public static readonly string prodResult = "生产结果";
         public static readonly int dataMultiple = 100;
+
+        public static readonly string ScarId = "-1";
 
 
         #region  优化数据
@@ -330,7 +373,7 @@ namespace xjplc
         public static readonly string sqlDataTableName = "deviceInfo";
         public static readonly string sqlGetDataTable = "SELECT * FROM deviceinfo";
         public static readonly string sqlDeviceIp = "设备地址";
-        public static readonly string showItemPath = AppFilePath + "showItem.xlsx";
+        public static readonly string showItemPath = ConstantMethod.GetAppPath() + "showItem.xlsx";
         public const  int AddWork  = 0;
         public const  int DelWork  = 1;
         public const  int sqlWrite = 1;

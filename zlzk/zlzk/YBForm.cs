@@ -44,10 +44,7 @@ namespace zlzk
             ybdtWorkManger.ydtdWorkChangedEvent += this.ydbtWorkChangedEvent;
             deviceIpLstStr = new List<string>();
             deviceLB.DataSource = deviceIpLstStr;
-            timer1.Enabled = true;
-
-          
-
+            timer1.Enabled = true;         
             // deviceLstTimer.Enabled = true;
             /****
             deviceDataFileName = System.AppDomain.CurrentDomain.BaseDirectory + "device.xlsx";
@@ -74,7 +71,6 @@ namespace zlzk
 
             tempDPack();
             ***/
-
         }
 
         private void TimeEvent(object source, System.Timers.ElapsedEventArgs e)
@@ -113,8 +109,8 @@ namespace zlzk
 
         private void button3_Click(object sender, EventArgs e)
         {
-           
-            
+            if(deviceLB.SelectedIndex >-1)
+            ybdtWorkManger.YbdtWorkLst[deviceLB.SelectedIndex].SaveData();           
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -272,7 +268,7 @@ namespace zlzk
         {
             label25.Text = yw.YbdtWorkInfo.Department;
             label31.Text = yw.YbdtWorkInfo.DanHao;
-            label3.Text = yw.StartTime.Date.ToString(); ; 
+            label3.Text = yw.StartTime.ToLocalTime().ToString();
             label5.Text = yw.EndNeedTime.ToLocalTime().ToString();
             label6.Text = yw.EndRealTime.ToLocalTime().ToString();
             label11.Text = yw.YbdtWorkInfo.Speed;
@@ -391,6 +387,18 @@ namespace zlzk
         private void dataGridView1_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
 
+        }
+
+        private void YBForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if(ybdtWorkManger.YbdtWorkLst.Count>0)
+            {
+                foreach (YBDTWork ybwork in ybdtWorkManger.YbdtWorkLst)
+                {
+                    ybwork.Dispose();
+                }
+                }
+            
         }
     }
 }

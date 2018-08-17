@@ -9,6 +9,11 @@ namespace xjplc
     
     public class EvokXJDevice:XJDevice
     {
+
+        public EvokXJDevice(List<string> strfile,PortParam p0) : base(strfile,p0)
+        {
+
+        }
         public EvokXJDevice(List<string> strfile):base(strfile)
         {
              

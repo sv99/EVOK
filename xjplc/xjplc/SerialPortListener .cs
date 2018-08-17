@@ -207,9 +207,8 @@ namespace xjplc
             
             try
             {
-                //如果之前端口没变 且端口打开的 那就不改了 不去停止
-               
-                    Stop();
+                //如果之前端口没变 且端口打开的 那就不改了 不去停止             
+                Stop();
                 m_SerialPort.PortName = m_portName;
                 m_SerialPort.BaudRate = m_baudRate;
                 m_SerialPort.Parity = m_parity;
@@ -227,8 +226,7 @@ namespace xjplc
                //m_threadMonitor.IsBackground = true;
                //m_threadMonitor.Start();
                 return true;
-            }
-
+            }        
             catch
             {
                 throw new SerialPortException(string.Format("无法打开串口:{0}", m_SerialPort.PortName));

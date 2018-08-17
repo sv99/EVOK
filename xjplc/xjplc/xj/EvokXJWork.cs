@@ -17,11 +17,22 @@ namespace xjplc
     {
         //用户排版数据
         DataTable userDataTable;
-
+        List<string> errorList;
+        public System.Collections.Generic.List<string> ErrorList
+        {
+            get { return errorList; }
+            set { errorList = value; }
+        }
         OptSize optSize;
         //设备类
         EvokXJDevice evokDevice;
 
+        int currentPageId = -1;
+        public int CurrentPageId
+        {
+            get { return currentPageId; }
+            set { currentPageId = value; }
+        }
         //显示工作信息
         RichTextBox rtbWork;
 
@@ -70,6 +81,24 @@ namespace xjplc
                 else return false;
             }
         }
+        private bool scarMode;
+        public bool ScarMode
+        {
+            get
+            {
+                if (scarInPs.ShowValue > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            
+        }
+
+
         public bool IsPrintBarCode
         {
             get
@@ -132,7 +161,7 @@ namespace xjplc
         {
             optSize = optSize0;
         }
-
+    
         public void SetRtbWork(RichTextBox  richrtbWork0)
         {
             rtbWork = richrtbWork0;
@@ -196,7 +225,9 @@ namespace xjplc
 
             paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
 
-             printBarCodeMode = value;//
+            OldPrintBarCodeMode = PrintBarCodeMode;
+
+            printBarCodeMode = value;
 
             if (printBarCodeMode == Constant.AutoBarCode)
             {
@@ -205,11 +236,15 @@ namespace xjplc
             else
             {
                 evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
-            }
-
-                        
+            }                      
         }
-
+        //结疤是否分离
+        bool splitId;
+        public bool SplitId
+        {
+            get { return splitId; }
+            set { splitId = value; }
+        }
         public DataTable GetDataForm(int id)
         {
             if (id < DataFormCount)
@@ -226,11 +261,19 @@ namespace xjplc
             get { return psLstAuto; }
             set { psLstAuto = value; }
         }
+        //打印标签过程当中，要实现切换打印模式 
+        int oldPrintBarCodeMode = Constant.NoPrintBarCode;
+        public int OldPrintBarCodeMode
+        {
+            get { return oldPrintBarCodeMode; }
+            set { oldPrintBarCodeMode = value; }
+        }
         //定义后要加入集合  //忽略寄存器的影响直接匹配参数名     
-        
+
         public PlcInfoSimple autoMesOutInPs = new PlcInfoSimple("自动测长标志读写");
         public PlcInfoSimple dbcOutInPs     = new PlcInfoSimple("刀补偿读写");
         public PlcInfoSimple ltbcOutInPs    = new PlcInfoSimple("料头补偿读写");
+        public PlcInfoSimple ltbcDefaultOutInPs = new PlcInfoSimple("料头固定补偿读写");
         public PlcInfoSimple safeOutInPs    = new PlcInfoSimple("安全距离读写");
         public PlcInfoSimple prodOutInPs    = new PlcInfoSimple("总产量读写");
         
@@ -242,11 +285,10 @@ namespace xjplc
         public PlcInfoSimple ldsCountInOutPs = new PlcInfoSimple("料段数读写");
         public PlcInfoSimple lliaoOutInPs = new PlcInfoSimple("拉料开关读写");
 
-
         public PlcInfoSimple pauseOutPs     = new PlcInfoSimple("暂停写");
         public PlcInfoSimple startOutPs     = new PlcInfoSimple("启动写");             
         public PlcInfoSimple resetOutPs     = new PlcInfoSimple("复位写");
-        public PlcInfoSimple autoSLOutPs    = new PlcInfoSimple("自动上料写");
+        public PlcInfoSimple autoSLOutPs    = new PlcInfoSimple("结疤测量写");
         public PlcInfoSimple pageShiftOutPs = new PlcInfoSimple("页面切换写");     
        
         public PlcInfoSimple sfslwInPs      = new PlcInfoSimple("伺服上料位读");
@@ -254,7 +296,8 @@ namespace xjplc
         public PlcInfoSimple startInPs      = new PlcInfoSimple("启动读");
         public PlcInfoSimple resetInPs      = new PlcInfoSimple("复位读");
         public PlcInfoSimple pauseInPs      = new PlcInfoSimple("暂停读");
-        public PlcInfoSimple autoSLInPs     = new PlcInfoSimple("自动上料读");
+        public PlcInfoSimple autoSLInPs     = new PlcInfoSimple("结疤测量读");
+        public PlcInfoSimple scarInPs       = new PlcInfoSimple("结疤读");
         public PlcInfoSimple autoCCInPs     = new PlcInfoSimple("自动测长读");
         public PlcInfoSimple clInPs         = new PlcInfoSimple("出料读");
         public PlcInfoSimple slInPs         = new PlcInfoSimple("送料读");
@@ -351,21 +394,159 @@ namespace xjplc
             set { psLstIO = value; }
         }
         #endregion
-        public EvokXJWork()
+        public EvokXJWork(List<string> strDataFormPath,PortParam p0)
         {
-            //初始化设备
-            List<string> strDataFormPath = new List<string>();
-            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
-            strDataFormPath.Add(Constant.PlcDataFilePathHand);
-            strDataFormPath.Add(Constant.PlcDataFilePathParam);
-            strDataFormPath.Add(Constant.PlcDataFilePathIO);
+
 
             for (int i = strDataFormPath.Count - 1; i >= 0; i--)
             {
                 if (!File.Exists(strDataFormPath[i]))
                 {
                     strDataFormPath.RemoveAt(i);
-                    MessageBox.Show(Constant.ErrorPlcFile);
+                    MessageBox.Show(strDataFormPath[i] + Constant.ErrorPlcFile);
+                    Environment.Exit(0);
+                }
+            }
+
+            evokDevice = new EvokXJDevice(strDataFormPath,p0);
+
+            PsLstAuto = new List<PlcInfoSimple>();
+
+            PsLstAuto.Add(autoMesOutInPs);
+            PsLstAuto.Add(dbcOutInPs);
+
+            PsLstAuto.Add(ltbcOutInPs);
+
+            PsLstAuto.Add(ltbcDefaultOutInPs);
+            PsLstAuto.Add(safeOutInPs);
+
+            PsLstAuto.Add(prodOutInPs);
+            prodOutInPs.IsParam = false;
+
+            PsLstAuto.Add(lcOutInPs);
+            PsLstAuto.Add(stopOutInPs);
+            PsLstAuto.Add(cutDoneOutInPs);
+            PsLstAuto.Add(plcHandlebarCodeOutInPs);
+            PsLstAuto.Add(ldsCountInOutPs);
+
+            PsLstAuto.Add(pauseOutPs);
+            PsLstAuto.Add(startOutPs);
+            PsLstAuto.Add(resetOutPs);
+            PsLstAuto.Add(autoSLOutPs);
+            PsLstAuto.Add(pageShiftOutPs);
+
+            PsLstAuto.Add(emgStopInPs);
+            PsLstAuto.Add(startInPs);
+            PsLstAuto.Add(resetInPs);
+            PsLstAuto.Add(pauseInPs);
+            PsLstAuto.Add(autoSLInPs);
+            PsLstAuto.Add(autoCCInPs);
+            PsLstAuto.Add(clInPs);
+            PsLstAuto.Add(slInPs);
+            PsLstAuto.Add(alarm1InPs);
+            PsLstAuto.Add(alarm2InPs);
+            PsLstAuto.Add(alarm3InPs);
+            PsLstAuto.Add(alarm4InPs);
+            PsLstAuto.Add(alarm5InPs);
+            PsLstAuto.Add(alarm6InPs);
+            PsLstAuto.Add(alarm7InPs);
+            PsLstAuto.Add(alarm8InPs);
+            PsLstAuto.Add(alarm9InPs);
+            PsLstAuto.Add(alarm10InPs);
+            PsLstAuto.Add(alarm11InPs);
+            PsLstAuto.Add(alarm12InPs);
+            PsLstAuto.Add(alarm13InPs);
+            PsLstAuto.Add(alarm14InPs);
+            PsLstAuto.Add(alarm15InPs);
+            PsLstAuto.Add(alarm16InPs);
+            PsLstAuto.Add(lliaoOutInPs);
+            PsLstAuto.Add(startCountInOutPs);
+            PsLstAuto.Add(sfslwOutPs);
+            PsLstAuto.Add(sfslwInPs);
+            PsLstAuto.Add(scarInPs);
+            PsLstHand = new List<PlcInfoSimple>();
+            SetHandPage(Constant.HandPage);
+
+            PsLstParam = new List<PlcInfoSimple>();
+            PsLstIO = new List<PlcInfoSimple>();
+            UserDataTable = new DataTable();
+
+            AllPlcSimpleLst = new List<List<PlcInfoSimple>>();
+
+            AllPlcSimpleLst.Add(psLstAuto);
+            AllPlcSimpleLst.Add(psLstHand);
+            AllPlcSimpleLst.Add(psLstParam);
+            AllPlcSimpleLst.Add(PsLstIO);
+
+            paramFile = new ConfigFileManager();
+
+            if (File.Exists(Constant.ConfigParamFilePath))
+            {
+                paramFile.LoadFile(Constant.ConfigParamFilePath);
+
+                if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
+                {
+                    MessageBox.Show(Constant.ErrorParamConfigFile);
+
+                    Application.Exit();
+
+                    System.Environment.Exit(0);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.ErrorParamConfigFile);
+                Application.Exit();
+                System.Environment.Exit(0);
+            }
+
+            LogManager.WriteProgramLog(Constant.Start);
+
+            InitControl();
+
+            ShiftPage(Constant.AutoPage);
+
+            if (!evokDevice.getDeviceData())
+            {
+
+                MessageBox.Show(Constant.ConnectMachineFail);
+                Environment.Exit(0);
+            }
+
+            ErrorList = new List<string>();
+
+        }
+
+
+        public EvokXJWork()
+        {
+            //初始化设备
+            List<string> strDataFormPath = new List<string>();
+            
+            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
+            strDataFormPath.Add(Constant.PlcDataFilePathHand);
+            strDataFormPath.Add(Constant.PlcDataFilePathParam);
+            strDataFormPath.Add(Constant.PlcDataFilePathIO);
+
+           //20180808 在试验了多次之后 发现获取文件路径 都是空的 那只能从注册表去读取路径
+           /****
+            strDataFormPath.Add(ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto.csv");
+            strDataFormPath.Add(ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand.csv");
+
+            strDataFormPath.Add(ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param.csv");
+
+            strDataFormPath.Add(ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO.csv");
+            ****/
+
+            if (File.Exists(Constant.PlcDataFilePathScar))
+            strDataFormPath.Add(Constant.PlcDataFilePathScar);
+
+            for (int i = strDataFormPath.Count - 1; i >= 0; i--)
+            {
+                if (!File.Exists(strDataFormPath[i]))
+                {
+                    strDataFormPath.RemoveAt(i);
+                    MessageBox.Show(strDataFormPath[i]+Constant.ErrorPlcFile);
                     Environment.Exit(0);
                 }
             }
@@ -378,7 +559,7 @@ namespace xjplc
             PsLstAuto.Add(dbcOutInPs);
 
             PsLstAuto.Add(ltbcOutInPs);
-            ltbcOutInPs.IsParam = false;
+            PsLstAuto.Add(ltbcDefaultOutInPs);
 
             PsLstAuto.Add(safeOutInPs);
 
@@ -425,7 +606,7 @@ namespace xjplc
             PsLstAuto.Add(startCountInOutPs);
             PsLstAuto.Add(sfslwOutPs);
             PsLstAuto.Add(sfslwInPs);
-
+            PsLstAuto.Add(scarInPs);
             PsLstHand = new List<PlcInfoSimple>();
             SetHandPage(Constant.HandPage);
 
@@ -453,7 +634,7 @@ namespace xjplc
                     Application.Exit();
 
                     System.Environment.Exit(0);
-                }
+                }              
             }
             else
             {
@@ -475,6 +656,8 @@ namespace xjplc
                 Environment.Exit(0);
             }
 
+            ErrorList = new List<string>();
+
         }
         public bool RestartDevice(int id)
         {
@@ -485,16 +668,64 @@ namespace xjplc
         }
         #region 运行部分
 
+
+        public bool testGetScarData(DataTable scarTable)
+        {          
+            int scarCount = scarInPs.ShowValue ;
+
+            if (scarCount % 2 != 0 || scarCount <1 || scarCount>Constant.MaxScarCount) return false;    
+
+            scarCount = scarCount / 2;
+
+            scarTable.Rows.Clear();
+
+            int srAddress = Constant.ScarStartAddress;
+
+            for (int i = 0; i < scarCount; i++)
+            {
+                srAddress += 2;
+
+                DataRow dr = scarTable.NewRow();
+                dr[0] = Constant.strDMArea[0] + srAddress.ToString();
+                dr[1] = Constant.DoubleMode;
+                dr[2] = Constant.ScarName + i.ToString()+"-0";
+                dr[3] = "1";
+
+                srAddress += 2;
+                DataRow dr0 = scarTable.NewRow();
+                dr0[0] = Constant.strDMArea[0] + srAddress.ToString();
+                dr0[1] = Constant.DoubleMode;
+                dr0[2] = Constant.ScarName + i.ToString() + "-1";
+                dr0[3] = "1";
+
+                scarTable.Rows.Add(dr);
+                scarTable.Rows.Add(dr0);
+            }
+
+            ShiftPage(Constant.ScarPage);
+
+            ConstantMethod.Delay(1000);
+
+            ShiftPage(Constant.AutoPage);
+
+            return true;
+
+        }
         public void ProClr()
         {
             evokDevice.SetDValue(prodOutInPs,0);
             optSize.prodClear();
         }
+        public void SetLtbc()
+        {
+            evokDevice.SetDValue(ltbcOutInPs, optSize.Ltbc);
+        }
         //启动
         public void start(int id)
         {
             evokDevice.SetMValueOFF2ON(startOutPs);
-                      
+
+            OldPrintBarCodeMode = PrintBarCodeMode;        
             RunFlag = true;
 
             rtbWork.Clear();
@@ -542,74 +773,80 @@ namespace xjplc
         #endregion
         public void SaveFile()
         {
+            if (optSize == null) return;
             optSize.SaveCsv();
             optSize.SaveExcel();
         }
         public void SaveFile0()
         {
+            if (optSize == null) return;
             optSize.SaveCsv0();
             optSize.SaveExcel();
         }
         #region 条码部分
+        
         public void printBarcode(Report rp1, object s2)
         {
 
             string[] s1 = (string[])s2;
+
+            if (PrintBarCodeMode == Constant.NoPrintBarCode )
+            {
+                if (OldPrintBarCodeMode == Constant.HandBarCode || OldPrintBarCodeMode == Constant.AutoBarCode)
+                    ChangePrintMode(OldPrintBarCodeMode);
+            }
+
             if (s1 != null && printReport != null && IsPrintBarCode)
             {
+                //在遇到结巴的情况下 保存下当前打印模式
+                //OldPrintBarCodeMode = PrintBarCodeMode;
+                if (s1.Length > 0 && s1[0].ToString().Equals(Constant.ScarId))
+                {
+                    
+                    ChangePrintMode(Constant.NoPrintBarCode);
+                    return;
+                }
+                          
                 Application.DoEvents();
+
                 if (rp1.FindObject("barcode1") != null)
                     (rp1.FindObject("barcode1") as BarcodeObject).Text = s1[0];
 
-                if (rp1.FindObject("Text1") != null)
-                    (rp1.FindObject("Text1") as TextObject).Text = s1[1];
-
-                if (rp1.FindObject("Text2") != null)
-                    (rp1.FindObject("Text2") as TextObject).Text = s1[2];
-
-                if (rp1.FindObject("Text3") != null)
-                    (rp1.FindObject("Text3") as TextObject).Text = s1[3];
-
-                if (rp1.FindObject("Text4") != null)
-                    (rp1.FindObject("Text4") as TextObject).Text = s1[4];
-
-                if (rp1.FindObject("Text5") != null)
-                    (rp1.FindObject("Text5") as TextObject).Text = s1[5];
-
-                if (rp1.FindObject("Text6") != null)
-                    (rp1.FindObject("Text6") as TextObject).Text = s1[6];
-
-                if (rp1.FindObject("Text7") != null)
-                    (rp1.FindObject("Text7") as TextObject).Text = s1[7];
-
-                if (rp1.FindObject("Text8") != null)
-                    (rp1.FindObject("Text8") as TextObject).Text = s1[8];
-
-                if (rp1.FindObject("Text9") != null)
-                    (rp1.FindObject("Text9") as TextObject).Text = s1[9];
-                if (rp1.FindObject("Text10") != null)
-                    (rp1.FindObject("Text10") as TextObject).Text = s1[10];
-                if (rp1.FindObject("Text11") != null)
-                    (rp1.FindObject("Text11") as TextObject).Text = s1[11];
-                if (rp1.FindObject("Text12") != null)
-                    (rp1.FindObject("Text12") as TextObject).Text = s1[12];
-                if (rp1.FindObject("Text13") != null)
-                    (rp1.FindObject("Text13") as TextObject).Text = s1[13];
-                if (rp1.FindObject("Text14") != null)
-                    (rp1.FindObject("Text14") as TextObject).Text = s1[14];
-                if (rp1.FindObject("Text15") != null)
-                    (rp1.FindObject("Text15") as TextObject).Text = s1[15];
-                if (rp1.FindObject("Text16") != null)
-                    (rp1.FindObject("Text16") as TextObject).Text = s1[16];
-                if (rp1.FindObject("Text17") != null)
-                    (rp1.FindObject("Text17") as TextObject).Text = s1[17];
-                if (rp1.FindObject("Text18") != null)
-                    (rp1.FindObject("Text18") as TextObject).Text = s1[18];
-
+                for (int i = 1; i < s1.Length; i++)
+                {
+                    //如果有两个条码
+                    if (i == 1)
+                    {
+                        if (rp1.FindObject("barcode2") != null)
+                        {
+                            (rp1.FindObject("barcode2") as BarcodeObject).Text = s1[i];
+                        }
+                        else
+                        {
+                            if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
+                            (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
+                        }
+                    }
+                    //其他参数另外选
+                    if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
+                    {                        
+                        if (s1[i].Contains('['))
+                        {
+                            s1[i] = s1[i].Replace('[', ' ');
+                        }
+                        if (s1[i].Contains(']'))
+                        {
+                            s1[i] = s1[i].Replace(']', ' ');
+                        }
+                    (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
+                    }
+                }
+           
                 rp1.Prepare();
                 rp1.PrintSettings.ShowDialog = false;
                 rp1.Print();
             }
+
         }
         //打印条码打开
         public void plcHandleBarCodeON()
@@ -767,6 +1004,9 @@ namespace xjplc
         }
         private void DownLoadDataNormal(int i)
         {
+
+            SetLtbc();
+
             List<int> DataList = new List<int>();
             //添加料长 20170727 料长不发送了
            // DataList.Add(optSize.ProdInfoLst[i].Len);
@@ -855,7 +1095,7 @@ namespace xjplc
                 if (newCount != oldcCount && oldcCount < optSize.ProdInfoLst[i].Cut.Count)
                 {
                     int oldCutCount = 0;
-
+                    if(!optSize.SingleSizeLst[i][oldcCount].Barc.Equals(Constant.ScarId))
                     if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2].ToString(), out oldCutCount))
                     {
                         oldCutCount++;
@@ -1003,9 +1243,61 @@ namespace xjplc
                     }
             }
         }
-        public void CutStartMeasure(int cutid)
+
+        /// <summary>
+        /// 进行结巴数据的获取 需要实际调试 检查结巴数量是否正确
+        /// </summary>
+        /// <returns></returns>
+        private int GetScar(OptSize op,int scarCount)
         {
-         
+            if (rtbResult != null) rtbResult.Clear();
+
+            if (!testGetScarData(evokDevice.DataFormLst[Constant.ScarPage])) return Constant.GetScarWrongScar;
+
+            if (scarCount == evokDevice.DataFormLst[Constant.ScarPage].Rows.Count)
+            {
+                //清空数据
+                op.ScarLst.Clear();
+
+                ConstantMethod.ShowInfo(rtbResult,Constant.ScarName+"数量："+(scarCount/2).ToString());
+
+                foreach (DataRow dr in evokDevice.DataFormLst[Constant.ScarPage].Rows)
+                {
+                    string scarvalueStr = dr[4].ToString();
+
+                    int scarValue = 0;
+
+                    if (int.TryParse(scarvalueStr, out scarValue))
+                    {
+                        if (scarValue > 0)
+                        {
+                            ConstantMethod.ShowInfo(rtbResult, Constant.ScarName+"位置：" + scarValue.ToString());
+                            op.ScarLst.Insert(0, scarValue);
+                        }
+                        else
+                        {
+                            return Constant.GetScarWrongScar;
+                        }
+                    }
+                    else
+                    {
+                        return Constant.GetScarWrongScar;
+                    }
+                }                                               
+            }
+          // ConstantMethod.ShowInfo(rtbResult, "\n");
+
+            return Constant.GetScarSuccess;
+        }
+        /// <summary>
+        /// 在测长过程中 需要检测结巴
+        /// </summary>
+        /// <param name="cutid"></param>
+        public void CutStartMeasure(bool split,int cutid)
+        {
+            //先获取默认补偿
+            int defaultLtbc = ltbcDefaultOutInPs.ShowValue;
+
             if (IsInEmg)
             {
                 MessageBox.Show(Constant.emgStopTip);
@@ -1019,10 +1311,10 @@ namespace xjplc
 
             //等待 测量
             while (mRunFlag)
-            {
-                                
+            {                               
                 int valueOld = 1;
                 LogManager.WriteProgramLog(Constant.MeasureSt);
+
                 ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs,ref emgStopInPs,ref mRunFlag);
                
                 if (IsInEmg)
@@ -1030,13 +1322,31 @@ namespace xjplc
                     stop();
                 }
                 LogManager.WriteProgramLog(Constant.MeasureEd);
+
                 if (autoCCInPs.ShowValue ==Constant.M_ON)
                 {
+
                     evokDevice.SetMValueOFF(autoCCInPs);
 
                     optSize.Len = lcOutInPs.ShowValue;
-                    //开始优化 
-                    optSize.OptMeasure(rtbResult);                   
+                    if (scarInPs.ShowValue > 0)
+                    {
+                        //开始优化 结巴 还是测长 
+                        if (GetScar(optSize, scarInPs.ShowValue) == Constant.GetScarSuccess)
+                        {
+                          
+                            optSize.Ltbc = defaultLtbc;
+                            //开始优化进行
+                            optSize.OptMeasureWithScarCheck(split,rtbResult, optSize.DtData);
+                        }
+                        else
+                        {
+                            MessageBox.Show(Constant.GetScarError);
+                            return;
+                        }
+                    }
+                    else
+                        optSize.OptMeasure(rtbResult);                   
                     if (optSize.ProdInfoLst.Count < 1)
                     {
                         break;
@@ -1068,7 +1378,7 @@ namespace xjplc
                 ConstantMethod.ShowInfo(rtbWork,Constant.NextOpt);
             }
 
-            stop();
+            //stop();
            //测试先隐藏
            MessageBox.Show(Constant.CutEnd);
         }
@@ -1107,8 +1417,9 @@ namespace xjplc
             finally
             {
                 CutThread = null;
-                CutThreadStart = null;            
-                stop();
+                CutThreadStart = null; 
+                //结束了 PLC 要求不发信号           
+               // stop();
                 MessageBox.Show(Constant.CutEnd);
             }
         }
@@ -1137,9 +1448,10 @@ namespace xjplc
             RunFlag = false;
             ConstantMethod.Delay(100);
             //保存文件
-            SaveFile0();
+            SaveFile();
             if (evokDevice != null)
                 evokDevice.DeviceShutDown();
+            if(printReport != null)
             printReport.Dispose();
             if (CutThread != null && CutThread.IsAlive)
             {
@@ -1147,7 +1459,6 @@ namespace xjplc
             }
 
             LogManager.WriteProgramLog(Constant.Quit);
-
         }
 
         public void InitControl()
@@ -1165,9 +1476,15 @@ namespace xjplc
                 ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.ParamPage], PsLstParam);
             }
         }
+
+
         public bool ShiftPage(int pageid)
         {
-            if (evokDevice.Status == Constant.DeviceConnected)
+            if (CurrentPageId == pageid)
+            {
+                return true;
+            }
+                if (evokDevice.Status == Constant.DeviceConnected)
             {
                 //页面切换需要告诉下位机
                 if (pageid == Constant.AutoPage)
@@ -1178,7 +1495,7 @@ namespace xjplc
                 {
                     evokDevice.SetDValue(pageShiftOutPs, Constant.HandPageID);
                 }
-
+               
                 if (pageid == Constant.ParamPage)
                 {
                     if (!ConstantMethod.UserPassWd()) return false;
@@ -1188,6 +1505,7 @@ namespace xjplc
 
                 FindPlcSimpleInPlcInfoLst(pageid);
 
+                CurrentPageId = pageid;
                 ConstantMethod.Delay(50);
 
                 return true;
@@ -1321,14 +1639,37 @@ namespace xjplc
                 evokDevice.WriteSingleDData(addr, num3, area, mode);
             }
         }
+
+        public void dgvParam_CellEndEdit(DataGridView dgvParam,object sender, DataGridViewCellEventArgs e)
+        {
+            double num3;
+
+            string s = dgvParam.SelectedCells[0].Value.ToString();
+
+            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
+
+            try
+            {
+                if (double.TryParse(s, out num3))
+                {
+                    int value = (int)(num3 * Constant.dataMultiple);
+                    DgvValueEdit(rowIndex, value);
+                }
+            }
+            catch { }
+            finally { DgvInOutEdit(rowIndex, false); }
+
+
+        }
+
         public void InitDgvParam(DataGridView dgvParam)
         {
             if (evokDevice.DataFormLst.Count > 2)
             {
                 dgvParam.AutoGenerateColumns = false;
                 dgvParam.DataSource = evokDevice.DataFormLst[2];
-                dgvParam.Columns["bin"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
-                dgvParam.Columns["value"].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
+                dgvParam.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns["param6"].ToString();
             }
         }
         public void InitDgvIO(DataGridView dgvIO)
@@ -1337,8 +1678,8 @@ namespace xjplc
             {
                 dgvIO.AutoGenerateColumns = false;
                 dgvIO.DataSource = evokDevice.DataFormLst[3];
-                dgvIO.Columns["bin0"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
-                dgvIO.Columns["value0"].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
+                dgvIO.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
+                dgvIO.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
                 dgvIO.ReadOnly = true;
             }
         }

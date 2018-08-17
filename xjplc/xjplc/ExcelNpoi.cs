@@ -239,9 +239,10 @@ namespace xjplc
                         //获取当前行
                         IRow row = sheet.GetRow(r);
                         //读取每列
-                        for (int j = 0; j < row.Cells.Count; j++)
-                        {
+                        for (int j = 0; j < headrow.Cells.Count; j++)
+                        {                                                      
                             ICell cell = row.GetCell(j); //一个单元格
+                            if (cell == null) continue;
                             dr[j] = GetCellValue(cell); //获取单元格的值
                                                         //全为空则不取
                             if (dr[j].ToString() != "")

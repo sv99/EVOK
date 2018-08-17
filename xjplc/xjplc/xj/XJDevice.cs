@@ -79,6 +79,39 @@ namespace xjplc
                 comManager.IsNoConnection = value;
             }
         }
+
+        public XJDevice(List<string> filestr,PortParam p0)
+        {
+            XJPLCcmd = new XJPLCPackCmdAndDataUnpack();
+            DataFormLst = new List<DataTable>();
+            CSVData = new CsvStreamReader();
+            dgShowLst = new List<DataGridView>();
+
+            //获取监控数据 dataformLst 填充
+            GetPlcDataTableFromFile(filestr);
+
+            //找一下串口 不存在就报错 退出          
+
+            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+
+            //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
+            if (dataFormLst.Count > 0)
+                SetPlcReadDMData(dataFormLst[0]);
+
+            //设置端口
+            SetComm(p0);
+
+            //监控通讯
+            WatchCommTimer = new System.Timers.Timer(Constant.XJRestartTimeOut);  //这里1.5 秒别改 加到常量里 工控机性能不行 
+
+            WatchCommTimer.Enabled = false;
+
+            WatchCommTimer.AutoReset = true;
+
+            WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
+
+
+        }
         /// <summary>
         /// 针对信捷PLC 进行设备的存在获取
         /// </summary>
@@ -164,6 +197,8 @@ namespace xjplc
 
             return true;
         }
+
+
         /// <summary>
         /// 切换监控数据表格
         /// </summary>

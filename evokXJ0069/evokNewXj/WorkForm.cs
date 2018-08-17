@@ -124,21 +124,9 @@ namespace evokNew0069
 
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            int num3;
-            string s =  dgvParam.SelectedCells[0].Value.ToString();
+            evokWork.dgvParam_CellEndEdit(dgvParam, sender, e);
 
-            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
-            try
-            {
-                if (int.TryParse(s, out num3))
-                {
-                    evokWork.DgvValueEdit(rowIndex, num3);
-                }
-            }
-            catch { }
-            finally{ evokWork.DgvInOutEdit(rowIndex, false); }
-            
-           
+
         }
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)
@@ -283,9 +271,9 @@ namespace evokNew0069
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
            // }
            ****/
-
-            if (!evokWork.AutoMes)
-            {
+           //无测长
+           // if (!evokWork.AutoMes)
+           // {
                 optSize.Len = evokWork.lcOutInPs.ShowValue;
                 optSize.Dbc = evokWork.dbcOutInPs.ShowValue;
                 optSize.Ltbc = evokWork.ltbcOutInPs.ShowValue;
@@ -294,7 +282,7 @@ namespace evokNew0069
                 //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                 ConstantMethod.ShowInfo(rtbResult, optSize.NoOpt(rtbResult));
                // ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-            }
+           // }
 
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
@@ -448,17 +436,17 @@ namespace evokNew0069
         private void stbtn_Click(object sender, EventArgs e)
         {
             startBtnShow();
-            if ( evokWork.AutoMes)
-            {
-                 evokWork.CutStartMeasure(Constant.CutMeasureMode);
+           // if ( evokWork.AutoMes)
+           // {
+                 //evokWork.CutStartMeasure(false,Constant.CutMeasureMode);
                 //测试代码 后续回复弹窗
                 /**
                 qClr_Click(sender, e);
                 stbtn_Click(sender, e);
               **/
-            }
-            else
-            {
+            //}
+            //else
+            //{
                 evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
                 /***
@@ -466,7 +454,7 @@ namespace evokNew0069
                 optBtn_Click(sender, e);
                 stbtn_Click(sender, e);
                 ***/
-            }
+           // }
             //测试代码 后续回复弹窗
              stopBtnShow();
         }
@@ -523,8 +511,9 @@ namespace evokNew0069
         private void UpdataAuto()
         {
             if ( tc1.SelectedIndex == 0)
-            {                               
-                IsoptBtnShow( evokWork.AutoMes);
+            {      
+                //无线料长 不排版                         
+              //  IsoptBtnShow( evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
