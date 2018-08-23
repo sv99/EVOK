@@ -789,7 +789,7 @@ namespace xjplc
         {
 
             string[] s1 = (string[])s2;
-
+            if (s1.Length < 1) return;
             if (PrintBarCodeMode == Constant.NoPrintBarCode )
             {
                 if (OldPrintBarCodeMode == Constant.HandBarCode || OldPrintBarCodeMode == Constant.AutoBarCode)
@@ -814,6 +814,11 @@ namespace xjplc
 
                 for (int i = 1; i < s1.Length; i++)
                 {
+                    if (rp1.FindObject("Text" + (i).ToString()) != null && string.IsNullOrWhiteSpace(s1[i]))
+                    {
+                        (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = "";
+                        continue;
+                    }
                     //如果有两个条码
                     if (i == 1)
                     {
@@ -826,6 +831,7 @@ namespace xjplc
                             if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
                             (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
                         }
+                        continue;
                     }
                     //其他参数另外选
                     if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
@@ -835,14 +841,14 @@ namespace xjplc
                             s1[i] = s1[i].Replace('[', ' ');
                         }
                         if (s1[i].Contains(']'))
-                        {
+                        {   
                             s1[i] = s1[i].Replace(']', ' ');
                         }
                     (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
                     }
                 }
-           
-                rp1.Prepare();
+                //ConstantMethod.ShowInfo(rtbResult, "参数3：" + s1[3].ToString()+ "参数4：" + s1[4].ToString()+"参数8：" + s1[8].ToString());
+                rp1.Prepare();              
                 rp1.PrintSettings.ShowDialog = false;
                 rp1.Print();
             }
@@ -1198,9 +1204,16 @@ namespace xjplc
                             CutThreadStart = new ThreadStart(CutWorkThread);
                         //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
                         if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间
-                  
-
+                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间                 
+                        break;
+                    }
+                case Constant.CutMeasureWithScarSplitNoSize:
+                    {
+                        if (CutThreadStart == null)
+                            CutThreadStart = new ThreadStart(CutWorkThread);
+                        //初始化Thread的新实例，并通过构造方法将委托ts做为参数赋初始值。
+                        if (CutThread == null)
+                            CutThread = new Thread(CutThreadStart);   //需要引入System.Threading命名空间                 
                         break;
                     }
                 case Constant.CutMeasureMode:
@@ -1293,6 +1306,8 @@ namespace xjplc
         /// 在测长过程中 需要检测结巴
         /// </summary>
         /// <param name="cutid"></param>
+        /// 
+
         public void CutStartMeasure(bool split,int cutid)
         {
             //先获取默认补偿
@@ -1329,15 +1344,22 @@ namespace xjplc
                     evokDevice.SetMValueOFF(autoCCInPs);
 
                     optSize.Len = lcOutInPs.ShowValue;
+
                     if (scarInPs.ShowValue > 0)
                     {
                         //开始优化 结巴 还是测长 
                         if (GetScar(optSize, scarInPs.ShowValue) == Constant.GetScarSuccess)
                         {
-                          
+
                             optSize.Ltbc = defaultLtbc;
+                            //进行选择 尺寸与结疤分离 还是单独去除结疤
+                            if (cutid == Constant.CutMeasureWithScarSplitNoSize)
+                            {
+                                optSize.OptMeasureWithScarCheckAndNoSize(split, rtbResult, optSize.DtData);
+                            }  
+                            else              
                             //开始优化进行
-                            optSize.OptMeasureWithScarCheck(split,rtbResult, optSize.DtData);
+                            optSize.OptMeasureWithScarCheck(split, rtbResult, optSize.DtData);
                         }
                         else
                         {
@@ -1346,8 +1368,12 @@ namespace xjplc
                         }
                     }
                     else
-                        optSize.OptMeasure(rtbResult);                   
-                    if (optSize.ProdInfoLst.Count < 1)
+                    {
+                                              
+                        optSize.OptMeasure(rtbResult);
+                        
+                    }               
+                    if (optSize.ProdInfoLst.Count < 1 && cutid != Constant.CutMeasureWithScarSplitNoSize)
                     {
                         break;
                     }                 
@@ -1382,6 +1408,8 @@ namespace xjplc
            //测试先隐藏
            MessageBox.Show(Constant.CutEnd);
         }
+       
+
         public void CutStartNormal(int cutid)
         {
 

@@ -230,5 +230,15 @@ namespace evokNew0071
                 
             }
         }
+
+        private void loadDataBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void optBtn_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

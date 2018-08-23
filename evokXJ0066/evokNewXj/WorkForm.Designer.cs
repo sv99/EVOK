@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +54,8 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.scarSplit = new System.Windows.Forms.RadioButton();
+            this.scarAndSizeSplit = new System.Windows.Forms.RadioButton();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -278,7 +279,7 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button5.Location = new System.Drawing.Point(822, 130);
+            this.button5.Location = new System.Drawing.Point(818, 177);
             this.button5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(164, 52);
@@ -292,7 +293,7 @@
             // 
             this.printcb.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.printcb.FormattingEnabled = true;
-            this.printcb.Location = new System.Drawing.Point(624, 140);
+            this.printcb.Location = new System.Drawing.Point(620, 187);
             this.printcb.Name = "printcb";
             this.printcb.Size = new System.Drawing.Size(164, 35);
             this.printcb.TabIndex = 122;
@@ -311,7 +312,7 @@
             this.button1.Enabled = false;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(1020, 133);
+            this.button1.Location = new System.Drawing.Point(1016, 180);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(352, 52);
@@ -323,7 +324,7 @@
             // qClr
             // 
             this.qClr.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.qClr.Location = new System.Drawing.Point(40, 128);
+            this.qClr.Location = new System.Drawing.Point(36, 175);
             this.qClr.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.qClr.Name = "qClr";
             this.qClr.Size = new System.Drawing.Size(164, 52);
@@ -340,10 +341,10 @@
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(10, 10);
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.rtbResult);
-            this.panel1.Location = new System.Drawing.Point(698, 189);
+            this.panel1.Location = new System.Drawing.Point(698, 245);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(674, 563);
+            this.panel1.Size = new System.Drawing.Size(674, 507);
             this.panel1.TabIndex = 118;
             // 
             // rtbResult
@@ -356,7 +357,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkBox1);
+            this.groupBox1.Controls.Add(this.scarSplit);
+            this.groupBox1.Controls.Add(this.scarAndSizeSplit);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.lcTxt);
             this.groupBox1.Controls.Add(this.label2);
@@ -369,19 +371,31 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(40, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1332, 60);
+            this.groupBox1.Size = new System.Drawing.Size(1332, 108);
             this.groupBox1.TabIndex = 117;
             this.groupBox1.TabStop = false;
             // 
-            // checkBox1
+            // scarSplit
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(1186, 23);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(128, 28);
-            this.checkBox1.TabIndex = 112;
-            this.checkBox1.Text = "结疤分离";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.scarSplit.AutoSize = true;
+            this.scarSplit.Location = new System.Drawing.Point(155, 73);
+            this.scarSplit.Name = "scarSplit";
+            this.scarSplit.Size = new System.Drawing.Size(127, 28);
+            this.scarSplit.TabIndex = 113;
+            this.scarSplit.TabStop = true;
+            this.scarSplit.Text = "去除结疤";
+            this.scarSplit.UseVisualStyleBackColor = true;
+            // 
+            // scarAndSizeSplit
+            // 
+            this.scarAndSizeSplit.AutoSize = true;
+            this.scarAndSizeSplit.Location = new System.Drawing.Point(22, 73);
+            this.scarAndSizeSplit.Name = "scarAndSizeSplit";
+            this.scarAndSizeSplit.Size = new System.Drawing.Size(127, 28);
+            this.scarAndSizeSplit.TabIndex = 113;
+            this.scarAndSizeSplit.TabStop = true;
+            this.scarAndSizeSplit.Text = "结疤分离";
+            this.scarAndSizeSplit.UseVisualStyleBackColor = true;
             // 
             // textBox1
             // 
@@ -505,11 +519,11 @@
             // UserData
             // 
             this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UserData.Location = new System.Drawing.Point(31, 189);
+            this.UserData.Location = new System.Drawing.Point(31, 245);
             this.UserData.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.UserData.Name = "UserData";
             this.UserData.RowTemplate.Height = 23;
-            this.UserData.Size = new System.Drawing.Size(651, 563);
+            this.UserData.Size = new System.Drawing.Size(651, 507);
             this.UserData.TabIndex = 116;
             this.UserData.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserData_CellEndEdit);
             this.UserData.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserData_CellLeave);
@@ -518,7 +532,7 @@
             // loadDataBtn
             // 
             this.loadDataBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.loadDataBtn.Location = new System.Drawing.Point(40, 72);
+            this.loadDataBtn.Location = new System.Drawing.Point(36, 119);
             this.loadDataBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadDataBtn.Name = "loadDataBtn";
             this.loadDataBtn.Size = new System.Drawing.Size(164, 52);
@@ -531,7 +545,7 @@
             // resetBtn
             // 
             this.resetBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.resetBtn.Location = new System.Drawing.Point(1020, 72);
+            this.resetBtn.Location = new System.Drawing.Point(1016, 119);
             this.resetBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.resetBtn.Name = "resetBtn";
             this.resetBtn.Size = new System.Drawing.Size(164, 52);
@@ -544,7 +558,7 @@
             // autoSLBtn
             // 
             this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(241, 133);
+            this.autoSLBtn.Location = new System.Drawing.Point(237, 180);
             this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.autoSLBtn.Name = "autoSLBtn";
             this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
@@ -557,7 +571,7 @@
             // stopBtn
             // 
             this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stopBtn.Location = new System.Drawing.Point(624, 72);
+            this.stopBtn.Location = new System.Drawing.Point(620, 119);
             this.stopBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.stopBtn.Name = "stopBtn";
             this.stopBtn.Size = new System.Drawing.Size(164, 52);
@@ -570,7 +584,7 @@
             // pauseBtn
             // 
             this.pauseBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.pauseBtn.Location = new System.Drawing.Point(822, 72);
+            this.pauseBtn.Location = new System.Drawing.Point(818, 119);
             this.pauseBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pauseBtn.Name = "pauseBtn";
             this.pauseBtn.Size = new System.Drawing.Size(164, 52);
@@ -583,7 +597,7 @@
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button10.Location = new System.Drawing.Point(1208, 72);
+            this.button10.Location = new System.Drawing.Point(1204, 119);
             this.button10.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(164, 52);
@@ -596,7 +610,7 @@
             // ccBtn
             // 
             this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ccBtn.Location = new System.Drawing.Point(433, 133);
+            this.ccBtn.Location = new System.Drawing.Point(429, 180);
             this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ccBtn.Name = "ccBtn";
             this.ccBtn.Size = new System.Drawing.Size(164, 52);
@@ -609,7 +623,7 @@
             // stbtn
             // 
             this.stbtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stbtn.Location = new System.Drawing.Point(433, 72);
+            this.stbtn.Location = new System.Drawing.Point(429, 119);
             this.stbtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.stbtn.Name = "stbtn";
             this.stbtn.Size = new System.Drawing.Size(164, 52);
@@ -622,7 +636,7 @@
             // optBtn
             // 
             this.optBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.optBtn.Location = new System.Drawing.Point(241, 72);
+            this.optBtn.Location = new System.Drawing.Point(237, 119);
             this.optBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.optBtn.Name = "optBtn";
             this.optBtn.Size = new System.Drawing.Size(164, 52);
@@ -1083,8 +1097,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1126,8 +1140,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;
@@ -1321,8 +1335,9 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.RadioButton scarSplit;
+        private System.Windows.Forms.RadioButton scarAndSizeSplit;
     }
 }
 

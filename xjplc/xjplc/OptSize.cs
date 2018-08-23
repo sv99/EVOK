@@ -229,6 +229,7 @@ namespace xjplc
         {
             get
             {
+                /***
                 paramStrLst.Clear();
                 paramStrLst.Add(Barc);
                 paramStrLst.Add(ParamStr1);
@@ -263,6 +264,7 @@ namespace xjplc
                 paramStrLst.Add(ParamStr29);
                 paramStrLst.Add(ParamStr30);
                 paramStrLst.Add(ParamStr31);
+                ***/
                 return paramStrLst;
             }
             set
@@ -378,29 +380,29 @@ namespace xjplc
             ParamStr29 = "";
             ParamStr30 = "";
             ParamStr31 = "";
-            ParamStrLst = new List<string>();
-            ParamStrLst.Add(Barc);
-            ParamStrLst.Add(ParamStr1);
-            ParamStrLst.Add(ParamStr2);
-            ParamStrLst.Add(ParamStr3);
-            ParamStrLst.Add(ParamStr4);
-            ParamStrLst.Add(ParamStr5);
-            ParamStrLst.Add(ParamStr6);
-            ParamStrLst.Add(ParamStr7);
-            ParamStrLst.Add(ParamStr8);
-            ParamStrLst.Add(ParamStr9);
-            ParamStrLst.Add(ParamStr10);
-            ParamStrLst.Add(ParamStr11);
-            ParamStrLst.Add(ParamStr12);
-            ParamStrLst.Add(ParamStr12);
-            ParamStrLst.Add(ParamStr13);
-            ParamStrLst.Add(ParamStr14);
-            ParamStrLst.Add(ParamStr15);
-            ParamStrLst.Add(ParamStr16);
-            ParamStrLst.Add(ParamStr17);
-            ParamStrLst.Add(ParamStr18);
-            ParamStrLst.Add(ParamStr19);
-            ParamStrLst.Add(ParamStr20);
+            paramStrLst = new List<string>();
+            paramStrLst.Add(Barc);
+            paramStrLst.Add(ParamStr1);
+            paramStrLst.Add(ParamStr2);
+            paramStrLst.Add(ParamStr3);
+            paramStrLst.Add(ParamStr4);
+            paramStrLst.Add(ParamStr5);
+            paramStrLst.Add(ParamStr6);
+            paramStrLst.Add(ParamStr7);
+            paramStrLst.Add(ParamStr8);
+            paramStrLst.Add(ParamStr9);
+            paramStrLst.Add(ParamStr10);
+            paramStrLst.Add(ParamStr11);
+            paramStrLst.Add(ParamStr12);
+            paramStrLst.Add(ParamStr12);
+            paramStrLst.Add(ParamStr13);
+            paramStrLst.Add(ParamStr14);
+            paramStrLst.Add(ParamStr15);
+            paramStrLst.Add(ParamStr16);
+            paramStrLst.Add(ParamStr17);
+            paramStrLst.Add(ParamStr18);
+            paramStrLst.Add(ParamStr19);
+            paramStrLst.Add(ParamStr20);
             paramStrLst.Add(ParamStr21);
             paramStrLst.Add(ParamStr22);
             paramStrLst.Add(ParamStr23);
@@ -1034,6 +1036,69 @@ namespace xjplc
         }
 
         /// <summary>
+        /// 演变从 ShowMeasureResultWithChec 料头不能放入尺寸里了
+        /// </summary>
+        /// <param name="resultOpt"></param>
+        /// <param name="prodLst"></param>
+        /// <param name="rt1"></param>
+        private void ShowMeasureResultWithCheckLtbc(List<int> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+        {
+            List<SingleSize> resultSingleSize = new List<SingleSize>();
+
+            //int ltbc0 = resultOpt[0];
+
+            //ltbc = ltbc0;
+
+           // resultOpt.RemoveAt(0);
+
+           // ConstantMethod.ShowInfo(rt1, "料头:" + ltbc0.ToString());
+
+            // resultOpt.Sort();
+
+            for (int i = 0; i < resultOpt.Count; i++)
+            {
+                bool isScar = true;
+
+                for (int k = 0; k < prodLst.Count; k++)
+                {
+                    if (prodLst[k].Cut == resultOpt[i])
+                    {
+                        resultSingleSize.Add(prodLst[k]);
+                        ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀:" + resultOpt[i].ToString() + "---------条码：" + prodLst[k].Barc);
+                        prodLst.RemoveAt(k);
+                        isScar = false;
+                        break;
+                    }
+                }
+
+                if (isScar)
+                {
+                    //是结疤                        
+                    SingleSize scar = new SingleSize();
+                    scar.Cut = resultOpt[i];
+                    scar.Barc = Constant.ScarId;
+                    resultSingleSize.Add(scar);
+
+                    ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀结疤:" + resultOpt[i].ToString() + "---------条码：" + scar.Barc);
+
+                }
+            }
+            //一根 一根进行汇总
+            if (resultSingleSize.Count > 0)
+            {
+                ProdInfo prodInfo = new ProdInfo(resultSingleSize);
+                prodInfo.DBC = dbc;
+                prodInfo.LBC = ltbc;
+                prodInfo.Len = len;
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
+                ProdInfoLst.Add(prodInfo);
+                singleSizeLst.Add(resultSingleSize);
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+            }
+        }
+
+        /// <summary>
         /// 测量结果显示
         /// </summary>
         /// <param name="resultOpt 数据结果"></param>
@@ -1056,7 +1121,7 @@ namespace xjplc
                         if (prodLst[k].Cut == resultOpt[i][j])
                         {
                             resultSingleSize.Add(prodLst[k]);
-                            ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (j + 1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].Barc);
+                            ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (j + 1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].ParamStrLst[8]);
                             prodLst.RemoveAt(k);
                             break;
                         }
@@ -1319,7 +1384,7 @@ namespace xjplc
           
             dtData = CSVop.OpenCSV(filename);
 
-            if (dtData.Rows.Count < 2) return false;
+            if (dtData.Rows.Count < 1) return false;
             Excelop.FileName = null;
             UserDataView.DataSource= dtData;
             ShowErrorRow();
@@ -1721,6 +1786,73 @@ namespace xjplc
            
 
         }
+        //料头
+        public string OptMeasureWithScarCheckAndNoSize(bool split, RichTextBox rt1, DataTable dtData0)
+        {
+
+            //干活之前 先清空数据 做好准备工作
+
+            singleSizeLst.Clear();
+            ProdInfoLst.Clear();          
+            #region 数据获取
+            //检查错误行
+            //ShowErrorRow1(OptRealLen, dtData0, UserDataView);
+            //获取数据
+            List<SingleSize> prodLst = new List<SingleSize>();
+
+           // GetDataFromDtByDoorType(dtData0, prodLst);
+
+            //如果无数据 则返回-1
+            #endregion
+
+
+            List<int> resultOpt = new List<int>();
+
+            int scarResult = GetResultOptWithScar(split, rt1, resultOpt, len, dbc, ltbc, safe, prodLst, ScarLst);
+
+            if (resultOpt.Count > 0)
+            {
+                
+                ShowMeasureResultWithCheck(resultOpt, prodLst, rt1);
+            }
+            else
+            {
+                switch (scarResult)
+                {
+                    case Constant.GetScarScarNoAscend:
+                        {
+                            MessageBox.Show(Constant.GetScarScarNoAscendStr);
+                            break;
+                        }
+                    case Constant.GetScarScarNoEven:
+                        {
+                            MessageBox.Show(Constant.GetScarScarNoEvenStr);
+                            break;
+                        }
+                    case Constant.GetScarWrongScar:
+                        {
+                            MessageBox.Show(Constant.GetScarWrongScarStr);
+                            break;
+                        }
+                    case Constant.GetScarScarValueError:
+                        {
+                            MessageBox.Show(Constant.GetScarScarValueErrorStr);
+                            break;
+                        }
+
+                }
+
+
+                return Constant.optResultNoData;
+            }
+
+            resultOpt = null;
+            prodLst = null;
+
+
+            return Constant.optSuccess;
+        }
+        //split代表是否结疤也要分离
         public string OptMeasureWithScarCheck(bool split,RichTextBox rt1,DataTable dtData0)
         {
 
@@ -2437,13 +2569,19 @@ namespace xjplc
                         pi.Cut = size;                       
                         pi.Barc = dt.Rows[i][Constant.strformatZh[3]].ToString();
                         pi.DtUser = dt;
-                        //添加参数                      
+                        //添加参数   
+                        List<string> paramLst = new List<string>();                   
                         for (int m = 0; m < pi.ParamStrLst.Count; m++)
                         {
-                            if ((m+4)<dt.Rows[i].ItemArray.Count() && dt.Rows[i][4 + m] != null)  //参数
-                                pi.ParamStrLst[m] = dt.Rows[i][4 + m].ToString();
+                            if ((m + 4) < dt.Rows[i].ItemArray.Count() && dt.Rows[i][4 + m] != null)
+                            //参数
+                            {
+                                paramLst.Add(dt.Rows[i][4 + m].ToString());
+                                
+                            }
                         }
-
+                        pi.ParamStrLst.Clear();
+                        pi.ParamStrLst.AddRange(paramLst) ;
 
                         /***
                         if (pi.ParamStrLst.Count > 20)

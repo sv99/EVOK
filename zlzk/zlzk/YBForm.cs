@@ -20,8 +20,8 @@ namespace zlzk
         SocServer socserver = null;
         DeltaPlcCommand plccmd = null;
 
-        System.Timers.Timer commTimer = new System.Timers.Timer(2000);
-
+        System.Timers.Timer commTimer = new System.Timers.Timer(10000);
+        
         YBDTWorkManger ybdtWorkManger;
 
         List<string> deviceIpLstStr;
@@ -106,11 +106,57 @@ namespace zlzk
             NPOI.ExportDataToExcelNoDialog(devicedt, deviceDataFileName,null,null);
            //NPOI.ExportDataToExcel(devicedt, "321", null, null);
         }
+        public void SaveData()
+        {
+            DataTable dt = new DataTable();
+            for (int i = 0; i < Constant.strformatYBSave.Length; i++)
+            {
+                dt.Columns.Add(Constant.strformatYBSave[i], Type.GetType("System.String"));
+            }
+            string UserDtFileName = string.Concat(
+                ConstantMethod.GetAppPath(), DateTime.Now.ToString("yyyMMdd"), ".xlsx");
+            foreach (YBDTWork ybw in ybdtWorkManger.YbdtWorkLst)
+            {
+                
 
+                if(!File.Exists(UserDtFileName))
+                {
+                    ybw.CreateDataTable(UserDtFileName,Constant.strformatYBSave);
+                }             
+
+                List<string> workDataRow = new List<string>();
+
+                workDataRow.Add(ybw.YbdtWorkInfo.DanHao);
+                workDataRow.Add(ybw.YbdtWorkInfo.DateTimeDanhao);
+                workDataRow.Add(ybw.YbdtWorkInfo.Department);
+                workDataRow.Add(ybw.YbdtWorkInfo.TuHao);
+                workDataRow.Add(ybw.YbdtWorkInfo.ProdName);
+                workDataRow.Add(ybw.YbdtWorkInfo.GongXu);
+                workDataRow.Add(ybw.YbdtWorkInfo.OperatorName);
+                workDataRow.Add(ybw.YbdtWorkInfo.DeviceId);
+                workDataRow.Add(ybw.ProdQuantity.ToString());
+                workDataRow.Add(ybw.StartTime.ToLocalTime().ToString());
+                workDataRow.Add(ybw.EndRealTime.ToLocalTime().ToString());
+                workDataRow.Add("0");
+                workDataRow.Add("null");
+
+                DataRow dr = dt.NewRow();
+                dr.ItemArray = workDataRow.ToArray();
+
+                dt.Rows.Add(dr);
+
+            }
+
+            ExcelNpoi excelop = new ExcelNpoi();
+
+           excelop.ExportDataToExcelNoDialog(dt,UserDtFileName, null, null);
+
+
+        }
         private void button3_Click(object sender, EventArgs e)
         {
-            if(deviceLB.SelectedIndex >-1)
-            ybdtWorkManger.YbdtWorkLst[deviceLB.SelectedIndex].SaveData();           
+          //  if(deviceLB.SelectedIndex >-1)
+           // ybdtWorkManger.YbdtWorkLst[deviceLB.SelectedIndex].SaveData();           
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -390,13 +436,25 @@ namespace zlzk
         }
 
         private void YBForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if(ybdtWorkManger.YbdtWorkLst.Count>0)
+        {           
+            if (ybdtWorkManger.YbdtWorkLst.Count>0)
             {
+                for (int i = 0; i < ybdtWorkManger.YbdtWorkLst.Count; i++)
+                {
+                    if (ybdtWorkManger.YbdtWorkLst[i] != null)
+                        ConstantMethod.Delay(1000);
+                    ybdtWorkManger.YbdtWorkLst[i].Dispose();
+                   // if (ybdtWorkManger.YbdtWorkLst.Count > 0) continue;
+                }
+                /****
                 foreach (YBDTWork ybwork in ybdtWorkManger.YbdtWorkLst)
                 {
+                    if(ybwork !=null)
+                    ConstantMethod.Delay(1000);
                     ybwork.Dispose();
+                    if (ybdtWorkManger.YbdtWorkLst.Count > 0) continue;
                 }
+                *****/
                 }
             
         }

@@ -374,7 +374,7 @@ namespace xjplc
             //设置数据结果导出
             UpdateFile = new System.Timers.Timer();
             UpdateFile.Elapsed += UpdateFileTimeEvent;
-            UpdateFile.Interval = 30000;
+            UpdateFile.Interval = 100000;
             UpdateFile.AutoReset = true;
 
             if (!YbtdDevice.getDeviceData())
@@ -385,9 +385,8 @@ namespace xjplc
             }
             SqlDeiviceInfoDatatable = new DataTable();
            
-            UpdateTimer.Enabled = true;
-
-            UpdateFile.Enabled = true ;
+            UpdateTimer.Enabled = true;           
+          //  UpdateFile.Enabled = true ;
         }
             
         YBDTWorkInfo ybdtWorkInfo;
@@ -403,14 +402,12 @@ namespace xjplc
             UpdateSql();
             CreateSql();
             SaveDeviceToSql();
-          
-
         }
 
         private void UpdateFileTimeEvent(object source, System.Timers.ElapsedEventArgs e)
         {
       
-             SaveData();
+             //SaveData();
 
         }
 
@@ -444,7 +441,7 @@ namespace xjplc
             }
             UpdateTimer.Enabled = false;
             UpdateFile.Enabled = false;
-            SaveData();
+           // SaveData();
 
         }
         #region 数据保存
@@ -510,6 +507,12 @@ namespace xjplc
         {                      
             try
             {
+                if (ConstantMethod.FileIsUsed(excelop.FileName) || IsSaving)
+                {                  
+                    MessageBox.Show(Constant.FileIsInUse);
+                    //ConstantMethod.AppExit();
+                    return;
+                }
                 isSaving = true;
                 WriteDataToFile(excelop.FileName, PackDr().ToArray());
             }
@@ -859,7 +862,7 @@ namespace xjplc
             set { sqlShowDataTable = value; }
         }
         SocServer socServer;
-
+        System.Timers.Timer UpdateFile;
         public event ydtdWorkChanged ydtdWorkChangedEvent;//利用委托来声明事件
         public YBDTWorkManger()
         {
@@ -888,12 +891,20 @@ namespace xjplc
 
             UserDt.TableName = Constant.sqlDataTableName;
             LoadItemShow();
-            UpdateDeviceInfoLstToSql(UserDt);
+           // UpdateDeviceInfoLstToSql(UserDt);
 
-           
+            //设置数据结果导出
+            UpdateFile = new System.Timers.Timer();
+            UpdateFile.Elapsed += UpdateFileTimeEvent;
+            UpdateFile.Interval = 20000;
+            UpdateFile.AutoReset = true;
+
+
             socServer.startServer();
 
             socServer.YbWorkLst = YbdtWorkLst;
+
+            UpdateFile.Enabled = true;
 
         }
         bool isInEdit;
@@ -1125,6 +1136,82 @@ namespace xjplc
             }
             if (YbdtWorkInfoLst.Count < 1) return false;
             return true;
+        }
+        public bool CreateDataTable(string Filename, string[] headerName)
+        {
+            if (!File.Exists(Filename))
+            {
+                DataTable dt = new DataTable();
+                for (int i = 0; i < headerName.Length; i++)
+                {
+                    dt.Columns.Add(headerName[i], Type.GetType("System.String"));
+                }
+
+                ExcelNpoi excelop = new ExcelNpoi();
+
+                excelop.ExportDataToExcelNoDialog(dt, Filename, null, null);
+
+                return true;
+            }
+            return false;
+        }
+
+        public void SaveData()
+        {
+            DataTable dt = new DataTable();
+            for (int i = 0; i < Constant.strformatYBSave.Length; i++)
+            {
+                dt.Columns.Add(Constant.strformatYBSave[i], Type.GetType("System.String"));
+            }
+            string UserDtFileName = string.Concat(
+                ConstantMethod.GetAppPath(), DateTime.Now.ToString("yyyMMdd"), "生产结果.xlsx");
+            if (!File.Exists(UserDtFileName))
+            {
+                CreateDataTable(UserDtFileName, Constant.strformatYBSave);
+               // MessageBox.Show(UserDtFileName);
+            }
+
+            foreach (YBDTWork ybw in YbdtWorkLst)
+            {
+             
+              
+                
+                List<string> workDataRow = new List<string>();
+
+                workDataRow.Add(ybw.YbdtWorkInfo.DanHao);
+                workDataRow.Add(ybw.YbdtWorkInfo.DateTimeDanhao);
+                workDataRow.Add(ybw.YbdtWorkInfo.Department);
+                workDataRow.Add(ybw.YbdtWorkInfo.TuHao);
+                workDataRow.Add(ybw.YbdtWorkInfo.ProdName);
+                workDataRow.Add(ybw.YbdtWorkInfo.GongXu);
+                workDataRow.Add(ybw.YbdtWorkInfo.OperatorName);
+                workDataRow.Add(ybw.YbdtWorkInfo.DeviceId);
+                workDataRow.Add(ybw.ProdQuantity.ToString());
+                workDataRow.Add(ybw.StartTime.ToLocalTime().ToString());
+                workDataRow.Add(ybw.EndRealTime.ToLocalTime().ToString());
+                workDataRow.Add("0");
+                workDataRow.Add("null");
+
+                DataRow dr = dt.NewRow();
+                dr.ItemArray = workDataRow.ToArray();
+
+                dt.Rows.Add(dr);
+               
+
+            }
+
+            ExcelNpoi excelop = new ExcelNpoi();
+
+            excelop.ExportDataToExcelNoDialog(dt, UserDtFileName, null, null);
+
+
+        }
+
+        private void UpdateFileTimeEvent(object source, System.Timers.ElapsedEventArgs e)
+        {
+
+            SaveData();
+
         }
         public bool LoadExcelData(string filename)
         {

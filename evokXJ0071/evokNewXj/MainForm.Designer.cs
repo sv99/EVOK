@@ -81,6 +81,7 @@
             this.statusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
@@ -116,11 +117,12 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1127, 565);
+            this.tabControl1.Size = new System.Drawing.Size(1327, 565);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.richTextBox1);
             this.tabPage1.Controls.Add(this.dataGridView2);
             this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Controls.Add(this.UserData);
@@ -131,7 +133,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1119, 536);
+            this.tabPage1.Size = new System.Drawing.Size(1319, 536);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "主页面";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -201,6 +203,7 @@
             this.optBtn.Tag = "数据下发";
             this.optBtn.Text = "数据下发";
             this.optBtn.UseVisualStyleBackColor = true;
+            this.optBtn.Click += new System.EventHandler(this.optBtn_Click);
             // 
             // loadDataBtn
             // 
@@ -213,6 +216,7 @@
             this.loadDataBtn.Tag = "加载数据";
             this.loadDataBtn.Text = "加载数据";
             this.loadDataBtn.UseVisualStyleBackColor = true;
+            this.loadDataBtn.Click += new System.EventHandler(this.loadDataBtn_Click);
             // 
             // tabPage2
             // 
@@ -522,7 +526,7 @@
             this.statusLabel3});
             this.statusStrip1.Location = new System.Drawing.Point(0, 592);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1151, 36);
+            this.statusStrip1.Size = new System.Drawing.Size(1351, 36);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -558,11 +562,19 @@
             // 
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Location = new System.Drawing.Point(1082, 97);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(216, 402);
+            this.richTextBox1.TabIndex = 122;
+            this.richTextBox1.Text = "";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 628);
+            this.ClientSize = new System.Drawing.Size(1351, 628);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -646,5 +658,6 @@
         private System.Windows.Forms.ToolStripStatusLabel statusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel3;
         private System.Windows.Forms.Timer UpdateTimer;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }

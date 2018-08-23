@@ -257,6 +257,8 @@ namespace xjplc
         public const   int CutNormalMode = 0;
         public const  int CutMeasureMode = 1;
         public const int  CutNormalWithHoleMode = 3;
+        public const int CutMeasureWithScarSplitNoSize = 4;
+        public const string CutMeasureTips0 = "请选择模式或者导入数据";
         #endregion
         #region 台达PLC专用
         //台达PLC 发送命令 判断是否存在 存在则回复以下

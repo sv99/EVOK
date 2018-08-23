@@ -441,10 +441,21 @@ namespace evokNew0066
                 evokWork.ChangePrintMode(printcb.SelectedIndex);
             }
 
-            if ( evokWork.AutoMes)
+            if (evokWork.AutoMes)
             {
-                 evokWork.CutStartMeasure(checkBox1.Checked,Constant.CutMeasureMode);
-
+                if (scarAndSizeSplit.Checked)
+                {
+                    evokWork.CutStartMeasure(scarAndSizeSplit.Checked, Constant.CutMeasureMode);
+                }
+                else
+                if (scarSplit.Checked)
+                {
+                    evokWork.CutStartMeasure(scarSplit.Checked, Constant.CutMeasureWithScarSplitNoSize);
+                }
+                else
+                {
+                    MessageBox.Show(Constant.CutMeasureTips0);
+                }
                 //测试代码 后续回复弹窗
                 /**
                 qClr_Click(sender, e);
