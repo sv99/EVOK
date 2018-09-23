@@ -420,6 +420,27 @@ namespace xjplc
             }
             return false;
         }
+        public void dgvParam_CellEndEdit(DataGridView dgvParam, object sender, DataGridViewCellEventArgs e)
+        {
+            double num3;
+
+            string s = dgvParam.SelectedCells[0].Value.ToString();
+
+            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
+
+            try
+            {
+                if (double.TryParse(s, out num3))
+                {
+                    int value = (int)(num3 * Constant.dataMultiple);
+                    DgvValueEdit(rowIndex, value);
+                }
+            }
+            catch { }
+            finally { DgvInOutEdit(rowIndex, false); }
+
+
+        }
         public void ProClr()
         {
             evokDevice.SetDValue(prodOutInPs,0);
@@ -1069,7 +1090,16 @@ namespace xjplc
             LogManager.WriteProgramLog(Constant.Quit);
 
         }
-
+        public void InitDgvParam(DataGridView dgvParam)
+        {
+            if (evokDevice.DataFormLst.Count > 2)
+            {
+                dgvParam.AutoGenerateColumns = false;
+                dgvParam.DataSource = evokDevice.DataFormLst[2];
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
+                dgvParam.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns["param6"].ToString();
+            }
+        }
         public void InitControl()
         {
 
@@ -1249,16 +1279,7 @@ namespace xjplc
                 evokDevice.WriteSingleDData(addr, num3, area, mode);
             }
         }
-        public void InitDgvParam(DataGridView dgvParam)
-        {
-            if (evokDevice.DataFormLst.Count > 2)
-            {
-                dgvParam.AutoGenerateColumns = false;
-                dgvParam.DataSource = evokDevice.DataFormLst[2];
-                dgvParam.Columns["bin"].DataPropertyName = evokDevice.DataFormLst[2].Columns["bin"].ToString();
-                dgvParam.Columns["value"].DataPropertyName = evokDevice.DataFormLst[2].Columns["value"].ToString();
-            }
-        }
+        
         public void InitDgvIO(DataGridView dgvIO)
         {
             if (evokDevice.DataFormLst.Count > 3)

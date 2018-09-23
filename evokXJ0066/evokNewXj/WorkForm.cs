@@ -16,15 +16,13 @@ namespace evokNew0066
         int errorId = 0;
     
         private EvokXJWork evokWork;
-        private OptSize optSize;
-
 
         private WatchForm wForm;
 
         public WorkForm()
         {
            
-            ConstantMethod.InitPassWd();
+          //  ConstantMethod.InitPassWd();
             InitializeComponent();
         }
 
@@ -92,6 +90,8 @@ namespace evokNew0066
 
         private void ClrData()
         {
+            evokWork.ProClr();
+            /****
             if (( optSize.DtData != null) && ( optSize.DtData.Rows.Count > 0))
             {
                 foreach (DataRow row in  optSize.DtData.Rows)
@@ -99,6 +99,7 @@ namespace evokNew0066
                     row["已切数量"] = 0;
                 }
             }
+            ****/
         }
 
         private void connectMachine_Click(object sender, EventArgs e)
@@ -182,9 +183,8 @@ namespace evokNew0066
 
             LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
                         
-             optSize = new OptSize( UserData);
              evokWork = new EvokXJWork();
-             evokWork.SetOptSize( optSize);
+             evokWork.SetUserDataGridView(UserData);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
              evokWork.SetPrintReport(report1);
@@ -204,6 +204,8 @@ namespace evokNew0066
             logOPF.FileName = "请选择日志文件";
 
             errorTimer.Enabled = true;
+
+            evokWork.ReadCSVDataDefault();
 
         }
 
@@ -274,11 +276,14 @@ namespace evokNew0066
 
             if (!evokWork.AutoMes)
             {
+                evokWork.optReady(Constant.optNormal);
+                /****
                 optSize.Len = evokWork.lcOutInPs.ShowValue;
                 optSize.Dbc = evokWork.dbcOutInPs.ShowValue;
                 optSize.Ltbc = evokWork.ltbcOutInPs.ShowValue;
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                ****/
             }
 
             stopOptShow();
@@ -299,8 +304,9 @@ namespace evokNew0066
 
         private int ReadCSVData()
         {
-            if ( DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
+            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {
@@ -313,6 +319,7 @@ namespace evokNew0066
             }
             return 0;
         }
+        
 
         private void resetBtn_Click(object sender, EventArgs e)
         {
@@ -432,7 +439,7 @@ namespace evokNew0066
 
         private void stbtn_Click(object sender, EventArgs e)
         {
-
+                     
             startBtnShow();
 
             //条码恢复用户设置
@@ -640,16 +647,12 @@ namespace evokNew0066
         #endregion
         private void UserData_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-             optSize.DtData.Rows[e.RowIndex][e.ColumnIndex] =  UserData.SelectedCells[0].Value;
+           //  optSize.DtData.Rows[e.RowIndex][e.ColumnIndex] =  UserData.SelectedCells[0].Value;
         }
 
         private void UserData_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
-             UserData.EndEdit();
-        }
-
-        private void UserData_DataError(object sender, DataGridViewDataErrorEventArgs e)
-        {
+            // UserData.EndEdit();
         }
 
         private void 监控当前页面数据ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -726,7 +729,8 @@ namespace evokNew0066
 
         private void button10_Click(object sender, EventArgs e)
         {
-            report1.Show();
+            if (UserData.CurrentRow.Index > -1)
+                evokWork.ShowBarCode(report1, UserData.CurrentRow.Index);
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)

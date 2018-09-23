@@ -19,10 +19,8 @@ using Microsoft.Win32;
 
 namespace xjplc
 {
-    public class LogManager
+    public static class LogManager
     {
-
-
 
         static object locker = new object();
 
@@ -355,9 +353,9 @@ namespace xjplc
 
                     ConstantMethod.Delay(200);
 
-
                     m_serialPort.Read(resultByte, 0, Constant.DTExistByteOutIn0.Count());
 
+                    m_serialPort.Write(Constant.DTExistByteOutIn485, 0, Constant.DTExistByteOutIn485.Length);
                     if (ConstantMethod.compareByteStrictly(resultByte, Constant.DTExistByteOutIn0))
                     {
                         //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
@@ -437,6 +435,35 @@ namespace xjplc
                 }));
             }
 
+        }
+        public static string ShiftString(string s)
+        {
+            string result = "";
+            result = s.Replace("[", "[\"[");
+            result = result.Replace("]", "]\"]");
+
+            return result;
+        }
+        public static void SaveDirectoryByFileDialog(OpenFileDialog op1)
+        {
+            if (op1 != null)
+            {
+                if(File.Exists(op1.FileName))
+                op1.InitialDirectory = Path.GetDirectoryName(op1.FileName);
+            }
+               
+        }
+
+        public static string getStrInKuoHao(string s)
+        {
+            string result = "";
+            int pos0 = s.IndexOf("<");
+            int pos1 = s.IndexOf(">");
+            if (pos0 > -1 && pos1 > -1 && pos1 > pos0)
+            {
+                result = s.Substring(pos0+1, pos1 - pos0-1);          
+            }
+            return result;
         }
         public static void SetText(Control  r1, string s)
         {
@@ -889,12 +916,12 @@ namespace xjplc
             hexString = hexString.Replace(" ", "");
             if ((hexString.Length % 2) != 0)
                 hexString += " ";
-            byte[] returnBytes = new byte[hexString.Length / 2];
+            byte[] returnBytes = new byte[hexString.Length / 2]; 
             for (int i = 0; i < returnBytes.Length; i++)
                 returnBytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
             return returnBytes;
         }
-
+  
         public static string GetLocalIP()
         {
             try
@@ -1138,6 +1165,16 @@ namespace xjplc
             bLst.AddRange(byteArray);
             return bLst;
 
+        }
+
+        public static string getCharacter(string s )
+        {
+            return Regex.Match(s, @"[a-zA-Z]+").ToString();
+        }
+
+        public static string getNumber(string s)
+        {
+            return Regex.Match(s, @"\d+").ToString();
         }
         //台达上层数据转换为底层数据
         public static byte[] DeltaCmdPro(byte[] sLst)

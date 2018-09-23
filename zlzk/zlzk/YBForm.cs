@@ -25,6 +25,12 @@ namespace zlzk
         YBDTWorkManger ybdtWorkManger;
 
         List<string> deviceIpLstStr;
+
+        SetShowForm sform ;
+
+
+       
+        Dictionary<string, Button> btnShowLst;
         public YBForm()
         {
             InitializeComponent();
@@ -44,33 +50,41 @@ namespace zlzk
             ybdtWorkManger.ydtdWorkChangedEvent += this.ydbtWorkChangedEvent;
             deviceIpLstStr = new List<string>();
             deviceLB.DataSource = deviceIpLstStr;
-            timer1.Enabled = true;         
-            // deviceLstTimer.Enabled = true;
-            /****
-            deviceDataFileName = System.AppDomain.CurrentDomain.BaseDirectory + "device.xlsx";
-            if (!File.Exists(deviceDataFileName))
+            timer1.Enabled = true;
+            sform = new SetShowForm();
+            sform.showItemChanged += showItemChanged;
+            dataGridView1.DataSource =
+            ybdtWorkManger.ShowDataTable;
+            List<Button> btnLst;
+            btnLst = new List<Button>();
+            btnLst.Add(button10);
+            btnLst.Add(button5);
+            btnLst.Add(button1);
+            btnLst.Add(button4);
+            btnLst.Add(button6);
+            btnLst.Add(button7);
+            btnLst.Add(button8);
+            btnLst.Add(button12);
+            btnLst.Add(button13);
+            btnLst.Add(button14);
+            btnLst.Add(button15);
+            btnLst.Add(button16);
+            btnLst.Add(button17);
+            btnLst.Add(button18);
+            btnLst.Add(button19);
+            btnLst.Add(button20);
+            btnLst.Add(button21);
+            btnLst.Add(button22);
+            btnLst.Add(button23);
+
+
+
+            btnShowLst = new Dictionary<string, Button>();
+            for (int j = 0; j < ybdtWorkManger.YbdtWorkInfoLst.Count; j++)
             {
-                MessageBox.Show("设备文件丢失!");
-                Application.Exit();
+                btnShowLst.Add( ybdtWorkManger.YbdtWorkInfoLst[j].DeviceId,btnLst[j]);
             }
-            devicedt = new DataTable();
 
-            devicedt=NPOI.ImportExcel(deviceDataFileName);
-
-            dgvDevice.DataSource = devicedt;
-
-            plccmd = new DeltaPlcCommand();
-           
-         
-            dpro = new dataProc(recmsg, socserver,plccmd,label12);
-            commTimer.Elapsed += new System.Timers.ElapsedEventHandler(TimeEvent);
-            commTimer.AutoReset = true;
-            socserver.setDataProc(dpro);
-
-            //打包命令 临时用 读取D0
-
-            tempDPack();
-            ***/
         }
 
         private void TimeEvent(object source, System.Timers.ElapsedEventArgs e)
@@ -106,53 +120,7 @@ namespace zlzk
             NPOI.ExportDataToExcelNoDialog(devicedt, deviceDataFileName,null,null);
            //NPOI.ExportDataToExcel(devicedt, "321", null, null);
         }
-        public void SaveData()
-        {
-            DataTable dt = new DataTable();
-            for (int i = 0; i < Constant.strformatYBSave.Length; i++)
-            {
-                dt.Columns.Add(Constant.strformatYBSave[i], Type.GetType("System.String"));
-            }
-            string UserDtFileName = string.Concat(
-                ConstantMethod.GetAppPath(), DateTime.Now.ToString("yyyMMdd"), ".xlsx");
-            foreach (YBDTWork ybw in ybdtWorkManger.YbdtWorkLst)
-            {
-                
-
-                if(!File.Exists(UserDtFileName))
-                {
-                    ybw.CreateDataTable(UserDtFileName,Constant.strformatYBSave);
-                }             
-
-                List<string> workDataRow = new List<string>();
-
-                workDataRow.Add(ybw.YbdtWorkInfo.DanHao);
-                workDataRow.Add(ybw.YbdtWorkInfo.DateTimeDanhao);
-                workDataRow.Add(ybw.YbdtWorkInfo.Department);
-                workDataRow.Add(ybw.YbdtWorkInfo.TuHao);
-                workDataRow.Add(ybw.YbdtWorkInfo.ProdName);
-                workDataRow.Add(ybw.YbdtWorkInfo.GongXu);
-                workDataRow.Add(ybw.YbdtWorkInfo.OperatorName);
-                workDataRow.Add(ybw.YbdtWorkInfo.DeviceId);
-                workDataRow.Add(ybw.ProdQuantity.ToString());
-                workDataRow.Add(ybw.StartTime.ToLocalTime().ToString());
-                workDataRow.Add(ybw.EndRealTime.ToLocalTime().ToString());
-                workDataRow.Add("0");
-                workDataRow.Add("null");
-
-                DataRow dr = dt.NewRow();
-                dr.ItemArray = workDataRow.ToArray();
-
-                dt.Rows.Add(dr);
-
-            }
-
-            ExcelNpoi excelop = new ExcelNpoi();
-
-           excelop.ExportDataToExcelNoDialog(dt,UserDtFileName, null, null);
-
-
-        }
+        
         private void button3_Click(object sender, EventArgs e)
         {
           //  if(deviceLB.SelectedIndex >-1)
@@ -300,18 +268,107 @@ namespace zlzk
                 }));
             }
         }
+        public void SetButtonStatus(Button b1,int s,string str)
+        {
+            b1.Text = str;
+            switch (s)
+            {
+             
+                case -1:
+                    {
+                        b1.BackColor = System.Drawing.Color.Red;
+                       
+                        break;
+                    }
+                case 0:
+                    {
+                        b1.BackColor = System.Drawing.Color.Gray;
+                        break;
+                    }
+                case 1:
+                    {
+                        b1.BackColor = System.Drawing.Color.Green;
+                        break;
+                    }
+                case -2:
+                    {
+                        b1.BackColor = System.Drawing.Color.Chocolate;
+                        break;
+                    }
+            }
+        }
         private void deviceLstTimer_Tick(object sender, EventArgs e)
         {
             int id = deviceLB.SelectedIndex;
             if (id>-1&&id < ybdtWorkManger.YbdtWorkLst.Count && ybdtWorkManger.YbdtWorkLst.Count>0)
             {
                 UpdateWorkInfo(ybdtWorkManger.YbdtWorkLst[id]);
-            }
+            }          
             
         }
-
+        public void SetLabelText(Control label0,string s)
+        {
+            if (!s.Equals(label0.Text.ToString()))
+            {
+                label0.Text = s;
+            }
+        }
         private void UpdateWorkInfo(YBDTWork yw)
         {
+
+            List<string> strLst = new List<string>();
+            List<Control> labLst = new List<Control>();
+
+            labLst.Add(label25);
+            labLst.Add(label31);
+            labLst.Add(label3);
+            labLst.Add(label5);
+            labLst.Add(label6);
+            labLst.Add(label11);
+            labLst.Add(label9);
+            labLst.Add(label7);
+            labLst.Add(label37);
+            labLst.Add(label8);
+            labLst.Add(label39);
+            labLst.Add(label10);
+            labLst.Add(label41);
+            labLst.Add(label52);
+            labLst.Add(label51);
+            labLst.Add(label48);
+            labLst.Add(label47);
+            labLst.Add(label44);
+            labLst.Add(label43);
+            labLst.Add(deviceGroupBox);
+
+            strLst.Add(yw.YbdtWorkInfo.Department);
+            strLst.Add(yw.YbdtWorkInfo.DanHao);
+            strLst.Add(yw.StartTime.ToLocalTime().ToString());
+            strLst.Add(yw.EndNeedTime.ToLocalTime().ToString());
+            strLst.Add(yw.EndRealTime.ToLocalTime().ToString());
+            strLst.Add(yw.YbdtWorkInfo.Speed);
+            strLst.Add(yw.ReadSpeed.ToString());
+            strLst.Add(yw.YbdtWorkInfo.SetProdQuantity);
+            strLst.Add(yw.ProdQuantity.ToString());
+            strLst.Add(yw.YbdtWorkInfo.TuHao);
+            strLst.Add(yw.YbdtWorkInfo.ProdName);
+            strLst.Add(yw.YbdtWorkInfo.GongXu);
+            strLst.Add(yw.YbdtWorkInfo.GyTx);
+            strLst.Add(yw.YbdtWorkInfo.OperatorName);
+            strLst.Add(yw.YbdtWorkInfo.DeviceId);
+            strLst.Add(yw.YbdtWorkInfo.CadPath);
+            strLst.Add(yw.YbdtWorkInfo.Ddsm);
+            strLst.Add(yw.YbdtWorkInfo.Jshu);
+            strLst.Add(yw.YbdtWorkInfo.Gmj);
+            strLst.Add(yw.YbdtWorkInfo.DeviceIP);
+
+            if (strLst.Count == labLst.Count)
+            {
+                for (int i = 0; i < strLst.Count; i++)
+                {
+                    SetLabelText(labLst[i], strLst[i]);
+                }
+            }
+            /****
             label25.Text = yw.YbdtWorkInfo.Department;
             label31.Text = yw.YbdtWorkInfo.DanHao;
             label3.Text = yw.StartTime.ToLocalTime().ToString();
@@ -331,7 +388,8 @@ namespace zlzk
             label47.Text = yw.YbdtWorkInfo.Ddsm;
             label41.Text = yw.YbdtWorkInfo.Jshu;
             label43.Text = yw.YbdtWorkInfo.Gmj;
-            deviceGroupBox.Text = yw.YbdtWorkInfo.DeviceIP;
+            *****/
+
         }
         private void ShowWork(YBDTWork yw)
         {
@@ -369,6 +427,8 @@ namespace zlzk
         private void tabPage1_Enter(object sender, EventArgs e)
         {
             deviceLstTimer.Enabled =true;
+            if(deviceLB.Items.Count>0)
+                deviceLB.SetSelected(0, true);
         }
 
         private void tabPage1_Leave(object sender, EventArgs e)
@@ -385,15 +445,34 @@ namespace zlzk
 
         private void 设置显示项目ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetShowForm sform = new SetShowForm();
-            sform.showItemChanged += showItemChanged;
+       
             sform.Show();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
             UpdateRation();
-            ybdtWorkManger.GetDataFromSql(dataGridView1);         
+            label22.Text = DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss");
+            
+            if(ybdtWorkManger.YbdtWorkLst !=null & ybdtWorkManger.YbdtWorkLst.Count>0)
+            //目前只针对两台设备 后期进行多台设备的自动创建按钮显示
+            for (int i = 0; i < ybdtWorkManger.YbdtWorkLst.Count; i++)
+            {
+                if(i<btnShowLst.Count && i<10)
+                SetButtonStatus(btnShowLst[ybdtWorkManger.YbdtWorkLst[i].YbdtWorkInfo.DeviceId], ybdtWorkManger.YbdtWorkLst[i].status, ybdtWorkManger.YbdtWorkLst[i].YbdtWorkInfo.DeviceId);
+                /****
+                if (i == 0)
+                {
+                    SetButtonStatus(button10, ybdtWorkManger.YbdtWorkLst[i].status, ybdtWorkManger.YbdtWorkLst[i].YbdtWorkInfo.DeviceId);
+                }
+                if (i == 1)
+                {
+                    SetButtonStatus(button5, ybdtWorkManger.YbdtWorkLst[i].status, ybdtWorkManger.YbdtWorkLst[i].YbdtWorkInfo.DeviceId);
+                }
+               *****/
+            }
+            ybdtWorkManger.GetDataFromSql(dataGridView1); 
+            
         }
         private void UpdateRation()
         {
@@ -408,7 +487,7 @@ namespace zlzk
                     if (int.TryParse(dr.Cells["当前产量"].Value.ToString(), out fenzi) && (int.TryParse(dr.Cells["排产量"].Value.ToString(), out fenmu)))
                     {
 
-                        if (fenzi <= fenmu)
+                        if (fenzi <= fenmu && fenzi>-1)
                         {
                             dr.Cells["完成率"].Value = ((double)fenzi / fenmu)*100;
                         }
@@ -436,13 +515,15 @@ namespace zlzk
         }
 
         private void YBForm_FormClosed(object sender, FormClosedEventArgs e)
-        {           
+        {
+            //首先直接退出
+            ConstantMethod.AppExit();
             if (ybdtWorkManger.YbdtWorkLst.Count>0)
             {
                 for (int i = 0; i < ybdtWorkManger.YbdtWorkLst.Count; i++)
                 {
                     if (ybdtWorkManger.YbdtWorkLst[i] != null)
-                        ConstantMethod.Delay(1000);
+                        ConstantMethod.Delay(500);
                     ybdtWorkManger.YbdtWorkLst[i].Dispose();
                    // if (ybdtWorkManger.YbdtWorkLst.Count > 0) continue;
                 }
@@ -457,6 +538,24 @@ namespace zlzk
                 *****/
                 }
             
+        }
+
+        private void tabPage3_Enter(object sender, EventArgs e)
+        {
+            ConstantMethod.Delay(200);
+            if (ybdtWorkManger != null)
+            {
+                timer1.Enabled = true;
+                tabPage3.Refresh();
+                dataGridView1.Refresh();
+                dataGridView1.DataSource =
+                ybdtWorkManger.ShowDataTable;
+            }
+        }
+
+        private void tabPage3_Leave(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;                    
         }
     }
 }

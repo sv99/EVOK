@@ -301,6 +301,7 @@ namespace evokNew0070
         {
             if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile(DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {

@@ -29,18 +29,21 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle43 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle44 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle47 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle48 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.UserData = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.rtbResult = new System.Windows.Forms.RichTextBox();
+            this.dgDoorShell = new System.Windows.Forms.DataGridView();
+            this.dgDoorBan = new System.Windows.Forms.DataGridView();
+            this.dgSize = new System.Windows.Forms.DataGridView();
             this.stopBtn = new System.Windows.Forms.Button();
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
@@ -81,12 +84,15 @@
             this.statusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.report1 = new FastReport.Report();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.UserData)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDoorShell)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDoorBan)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgSize)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.work0Tab.SuspendLayout();
             this.tabPage6.SuspendLayout();
@@ -106,6 +112,7 @@
             this.tabPage10.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParam2)).BeginInit();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.report1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -122,10 +129,15 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.richTextBox1);
-            this.tabPage1.Controls.Add(this.dataGridView2);
-            this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Controls.Add(this.UserData);
+            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.listBox1);
+            this.tabPage1.Controls.Add(this.rtbResult);
+            this.tabPage1.Controls.Add(this.dgDoorShell);
+            this.tabPage1.Controls.Add(this.dgDoorBan);
+            this.tabPage1.Controls.Add(this.dgSize);
             this.tabPage1.Controls.Add(this.stopBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
@@ -138,40 +150,68 @@
             this.tabPage1.Text = "主页面";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // dataGridView2
+            // label1
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(725, 97);
-            this.dataGridView2.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 23;
-            this.dataGridView2.Size = new System.Drawing.Size(335, 402);
-            this.dataGridView2.TabIndex = 121;
+            this.label1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label1.Location = new System.Drawing.Point(18, 99);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(44, 141);
+            this.label1.TabIndex = 124;
+            this.label1.Text = "码头，门边";
             // 
-            // dataGridView1
+            // listBox1
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(372, 97);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(335, 402);
-            this.dataGridView1.TabIndex = 120;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Location = new System.Drawing.Point(773, 97);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(490, 409);
+            this.listBox1.TabIndex = 123;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
-            // UserData
+            // rtbResult
             // 
-            this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UserData.Location = new System.Drawing.Point(18, 97);
-            this.UserData.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.UserData.Name = "UserData";
-            this.UserData.RowTemplate.Height = 23;
-            this.UserData.Size = new System.Drawing.Size(335, 402);
-            this.UserData.TabIndex = 120;
+            this.rtbResult.Location = new System.Drawing.Point(978, 22);
+            this.rtbResult.Name = "rtbResult";
+            this.rtbResult.Size = new System.Drawing.Size(159, 52);
+            this.rtbResult.TabIndex = 122;
+            this.rtbResult.Text = "";
+            this.rtbResult.Visible = false;
+            // 
+            // dgDoorShell
+            // 
+            this.dgDoorShell.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgDoorShell.Location = new System.Drawing.Point(69, 414);
+            this.dgDoorShell.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.dgDoorShell.Name = "dgDoorShell";
+            this.dgDoorShell.RowTemplate.Height = 23;
+            this.dgDoorShell.Size = new System.Drawing.Size(679, 107);
+            this.dgDoorShell.TabIndex = 121;
+            // 
+            // dgDoorBan
+            // 
+            this.dgDoorBan.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgDoorBan.Location = new System.Drawing.Point(69, 297);
+            this.dgDoorBan.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.dgDoorBan.Name = "dgDoorBan";
+            this.dgDoorBan.RowTemplate.Height = 23;
+            this.dgDoorBan.Size = new System.Drawing.Size(679, 113);
+            this.dgDoorBan.TabIndex = 120;
+            // 
+            // dgSize
+            // 
+            this.dgSize.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgSize.Location = new System.Drawing.Point(69, 99);
+            this.dgSize.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.dgSize.Name = "dgSize";
+            this.dgSize.RowTemplate.Height = 23;
+            this.dgSize.Size = new System.Drawing.Size(679, 194);
+            this.dgSize.TabIndex = 120;
             // 
             // stopBtn
             // 
             this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stopBtn.Location = new System.Drawing.Point(533, 27);
+            this.stopBtn.Location = new System.Drawing.Point(584, 22);
             this.stopBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.stopBtn.Name = "stopBtn";
             this.stopBtn.Size = new System.Drawing.Size(164, 52);
@@ -183,7 +223,7 @@
             // stbtn
             // 
             this.stbtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stbtn.Location = new System.Drawing.Point(361, 27);
+            this.stbtn.Location = new System.Drawing.Point(412, 22);
             this.stbtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.stbtn.Name = "stbtn";
             this.stbtn.Size = new System.Drawing.Size(164, 52);
@@ -191,27 +231,28 @@
             this.stbtn.Tag = "启动";
             this.stbtn.Text = "启动";
             this.stbtn.UseVisualStyleBackColor = true;
+            this.stbtn.Click += new System.EventHandler(this.stbtn_Click);
             // 
             // optBtn
             // 
             this.optBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.optBtn.Location = new System.Drawing.Point(189, 27);
+            this.optBtn.Location = new System.Drawing.Point(240, 22);
             this.optBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.optBtn.Name = "optBtn";
             this.optBtn.Size = new System.Drawing.Size(164, 52);
             this.optBtn.TabIndex = 117;
-            this.optBtn.Tag = "数据下发";
-            this.optBtn.Text = "数据下发";
+            this.optBtn.Tag = "数据排版";
+            this.optBtn.Text = "数据排版";
             this.optBtn.UseVisualStyleBackColor = true;
             this.optBtn.Click += new System.EventHandler(this.optBtn_Click);
             // 
             // loadDataBtn
             // 
             this.loadDataBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.loadDataBtn.Location = new System.Drawing.Point(18, 27);
+            this.loadDataBtn.Location = new System.Drawing.Point(23, 22);
             this.loadDataBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadDataBtn.Name = "loadDataBtn";
-            this.loadDataBtn.Size = new System.Drawing.Size(164, 52);
+            this.loadDataBtn.Size = new System.Drawing.Size(210, 52);
             this.loadDataBtn.TabIndex = 116;
             this.loadDataBtn.Tag = "加载数据";
             this.loadDataBtn.Text = "加载数据";
@@ -224,7 +265,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1119, 536);
+            this.tabPage2.Size = new System.Drawing.Size(1319, 536);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "横切锯";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -262,8 +303,8 @@
             this.dgvIO.Location = new System.Drawing.Point(6, 6);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle43.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle43;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1034, 448);
             this.dgvIO.TabIndex = 3;
@@ -301,8 +342,8 @@
             this.dgvParam.Location = new System.Drawing.Point(19, 21);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle44.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle44;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(862, 414);
             this.dgvParam.TabIndex = 2;
@@ -324,7 +365,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1119, 536);
+            this.tabPage3.Size = new System.Drawing.Size(1319, 536);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "纵横切锯(门皮)";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -362,8 +403,8 @@
             this.dgvIO1.Location = new System.Drawing.Point(6, 6);
             this.dgvIO1.MultiSelect = false;
             this.dgvIO1.Name = "dgvIO1";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO1.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle45.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO1.RowsDefaultCellStyle = dataGridViewCellStyle45;
             this.dgvIO1.RowTemplate.Height = 35;
             this.dgvIO1.Size = new System.Drawing.Size(1034, 448);
             this.dgvIO1.TabIndex = 3;
@@ -401,8 +442,8 @@
             this.dgvParam1.Location = new System.Drawing.Point(19, 21);
             this.dgvParam1.MultiSelect = false;
             this.dgvParam1.Name = "dgvParam1";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam1.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle46.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam1.RowsDefaultCellStyle = dataGridViewCellStyle46;
             this.dgvParam1.RowTemplate.Height = 35;
             this.dgvParam1.Size = new System.Drawing.Size(862, 414);
             this.dgvParam1.TabIndex = 2;
@@ -424,7 +465,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1119, 536);
+            this.tabPage4.Size = new System.Drawing.Size(1319, 536);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "纵横切锯(门板)";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -460,8 +501,8 @@
             this.dgvIO2.Location = new System.Drawing.Point(6, 6);
             this.dgvIO2.MultiSelect = false;
             this.dgvIO2.Name = "dgvIO2";
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO2.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle47.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO2.RowsDefaultCellStyle = dataGridViewCellStyle47;
             this.dgvIO2.RowTemplate.Height = 35;
             this.dgvIO2.Size = new System.Drawing.Size(1034, 448);
             this.dgvIO2.TabIndex = 3;
@@ -499,8 +540,8 @@
             this.dgvParam2.Location = new System.Drawing.Point(19, 21);
             this.dgvParam2.MultiSelect = false;
             this.dgvParam2.Name = "dgvParam2";
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam2.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle48.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam2.RowsDefaultCellStyle = dataGridViewCellStyle48;
             this.dgvParam2.RowTemplate.Height = 35;
             this.dgvParam2.Size = new System.Drawing.Size(862, 414);
             this.dgvParam2.TabIndex = 2;
@@ -562,13 +603,36 @@
             // 
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
-            // richTextBox1
+            // report1
             // 
-            this.richTextBox1.Location = new System.Drawing.Point(1082, 97);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(216, 402);
-            this.richTextBox1.TabIndex = 122;
-            this.richTextBox1.Text = "";
+            this.report1.ReportResourceString = resources.GetString("report1.ReportResourceString");
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label2.Location = new System.Drawing.Point(18, 297);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 126);
+            this.label2.TabIndex = 124;
+            this.label2.Text = "门填充板";
+            // 
+            // label3
+            // 
+            this.label3.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label3.Location = new System.Drawing.Point(18, 414);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 92);
+            this.label3.TabIndex = 124;
+            this.label3.Text = "门皮";
+            // 
+            // label4
+            // 
+            this.label4.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(768, 59);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(204, 35);
+            this.label4.TabIndex = 124;
+            this.label4.Text = "码头，门边";
             // 
             // MainForm
             // 
@@ -579,13 +643,13 @@
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "MainForm";
+            this.Text = "流水线";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.UserData)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDoorShell)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgDoorBan)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgSize)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.work0Tab.ResumeLayout(false);
             this.tabPage6.ResumeLayout(false);
@@ -606,6 +670,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvParam2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.report1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -622,9 +687,9 @@
         private System.Windows.Forms.Button optBtn;
         private System.Windows.Forms.Button stbtn;
         private System.Windows.Forms.Button stopBtn;
-        private System.Windows.Forms.DataGridView dataGridView2;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridView UserData;
+        private System.Windows.Forms.DataGridView dgDoorShell;
+        private System.Windows.Forms.DataGridView dgDoorBan;
+        private System.Windows.Forms.DataGridView dgSize;
         private System.Windows.Forms.TabControl work0Tab;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage work0Param;
@@ -658,6 +723,12 @@
         private System.Windows.Forms.ToolStripStatusLabel statusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel3;
         private System.Windows.Forms.Timer UpdateTimer;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox rtbResult;
+        private FastReport.Report report1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -139,7 +139,10 @@
     <Compile Include="delta\SocServerManger.cs" />
     <Compile Include="delta\YBDTDevice.cs" />
     <Compile Include="delta\YBDTWorkManger.cs" />
+    <Compile Include="evokWorkManager.cs" />
+    <Compile Include="FileConverToMachone.cs" />
     <Compile Include="SqlHelper.cs" />
+    <Compile Include="workManager.cs" />
     <Compile Include="xj\EvokXJWork.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>

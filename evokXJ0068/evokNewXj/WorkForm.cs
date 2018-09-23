@@ -61,7 +61,7 @@ namespace evokNew0068
             } 
             ****/                     
             loadDataBtn.Enabled = false;
-            ReadCSVData0();
+            ReadCSVData();
             loadDataBtn.Enabled = true;
            
         }
@@ -279,7 +279,7 @@ namespace evokNew0068
                 optSize.Ltbc = evokWork.ltbcOutInPs.ShowValue;
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
                 //不排版模式
-                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal0(rtbResult));
+                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                // ConstantMethod.ShowInfo(rtbResult, optSize.NoOpt(rtbResult));
            // }
 
@@ -302,6 +302,7 @@ namespace evokNew0068
         {
             if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile(DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {
@@ -519,7 +520,7 @@ namespace evokNew0068
 
         private void FileSave_Tick(object sender, EventArgs e)
         {
-             evokWork.SaveFile0();
+             evokWork.SaveFile();
         }
 
         private void UpdataAuto()
@@ -724,9 +725,11 @@ namespace evokNew0068
             dgvParam.ClearSelection();
         }
 
+
         private void button10_Click(object sender, EventArgs e)
         {
-            report1.Show();
+            if (UserData.CurrentRow.Index > -1)
+                evokWork.ShowBarCode(report1, UserData.CurrentRow.Index);    
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)

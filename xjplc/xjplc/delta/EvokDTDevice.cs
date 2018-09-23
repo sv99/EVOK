@@ -9,9 +9,14 @@ namespace xjplc
     
     public class EvokDTDevice:DTDevice
     {
+
         public EvokDTDevice(List<string> strfile):base(strfile)
         {
              
+        }
+        public EvokDTDevice(List<string> strfile,int connecmode) : base(strfile,connecmode)
+        {
+
         }
         public bool  SetDValue(DTPlcInfoSimple p,int value0)
         {

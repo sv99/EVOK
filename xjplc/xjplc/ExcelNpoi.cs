@@ -229,7 +229,7 @@ namespace xjplc
                         DataColumn datacolum = new DataColumn(headrow.GetCell(i).StringCellValue);
                         // DataColumn datacolum = new DataColumn("F" + (i + 1));
                         dt.Columns.Add(datacolum);
-                    }
+                    }     
                     //读取每行,从第二行起
                     for (int r = 1; r <= sheet.LastRowNum; r++)
                     {
@@ -237,6 +237,7 @@ namespace xjplc
                         DataRow dr = dt.NewRow();
                         //获取当前行
                         IRow row = sheet.GetRow(r);
+                        if (row == null) continue;
                         //读取每列
                         for (int j = 0; j < headrow.Cells.Count; j++)
                         {                                                      

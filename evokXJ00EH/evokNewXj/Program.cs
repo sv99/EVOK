@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using xjplc;
 
-namespace 小鹏程序
+namespace evokNew0066
 {
     static class Program
     {
@@ -14,9 +15,10 @@ namespace 小鹏程序
         [STAThread]
         static void Main()
         {
+           // ConstantMethod.AutoStart(true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new WorkForm());
         }
     }
 }

@@ -284,9 +284,21 @@ namespace xjplc
             get { return strDataFormPath; }
             set { strDataFormPath = value; }
         }
-        public DTPlcInfoSimple startInPs = new DTPlcInfoSimple("车床1启动读");
-        public DTPlcInfoSimple startInPs1 = new DTPlcInfoSimple("车床2启动读");
-        public DTPlcInfoSimple startInPs2 = new DTPlcInfoSimple("工件校准气缸读");
+        public int status
+        {
+            get
+            {
+                if (startInPs.ShowValue == 1) return -1;
+                if (startInPs1.ShowValue == 1) return 0;
+                if (startInPs2.ShowValue == 1) return 1;
+
+                return -2;
+            }
+        }
+        public DTPlcInfoSimple startInPs = new DTPlcInfoSimple("故障读");//红色
+        public DTPlcInfoSimple startInPs1 = new DTPlcInfoSimple("停止读");//灰色
+        public DTPlcInfoSimple startInPs2 = new DTPlcInfoSimple("运行读");//绿色
+
         public DTPlcInfoSimple startInPs3 = new DTPlcInfoSimple("夹头开读");
         public DTPlcInfoSimple startInPs4 = new DTPlcInfoSimple("夹头锁紧读");
         public DTPlcInfoSimple startInPs5 = new DTPlcInfoSimple("检测气缸2读");
@@ -304,6 +316,8 @@ namespace xjplc
         public DTPlcInfoSimple startInPs16 = new DTPlcInfoSimple("1#数控车床报警读");
         public DTPlcInfoSimple startInPs17 = new DTPlcInfoSimple("2#数控车床报警读");
         public DTPlcInfoSimple proQuantityInOutPs = new DTPlcInfoSimple("产量读写");
+
+
         public YBDTWork(Socket soc,YBDTWorkInfo y0)
         {
                    
@@ -323,8 +337,12 @@ namespace xjplc
                     return;
                 }
             }
-
-            YbtdDevice = new YBDTDevice(StrDataFormPath,soc);
+            
+            //这里需要特殊分开 因为有些模块是用老的用232 有些是485的
+            if(y0.DeviceId.Equals("长机右")|| y0.DeviceId.Equals("长机左"))
+              YbtdDevice = new YBDTDevice(StrDataFormPath, soc, Constant.TaiDaConnectMode232);
+            else
+            YbtdDevice = new YBDTDevice(StrDataFormPath,soc,Constant.TaiDaConnectMode485);
 
             excelop = new ExcelNpoi();
 
@@ -383,9 +401,10 @@ namespace xjplc
                 Dispose();              
                 return;
             }
+
             SqlDeiviceInfoDatatable = new DataTable();
            
-            UpdateTimer.Enabled = true;           
+           // UpdateTimer.Enabled = true;           
           //  UpdateFile.Enabled = true ;
         }
             
@@ -463,7 +482,38 @@ namespace xjplc
                 }               
             }
         }
-        public List<string> PackDr()
+        public Dictionary<string,string> PackAllData()
+        {
+            Dictionary<string, string> workDataRow = new Dictionary<string, string>();
+
+            workDataRow.Add(Constant.strformatSql[0], ybdtWorkInfo.DanHao);
+            workDataRow.Add(Constant.strformatSql[1], ybdtWorkInfo.DateTimeDanhao);
+            workDataRow.Add(Constant.strformatSql[2], ybdtWorkInfo.Department);
+            workDataRow.Add(Constant.strformatSql[3], ybdtWorkInfo.TuHao);
+            workDataRow.Add(Constant.strformatSql[4], ybdtWorkInfo.ProdName);
+            workDataRow.Add(Constant.strformatSql[5], ybdtWorkInfo.GongXu);
+            workDataRow.Add(Constant.strformatSql[6], ybdtWorkInfo.GyTx);
+            workDataRow.Add(Constant.strformatSql[7], ybdtWorkInfo.OperatorName);
+            workDataRow.Add(Constant.strformatSql[8], ybdtWorkInfo.OperatorTx);
+            workDataRow.Add(Constant.strformatSql[9], ybdtWorkInfo.DeviceClass);
+            workDataRow.Add(Constant.strformatSql[10], ybdtWorkInfo.DeviceId);
+            workDataRow.Add(Constant.strformatSql[11], ybdtWorkInfo.DeviceIP);
+            workDataRow.Add(Constant.strformatSql[12], ybdtWorkInfo.DeviceTx);
+            workDataRow.Add(Constant.strformatSql[13], ybdtWorkInfo.CadPath);
+            workDataRow.Add(Constant.strformatSql[14], ybdtWorkInfo.Ddsm);
+            workDataRow.Add(Constant.strformatSql[15], ybdtWorkInfo.SetProdQuantity);
+            workDataRow.Add(Constant.strformatSql[16], ybdtWorkInfo.Speed);
+            workDataRow.Add(Constant.strformatSql[17], ybdtWorkInfo.Jshu);
+            workDataRow.Add(Constant.strformatSql[18], ybdtWorkInfo.Gmj);
+            workDataRow.Add(Constant.strformatSql[19], readSpeed.ToString());
+            workDataRow.Add(Constant.strformatSql[20], ProdQuantity.ToString());
+            workDataRow.Add(Constant.strformatSql[21], startTime.ToString());
+            workDataRow.Add(Constant.strformatSql[22], endNeedTime.ToString());
+            workDataRow.Add(Constant.strformatSql[23], endRealTime.ToString());
+
+            return workDataRow;
+        }
+        public List<string> PackSaveDr()
         {
             List<string> workDataRow = new List<string>();
 
@@ -493,7 +543,7 @@ namespace xjplc
                     dt.Columns.Add(headerName[i], Type.GetType("System.String"));
                 }               
 
-                dt.Rows.Add(PackDr().ToArray());
+                dt.Rows.Add(PackSaveDr().ToArray());
 
                 excelop.FileName = Filename;
 
@@ -514,7 +564,7 @@ namespace xjplc
                     return;
                 }
                 isSaving = true;
-                WriteDataToFile(excelop.FileName, PackDr().ToArray());
+                WriteDataToFile(excelop.FileName, PackSaveDr().ToArray());
             }
             catch
             {
@@ -830,7 +880,12 @@ namespace xjplc
             set { ybdtWorkInfoLst = value; }
         }
 
-        
+        DataTable showDataTable;
+        public System.Data.DataTable ShowDataTable
+        {
+            get { return showDataTable; }
+            set { showDataTable = value; }
+        }
         bool isLoadData;
         public bool IsLoadData
         {
@@ -866,21 +921,26 @@ namespace xjplc
         public event ydtdWorkChanged ydtdWorkChangedEvent;//利用委托来声明事件
         public YBDTWorkManger()
         {
-            YbdtWorkLst = new List<YBDTWork>();
-                         
-            socServer = new SocServer();
-            socServer.newClientIn += WorkClientAdd;
-                       
             UserDt = new DataTable(Constant.sqlDataTableName);
             Excelop = new ExcelNpoi();
-            YbdtWorkInfoLst = new List<YBDTWorkInfo>();
 
             if (!LoadExcelData(UserDtFileName))
             {
 
                 MessageBox.Show(Constant.ErrorPlcFile);
+
                 ConstantMethod.AppExit();
             }
+
+            YbdtWorkLst = new List<YBDTWork>();
+                         
+            socServer = new SocServer();
+            socServer.newClientIn += WorkClientAdd;
+                       
+           
+            YbdtWorkInfoLst = new List<YBDTWorkInfo>();
+
+           
 
             //获取用户导入信息 导入到数据库
             if (!GetDeviceData(UserDt))
@@ -903,8 +963,17 @@ namespace xjplc
             socServer.startServer();
 
             socServer.YbWorkLst = YbdtWorkLst;
+            //先不保存试一下 是不是这个情况闪退了 201809081606
+          //  UpdateFile.Enabled = true;
 
-            UpdateFile.Enabled = true;
+            ShowDataTable = new DataTable();
+
+            foreach (string s in itemShowStr)
+            {
+                ShowDataTable.Columns.Add(s);
+            }
+            
+           
 
         }
         bool isInEdit;
@@ -986,6 +1055,58 @@ namespace xjplc
         }
         public void GetDataFromSql(DataGridView dg1)
         {
+            //DataRow[] dr = showDataTable.Select("设备编号='ybtj0056'");
+            if(ybdtWorkLst !=null && ybdtWorkLst.Count>0)
+            for(int j=0;j< ybdtWorkLst.Count;j++)
+           // foreach (YBDTWork ywork in ybdtWorkLst)
+            {
+                YBDTWork ywork = ybdtWorkLst[j];
+                if (ywork == null) break;
+                DataRow[] dr = showDataTable.Select("设备编号="+ "'"+ywork.YbdtWorkInfo.DeviceId+"'");
+                Dictionary<string,string>  dic = ywork.PackAllData();
+                if (dic != null && dic.Count > 0)
+                {
+
+                } else return;
+
+                List<string> value = new List<string>();
+
+                for (int i = 0; i < ShowDataTable.Columns.Count; i++)
+                {
+                    value.Add(dic[ShowDataTable.Columns[i].ColumnName]);
+                }
+
+                if (dr.Length == 0)
+                {
+                    DataRow dr0 = showDataTable.NewRow();
+                   
+                    if(value.Count>0) dr0.ItemArray = value.ToArray();
+                     showDataTable.Rows.Add(dr0);
+                }
+                else
+                {
+
+                    dr[0].ItemArray = value.ToArray();
+                }
+                               
+            }
+
+            if (showDataTable.Rows.Count != ybdtWorkLst.Count)
+            {
+                for (int i = showDataTable.Rows.Count-1; i > -1; i--)
+                {
+                    string decviceId = showDataTable.Rows[i]["设备编号"].ToString();
+                    bool isDelete=true;
+                    for (int j = 0; j < ybdtWorkLst.Count; j++)
+                    {
+                        if (ybdtWorkLst[j].YbdtWorkInfo.DeviceId.Equals(decviceId)) isDelete = false;
+                    }
+                    if (isDelete) showDataTable.Rows.RemoveAt(i);
+                }
+            }
+
+
+            /****
             string sqlStr = "SELECT * FROM deviceinfo" + " WHERE ";
                       
             if (ybdtWorkLst.Count == 0)
@@ -999,7 +1120,6 @@ namespace xjplc
             for(int i=0;i<YbdtWorkLst.Count;i++)
             {
                 
-
                 if (i == YbdtWorkLst.Count - 1)
                 {
                     sqlStr += "设备地址=" + "'" + YbdtWorkLst[i].YbdtWorkInfo.DeviceIP + "'";
@@ -1033,7 +1153,7 @@ namespace xjplc
                     }
                 }
             }
-           
+           ***/
         }
 
         public YBDTWorkInfo GetWorkInfoFromLst(List<YBDTWorkInfo> workInfoLst, string deviceIp)

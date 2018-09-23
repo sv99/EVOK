@@ -118,6 +118,8 @@ namespace xjplc
         public static readonly string SetDataFail = "数据设置失败！";
         public static readonly string FileIsInUse = "文件使用中！";
         public static readonly int ExcelFile = 1;
+
+        public const  int optNormal = 0;
         public static readonly int CsvFile = 2;
         public static readonly int ErrorFile = 0;
         public static readonly int AutoPage = 0;
@@ -134,18 +136,18 @@ namespace xjplc
 
         public const int GetScarSuccess = 0;
         public const int GetScarWrongScar = 1;
-        public static readonly string GetScarWrongScarStr = "结巴数据错误！";
+        public static readonly string GetScarWrongScarStr = "结疤数据错误！";
         public const int GetScarScarNoEven = 2;
-        public static readonly string GetScarScarNoEvenStr = "结巴数据不是偶数！";
+        public static readonly string GetScarScarNoEvenStr = "结疤数据不是偶数！";
         public const int GetScarScarNoAscend = 4;
-        public static readonly string GetScarScarNoAscendStr = "结巴数据排序错误！";
+        public static readonly string GetScarScarNoAscendStr = "结疤数据排序错误！";
         public const int GetScarScarValueError = 5;
-        public static readonly string GetScarScarValueErrorStr = "结巴数据错误值！";
-        public static readonly int MaxScarCount = 20;
+        public static readonly string GetScarScarValueErrorStr = "结疤数据错误值,请检查结疤数据和料长数据！";
+        public static readonly int MaxScarCount = 40;
         public static readonly int ScarStartAddress = 6000;
         public static readonly int ScarPage = 4;
-        public static readonly string ScarName = "结巴";
-        public static readonly string GetScarError = "获取结巴数据错误！";
+        public static readonly string ScarName = "结疤";
+        public static readonly string GetScarError = "获取结疤数据错误！";
 
         public const int LTBCdefault = 700;
         //线圈值常量
@@ -163,13 +165,14 @@ namespace xjplc
         public static readonly string PlcDataFilePathParam1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param1.csv";
         public static readonly string PlcDataFilePathIO1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO1.csv";
 
+        public static readonly string userdata = ConstantMethod.GetAppPath() + "user data.csv"; 
 
         public static readonly string PlcDataFilePathAuto2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto2.csv";
         public static readonly string PlcDataFilePathHand2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand2.csv";
         public static readonly string PlcDataFilePathParam2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param2.csv";
         public static readonly string PlcDataFilePathIO2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO2.csv";
-
-
+        public static readonly string PlcDataFilezhj = ConstantMethod.GetAppPath() + "Plc Data\\纵横锯数据样本.csv";
+        public static readonly string PlcDataFilehqj = ConstantMethod.GetAppPath() + "Plc Data\\横切锯样本.csv";
         public static readonly string PlcDataFilePath3 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data3.csv";
         public static readonly string PlcDataFilePathScar = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_scar.csv";
 
@@ -214,8 +217,8 @@ namespace xjplc
         public static readonly int dataMultiple = 100;
 
         public static readonly string ScarId = "-1";
-
-
+        public static readonly string barCodeDemo = ConstantMethod.GetAppPath() + "零部件打印.frx";
+        public static readonly string SplitTypeFile = ConstantMethod.GetAppPath() + "config\\SplitType.xls";
         #region  优化数据
         //优化错误返回值
         public static readonly string prodLstNoData = "数据收集错误！";
@@ -225,7 +228,7 @@ namespace xjplc
         public static readonly string NextOpt = "下一根料准备！";
         public static readonly string ErrorMeasure = "测量错误！";
         public static readonly string InOPT = "优化中,请稍等。。。。。。。。";
-        public static readonly int MeaSureMaxTime = 30000;
+        public static readonly int MeaSureMaxTime = 120000;
         #endregion
 
         #region 运行数据
@@ -242,6 +245,7 @@ namespace xjplc
         public static readonly string DeviceStartCut = "设备启动！";
         public static readonly string DevicePause = "设备暂停！";
         public static readonly string DeviceStop = "设备停止！";
+        public static readonly string DeviceStartFailed = "设备启动失败，请检查设备情况！";
         public static readonly string DeviceReset = "设备复位！";
         public static readonly string DeviceNoPrinter = "无打印机！";
         public static readonly string DeviceNoLogFile = "无日志文件！";
@@ -253,11 +257,15 @@ namespace xjplc
         public static readonly string DataDownLoad = "数据下发！";
         public static readonly string AutoMeasureMode = "自动测长模式！";
         public static readonly string NormalMode = "正常优化模式！";
+        public static readonly string ShuChiMode = "梳齿无限料长模式！";
         public const  int CutMeasureRotateWithHoleMode = 2;
         public const   int CutNormalMode = 0;
         public const  int CutMeasureMode = 1;
         public const int  CutNormalWithHoleMode = 3;
         public const int CutMeasureWithScarSplitNoSize = 4;
+        public const int CutNormalDoorMode = 5;
+        public const int CutNormalWithShuChiMode = 6;
+
         public const string CutMeasureTips0 = "请选择模式或者导入数据";
         #endregion
         #region 台达PLC专用
@@ -270,6 +278,25 @@ namespace xjplc
         public static readonly byte DTHeader = 0x3a;
         public static readonly byte[] DTReadDataCmdCheck = { 0x01, 0x03 };
         public static readonly byte[] DTEnd = { 0x0d, 0x0a };
+
+        public static readonly int TaiDaConnectMode485 = 1;
+        public static readonly int TaiDaConnectMode232 = 0;
+        public static readonly byte[] DTCmdSetReadDDataOut232 = { 0x40, 0xdc };
+        public static readonly byte[] DTCmdSetReadDDataOut485 = { 0x43, 0x98 };
+        
+        public static readonly byte[] DTCmdSetReadMDataOut232 = { 0x40, 0x00 };
+        public static readonly byte[] DTCmdSetReadMDataOut485 = { 0x42, 0xbc };
+
+        public static readonly byte[] DTCmdReadDDataOut232 = { 0x41, 0x90 };
+        public static readonly byte[] DTCmdReadDDataOut485 = { 0x44, 0x4c };
+
+        public static readonly byte[] DTCmdReadMDataOut232 = { 0x40, 0xC8 };
+        public static readonly byte[] DTCmdReadMDataOut485 = { 0x43, 0x84 };
+
+        public static readonly byte[] DTExistByteOutIn485 =
+           { 0x3a, 0x30 , 0x31 , 0x30  , 0x35 , 0x30 , 0x43 , 0x33  , 0x38 , 0x46 , 0x46 , 0x30  , 0x30 , 0x42 , 0x37 , 0x0d , 0x0a};
+        
+
         #endregion
         #region 信捷PLC 专用
         //固定头
@@ -300,8 +327,8 @@ namespace xjplc
         public static readonly int XJConnectMaxCount = 5;
         public static readonly int XJConnectTimeOut = 300;
         public static readonly int XJRestartTimeOut =2000;
-        //读取超时 
-        public static readonly int ReadCommTimeOut = 1000; //这里0.5 秒别改 工控机性能不行
+        //读取超时 COMM超时 soc连接比较慢 所以要4秒 进行缓冲
+        public static readonly int ReadCommTimeOut = 4000; 
 
         //写入超时 
         public static readonly int WriteCommTimeOut = 1000;

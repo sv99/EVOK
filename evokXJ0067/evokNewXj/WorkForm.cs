@@ -280,6 +280,7 @@ namespace evokNew0067
         {
             if ( DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {
@@ -409,7 +410,7 @@ namespace evokNew0067
             startBtnShow();
             if ( evokWork.AutoMes)
             {
-                 evokWork.CutStartMeasure(Constant.CutMeasureRotateWithHoleMode);
+                 evokWork.CutStartMeasure(false,Constant.CutMeasureRotateWithHoleMode);
             }
             else
             {

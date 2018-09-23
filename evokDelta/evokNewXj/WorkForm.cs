@@ -128,21 +128,7 @@ namespace evokNewDT
 
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            int num3;
-            string s =  dgvParam.SelectedCells[0].Value.ToString();
-
-            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
-            try
-            {
-                if (int.TryParse(s, out num3))
-                {
-                    evokWork.DgvValueEdit(rowIndex, num3);
-                }
-            }
-            catch { }
-            finally{ evokWork.DgvInOutEdit(rowIndex, false); }
-            
-           
+            evokWork.dgvParam_CellEndEdit(dgvParam, sender, e);
         }
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)
@@ -216,9 +202,10 @@ namespace evokNewDT
                     Environment.Exit(0);
                 }                   
             }          
-
-            evokDevice = new EvokDTDevice(strDataFormPath);
-           
+            //485就传值1 232就传0 
+             
+            evokDevice = new EvokDTDevice(strDataFormPath,Constant.TaiDaConnectMode485);
+            
             if (!evokDevice.getDeviceData())
             {            
                 MessageBox.Show(Constant.ConnectMachineFail);
@@ -234,7 +221,8 @@ namespace evokNewDT
             evokWork.SetRtbWork(rtbWork);
             evokWork.SetRtbResult(rtbResult);
             evokWork.SetPrintReport(report1);
-                  
+            evokWork.InitDgvParam(dgvParam);
+
         }
 
         private void InitView0()
@@ -479,16 +467,16 @@ namespace evokNewDT
             {
                  evokWork.CutStartMeasure(Constant.CutMeasureMode);
                 //测试代码 后续回复弹窗
-                qClr_Click(sender, e);
-                stbtn_Click(sender, e);
+               // qClr_Click(sender, e);
+               // stbtn_Click(sender, e);
             }
             else
             {
                 evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
-                qClr_Click(sender, e);
-                optBtn_Click(sender, e);
-                stbtn_Click(sender, e);
+               // qClr_Click(sender, e);
+               // optBtn_Click(sender, e);
+               // stbtn_Click(sender, e);
             }
             //测试代码 后续回复弹窗
              stopBtnShow();

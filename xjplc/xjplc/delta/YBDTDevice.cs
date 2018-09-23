@@ -70,9 +70,8 @@ namespace xjplc.delta
 
         public System.Timers.Timer WatchCommTimer { get; private set; }
 
-        public YBDTDevice(List<string> filestr, Socket soc)
+        void InitCmd(List<string> filestr, Socket soc)
         {
-            DTPLCcmd = new DTPLCPackCmdAndDataUnpack();
             DataFormLst = new List<DataTable>();
             CSVData = new CsvStreamReader();
             dgShowLst = new List<DataGridView>();
@@ -95,6 +94,26 @@ namespace xjplc.delta
             WatchCommTimer.AutoReset = true;
 
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
+
+        }
+        public YBDTDevice(List<string> filestr, Socket soc)
+        {
+            DTPLCcmd = new DTPLCPackCmdAndDataUnpack();
+            InitCmd(filestr, soc);
+
+        }
+        public void SetConnectMode(int i)
+        {
+            if (i < 2)
+            {
+                DTPLCcmd.ConnectMode = i;
+            }
+        }
+        public YBDTDevice(List<string> filestr, Socket soc,int conneMode)
+        {
+            DTPLCcmd = new DTPLCPackCmdAndDataUnpack();
+            SetConnectMode(conneMode);
+            InitCmd(filestr, soc);
 
         }
 
@@ -525,7 +544,7 @@ namespace xjplc.delta
                     if (ConstantMethod.FileIsUsed(s))
                     {
                         MessageBox.Show(Constant.FileIsInUse);
-                        ConstantMethod.AppExit();
+                     //   ConstantMethod.AppExit();
 
 
                     }
@@ -541,14 +560,14 @@ namespace xjplc.delta
                         else
                         {
                             MessageBox.Show(Constant.ReadPlcInfoFail);
-                            ConstantMethod.AppExit();
+                            //ConstantMethod.AppExit();
                         }
                     }
                     else
                     {
                         MessageBox.Show(Constant.ReadPlcInfoFail);
-                        Application.Exit();
-                        System.Environment.Exit(0);
+                        //Application.Exit();
+                        //System.Environment.Exit(0);
                     }
                 }
 

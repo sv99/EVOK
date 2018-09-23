@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FastReport;
+using FastReport.Barcode;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -37,8 +39,7 @@ namespace fileconvert
         List<int> valueCol = new List<int>();
         public FormFileConvert()
         {
-            InitializeComponent();
-            Init();
+            InitializeComponent();        
         }
 
         void Init()
@@ -51,92 +52,63 @@ namespace fileconvert
             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
             DialogExcelDataLoad.FileName = "请选择数据文件";
 
+            demoLoadDialog.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            demoLoadDialog.Filter = "文件(*.csv)|*.csv;";
+            demoLoadDialog.FileName = "请选择数据模板文件";
+
+            //条码
+            op1.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            op1.Filter = "文件(*.frx)|*.frx;";
+            op1.FileName = "请选择条码模板文件";
 
             csvSaveDemo = new CsvStreamReader();
-            if (!ReadFileDemo())
-           {
+
+            if (!ReadFileDemo(""))
+            {
                 ConstantMethod.AppExit();
             }
 
-        }
+            if (File.Exists(Constant.barCodeDemo))
+            {
+                printReport.Load(Constant.barCodeDemo);
+            }
+            else
+            {
+                barCodeButton.Enabled = false;
+                MessageBox.Show("条码文件不存在！");
+            }
 
+            string beizhu = "014180830001032-PWGA0002 01|";
+            DeleteStr(ref beizhu,"|");         
+
+        }
+        public void DeleteStr(ref string beizhu, string s)
+        {
+            if (s.Length > 0 && beizhu.Contains(s))
+                beizhu = beizhu.Replace(s, "");
+        }
         private void button1_Click(object sender, EventArgs e)
         {         
-            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
-            {
-
-                UserDt = null;
-
-                string localFilePath = DialogExcelDataLoad.FileName;
-
-                string FileExt = Path.GetExtension(localFilePath).ToLower();
-                if (FileExt.Equals(Constant.ExcelFileEX0) || FileExt.Equals(Constant.ExcelFileEX1))
-                {
-                    UserDt = exop.ImportExcel(DialogExcelDataLoad.FileName);
-                    if (UserDt != null && UserDt.Columns.Count > 3)
-                        dgv.DataSource = UserDt;
-                    else
-                    {
-                        MessageBox.Show("加载文件错误！");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("文件格式错误！");
-                }
-
-                
-            }
-                                             
+                          
         }
         private void button2_Click(object sender, EventArgs e)
         {
-
-            
-            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
-            {
-
-
-                string localFilePath = DialogExcelDataLoad.FileName;
-
-                string FileExt = Path.GetExtension(localFilePath).ToLower();
-
-                if (FileExt.Equals(Constant.CSVFileEX))
-                {
-                    UserDt = null;
-
-                    if (csvsplitCombox.Text.Equals(Constant.CsvSplitComma))
-                    {
-                        UserDt = csvop.OpenCSV(DialogExcelDataLoad.FileName);
-                    }
-                    else
-                    {
-                        if (csvsplitCombox.Text.Equals(Constant.CsvSplitSemiColon))
-                        {
-                            UserDt = csvop.OpenCSV0(DialogExcelDataLoad.FileName);
-                        }
-                    }
-
-                    if (UserDt != null && UserDt.Columns.Count > 3)
-                        dgv.DataSource = UserDt;
-                    else
-                    {
-                        MessageBox.Show("加载文件错误！");
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("文件格式错误！");
-                }
-            }
+         
+           
         }
-               
+
+        DataTable dtOutPut ;
         private void button3_Click(object sender, EventArgs e)
         {
-            DataTable dt = new DataTable("file");
+            dtOutPut = null;
+            dtOutPut = new DataTable("file");
+            rtbResult.Clear();
+            pBar1.Value = 0;
+            pBar1.Minimum = 0;
             //收集数据 保存
             if (valueCol.Count > 3  && UserDt.Columns.Count >= valueCol.Count)
             {
+                pBar1.Maximum = UserDt.Rows.Count;
 
                 DataColumn dtcolSize = new DataColumn("尺寸");
 
@@ -146,20 +118,30 @@ namespace fileconvert
 
                 DataColumn dtcolBarCode = new DataColumn("条码");
 
-                dt.Columns.Add(dtcolSize);
-                dt.Columns.Add(dtcolCnt);
-                dt.Columns.Add(dtcolCntDone);
-                dt.Columns.Add(dtcolBarCode);
-                //增加列
+                dtOutPut.Columns.Add(dtcolSize);
+                dtOutPut.Columns.Add(dtcolCnt);
+                dtOutPut.Columns.Add(dtcolCntDone);
+                dtOutPut.Columns.Add(dtcolBarCode);
+                ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[0]].ColumnName + "=====>" + dtOutPut.Columns[0].ColumnName);
+                ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[1]].ColumnName + "=====>" + dtOutPut.Columns[1].ColumnName);
+                ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[2]].ColumnName + "=====>" + dtOutPut.Columns[3].ColumnName);
+
+                //增加列  ConstantMethod.ShowInfo(rtbResult,"开始转换，转换规则如下");
                 for (int i = 0; i < (valueCol.Count - 3); i++)
                 {
-                    DataColumn dtcolParm = new DataColumn("参数" + (i + 1).ToString());
-                    dt.Columns.Add(dtcolParm);
+                    DataColumn dtcolParm = new DataColumn("参数" + (i + 1).ToString());                   
+                    dtOutPut.Columns.Add(dtcolParm);
+                    ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[i+3]].ColumnName + "=====>" + dtOutPut.Columns[i+4].ColumnName);
                 }
+               
+               
+                
                 //增加行
                 foreach (DataRow row in UserDt.Rows)
                 {
-                    DataRow dr2 = dt.NewRow();
+                    DataRow dr2 = dtOutPut.NewRow();
+
+                    pBar1.Value = pBar1.Value + 1;
 
                     for (int i = 0; i < dr2.ItemArray.Length; i++)
                     {
@@ -181,7 +163,7 @@ namespace fileconvert
 
                     }
 
-                    dt.Rows.Add(dr2);
+                    dtOutPut.Rows.Add(dr2);
                 }
 
             }
@@ -194,14 +176,43 @@ namespace fileconvert
 
             filename = dir + "\\" + filestr + "Machine.csv";
 
-            SaveFile(dt, filename);
+            SaveFile(dtOutPut, filename);
 
+            ConstantMethod.ShowInfo(rtbResult,DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")+"转换结束！");
 
+            if (File.Exists(Constant.barCodeDemo))
+            {
+                barCodeButton.Enabled = true;
+            }
+        }
+        public void ShowBarCode(int rowindex)
+        {
+            List<string> valuestr = new List<string>();
+
+            if (dtOutPut != null && dtOutPut.Rows.Count > 0)
+            {
+                DataRow dr = dtOutPut.Rows[rowindex];
+                for (int j = 3; j < dtOutPut.Columns.Count; j++)
+                {
+                    valuestr.Add(dr[j].ToString());
+                }           
+
+                printBarcode(printReport, valuestr.ToArray());
+            }
+            else
+            {
+                MessageBox.Show("无数据，请先导出数据！");
+            }
         }
 
         private void dgv_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (!IsSaveConfig) return;
+
+            if (!IsSaveConfig)
+            {
+                ShowBarCode(dgv.CurrentRow.Index);
+                return;
+            }
 
             //可以重复选择
             if (valueCol.Contains(e.ColumnIndex))
@@ -212,29 +223,27 @@ namespace fileconvert
             }
 
             valueCol.Add(e.ColumnIndex);
-
+            string colname = UserDt.Columns[e.ColumnIndex].ColumnName;
             int colid = e.ColumnIndex + 1;
 
             if (valueCol.Count==1)
-            ConstantMethod.ShowInfo(rtbResult,"添加第"+ colid.ToString()+"列为尺寸！");
+            ConstantMethod.ShowInfo(rtbResult,"添加第"+ colid.ToString()+"列:"+ colname+ "====>尺寸！");
 
             if (valueCol.Count == 2)
-                ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() + "列为设定数量！");
+                ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() + "列:"+ colname + "====>设定数量！");
 
             if (valueCol.Count == 3)
-                ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() + "列为条码！");
+                ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString()  +"列:" + colname + "====>条码！");
 
             if (valueCol.Count > 3)
             {
-                ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() + "列为参数:"+ (valueCol.Count-3).ToString());
+                ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() +  "列:" + colname + "====>参数:" + (valueCol.Count-3).ToString());
             }
         }
         public void startConfig()
         {
-            button1.Enabled = false;
-            button2.Enabled = false;
+          
             button3.Enabled = false;
-            button4.Enabled = false;
             valueCol.Clear();
             rtbResult.Clear();
             IsSaveConfig = true;
@@ -244,10 +253,7 @@ namespace fileconvert
         {
             
 
-            button1.Enabled = true;
-            button2.Enabled = true;
             button3.Enabled = true;
-            button4.Enabled = true;
             IsSaveConfig = false;            
 
         }
@@ -292,13 +298,16 @@ namespace fileconvert
             }
 
         }
-        public bool ReadFileDemo()
+        public bool ReadFileDemo(string filename)
         {
             DataTable dt = new DataTable();
-
-
-            dt = csvSaveDemo.OpenCSV(Constant.SaveFileDemo);
-
+            if (string.IsNullOrWhiteSpace(filename))
+                dt = csvSaveDemo.OpenCSV(Constant.SaveFileDemo);
+            else
+            {
+                dt = csvSaveDemo.OpenCSV(filename);
+            }
+            rtbResult.Clear();
             if (dt.Rows.Count == 1)
             {
                 valueCol.Clear();
@@ -310,7 +319,7 @@ namespace fileconvert
                         int s = 0;
                         if (int.TryParse(dr.ItemArray[i].ToString(), out s))
                         {
-                            valueCol.Add(s);
+                            valueCol.Add(s);                           
                         }
                         else
                         {
@@ -319,11 +328,19 @@ namespace fileconvert
                         }
                     }
                 }
+                
+                ConstantMethod.ShowInfo(rtbResult,"尺寸====>第"+valueCol[0]+"列");
+                ConstantMethod.ShowInfo(rtbResult, "设定数量====>第" + valueCol[1] + "列");
+                ConstantMethod.ShowInfo(rtbResult, "条码====>第" + valueCol[2] + "列");
 
+                for (int i = 3; i < valueCol.Count; i++)
+                {
+                    ConstantMethod.ShowInfo(rtbResult, "参数"+(i-2).ToString()+"====>第" + valueCol[i] + "列");
+                }
             }
             else
             {
-                MessageBox.Show("数据行错误！");
+                MessageBox.Show("加载模板数据错误！");
                 return false;
             }
 
@@ -333,18 +350,7 @@ namespace fileconvert
         }
         private void button5_Click(object sender, EventArgs e)
         {          
-            startConfig();
-
-            ConstantMethod.ShowInfo(rtbResult,"双击任意一个单元指定每一列的数据内容，请按照尺寸，设定数量，条码，参数1..参数2..方式进行选取！");
-            
-            this.Focus();
-
-            while (IsSaveConfig)
-            {
-                Application.DoEvents();              
-            }
            
-            stopConfig();
 
         }
 
@@ -375,8 +381,242 @@ namespace fileconvert
 
         private void button6_Click(object sender, EventArgs e)
         {
+
+        }
+        
+        private void 导入CSV文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
+            {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
+
+                string localFilePath = DialogExcelDataLoad.FileName;
+
+                string FileExt = Path.GetExtension(localFilePath).ToLower();
+               
+                if (FileExt.Equals(Constant.CSVFileEX))
+                {
+                    UserDt = null;
+                                      
+                    UserDt = csvop.OpenCSV(DialogExcelDataLoad.FileName);
+                   
+                    if (UserDt != null && UserDt.Columns.Count > 3)
+                        dgv.DataSource = UserDt;
+                    else
+                    {
+                        MessageBox.Show("加载文件错误！");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("文件格式错误！");
+                }
+            }
+        }
+
+        private void 导入CSVToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
+            {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
+
+                string localFilePath = DialogExcelDataLoad.FileName;
+
+                string FileExt = Path.GetExtension(localFilePath).ToLower();
+
+                if (FileExt.Equals(Constant.CSVFileEX))
+                {
+                    UserDt = null;
+                  
+                    UserDt = csvop.OpenCSV0(DialogExcelDataLoad.FileName);
+                                                       
+
+                    if (UserDt != null && UserDt.Columns.Count > 3)
+                        dgv.DataSource = UserDt;
+                    else
+                    {
+                        MessageBox.Show("加载文件错误！");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("文件格式错误！");
+                }
+            }
+        }
+
+        private void 保存配置文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
             stopConfig();
             SaveFileDemo();
+        }
+
+        private void 设置导出模板ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            startConfig();
+
+            ConstantMethod.ShowInfo(rtbResult, "双击任意一个单元指定每一列的数据内容，请按照尺寸，设定数量，条码，参数1..参数2..方式进行选取！");
+
+            this.Focus();
+
+            while (IsSaveConfig)
+            {
+                Application.DoEvents();
+            }
+
+            stopConfig();
+        }
+
+        private void 加载文件模板ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (demoLoadDialog.ShowDialog() == DialogResult.OK)
+            {
+                ConstantMethod.SaveDirectoryByFileDialog(demoLoadDialog);
+                if (ReadFileDemo(demoLoadDialog.FileName))
+                {
+                    
+                }
+            }
+        }
+
+        private void FormFileConvert_Load(object sender, EventArgs e)
+        {
+            Init();
+        }
+
+        private void 导入excel文件ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
+            {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
+
+                UserDt = null;
+
+                string localFilePath = DialogExcelDataLoad.FileName;
+
+                string FileExt = Path.GetExtension(localFilePath).ToLower();
+                if (FileExt.Equals(Constant.ExcelFileEX0) || FileExt.Equals(Constant.ExcelFileEX1))
+                {
+                    UserDt = exop.ImportExcel(DialogExcelDataLoad.FileName);
+                    if (UserDt != null && UserDt.Columns.Count > 3)
+                        dgv.DataSource = UserDt;
+                    else
+                    {
+                        MessageBox.Show("加载文件错误！");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("文件格式错误！");
+                }
+
+
+            }
+
+        }
+        public void printBarcode(Report rp1, object s2)
+        {
+
+            
+            string[] s1 = (string[])s2;           
+            if (s1 != null && printReport != null)
+            {
+                try
+                {
+                    //在遇到结巴的情况下 保存下当前打印模式
+                    //OldPrintBarCodeMode = PrintBarCodeMode;         
+
+                    Application.DoEvents();
+
+                if (rp1.FindObject("Barcode1") != null)
+                    (rp1.FindObject("Barcode1") as BarcodeObject).Text = s1[0];
+
+
+                for (int i = 1; i < s1.Length; i++)
+                {
+                    if (rp1.FindObject("Text" + (i).ToString()) != null && string.IsNullOrWhiteSpace(s1[i]))
+                    {
+                        (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = "";
+
+                        continue;
+                    }                  
+                    //其他参数另外选
+                    
+                    if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
+                    {
+                       /***
+                        if (s1[i].Contains('['))
+                        {
+                            s1[i] = s1[i].Replace('[', ' ');
+                        }
+                        if (s1[i].Contains(']'))
+                        {
+                            s1[i] = s1[i].Replace(']', ' ');
+                        }
+                   ***/
+                       s1[i] = ConstantMethod.ShiftString(s1[i]);
+                        (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
+                    }
+                }
+              
+                    rp1.Prepare();
+                    rp1.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                }
+               
+            }
+        }
+
+
+        private void 查看条码模板ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<string> valuestr = new List<string>();
+            
+            if (dtOutPut != null && dtOutPut.Rows.Count > 0)
+            {
+
+
+                //foreach (DataRow dr in dtOutPut.Rows)
+                // {
+                DataRow dr = dtOutPut.Rows[dgv.CurrentRow.Index];
+                for (int j = 3; j < dtOutPut.Columns.Count; j++)
+                {
+                    valuestr.Add(dr[j].ToString());
+                }
+
+                //  break;
+                //}
+
+                printBarcode(printReport, valuestr.ToArray());
+            }
+            else
+            {
+                MessageBox.Show("无数据，请先导出数据！");
+            }
+            
+        }
+        OpenFileDialog op1 = new OpenFileDialog();
+
+        private void 加载条码ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            if (op1.ShowDialog()==DialogResult.OK)
+            {
+                op1.InitialDirectory = Path.GetDirectoryName(op1.FileName);
+                if (File.Exists(op1.FileName))
+                {
+                    printReport.Load(op1.FileName);
+                }
+                else
+                {
+                    barCodeButton.Enabled = false;
+                    MessageBox.Show("条码文件不存在！");
+                }
+            }
         }
     }
 }

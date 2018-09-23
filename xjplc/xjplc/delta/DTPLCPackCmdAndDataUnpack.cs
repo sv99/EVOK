@@ -13,8 +13,13 @@ namespace xjplc
         public DTPLCPackCmdAndDataUnpack()
         {        
 
-        }      
-
+        }
+        int connectMode = 0;
+        public int ConnectMode
+        {
+            get { return connectMode; }
+            set { connectMode = value; }
+        }
         //命令有很多种 但是 每次出去只能有一种 回来也只能有一种
         public byte[] CmdOut = null;
         public byte[] CmdIn = null;
@@ -232,7 +237,7 @@ namespace xjplc
             mCount = mCount * 2;
             byte[] mArea_buffer= new byte[mCount];
             
-            Array.Copy(m_buffer,3, mArea_buffer,0,m_buffer.Length-4);
+            Array.Copy(m_buffer,3, mArea_buffer,0, mCount);
            
             if ((mCount > 0) &&(mArea_buffer !=null)&& (mCount == mArea_buffer.Count()))
             {
@@ -341,6 +346,13 @@ namespace xjplc
                                 {
                                     string s = dplcInfoLst[i].PlcValue.ToString();
                                     datform.Rows[dplcInfoLst[i].Row]["value"] = s;
+
+                                    double valueDouble;
+                                    if (double.TryParse(s, out valueDouble))
+                                    {
+                                        valueDouble = valueDouble / Constant.dataMultiple;
+                                        datform.Rows[dplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
+                                    }
                                     UpDateRow.Add(dplcInfoLst[i].Row);
 
                                 }
@@ -782,6 +794,17 @@ namespace xjplc
         public int PackSetCmdReadMDataOut(List<List<DTPlcInfo>> addrLst)
         {
             List<DTPlcInfo> mplcLst = new List<DTPlcInfo>();
+            byte[] DTCmdSetReadMDataOutTemp;
+            byte[] DTCmdReadMDataOutTemp;
+            DTCmdSetReadMDataOutTemp= Constant.DTCmdSetReadMDataOut232;
+            DTCmdReadMDataOutTemp= Constant.DTCmdReadMDataOut232;
+
+            if (ConnectMode == Constant.TaiDaConnectMode485)
+            {
+                DTCmdSetReadMDataOutTemp = Constant.DTCmdSetReadMDataOut485;
+                DTCmdReadMDataOutTemp = Constant.DTCmdReadMDataOut485;
+            }
+
 
             for (int i = 0; i < addrLst.Count; i++)
             {
@@ -812,18 +835,17 @@ namespace xjplc
             List<byte> byteLstOut = new List<byte>();
             byteLst.Add(0x01);
             byteLst.Add(0x10);
-            byteLst.Add(0x40);
-            byteLst.Add(0x00);
+
+            byteLst.AddRange(DTCmdSetReadMDataOutTemp);
 
             byteLstIn.Add(0x01);
             byteLstIn.Add(0x10);
-            byteLstIn.Add(0x40);
-            byteLstIn.Add(0x00);
+            byteLstIn.AddRange(DTCmdSetReadMDataOutTemp);
 
             byteLstOut.Add(0x01);
             byteLstOut.Add(0x03);
-            byteLstOut.Add(0x40);
-            byteLstOut.Add(0xC8);
+
+            byteLstOut.AddRange(DTCmdReadMDataOutTemp);
 
 
             int addrcount_high = ((mplcLst.Count + 1) & 0xFF00) >> 8;
@@ -869,6 +891,17 @@ namespace xjplc
             List<byte> byteLst = new List<byte>();
             List<byte> byteLstIn = new List<byte>();
             List<byte> byteLstOut = new List<byte>();
+
+            byte[] DTCmdSetReadDDataOutTemp;
+            byte[] DTCmdReadDDataOutTemp;
+
+            DTCmdSetReadDDataOutTemp = Constant.DTCmdSetReadDDataOut232;
+            DTCmdReadDDataOutTemp = Constant.DTCmdReadDDataOut232;
+            if (ConnectMode == Constant.TaiDaConnectMode485)
+            {
+                DTCmdSetReadDDataOutTemp = Constant.DTCmdSetReadDDataOut485;
+                DTCmdReadDDataOutTemp = Constant.DTCmdReadDDataOut485;
+            }
             if (!(addrLst.Count > 0))
             {
                 CmdSetReadDDataOut = null;
@@ -891,20 +924,21 @@ namespace xjplc
             int addrcount_low = (addrLst.Count+1) & 0xFF;
 
             int count = (addrLst.Count+1) * 2;
-            
+            //发送设置读取D区命令
             byteLst.Add(0x01);
             byteLst.Add(0x10);
-            byteLst.Add(0x40);
-            byteLst.Add(0xDC);
+            byteLst.AddRange(DTCmdSetReadDDataOutTemp);
+          
+
             byteLstIn.Add(0x01);
             byteLstIn.Add(0x10);
-            byteLstIn.Add(0x40);
-            byteLstIn.Add(0xDC);
+            byteLstIn.AddRange(DTCmdSetReadDDataOutTemp);
+           
 
             byteLstOut.Add(0x01);
-            byteLstOut.Add(0x03);
-            byteLstOut.Add(0x41);
-            byteLstOut.Add(0x90);
+            byteLstOut.Add(0x03); 
+            byteLstOut.AddRange(DTCmdReadDDataOutTemp);          
+
             int addrcount_high0 = ((addrLst.Count ) & 0xFF00) >> 8;
             int addrcount_low0 = (addrLst.Count) & 0xFF;
             byteLstOut.Add((byte)addrcount_high0);
@@ -921,11 +955,11 @@ namespace xjplc
 
             byteLst.Add((byte)addrcount_high);
             byteLst.Add((byte)addrcount_low);
-
             byteLst.AddRange(cmdByte);
 
-            byteLst.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLst.ToArray()));
 
+            //根据232 还是485来选择
+            byteLst.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLst.ToArray()));
             byteLstIn.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLstIn.ToArray()));
             byteLstOut.Add(DTPLCPackCmdAndDataUnpack.LRC16_C(byteLstOut.ToArray()));
             //开始拼接 台达设置读取D区命令
@@ -939,6 +973,8 @@ namespace xjplc
 
 
         }
+
+
         /// <summary>
         /// 1.在这里 前面已经打包过了 这里不需要再换算成绝对地址了
         /// 2.要读取哪些数据啊 就在这里打包了 
@@ -1001,7 +1037,7 @@ namespace xjplc
             return 0;
         }
     
-     
+            
       //判断传入的数据是否完整 根据LRC 校验判别
       public static Boolean IsEnd(Byte[] BufList)
       {

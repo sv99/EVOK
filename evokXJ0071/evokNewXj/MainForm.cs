@@ -11,20 +11,28 @@ using xjplc;
 
 namespace evokNew0071
 {
+
+    
     public partial class MainForm : Form
     {
         private static Queue<Control> allCtrls = new Queue<Control>();
 
         //List<string> errorList = new List<string>();
         //int errorId = 0;
-
+        CsvStreamReader csvop;
         OptSize optsize;
+
+        OptSize op1;
+        OptSize op0;
         private EvokXJWork evokWork0;
         private EvokXJWork evokWork1;
         private EvokXJWork evokWork2;
+
+        workManager workMan;
         //private OptSize optSize;
         //private WatchForm wForm;
-
+        doorTypeInfo doorLst;
+      
         public MainForm()
         {
             InitializeComponent();
@@ -65,15 +73,21 @@ namespace evokNew0071
             evokWork0 = new EvokXJWork(strDataFormPath0,p0);
              
 
-            evokWork1 = new EvokXJWork(strDataFormPath1, p1);
+           // evokWork1 = new EvokXJWork(strDataFormPath1, p1);
 
             //evokWork2 = new EvokXJWork(strDataFormPath1, p2);
-
+            csvop = new CsvStreamReader();
             optsize = new OptSize();
+            op1 = new OptSize();
+            op0 = new OptSize();
             InitWork();
-
+            evokWork0.SetRtbWork(rtbResult);
+           // evokWork1.SetRtbWork(rtbResult);
             UpdateTimer.Enabled = true;
 
+            doorLst = new doorTypeInfo();
+
+            workMan = new workManager();
         }
 
 
@@ -84,8 +98,8 @@ namespace evokNew0071
             evokWork0.InitDgvIO(dgvIO);
             ConstantMethod.Delay(1000);
            
-            evokWork1.InitDgvParam(dgvParam1);
-            evokWork1.InitDgvIO(dgvIO1);
+            //evokWork1.InitDgvParam(dgvParam1);
+           // evokWork1.InitDgvIO(dgvIO1);
         }
 
         private void tabPage2_Enter(object sender, EventArgs e)
@@ -134,7 +148,7 @@ namespace evokNew0071
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
             UpdataError(evokWork0, statusLabel1);
-            UpdataError(evokWork1, statusLabel2);
+           // UpdataError(evokWork1, statusLabel2);
           //  UpdataError(evokWork2, statusLabel3);
         }
 
@@ -186,11 +200,7 @@ namespace evokNew0071
         {
             evokWork1.ShiftPage(Constant.IOPage);
         }
-
-       
-
-       
-
+     
         private void work0IO_Selecting(object sender, TabControlCancelEventArgs e)
         {
             if (work0Tab.SelectedIndex == 0)
@@ -234,11 +244,56 @@ namespace evokNew0071
         private void loadDataBtn_Click(object sender, EventArgs e)
         {
 
+            if (workMan.LoadData())
+            {
+                workMan.ShowResult(listBox1);
+                //ConstantMethod.ShowInfo(rtbResult, workMan.);
+            }
+
+           // fileConvert.ReadSplitTypeFromCsvData() ;
         }
+
 
         private void optBtn_Click(object sender, EventArgs e)
         {
 
+            op0.DtData = csvop.OpenCSV(Constant.PlcDataFilehqj);
+            op1.DtData = csvop.OpenCSV(Constant.PlcDataFilezhj);
+
+            dgSize.DataSource = op0.DtData;
+            dgDoorBan.DataSource = op1.DtData;
+            evokWork0.SetOptSize(op0);
+            evokWork1.SetOptSize(op1);
+
+
+        }
+
+        private void stbtn_Click(object sender, EventArgs e)
+        {
+            //启动流程
+            evokWork0.optReady(Constant.optNormal);
+            evokWork1.optReady(Constant.optNormal);
+            //确定设备处于电脑控制状态
+            //发送启动信号
+            //进行数据统计
+
+            ConstantMethod.ShowInfo(rtbResult, op0.OptNormal(rtbResult));
+            ConstantMethod.ShowInfo(rtbResult, op1.OptNormal(rtbResult));
+
+
+            evokWork0.CutDoorStartNormal(Constant.CutNormalMode);
+            evokWork1.CutDoorStartNormal(Constant.CutNormalDoorMode);
+            //evokWork0.CutStartNormal(Constant.CutNormalMode);
+            //evokWork1.CutStartNormal(Constant.CutNormalMode);
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex > 0)
+            {
+                workMan.
+                ShowDoor(listBox1.SelectedIndex, dgSize, dgDoorBan, dgDoorShell);
+            }
         }
     }
 }

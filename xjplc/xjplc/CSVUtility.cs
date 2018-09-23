@@ -100,6 +100,7 @@ namespace xjplc
         }
         public void SaveCSV(DataTable dt, string fileName)
         {
+            if (ConstantMethod.FileIsUsed(FileName)) return;
             FileStream fs = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);
             string data = "";

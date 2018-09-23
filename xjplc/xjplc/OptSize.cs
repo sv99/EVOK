@@ -458,24 +458,25 @@ namespace xjplc
             {
                 List<string> strparam = new List<string>();
                 string nullHoleSre = "0";
-                strparam.Add(ParamStr3);
-                strparam.Add(ParamStr4);
-                strparam.Add(ParamStr5);
-                strparam.Add(ParamStr6);
-                strparam.Add(ParamStr7);
-                strparam.Add(nullHoleSre);
-                strparam.Add(nullHoleSre);
-                strparam.Add(nullHoleSre);
-                strparam.Add(nullHoleSre);
-                strparam.Add(nullHoleSre);
+
+                //
                 
+                strparam.Add(ParamStrLst[3]);
+                strparam.Add(ParamStrLst[4]);
+                strparam.Add(ParamStrLst[5]);
+                strparam.Add(ParamStrLst[6]);
+                strparam.Add(ParamStrLst[7]);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);
+                strparam.Add(nullHoleSre);               
 
-
-                strparam.Add(ParamStr8);
-                strparam.Add(ParamStr9);
-                strparam.Add(ParamStr10);
-                strparam.Add(ParamStr11);
-                strparam.Add(ParamStr12);
+                strparam.Add(ParamStrLst[8]);
+                strparam.Add(ParamStrLst[9]);
+                strparam.Add(ParamStrLst[10]);
+                strparam.Add(ParamStrLst[11]);
+                strparam.Add(ParamStrLst[12]);
                 strparam.Add(nullHoleSre);
                 strparam.Add(nullHoleSre);
                 strparam.Add(nullHoleSre);
@@ -494,7 +495,7 @@ namespace xjplc
         {
             get
             {
-                angle = getAngleData(ParamStr2);
+                angle = getAngleData(ParamStrLst[2]);
 
                 return angle;
             }
@@ -569,8 +570,6 @@ namespace xjplc
                 data.Add(Constant.Angle90Int);
                 return data.ToArray();
             }
-
-
 
         }
 
@@ -676,8 +675,6 @@ namespace xjplc
         public List<string> Param30;
         public List<string> Param31;
 
-
-
         public List<int[]> angle;
         public List<int[]> hole;
 
@@ -768,7 +765,38 @@ namespace xjplc
             hole = new List<int[]>();
 
             scarLst = new List<int>();
-
+            List<List<string>> ParamLstLst = new List<List<string>>();
+            ParamLstLst.Add(Param1);
+            ParamLstLst.Add(Param2);
+            ParamLstLst.Add(Param3);
+            ParamLstLst.Add(Param4);
+            ParamLstLst.Add(Param5);
+            ParamLstLst.Add(Param6);
+            ParamLstLst.Add(Param7);
+            ParamLstLst.Add(Param8);
+            ParamLstLst.Add(Param9);
+            ParamLstLst.Add(Param10);
+            ParamLstLst.Add(Param11);
+            ParamLstLst.Add(Param12);
+            ParamLstLst.Add(Param13);
+            ParamLstLst.Add(Param14);
+            ParamLstLst.Add(Param15);
+            ParamLstLst.Add(Param16);
+            ParamLstLst.Add(Param17);
+            ParamLstLst.Add(Param18);
+            ParamLstLst.Add(Param19);
+            ParamLstLst.Add(Param20);
+            ParamLstLst.Add(Param21);
+            ParamLstLst.Add(Param22);
+            ParamLstLst.Add(Param23);
+            ParamLstLst.Add(Param24);
+            ParamLstLst.Add(Param25);
+            ParamLstLst.Add(Param26);
+            ParamLstLst.Add(Param27);
+            ParamLstLst.Add(Param28);
+            ParamLstLst.Add(Param29);
+            ParamLstLst.Add(Param30);
+            ParamLstLst.Add(Param31);
             if (ssLst.Count > 0)
             {
                 foreach (SingleSize s in ssLst)
@@ -776,6 +804,13 @@ namespace xjplc
                     Cut.Add(s.Cut);
                     Barc.Add(s.Barc);
                     Xuhao.Add(s.Xuhao);
+                    //barc 去除 所有要从1开始
+                    for (int i = 1; i < s.ParamStrLst.Count; i++)
+                    {
+                        if((i-1)< ParamLstLst.Count)
+                        ParamLstLst[i-1].Add(s.ParamStrLst[i]);
+                    }
+                    /****
                     Param1.Add(s.ParamStr1);
                     Param2.Add(s.ParamStr2);
                     Param3.Add(s.ParamStr3);
@@ -807,7 +842,7 @@ namespace xjplc
                     Param29.Add(s.ParamStr29);
                     Param30.Add(s.ParamStr30);
                     Param31.Add(s.ParamStr31);
-
+                    *****/
                 }
             }
 
@@ -868,12 +903,21 @@ namespace xjplc
 
         ExcelNpoi Excelop;
 
-        DataGridView UserDataView;
-
+        DataGridView userDataView;
+        public System.Windows.Forms.DataGridView UserDataView
+        {
+            get { return userDataView; }
+            set { userDataView = value; }
+        }
         DataTable dtData;
 
         bool IsLoadData;
-
+        List<int> valueAbleRow;
+        public List<int> ValueAbleRow
+        {
+            get { return valueAbleRow; }
+            set { valueAbleRow = value; }
+        }
         bool IsSaving;
         public DataTable DtData
         {
@@ -1010,13 +1054,13 @@ namespace xjplc
 
                 if(isScar)
                 {
-                        //是结疤                        
+                        //是结疤    20180904 小莫 减去刀补                     
                         SingleSize scar = new SingleSize();
-                        scar.Cut = resultOpt[i];
+                        scar.Cut = resultOpt[i]-Dbc;
                         scar.Barc = Constant.ScarId;
                         resultSingleSize.Add(scar);
                         
-                    ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀结疤:" + resultOpt[i].ToString()+"---------条码：" + scar.Barc);
+                        ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀结疤:" + resultOpt[i].ToString()+"---------条码：" + scar.Barc);
 
                 }
             }
@@ -1193,24 +1237,26 @@ namespace xjplc
 
         public OptSize(DataGridView UserData0)
         {
-            CSVop = new CsvStreamReader();
-            SingleSizeLst = new List<List<SingleSize>>();
-            ProdInfoLst = new List<ProdInfo>();
+       
             UserDataView = UserData0;
-            Excelop = new ExcelNpoi();
-            ScarLst = new List<int>();
 
+            Init();
 
         }
-        public OptSize()
+        void Init()
         {
             CSVop = new CsvStreamReader();
             SingleSizeLst = new List<List<SingleSize>>();
             ProdInfoLst = new List<ProdInfo>();
             Excelop = new ExcelNpoi();
-
             ScarLst = new List<int>();
-
+            valueAbleRow = new List<int>();
+        }
+        public OptSize()
+        {
+         
+            dtData = new DataTable();
+            Init();
 
         }
         #region 优化DLL 引用
@@ -1241,6 +1287,7 @@ namespace xjplc
             {
                 Application.DoEvents();
             }
+
             if (!IsLoadData
                 && !string.IsNullOrWhiteSpace(CSVop.FileName)
                 && File.Exists(CSVop.FileName)
@@ -1269,16 +1316,23 @@ namespace xjplc
         public void ShowErrorRow()
         {
             List<int> errorId = new List<int>();
+            valueAbleRow.Clear();
             //检查datagridview数据是否违法 得出错误列
             errorId = CheckDataGridViewData(OptRealLen, DtData);
-            for (int i = 0; i < UserDataView.Rows.Count; i++)
-            {
-                UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
-            }
 
-            for (int i = errorId.Count - 1; i >= 0; i--)
+            if (UserDataView != null)
             {
-                UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
+                for (int i = 0; i < UserDataView.Rows.Count; i++)
+                {
+                    UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
+                   
+                }
+
+                for (int i = errorId.Count - 1; i >= 0; i--)
+                {
+                    UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
+                 
+                }
             }
 
         }
@@ -1297,11 +1351,13 @@ namespace xjplc
                 for (int i = 0; i < UserDataView.Rows.Count; i++)
                 {
                     UserDataView0.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
+                   
                 }
 
                 for (int i = errorId.Count - 1; i >= 0; i--)
                 {
                     UserDataView0.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
+                
                 }
             }
          
@@ -1319,11 +1375,13 @@ namespace xjplc
             for (int i = 0; i < UserDataView.Rows.Count; i++)
             {
                 UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
+                
             }
 
             for (int i = errorId.Count - 1; i >= 0; i--)
             {
                 UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
+                
             }
         }
         #region 加载数据
@@ -1448,6 +1506,7 @@ namespace xjplc
             ShowErrorRow();
             //获取数据
             List<SingleSize> prodLst = new List<SingleSize>();
+
             GetDataFromDtByDoorType(DtData, prodLst);
 
             //如果无数据 则返回-1
@@ -1791,7 +1850,6 @@ namespace xjplc
         {
 
             //干活之前 先清空数据 做好准备工作
-
             singleSizeLst.Clear();
             ProdInfoLst.Clear();          
             #region 数据获取
@@ -1925,7 +1983,7 @@ namespace xjplc
         {
             //干活之前 先清空数据 做好准备工作          
             singleSizeLst.Clear();
-            ProdInfoLst.Clear();
+              ProdInfoLst.Clear();
 
             if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
 
@@ -2457,10 +2515,15 @@ namespace xjplc
                     if (size > reallen)
                     {
                         errRow.Add(m);
+                        ValueAbleRow.Add(m);
                     }
+
                 }
                 else
-                { errRow.Add(m); continue; }
+                {
+                    errRow.Add(m);
+                    continue;
+                }
             }
 
             return errRow;

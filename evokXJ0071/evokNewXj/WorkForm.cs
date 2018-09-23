@@ -22,8 +22,7 @@ namespace evokNew0071
         private WatchForm wForm;
 
         public WorkForm()
-        {
-           
+        {        
            // ConstantMethod.InitPassWd();
             InitializeComponent();
         }
@@ -90,17 +89,7 @@ namespace evokNew0071
             }
         }
 
-        private void ClrData()
-        {
-            if (( optSize.DtData != null) && ( optSize.DtData.Rows.Count > 0))
-            {
-                foreach (DataRow row in  optSize.DtData.Rows)
-                {
-                    row["已切数量"] = 0;
-                }
-            }
-        }
-
+       
         private void connectMachine_Click(object sender, EventArgs e)
         {
              
@@ -183,7 +172,7 @@ namespace evokNew0071
 
             LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
                         
-             optSize = new OptSize( UserData);
+             optSize = new OptSize(UserData);
              evokWork = new EvokXJWork();
              evokWork.SetOptSize(optSize);
              evokWork.SetRtbWork(rtbWork);
@@ -306,6 +295,7 @@ namespace evokNew0071
         {
             if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile(DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {

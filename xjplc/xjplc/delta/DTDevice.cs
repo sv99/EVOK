@@ -16,12 +16,12 @@ namespace xjplc
     /// 2.处理commmanager来的数据
     /// 3.接收用户界面提供的端口数据和需要读取寄存器内容的文件
     /// </summary>
-    public class DTDevice 
+    public class DTDevice
     {
-        CsvStreamReader CSVData ;
+        CsvStreamReader CSVData;
 
         private List<DataTable> dataFormLst; //表格 
-        public List<DataTable> DataFormLst  
+        public List<DataTable> DataFormLst
         {
             get { return dataFormLst; }
             set { dataFormLst = value; }
@@ -37,17 +37,17 @@ namespace xjplc
         //List<List<PlcInfo>> DPlcInfoLst;
         //List<List<List<PlcInfo>>> MPlcInfoAllLst;
         //信捷使用 监控的数据都放在这里      
-        public List<DTPlcInfo> DPlcInfo ;
+        public List<DTPlcInfo> DPlcInfo;
         //这里为什么要这样？ 因为M值不连续的分一组 再整理起来
         public List<List<DTPlcInfo>> MPlcInfoAll;
 
-        DTPLCPackCmdAndDataUnpack DTPLCcmd ;
+        DTPLCPackCmdAndDataUnpack DTPLCcmd;
 
-        PortParam portParam ;
+        PortParam portParam;
 
-        DTCommManager comManager ;
+        DTCommManager comManager;
 
-        System.Timers.Timer WatchCommTimer ;// new System.Timers.Timer(500);
+        System.Timers.Timer WatchCommTimer;// new System.Timers.Timer(500);
 
         int CommError = 0;  //只能在通讯上之后 清零
                             //机器状态
@@ -57,7 +57,14 @@ namespace xjplc
             get { return status; }
             set { status = value; }
         }
-      
+
+        public void SetConnectMode(int i)
+        {
+            if (i < 2)
+            {
+                DTPLCcmd.ConnectMode = i;
+            }
+        }
         public DTDevice()
         {
 
@@ -79,17 +86,14 @@ namespace xjplc
                 comManager.IsNoConnection = value;
             }
         }
-        /// <summary>
-        /// 针对信捷PLC 进行设备的存在获取
-        /// </summary>
-        /// <returns></returns>
 
-        public DTDevice(List<string> filestr)
+        void Init(List<string> filestr)
         {
-            DTPLCcmd    = new DTPLCPackCmdAndDataUnpack();
+            
+
             DataFormLst = new List<DataTable>();
-            CSVData     = new CsvStreamReader();
-            dgShowLst   = new List<DataGridView>();
+            CSVData = new CsvStreamReader();
+            dgShowLst = new List<DataGridView>();
 
             //获取监控数据 dataformLst 填充
             GetPlcDataTableFromFile(filestr);
@@ -101,11 +105,11 @@ namespace xjplc
                 System.Environment.Exit(0);
             }
 
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);          
+            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
             //监控第一个列表数据
-            if (dataFormLst.Count>0)                
-            SetPlcReadDMData(dataFormLst[0]);
+            if (dataFormLst.Count > 0)
+                SetPlcReadDMData(dataFormLst[0]);
 
             //设置端口
             SetComm(portParam);
@@ -119,7 +123,25 @@ namespace xjplc
             WatchCommTimer.AutoReset = true;
 
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
-                      
+
+        }
+
+        /// <summary>
+        /// 针对信捷PLC 进行设备的存在获取
+        /// </summary>
+        /// <returns></returns>
+
+        public DTDevice(List<string> filestr)
+        {
+            DTPLCcmd = new DTPLCPackCmdAndDataUnpack();
+            
+            Init(filestr);
+        }
+        public DTDevice(List<string> filestr,int conneMode)
+        {
+            DTPLCcmd = new DTPLCPackCmdAndDataUnpack();
+            SetConnectMode(conneMode);
+            Init(filestr);
         }
         #region 通讯错误
         //通讯错误引发的事件

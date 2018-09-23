@@ -32,7 +32,26 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(YBForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.button24 = new System.Windows.Forms.Button();
+            this.button23 = new System.Windows.Forms.Button();
+            this.button22 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
+            this.button20 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button17 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.button15 = new System.Windows.Forms.Button();
+            this.button14 = new System.Windows.Forms.Button();
+            this.button13 = new System.Windows.Forms.Button();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button10 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -53,7 +72,6 @@
             this.label53 = new System.Windows.Forms.Label();
             this.label54 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.button10 = new System.Windows.Forms.Button();
             this.label17 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
@@ -108,6 +126,9 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.完成率 = new xjplc.DataGridViewProgressColumn();
+            this.dataGridViewProgressColumn1 = new xjplc.DataGridViewProgressColumn();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tabControl1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -118,6 +139,7 @@
             this.tabPage2.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -129,30 +151,241 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1894, 781);
+            this.tabControl1.Size = new System.Drawing.Size(1722, 723);
             this.tabControl1.TabIndex = 4;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.button24);
+            this.tabPage3.Controls.Add(this.button23);
+            this.tabPage3.Controls.Add(this.button22);
+            this.tabPage3.Controls.Add(this.button21);
+            this.tabPage3.Controls.Add(this.button20);
+            this.tabPage3.Controls.Add(this.button19);
+            this.tabPage3.Controls.Add(this.button18);
+            this.tabPage3.Controls.Add(this.button17);
+            this.tabPage3.Controls.Add(this.button16);
+            this.tabPage3.Controls.Add(this.button15);
+            this.tabPage3.Controls.Add(this.button14);
+            this.tabPage3.Controls.Add(this.button13);
+            this.tabPage3.Controls.Add(this.button12);
+            this.tabPage3.Controls.Add(this.button8);
+            this.tabPage3.Controls.Add(this.button7);
+            this.tabPage3.Controls.Add(this.button6);
+            this.tabPage3.Controls.Add(this.button4);
             this.tabPage3.Controls.Add(this.button1);
+            this.tabPage3.Controls.Add(this.button5);
+            this.tabPage3.Controls.Add(this.button10);
             this.tabPage3.Controls.Add(this.dataGridView1);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1886, 752);
+            this.tabPage3.Size = new System.Drawing.Size(1714, 694);
             this.tabPage3.TabIndex = 4;
             this.tabPage3.Text = "设备总览";
             this.tabPage3.UseVisualStyleBackColor = true;
+            this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
+            this.tabPage3.Leave += new System.EventHandler(this.tabPage3_Leave);
+            // 
+            // button24
+            // 
+            this.button24.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button24.Location = new System.Drawing.Point(1025, 578);
+            this.button24.Name = "button24";
+            this.button24.Size = new System.Drawing.Size(200, 80);
+            this.button24.TabIndex = 25;
+            this.button24.Text = "NA";
+            this.button24.UseVisualStyleBackColor = true;
+            // 
+            // button23
+            // 
+            this.button23.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button23.Location = new System.Drawing.Point(822, 578);
+            this.button23.Name = "button23";
+            this.button23.Size = new System.Drawing.Size(200, 80);
+            this.button23.TabIndex = 25;
+            this.button23.Text = "NA";
+            this.button23.UseVisualStyleBackColor = true;
+            // 
+            // button22
+            // 
+            this.button22.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button22.Location = new System.Drawing.Point(619, 578);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(200, 80);
+            this.button22.TabIndex = 25;
+            this.button22.Text = "NA";
+            this.button22.UseVisualStyleBackColor = true;
+            // 
+            // button21
+            // 
+            this.button21.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button21.Location = new System.Drawing.Point(416, 578);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(200, 80);
+            this.button21.TabIndex = 25;
+            this.button21.Text = "NA";
+            this.button21.UseVisualStyleBackColor = true;
+            // 
+            // button20
+            // 
+            this.button20.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button20.Location = new System.Drawing.Point(216, 578);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(200, 80);
+            this.button20.TabIndex = 25;
+            this.button20.Text = "NA";
+            this.button20.UseVisualStyleBackColor = true;
+            // 
+            // button19
+            // 
+            this.button19.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button19.Location = new System.Drawing.Point(10, 578);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(200, 80);
+            this.button19.TabIndex = 25;
+            this.button19.Text = "NA";
+            this.button19.UseVisualStyleBackColor = true;
+            // 
+            // button18
+            // 
+            this.button18.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button18.Location = new System.Drawing.Point(1228, 480);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(200, 80);
+            this.button18.TabIndex = 25;
+            this.button18.Text = "NA";
+            this.button18.UseVisualStyleBackColor = true;
+            // 
+            // button17
+            // 
+            this.button17.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button17.Location = new System.Drawing.Point(1025, 480);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(200, 80);
+            this.button17.TabIndex = 25;
+            this.button17.Text = "NA";
+            this.button17.UseVisualStyleBackColor = true;
+            // 
+            // button16
+            // 
+            this.button16.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button16.Location = new System.Drawing.Point(822, 480);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(200, 80);
+            this.button16.TabIndex = 25;
+            this.button16.Text = "NA";
+            this.button16.UseVisualStyleBackColor = true;
+            // 
+            // button15
+            // 
+            this.button15.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button15.Location = new System.Drawing.Point(619, 480);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(200, 80);
+            this.button15.TabIndex = 25;
+            this.button15.Text = "NA";
+            this.button15.UseVisualStyleBackColor = true;
+            // 
+            // button14
+            // 
+            this.button14.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button14.Location = new System.Drawing.Point(416, 480);
+            this.button14.Name = "button14";
+            this.button14.Size = new System.Drawing.Size(200, 80);
+            this.button14.TabIndex = 25;
+            this.button14.Text = "NA";
+            this.button14.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            this.button13.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button13.Location = new System.Drawing.Point(10, 480);
+            this.button13.Name = "button13";
+            this.button13.Size = new System.Drawing.Size(200, 80);
+            this.button13.TabIndex = 25;
+            this.button13.Text = "NA";
+            this.button13.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            this.button12.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button12.Location = new System.Drawing.Point(216, 480);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(200, 80);
+            this.button12.TabIndex = 25;
+            this.button12.Text = "NA";
+            this.button12.UseVisualStyleBackColor = true;
+            // 
+            // button8
+            // 
+            this.button8.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button8.Location = new System.Drawing.Point(1228, 379);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(200, 80);
+            this.button8.TabIndex = 25;
+            this.button8.Text = "NA";
+            this.button8.UseVisualStyleBackColor = true;
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button7.Location = new System.Drawing.Point(1025, 379);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(200, 80);
+            this.button7.TabIndex = 25;
+            this.button7.Text = "NA";
+            this.button7.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button6.Location = new System.Drawing.Point(822, 379);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(200, 80);
+            this.button6.TabIndex = 25;
+            this.button6.Text = "NA";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button4.Location = new System.Drawing.Point(619, 379);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(200, 80);
+            this.button4.TabIndex = 25;
+            this.button4.Text = "NA";
+            this.button4.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(15, 24);
+            this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button1.Location = new System.Drawing.Point(416, 379);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(231, 29);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "修改";
+            this.button1.Size = new System.Drawing.Size(200, 80);
+            this.button1.TabIndex = 25;
+            this.button1.Text = "NA";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_2);
+            // 
+            // button5
+            // 
+            this.button5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button5.Location = new System.Drawing.Point(213, 379);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(200, 80);
+            this.button5.TabIndex = 24;
+            this.button5.Text = "NA";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button10
+            // 
+            this.button10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button10.Location = new System.Drawing.Point(10, 379);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(200, 80);
+            this.button10.TabIndex = 22;
+            this.button10.Text = "NA";
+            this.button10.UseVisualStyleBackColor = true;
             // 
             // tabPage1
             // 
@@ -168,7 +401,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1981, 752);
+            this.tabPage1.Size = new System.Drawing.Size(1714, 694);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "设备";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -214,7 +447,7 @@
             // 
             this.progressBar1.Location = new System.Drawing.Point(11, 467);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(1179, 23);
+            this.progressBar1.Size = new System.Drawing.Size(1660, 23);
             this.progressBar1.TabIndex = 7;
             // 
             // groupBox4
@@ -370,7 +603,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.button10);
             this.groupBox3.Controls.Add(this.label17);
             this.groupBox3.Controls.Add(this.label41);
             this.groupBox3.Controls.Add(this.label10);
@@ -390,15 +622,6 @@
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "产品信息";
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(11, 323);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(142, 56);
-            this.button10.TabIndex = 21;
-            this.button10.Text = "图纸查看";
-            this.button10.UseVisualStyleBackColor = true;
             // 
             // label17
             // 
@@ -716,8 +939,9 @@
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(161, 48);
             this.button9.TabIndex = 5;
-            this.button9.Text = "产量清零";
+            this.button9.Text = "zt";
             this.button9.UseVisualStyleBackColor = true;
+            this.button9.Visible = false;
             this.button9.Click += new System.EventHandler(this.button3_Click);
             // 
             // button3
@@ -730,6 +954,7 @@
             this.button3.TabIndex = 5;
             this.button3.Text = "报表生成";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Visible = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
@@ -762,7 +987,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1981, 752);
+            this.tabPage2.Size = new System.Drawing.Size(1714, 694);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "参数设置";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -807,7 +1032,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1940, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1755, 28);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -904,10 +1129,10 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.完成率});
-            this.dataGridView1.Location = new System.Drawing.Point(15, 69);
+            this.dataGridView1.Location = new System.Drawing.Point(6, 6);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 27;
-            this.dataGridView1.Size = new System.Drawing.Size(1834, 659);
+            this.dataGridView1.Size = new System.Drawing.Size(1689, 339);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_CellBeginEdit);
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
@@ -918,13 +1143,40 @@
             this.完成率.Name = "完成率";
             this.完成率.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.完成率.ReadOnly = true;
-            this.完成率.Width = 82;
+            this.完成率.Width = 200;
+            // 
+            // dataGridViewProgressColumn1
+            // 
+            this.dataGridViewProgressColumn1.HeaderText = "完成率[%]";
+            this.dataGridViewProgressColumn1.Name = "dataGridViewProgressColumn1";
+            this.dataGridViewProgressColumn1.ProgressBarColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.dataGridViewProgressColumn1.ReadOnly = true;
+            this.dataGridViewProgressColumn1.Width = 82;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 757);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1755, 36);
+            this.statusStrip1.TabIndex = 6;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(622, 31);
+            this.toolStripStatusLabel1.Text = "说明：红色--故障，灰色--停止，黄色--未知，绿色--运行";
             // 
             // YBForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1940, 826);
+            this.ClientSize = new System.Drawing.Size(1755, 793);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.tabControl1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -950,6 +1202,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1010,7 +1264,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button10;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 打开数据文件ToolStripMenuItem;
@@ -1033,8 +1286,30 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.ToolStripMenuItem 设置显示项目ToolStripMenuItem;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button24;
+        private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.Button button22;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button button14;
+        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button1;
+        private xjplc.DataGridViewProgressColumn dataGridViewProgressColumn1;
         private xjplc.DataGridViewProgressColumn 完成率;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 

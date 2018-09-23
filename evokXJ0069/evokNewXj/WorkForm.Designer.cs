@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,6 +74,7 @@
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button11 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -97,6 +98,9 @@
             this.lblY24 = new System.Windows.Forms.Button();
             this.lblY26 = new System.Windows.Forms.Button();
             this.lblY4 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.lblY22 = new System.Windows.Forms.Button();
             this.lblY5 = new System.Windows.Forms.Button();
             this.lblY12 = new System.Windows.Forms.Button();
@@ -121,9 +125,6 @@
             this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
             this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.logOPF = new System.Windows.Forms.OpenFileDialog();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -311,6 +312,7 @@
             this.printcb.Name = "printcb";
             this.printcb.Size = new System.Drawing.Size(164, 35);
             this.printcb.TabIndex = 122;
+            this.printcb.Visible = false;
             this.printcb.SelectedIndexChanged += new System.EventHandler(this.printcb_SelectedIndexChanged);
             // 
             // rtbWork
@@ -613,6 +615,7 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.White;
+            this.tabPage2.Controls.Add(this.button11);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.button3);
@@ -652,6 +655,19 @@
             this.tabPage2.Size = new System.Drawing.Size(1759, 759);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
+            // 
+            // button11
+            // 
+            this.button11.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button11.Location = new System.Drawing.Point(602, 414);
+            this.button11.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(168, 78);
+            this.button11.TabIndex = 89;
+            this.button11.Tag = "喷胶";
+            this.button11.Text = "喷胶";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // label2
             // 
@@ -945,6 +961,45 @@
             this.lblY4.UseVisualStyleBackColor = true;
             this.lblY4.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
+            // button9
+            // 
+            this.button9.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button9.Location = new System.Drawing.Point(602, 332);
+            this.button9.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(168, 78);
+            this.button9.TabIndex = 55;
+            this.button9.Tag = "拼装区暂停信号";
+            this.button9.Text = "拼装区暂停信号";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.HandOff2On_Click);
+            // 
+            // button8
+            // 
+            this.button8.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button8.Location = new System.Drawing.Point(415, 499);
+            this.button8.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(168, 78);
+            this.button8.TabIndex = 55;
+            this.button8.Tag = "吸气";
+            this.button8.Text = "吸气";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.HandOff2On_Click);
+            // 
+            // button7
+            // 
+            this.button7.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button7.Location = new System.Drawing.Point(228, 499);
+            this.button7.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(168, 78);
+            this.button7.TabIndex = 55;
+            this.button7.Tag = "吹气";
+            this.button7.Text = "吹气";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.HandOff2On_Click);
+            // 
             // lblY22
             // 
             this.lblY22.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -1061,8 +1116,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1104,8 +1159,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;
@@ -1170,45 +1225,6 @@
             // logOPF
             // 
             this.logOPF.FileName = "log";
-            // 
-            // button7
-            // 
-            this.button7.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button7.Location = new System.Drawing.Point(228, 499);
-            this.button7.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(168, 78);
-            this.button7.TabIndex = 55;
-            this.button7.Tag = "吹气";
-            this.button7.Text = "吹气";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.HandOff2On_Click);
-            // 
-            // button8
-            // 
-            this.button8.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button8.Location = new System.Drawing.Point(415, 499);
-            this.button8.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(168, 78);
-            this.button8.TabIndex = 55;
-            this.button8.Tag = "吸气";
-            this.button8.Text = "吸气";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.HandOff2On_Click);
-            // 
-            // button9
-            // 
-            this.button9.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button9.Location = new System.Drawing.Point(602, 332);
-            this.button9.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(168, 78);
-            this.button9.TabIndex = 55;
-            this.button9.Tag = "拼装区暂停信号";
-            this.button9.Text = "拼装区暂停信号";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // WorkForm
             // 
@@ -1341,6 +1357,7 @@
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button11;
     }
 }
 

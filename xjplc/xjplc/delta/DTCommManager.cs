@@ -25,6 +25,8 @@ namespace xjplc
     {
         //串口
         SerialPortListener m_SerialPortListener = null;
+
+       
         //串口数据存储
         List<byte>         m_buffer = null;
         //串口连接定时
@@ -347,7 +349,7 @@ namespace xjplc
                     
                 #region 数据长度合格了
                 //数据接收超长了 也清空 数据刚好相等 头几个数据相同
-                                
+                            
                 if (m_buffer.Count == receivedByteCount)
                   {
                     //进行转换 去掉第一个0x3a

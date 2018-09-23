@@ -46,13 +46,20 @@ namespace xjplc
             //通讯错误次数太多 就直接停了吧
             if (ErrorConnCount < Constant.ErrorConnCountMax && ErrorConnCount > 2)
             {
-               //GetData();
+               // GetData();
                 return;
             }
             else if (ErrorConnCount > Constant.ErrorConnCountMax)
             {
                 Dispose();
             }
+        }
+
+        //重新获取数据
+        public void GetData()
+        {
+            SetCmdOutIn(Constant.DTExistByteOutIn, Constant.DTExistByteOutIn);
+            SendMsgByte(DTPLCcmd.CmdOut.ToArray());
         }
 
         System.Timers.Timer ErrorConnTimer = null;// new System.Timers.Timer(500);
@@ -167,7 +174,6 @@ namespace xjplc
                 {
                     SetCmdOutIn(Constant.DTExistByteOutIn, Constant.DTExistByteOutIn);
                     SendMsgByte(DTPLCcmd.CmdOut.ToArray());
-
                     ConstantMethod.Delay(Constant.ReadSocTimeOut, ref isDeviceReady);
 
                     if (IsDeviceReady)
@@ -191,7 +197,6 @@ namespace xjplc
             receivedByteCount = DTPLCcmd.CmdIn.Length;
 
         }
-
 
         public SocEventArgs DataProcessEventArgs;
 
@@ -219,24 +224,46 @@ namespace xjplc
             receivedByteCount = count * 4 + 11; //根据回复的数据判断
 
         }
+        //获取最后的数据包结构 因为有时数据会重叠
+        public byte[] splitData(byte[] arrRecMsg)
+        {
+            List<byte> result = new List<byte>();
+
+
+            for (int i = 0; i < arrRecMsg.Length; i++)
+            {
+                if (arrRecMsg[i] == 0x3a)
+                {
+                    result.Clear();
+                    
+                }
+                result.Add(arrRecMsg[i]);
+            }
+
+            return result.ToArray();
+        }
         public event socDataProcess EventDataProcess;//利用委托来声明事件
         private void RecMsg(object socketClientPara)
         {
             Socket socketRec = socketClientPara as Socket;
 
             List<byte> m_buffer = new List<byte>();
-            
+
+            bool send485Mode = false;
 
             while (true)
             {
                 Application.DoEvents();
-
+                
                 byte[] arrRecMsg = new byte[1024];
 
                 int length = -1;
+                Thread.Sleep(100);
                 #region 判断数据读取是否正常 不正常就退出 删除自己在设备集合中的位置
                 try
                 {
+                    if (socketRec ==null || !socketRec.Connected) continue;
+                    if (socketRec.Available <= 0) continue;
                     length = socketRec.Receive(arrRecMsg);
                 }
                 catch (SocketException ex)
@@ -261,25 +288,31 @@ namespace xjplc
 
                     m_buffer.AddRange(data);
 
-
+                    
                     if (m_buffer[0] == Constant.DTHeader && ((m_buffer[m_buffer.Count - 1] == 0x0a && m_buffer[m_buffer.Count - 2] == 0x0d)))
                     {
+
+                        m_buffer = splitData(m_buffer.ToArray()).ToList<byte>();
+
                         m_buffer = ConstantMethod.DeltaBufferPro(m_buffer);
 
                         ErrorConnCount = 0;
 
                         if ((!IsDeviceReady)
                             &&
-                          (ConstantMethod.compareByteStrictly(m_buffer.ToArray(), ConstantMethod.DeltaBufferPro(DTPLCcmd.CmdIn))))
+                        (ConstantMethod.compareByteStrictly(m_buffer.ToArray(), ConstantMethod.DeltaBufferPro(DTPLCcmd.CmdIn))))
                         {
                             #region 设备未连接 
                             //设备通了 要开始 连接了哦 准备好了
                             //设置标志位 打开监控定时器 设置发送和 接收命令
                             IsDeviceReady = true;
                             IsGoToGetData = true;
+                            send485Mode = true; //后续要发送一条额外的485命令才行
+                         //   SendMsgByte(Constant.DTExistByteOutIn485.ToArray());//, 0, Constant.DTExistByteOutIn485.Length);
                             //台达这里还不能发送 因为要设置读取命令先                        
                             //SetCmdOutToCmdReadDMDataOut();
                             m_buffer.Clear();
+                            
                             #endregion
                         }
                         else
@@ -369,10 +402,7 @@ namespace xjplc
                                             IsReadingM = true;
                                             IsReadingD = false;
                                         }
-
                                     }
-
-
 
                                 }
                                 #endregion
@@ -381,29 +411,37 @@ namespace xjplc
                         #region 继续发送下一组数据
                         if (IsGoToGetData)
                         {
-                            if (!IsSetReadDDataOut && !IsSetReadMDataOut && !isWriteCmd)
+                            //如果是485 就加这一条
+                            if (send485Mode)
                             {
-                                if ((IsReadingM) && (DTPLCcmd.CmdReadMDataOut != null))
-                                {
-                                    SetCmdMOut(DTPLCcmd.CmdReadMDataOut);
-                                }
-                                else
-                                if ((IsReadingD) && (DTPLCcmd.CmdReadDDataOut != null))
-                                {
-                                    SetCmdDOut(DTPLCcmd.CmdReadDDataOut);
-                                }
+                                //这里要解释下 在485连通之后 需要在发送一条鱼485有关的数据 不管是232 还是485 先发送一条 只是不处理罢了
+                               // SetCmdOutIn(Constant.DTExistByteOutIn485.ToArray(), Constant.DTExistByteOutIn485.ToArray());
+                                SendMsgByte(Constant.DTExistByteOutIn485.ToArray());
+                                send485Mode = false;
                             }
-                            m_buffer.Clear();
-                           
-                            SendMsgByte(DTPLCcmd.CmdOut.ToArray());
+                            else
+                            {
+                                if (!IsSetReadDDataOut && !IsSetReadMDataOut && !isWriteCmd)
+                                {
+                                    if ((IsReadingM) && (DTPLCcmd.CmdReadMDataOut != null))
+                                    {
+                                        SetCmdMOut(DTPLCcmd.CmdReadMDataOut);
+                                    }
+                                    else
+                                    if ((IsReadingD) && (DTPLCcmd.CmdReadDDataOut != null))
+                                    {
+                                        SetCmdDOut(DTPLCcmd.CmdReadDDataOut);
+                                    }
+                                }
+                                m_buffer.Clear();
+                                Thread.Sleep(500);
+                                SendMsgByte(DTPLCcmd.CmdOut.ToArray());
+                            }
                         }
-
                         #endregion
                     }
 
                 }
-
-                Thread.Sleep(10);
 
                 arrRecMsg = null;
 
@@ -414,9 +452,16 @@ namespace xjplc
 
         public bool SendMsgByte(byte[] cmdbyte)
         {
-            if (SocClient !=null)
+            if (SocClient !=null && SocClient.IsBound && SocClient.Connected)
             {
-                SocClient.Send(cmdbyte);
+                try
+                { 
+                 SocClient.Send(cmdbyte);
+                }
+                catch (Exception ex)
+                {
+
+                }
                 return true;
             }
             else return false;
@@ -475,8 +520,8 @@ namespace xjplc
         Socket socketWatch = null;
         Thread threadWatch = null;
 
-        string ip = ConstantMethod.GetLocalIP();//"192.168.100.3";  //修改为主动获取
-         
+        string ip =  ConstantMethod.GetLocalIP();//"192.168.100.3";  "192.168.50.105";// //修改为主动获取
+
         int port= Constant.ServerPort;                //暂定为8899                    
 
 

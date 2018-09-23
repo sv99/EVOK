@@ -16,14 +16,13 @@ namespace evokNew0069
         int errorId = 0;
     
         private EvokXJWork evokWork;
-        private OptSize optSize;
 
+        private OptSize optSize;
 
         private WatchForm wForm;
 
         public WorkForm()
-        {
-           
+        {          
             ConstantMethod.InitPassWd();
             InitializeComponent();
         }
@@ -205,6 +204,8 @@ namespace evokNew0069
 
             errorTimer.Enabled = true;
 
+
+
         }
 
         private void IsoptBtnShow(bool showvalue)
@@ -281,7 +282,7 @@ namespace evokNew0069
                 //不排版模式
                 //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                 ConstantMethod.ShowInfo(rtbResult, optSize.NoOpt(rtbResult));
-               // ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+               //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
            // }
 
             stopOptShow();
@@ -304,6 +305,7 @@ namespace evokNew0069
         {
             if ( DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
+                ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {
@@ -436,18 +438,18 @@ namespace evokNew0069
         private void stbtn_Click(object sender, EventArgs e)
         {
             startBtnShow();
-           // if ( evokWork.AutoMes)
-           // {
-                 //evokWork.CutStartMeasure(false,Constant.CutMeasureMode);
-                //测试代码 后续回复弹窗
-                /**
-                qClr_Click(sender, e);
-                stbtn_Click(sender, e);
-              **/
+            // if ( evokWork.AutoMes)
+            // {
+            //evokWork.CutStartMeasure(false,Constant.CutMeasureMode);
+            //测试代码 后续回复弹窗
+            /**
+            qClr_Click(sender, e);
+            stbtn_Click(sender, e);
+          **/
             //}
             //else
             //{
-                evokWork.CutStartNormal(Constant.CutNormalMode);
+                evokWork.CutStartNormal(Constant.CutNormalWithShuChiMode);
                 //测试代码 后续回复弹窗
                 /***
                 qClr_Click(sender, e);
@@ -757,6 +759,5 @@ namespace evokNew0069
         {
             evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);
         }
-
     }
 }
