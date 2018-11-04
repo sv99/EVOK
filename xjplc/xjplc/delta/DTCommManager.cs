@@ -20,13 +20,13 @@ using System.Windows.Forms;
 namespace xjplc
 {
    
+
    
     public class DTCommManager
     {
         //串口
         SerialPortListener m_SerialPortListener = null;
-
-       
+      
         //串口数据存储
         List<byte>         m_buffer = null;
         //串口连接定时
@@ -373,8 +373,7 @@ namespace xjplc
                             #endregion
                            }
                         else
-                          {
-                            
+                          {                         
                             //设备连接情况下 是写数据区域命令的反馈 还是读数据区域命令的反馈                           
                             if (isWriteCmd)
                             {
@@ -441,7 +440,7 @@ namespace xjplc
                                     if (ConstantMethod.compareByte(m_buffer.ToArray(), Constant.DTReadDataCmdCheck))
                                     {
                                         DataProcessEventArgs.Byte_buffer = m_buffer.ToArray();
-                                        EventDataProcess(this, DataProcessEventArgs);
+                                        EventDataProcess(this,DataProcessEventArgs);
                                         ConstantMethod.Delay(50);
 
                                         if ((IsReadingM) && (DTPLCcmd.CmdReadDDataOut != null))
@@ -464,8 +463,7 @@ namespace xjplc
                                 #endregion
                             }
                         }
-                    }
-                      
+                    }                   
                     //在读的过程当中 如果遇到要写 那就先写 有没有在优化                  
                     if (IsGoToGetData && IsNoConnection ==false)
                     {

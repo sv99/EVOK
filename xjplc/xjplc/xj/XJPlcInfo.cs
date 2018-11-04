@@ -15,6 +15,8 @@ namespace xjplc
 
         Control showControl;
 
+        bool isShowControl = true;
+
         List<string> showStr;
         public System.Collections.Generic.List<string> ShowStr
         {
@@ -60,57 +62,109 @@ namespace xjplc
             get { return isInEdit; }
             set { isInEdit = value; }
         }
+        //最小值
+        private int minValue = 0;
+        public int MinValue
+        {
+            get { return minValue; }
+            set { minValue = value; }
+        }
+        //最大值
+        private int maxValue = 100000000;
+        public int MaxValue
+        {
+            get { return maxValue; }
+            set
+            {
+                maxValue = value;
 
-        
-        int showvalue;
+            }
+        }
+        //数据一般是要缩小下的
+        double ration = 1;
+        public double Ration
+        {
+            get { return ration; }
+            set { ration = value; }
+        }
+        //数据是否正常
+        public bool IsValueNormal
+        {
+            get
+            {
+               
+
+              return ((showValue > (minValue - 1)) && (showValue < (maxValue + 1))) ? true : false;
+                                  
+
+
+
+            }
+
+        }
+
+        int showValue;
         public int ShowValue //从表格读取数据回来
         {
             get
             {
                 if (pInfo != null)
                 {
-                    if (showvalue != pInfo.PlcValue || showvalue == 0)
+                
+                    //201810222控件没获取 就发现showvalue != pInfo.PlcValue 已经相等了 控件就不显示了 所以增加控件显示的判断 
+                    if (showValue != pInfo.PlcValue || showValue == 0 || (showControl!=null &&!showControl.Text.Equals(showValue.ToString())))
                     {
-                        showvalue =pInfo.PlcValue;
+                        showValue =pInfo.PlcValue;
+                        if (ration > 0) showValue = (int)((double)showValue / ration);
+
                         if (!IsInEdit)
                         {
+                          
                             if (showControl != null && showControl is Button)
                             {
-                                if (showvalue == 0)
+                                if (showValue == 0)
                                 {
                                     showControl.BackColor = System.Drawing.Color.Transparent;
 
-                                    if (showStr.Count > showvalue)
+                                    if (showStr.Count > showValue)
                                     {
                                         ConstantMethod.
-                                        SetText(showControl, showStr[showvalue]);
+                                        SetText(showControl, showStr[showValue]);
                                        
                                     }
                                 }
                                 else
                                 {
                                     showControl.BackColor = System.Drawing.Color.Red;
-                                    if (showStr.Count > showvalue)
+                                    if (showStr.Count > showValue)
                                     {
                                         ConstantMethod.
-                                         SetText(showControl, showStr[showvalue]);
+                                        SetText(showControl, showStr[showValue]);
                                     }
                                 }
                             }
 
+                          
                             if (showControl != null && (showControl is TextBox || showControl is Label))
                             {
-                                if(IsParam)
-                                ConstantMethod.
-                                SetText(showControl,((double)showvalue / Constant.dataMultiple).ToString() );
+
+                                if (!IsValueNormal)
+                                {
+                                    ConstantMethod.SetText(showControl, Constant.dataOutOfRange);
+                                }
                                 else
-                                    ConstantMethod.
-                                    SetText(showControl, showvalue.ToString());
+                                {
+                                    if (IsParam)
+                                        ConstantMethod.SetText(showControl, ((double)showValue / Constant.dataMultiple).ToString());
+                                    else
+                                        ConstantMethod.
+                                        SetText(showControl, showValue.ToString());
+                                }
                             }
                         }
                     }
                 }                                       
-                return showvalue;
+                return showValue;
             }            
         }
         int addr;

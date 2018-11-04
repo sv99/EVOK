@@ -10,6 +10,17 @@ using System.Windows.Forms;
 
 namespace xjplc
 {
+
+    public struct ServerInfo
+    {
+        //服务器地址
+        public string server_Ip;
+
+
+        //服务器端口
+        public string server_Port;
+       
+    }
     /// <summary>
     /// 串口参数类
     /// </summary>
@@ -52,6 +63,21 @@ namespace xjplc
 
         }
     }
+
+    public class TcpEventArgs : EventArgs
+    {
+        byte[] byte_buffer;
+        public byte[] Byte_buffer
+        {
+            get { return byte_buffer; }
+            set { byte_buffer = value; }
+        }
+
+        public TcpEventArgs()
+        {
+
+        }
+    }
     //委托事件传递类 这里用作传递数据接收后处理的参数
     public class CommEventArgs : EventArgs
     {
@@ -88,6 +114,7 @@ namespace xjplc
 
         }
     }
+
     //串口数据处理
     public delegate void commDataProcess(object s, CommEventArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     //网络数据处理
@@ -111,6 +138,7 @@ namespace xjplc
         public static readonly string ExcelFileEX0 = ".xlsx";
         public static readonly string ExcelFileEX1 = ".xls";
         public static readonly string SaveFileDemo = ConstantMethod.GetAppPath() + "filedemo.csv";
+        public static readonly string SaveFileDemoConfigPath = ConstantMethod.GetAppPath() + "config\\filedemo.csv";
         public static readonly string SingleMode = "单字";
         public static readonly string DoubleMode = "双字";
         public static readonly string BitMode = "位";
@@ -119,17 +147,23 @@ namespace xjplc
         public static readonly string FileIsInUse = "文件使用中！";
         public static readonly int ExcelFile = 1;
 
-        public const  int optNormal = 0;
+        public const int evokGetDefaultMode = 0;
+        public const int evokGetAutoMode = 1;
+        public const int optNormal = 0;
+        public const int optNormalWithParamCount = 1;
+        public const int optNormalExcel = 2;
+        public const int optNo = 3;
+        public const int optNormalMax = 1500;
         public static readonly int CsvFile = 2;
         public static readonly int ErrorFile = 0;
-        public static readonly int AutoPage = 0;
-        public static readonly int HandPage = 1;
-        public static readonly int ParamPage = 2;
-        public static readonly int IOPage = 3;
+        public const int AutoPage = 0;
+        public const  int HandPage = 1;
+        public const  int ParamPage = 2;
+        public const  int IOPage = 3;
         public static readonly int AutoPageID = 2;
         public static readonly int HandPageID = 3;
         public static readonly string Alarm = "报警";
-        public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
+        public static readonly int DataRowWatchMax = 50; //监控太多不行 还是少监控一点吧
         public static readonly string[] plcDataFile = {"addr","mode","bin","count","value","param1","param2","param3","param4","param5","param6"};
         public static readonly string sqlChar10 = "char(10)";
         public static readonly string sqlChar20 = "char(20)";
@@ -150,6 +184,11 @@ namespace xjplc
         public static readonly string GetScarError = "获取结疤数据错误！";
 
         public const int LTBCdefault = 700;
+        public const int LTBCMax = 23000;
+        public const int LTBCAddDbc = 1;
+        public const int SizeScarSplit = 0;
+        public const int SizeScarNoSplit = 1;
+        public const int ScarSplit = 2;   
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
@@ -181,6 +220,7 @@ namespace xjplc
         //public static readonly string ConstantMethod.GetAppPath() = ConstantMethod.GetAppPath();// System.AppDomain.CurrentDomain.BaseDirectory; //Application.StartupPath + "\\";// Path.GetDirectoryName(Application.ExecutablePath)+"\\";//System.AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ConfigSerialportFilePath = ConstantMethod.GetAppPath() + "config\\configSerialport.xml";
         public static readonly string ConfigSerialportFilePath1 = ConstantMethod.GetAppPath() + "config\\configSerialport1.xml";
+        public static readonly string ConfigExcelOpt = ConstantMethod.GetAppPath() + "source\\1.xlsm";
         public static readonly string ConfigSerialportFilePath2 = ConstantMethod.GetAppPath() + "config\\configSerialport2.xml";
         public static readonly string ConfigParamFilePath = ConstantMethod.GetAppPath() + "config\\configParam.xml";
         public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
@@ -188,6 +228,7 @@ namespace xjplc
         public static readonly string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorPlcFile = "设备数据文件不存在，请检查plc data文件夹，软件即将关闭！";
         public static readonly string strValue = "value";
+        public static readonly string strParam = "param";
         public static readonly string strParam1 = "param1";
         public static readonly string strParam2 = "param2";
         public static readonly string strParam3 = "param3";
@@ -196,15 +237,21 @@ namespace xjplc
         public static readonly string strParam6 = "param6";
         public static readonly string passwdTime = "passwdTime"; 
         public static readonly string passwd = "passwd";
+        public static readonly string NoSerialPort = "端口错误或者不存在！";
         public static readonly string passwdCount = "passwdCount";
         public static readonly string PortName = "PortName";
         public static readonly string Bin = "bin";
         public static readonly string Read= "读";
         public static readonly string Write = "写";
         public static readonly string printBarcodeMode = "printBarcodeMode";
+        public static readonly string optParam1 = "optParam1";
+        public static readonly string IsSaveProdLog = "IsSaveProdLog";
         public static readonly int NoPrintBarCode = 0;
         public static readonly int AutoBarCode = 1;
         public static readonly int HandBarCode = 2;
+        public const  int doorSizeId = 0;
+        public const  int doorBanId = 1;
+        public const  int doorShellId = 2;
         public static readonly string[] printBarcodeModeStr = {"无条码","自动贴条码","手动贴条码" };
 
         public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1" };
@@ -215,7 +262,7 @@ namespace xjplc
         public static readonly int PwdOffSet = 1000;
         public static readonly string prodResult = "生产结果";
         public static readonly int dataMultiple = 100;
-
+        public static readonly int MaxShowCount = 1000;
         public static readonly string ScarId = "-1";
         public static readonly string barCodeDemo = ConstantMethod.GetAppPath() + "零部件打印.frx";
         public static readonly string SplitTypeFile = ConstantMethod.GetAppPath() + "config\\SplitType.xls";
@@ -229,9 +276,14 @@ namespace xjplc
         public static readonly string ErrorMeasure = "测量错误！";
         public static readonly string InOPT = "优化中,请稍等。。。。。。。。";
         public static readonly int MeaSureMaxTime = 120000;
+
+        public static readonly int StartWaitMaxTime = 10000;
         #endregion
 
         #region 运行数据
+        public const  int devicePropertyA = 0;//设备类别 分为两种 一种是一维 一种是二维
+        public const  int devicePropertyB = 1;
+        public static readonly int devicePropertyC = 0;
         public static readonly string emgStopTip = "急停或紧急退出中，请复位！";
         public static readonly string noData = "无数据！";
         public static readonly string measureOutOfTime = "测量超时！";
@@ -245,6 +297,7 @@ namespace xjplc
         public static readonly string DeviceStartCut = "设备启动！";
         public static readonly string DevicePause = "设备暂停！";
         public static readonly string DeviceStop = "设备停止！";
+        public static readonly string DeviceEmgStop = "设备急停！";
         public static readonly string DeviceStartFailed = "设备启动失败，请检查设备情况！";
         public static readonly string DeviceReset = "设备复位！";
         public static readonly string DeviceNoPrinter = "无打印机！";
@@ -255,21 +308,192 @@ namespace xjplc
         public static readonly string MeasureSt = "开始测量！";
         public static readonly string MeasureEd = "结束测量！";
         public static readonly string DataDownLoad = "数据下发！";
+        public static readonly string DataDownLoadSuccess = "数据下发成功！";
+        public static readonly string DataDownLoadFail = "数据下发失败！";
         public static readonly string AutoMeasureMode = "自动测长模式！";
         public static readonly string NormalMode = "正常优化模式！";
         public static readonly string ShuChiMode = "梳齿无限料长模式！";
+        public static readonly string DoorShell = "门皮模式！";
         public const  int CutMeasureRotateWithHoleMode = 2;
         public const   int CutNormalMode = 0;
         public const  int CutMeasureMode = 1;
         public const int  CutNormalWithHoleMode = 3;
         public const int CutMeasureWithScarSplitNoSize = 4;
-        public const int CutNormalDoorMode = 5;
+        public const int CutNormalDoorShellMode = 5;
         public const int CutNormalWithShuChiMode = 6;
-
+        public const int CutNormalDoorBanMode = 7;
         public const string CutMeasureTips0 = "请选择模式或者导入数据";
         #endregion
+
         #region 台达PLC专用
+        public static readonly string ConfigSource = ConstantMethod.GetAppPath() + "source\\";
+        #region 门锁机
+        public static readonly string[] proCutType = {          "垂直方槽",
+                                                                "垂直圆孔",
+                                                                "水平方槽",
+                                                                "水平圆孔",
+                                                                "合页槽",
+                                                                "上开口合页",
+                                                                "下开口合页" };
+        public static readonly string[] proCutTypeImage = {     "w1",
+                                                                "w2",
+                                                                "w3",
+                                                                "w4",
+                                                                "w5",
+                                                                "w6",
+                                                                "w7"
+ };
+        #endregion
+        #region MODBUSTCP
+
+        public static readonly string ConfigServerPortFilePath = ConstantMethod.GetAppPath() + "config\\configServerport.xml";
+        public static readonly string ServerIp = "ServerIp"; 
+        public static readonly string ServerIpPort = "Port";
+        public const  int floatShow = 0;
+        public const int intShow = 1;
+        public static readonly string dataOutOfRange = "数据超范围！";
+        public static readonly string[] tcpType = { "BOOL", "SINT", "USINT",
+                                                        "INT", "UINT",
+                                                        "DINT",  "UDINT",
+                                                        "LINT" , "ULINT",
+                                                        "REAL",
+                                                        "LREAL",
+                                                        "Time" , "Date", "TOD", "DT" };
+        public static readonly int[] tcpTypeByteCount = { 1, 1, 1,
+                                                    2, 2,
+                                                    4,  4,
+                                                    8 , 8,
+                                                    4,
+                                                    8,
+                                                    8 , 8, 8, 8 };
+        public static readonly string Bool = "BOOL";
+        public static readonly string SINT = "SINT";
+        public static readonly string USINT = "USINT";
+        public static readonly string INT = "INT";
+        public static readonly string UINT = "UINT";
+        public static readonly string DINT = "DINT";
+        public static readonly string UDINT = "UDINT";
+        public static readonly string LINT =  "LINT";
+        public static readonly string ULINT = "ULINT";
+        public static readonly string REAL = "REAL";
+        public static readonly string LREAL = "LREAL";
+        public static readonly string Time = "Time";
+        public static readonly string Date = "Date";
+        public static readonly string TOD = "TOD";
+        public static readonly string DT = "DT";
+
+        public static readonly int BoolMemory = 1;
+        public static readonly int SINTMemory = 1;
+        public static readonly int USINTMemory = 1;
+        public static readonly int INTMemory = 2;
+        public static readonly int UINTMemory = 2;
+        public static readonly int DINTMemory = 4;
+        public static readonly int UDINTMemory = 4;
+        public static readonly int LINTMemory = 8;
+        public static readonly int ULINTMemory = 8;
+        public static readonly int REALMemory = 4;
+        public static readonly int LREALMemory = 8;
+        public static readonly int TimeMemory = 8;
+        public static readonly int DateMemory = 8;
+        public static readonly int TODMemory = 8;
+        public static readonly int DTMemory = 8;
+
+        public static readonly string[] dataType = { "IX", "QX", "MX",
+                                                      "IW", "QW", "MW",
+                                                      "MB", "IB" , "QB",
+                                              "MD", "ML" , "ID", "IL", "QD","QL" };
+
+        //相对地址偏移
+        public static readonly int[] dataTypeAddrOffset = { 1, 1, 1,
+                                                      2, 2, 2,
+                                                      1, 1 , 1,
+                                              4, 8 , 4, 8,4,8 };
+
+        public static readonly int[] dataTypeAddr = { 0X01C01800, 0X01C01C00, 0X01C02000,
+                                                      0X00380300, 0X00380380, 0X00380400,
+                                                      0X00380400, 0X00380300 , 0X00380380,
+                0X00380400,0X00380400,0X00380300,0X00380300,0X00380380,0X00380380
+
+
+        };
+
+        public static readonly int[] dataTypeAreaInt = {0,1,2,5,3,4 ,6,7,14,12,13,8,9,10,11};
+
+        public static readonly int IXAddr = 0X01C01800;
+        public static readonly int QXAddr = 0X01C01C00;
+        public static readonly int MXAddr = 0X01C02000;
+
+
+        public static readonly int MBAddr = 0X00380400;
+        public static readonly int MWAddr = 0X00380400;
+        public static readonly int MDAddr = 0X00380400;
+        public static readonly int MLAddr = 0X00380400;
+
+        public static readonly int QBAddr = 0X00380380;
+        public static readonly int QWAddr = 0X00380380;
+        public static readonly int QDAddr = 0X00380380;
+        public static readonly int QLAddr = 0X00380380;
+
+        public static readonly int IBAddr = 0X00380300;
+        public static readonly int IWAddr = 0X00380300;
+        public static readonly int IDAddr = 0X00380300;
+        public static readonly int ILAddr = 0X00380300;
+        
+
+
+        public static readonly byte[] DTTcpHeader = { 0xBB, 0x00, 0x00, 0x00 };
+         
+        public static readonly byte[] DTTcpFunctionReadBitCmd = { 0x43, 0x01};
+        public static readonly byte[] DTTcpFunctionReadByteCmd = { 0x43, 0x02 };
+
+        public static readonly byte[] DTTcpFunctionWriteBitCmd = { 0x43, 0x03 };
+        public static readonly byte[] DTTcpFunctionWriteByteCmd = { 0x43, 0x04 };
+        public static readonly int IXMODBUSAddr = 0X6000;
+        public static readonly int QXMODBUSAddr = 0XA000;
+        public static readonly int IWMODBUSAddr = 0X8000;
+        public static readonly int QWMODBUSAddr = 0XA000;
+        public static readonly int MWMODBUSAddr = 0X0000;
+
+        public const   int IXAddrId = 0;
+        public const   int QXAddrId = 1;
+        public const   int MXAddrId = 2;
+     
+        public const   int QWAddrId = 3;
+        public const   int MWAddrId = 4;
+        public const   int IWAddrId = 5;
+        public const   int MBAddrId = 6;
+        public const   int IBAddrId = 7;
+        public const int   IDAddrId = 8;
+        public const int   ILAddrId = 9;
+
+        public const int  QDAddrId = 10;
+        public const int  QLAddrId = 11;
+        public const int  MDAddrId = 12;
+        public const int  MLAddrId = 13;
+        public const int  QBAddrId = 14;
+
+        public static byte[] IsDtTcpExitOut = { 0x06, 0x66, 0x00, 0x00, 0x00, 0x07, 0x01, 0x43, 0x01, 0x00, 0x00, 0x5D, 0x84 };
+
+         public static byte[] IsDtTcpExitIn = { 0x06, 0x66, 0x00, 0x00, 0x00, 0x05, 0x01, 0x43, 0x01, 0x00, 0x00 };
+                        
+        public static readonly byte[] DTModbusTcpHeader = { 0x00, 0x00, 0x00, 0x00 };
+        public static readonly byte[] DTModbusTcpHeaderFake = { 0x00, 0x00, 0x00, 0x00,0x00 };
+
+        public static readonly byte[] DTModbusTcpWriteSingleDataDeviceId = { 0x01 };
+
+        public static readonly string DeviceIp = "192.168.0.1";
+
+        public static readonly int DevicePort = 502;
+        #endregion
         //台达PLC 发送命令 判断是否存在 存在则回复以下
+
+        public static readonly int DTTCPMAXAddr = 500000;
+        public static readonly int DTTCPMAXDAddr = 7000;
+        public static readonly int DTTCPMAXHDAddr = 7000;
+        public static readonly int DTTCPMAXMAddr = 7000;
+        public static readonly int DTTCPMAXHMAddr = 7000;
+        public static readonly int DTTCPMAXXAddr = 7000;
+        public static readonly int DTTCPMAXYAddr = 7000;
         // 3a 30 31 30 35 30 43 30 30 46 46 30 30 45 46 0d 0a
         public static readonly byte[] DTExistByteOutIn = 
             { 0x01,0x05,0x0C,0x00,0xFF,0x00,0xEF};
@@ -278,7 +502,12 @@ namespace xjplc
         public static readonly byte DTHeader = 0x3a;
         public static readonly byte[] DTReadDataCmdCheck = { 0x01, 0x03 };
         public static readonly byte[] DTEnd = { 0x0d, 0x0a };
+        public static readonly byte ReadBitCmdFunctionCode = 0X02 ;
+        public static readonly byte ReadDCmdFunctionCode =  0X03 ;
+        public static readonly byte WriteSingleDCmdFunctionCode = 0X06;
 
+        public static readonly byte WriteMultipleDCmdFunctionCode = 0X10;
+        public static readonly byte[] DTDeviceId = { 0X01 };
         public static readonly int TaiDaConnectMode485 = 1;
         public static readonly int TaiDaConnectMode232 = 0;
         public static readonly byte[] DTCmdSetReadDDataOut232 = { 0x40, 0xdc };
@@ -294,7 +523,7 @@ namespace xjplc
         public static readonly byte[] DTCmdReadMDataOut485 = { 0x43, 0x84 };
 
         public static readonly byte[] DTExistByteOutIn485 =
-           { 0x3a, 0x30 , 0x31 , 0x30  , 0x35 , 0x30 , 0x43 , 0x33  , 0x38 , 0x46 , 0x46 , 0x30  , 0x30 , 0x42 , 0x37 , 0x0d , 0x0a};
+        { 0x3a, 0x30 , 0x31 , 0x30  , 0x35 , 0x30 , 0x43 , 0x33  , 0x38 , 0x46 , 0x46 , 0x30  , 0x30 , 0x42 , 0x37 , 0x0d , 0x0a};
         
 
         #endregion
@@ -310,7 +539,7 @@ namespace xjplc
         //device类和设备重新握手的次数
         public static readonly int DeviceErrorConnCountMax = 2;
         //通讯过程中 commmanager 重复通讯的最大次数
-        public static readonly int ErrorConnCountMax =5;
+        public static readonly int ErrorConnCountMax =3;
         //信捷专用码 最大区域
         public static readonly int XJMaxAddr = 50000;
         public static readonly int XJMaxDAddr = 7000;
@@ -331,12 +560,11 @@ namespace xjplc
         public static readonly int ReadCommTimeOut = 4000; 
 
         //写入超时 
-        public static readonly int WriteCommTimeOut = 1000;
+        public static readonly int WriteCommTimeOut = 5000;
 
         //PLC 数据反馈 在切割的时候 数据发送 超时
         public static readonly int   PlcCountTimeOut = 90000;
         public static readonly byte[] XJReadDataCmdCheck = { 0x01, 0x19 };
-
 
 
         //信捷地址偏移常量

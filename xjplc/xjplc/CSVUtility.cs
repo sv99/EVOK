@@ -450,7 +450,10 @@ namespace xjplc
             //逐行读取CSV中的数据
             while ((strLine = sr.ReadLine()) != null)
             {
-                aryLine = strLine.Split(',');
+                if(strLine.Contains(";"))
+                aryLine = strLine.Split(';');
+                else
+                    aryLine = strLine.Split(',');
 
                 if (IsFirst == true)
                 {
@@ -467,7 +470,7 @@ namespace xjplc
                 {
 
                     DataRow dr = dt.NewRow();
-                    for (int j = 0; j < aryLine.Length; j++)
+                    for (int j = 0; j < dr.ItemArray.Length; j++)
                     {
                         dr[j] = aryLine[j];
                     }

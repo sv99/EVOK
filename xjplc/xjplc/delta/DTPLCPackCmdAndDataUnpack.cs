@@ -45,7 +45,6 @@ namespace xjplc
         //台达专用的码 要读取哪些数据 发这个命令 回复的命令 在打包函数打包好
         public byte[] CmdReadDDataOut = null;
 
-
         //写B区 和D 区的命令 缓冲区 不然直接操作cmdout 会出错 矛盾
         public byte[] CmdSetBDREGOut = null;
         public byte[] CmdSetBDREGIn = null;
@@ -538,17 +537,15 @@ namespace xjplc
             byte[] byteCrcData = new byte[7 + ByteLen*2];
             Array.Copy(CmdSetDREGOut, 0, byteCrcData, 0, 7 + ByteLen*2);
 
-            //crc
+            //CRC
             CmdSetDREGOut[7 + ByteLen*2] = LRC16_C(byteCrcData);
             
-
             PackCmSetDREGIn(Addr, count, Area);
 
             CmdSetBDREGOut = CmdSetDREGOut;
-            return 0;
-        }
 
-       
+            return 0;
+        }    
        
         /// <summary>
         /// 通过字母获取寄存器所在区域ID
@@ -916,6 +913,7 @@ namespace xjplc
             {
                 int addr_high = (addrLst[i].AbsAddr & 0xFF00) >> 8;
                 int addr_low = addrLst[i].AbsAddr & 0xFF;
+
                 cmdByte.Add((byte)addr_high);
                 cmdByte.Add((byte)addr_low);
             }
@@ -973,7 +971,6 @@ namespace xjplc
 
 
         }
-
 
         /// <summary>
         /// 1.在这里 前面已经打包过了 这里不需要再换算成绝对地址了

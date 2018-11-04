@@ -163,26 +163,31 @@ namespace evokNew0066
 
         private void HandOff2On_Click(object sender, EventArgs e)
         {
-            evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(),Constant.Write,evokWork.PsLstHand);
+            if (sender != null && ((Control)sender).Tag != null)
+            {
+                evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
+            }
         }
-
+        private void Opposite_Click(object sender, EventArgs e)
+        {
+            if (sender != null && ((Control)sender).Tag != null)
+            {
+                evokWork.oppositeBitClick(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
+            }
+        }
         private void InitControl()
         {        
             SetControlInEvokWork();
             printcb.SelectedIndex = evokWork.PrintBarCodeMode;
-            evokWork.ChangePrintMode(printcb.SelectedIndex);
-
+            evokWork.ChangePrintMode(printcb.SelectedIndex);         
         }
-
-
         public void InitParam()
         {
             //datasource 改变会出发 selectindex 改变事件  这样就会打条码导致 模式被自动修改
             //所以早点设置好 然后在 那个selectindexchanged事件里增加 通讯正常判断
             printcb.DataSource = Constant.printBarcodeModeStr;
 
-            LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
-                        
+            LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);                        
              evokWork = new EvokXJWork();
              evokWork.SetUserDataGridView(UserData);
              evokWork.SetRtbWork( rtbWork);
@@ -190,6 +195,7 @@ namespace evokNew0066
              evokWork.SetPrintReport(report1);
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
+             evokWork.SetOptParamShowCombox(comboBox2);
              UpdateTimer.Enabled = true;
         }
 
@@ -202,7 +208,7 @@ namespace evokNew0066
             logOPF.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory+"Log";
             logOPF.Filter = "文件(*.log)|*.log";
             logOPF.FileName = "请选择日志文件";
-
+            comboBox1.SelectedIndex = 2;
             errorTimer.Enabled = true;
 
             evokWork.ReadCSVDataDefault();
@@ -276,6 +282,9 @@ namespace evokNew0066
 
             if (!evokWork.AutoMes)
             {
+                //测试用 EXCEL
+               // evokWork.optReady(Constant.optNormalExcel);
+                //ConstantMethod.Delay(2000);
                 evokWork.optReady(Constant.optNormal);
                 /****
                 optSize.Len = evokWork.lcOutInPs.ShowValue;
@@ -285,7 +294,6 @@ namespace evokNew0066
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                 ****/
             }
-
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
@@ -338,48 +346,32 @@ namespace evokNew0066
             {
                 if (control.Tag != null)
                 {
-                    if ((control.Parent ==  tabPage1) || (control.Parent ==  groupBox1))
+                    if ((control.Parent ==  tabPage1) || (control.Parent ==  groupBox1)  )
                     {
                         foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                         {
-                            if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
-                            {
-                                simple.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple, control);
                         }
                     }
                     if (control.Parent ==  tabPage2)
                     {
                         foreach (PlcInfoSimple simple2 in  evokWork.PsLstHand)
                         {
-                            if (simple2.Name.Contains(control.Tag.ToString()) && simple2.Name.Contains(Constant.Read))
-                            {
-                                simple2.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple2, control);
                         }
                     }
                     if (control.Parent ==  tabPage3)
                     {
                         foreach (PlcInfoSimple simple3 in  evokWork.PsLstParam)
                         {
-                            if ((simple3.Name.Contains(control.Tag.ToString()) && simple3.Name.Contains(Constant.Read)) && (control.Parent ==  tabPage3))
-                            {
-                                simple3.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple3, control);
                         }
                     }
                     if (control.Parent == tabPage4)
                     {
                         foreach (PlcInfoSimple simple4 in evokWork.PsLstIO)
                         {
-                            if ((simple4.Name.Contains(control.Tag.ToString()) && simple4.Name.Contains(Constant.Read)) && (control.Parent == tabPage4))
-                            {
-                                simple4.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple4, control);
                         }
                     }
                 }
@@ -408,7 +400,7 @@ namespace evokNew0066
             qClr.Enabled = false;
             autoSLBtn.Enabled = false;
             ccBtn.Enabled = false;
-            UserData.ReadOnly = true;
+            
             stopBtn.Enabled = false;
             pauseBtn.Enabled = false;
             resetBtn.Enabled = false;
@@ -428,7 +420,6 @@ namespace evokNew0066
             qClr.Enabled = true;
             autoSLBtn.Enabled = true;
             ccBtn.Enabled = true;
-            UserData.ReadOnly = true;
             stopBtn.Enabled = true;
             pauseBtn.Enabled = true;
             resetBtn.Enabled = true;
@@ -441,28 +432,41 @@ namespace evokNew0066
         {
                      
             startBtnShow();
-
-            //条码恢复用户设置
-            if (evokWork.DeviceStatus)
-            {
-                evokWork.ChangePrintMode(printcb.SelectedIndex);
-            }
-
+           
             if (evokWork.AutoMes)
-            {
-                if (scarAndSizeSplit.Checked)
+            {    //测长模式下有测长和带结巴模式 当结巴部分有数据时自动为结巴模式
+                 //结巴有三种模式 尺寸切了后 后一刀切到结巴
+                 //尺寸切了后 结巴尾料分离
+                 //无尺寸就去除结疤
+                 //优化系数是针对索菲亚的 只有在测长的时候会进行保存和设置 20181012
+                int value0 = 0;
+                if (int.TryParse(comboBox2.Text, out value0))
                 {
-                    evokWork.CutStartMeasure(scarAndSizeSplit.Checked, Constant.CutMeasureMode);
+                    evokWork.SetOptSizeParam1(value0);
                 }
-                else
-                if (scarSplit.Checked)
+                switch (comboBox1.SelectedIndex)
                 {
-                    evokWork.CutStartMeasure(scarSplit.Checked, Constant.CutMeasureWithScarSplitNoSize);
-                }
-                else
-                {
-                    MessageBox.Show(Constant.CutMeasureTips0);
-                }
+                                                 
+                    case Constant.SizeScarSplit:
+                        {
+                            //尺寸切了后 结巴尾料分离
+                            evokWork.CutStartMeasure(true, Constant.CutMeasureMode);
+                            break;
+                        }
+                    case Constant.SizeScarNoSplit:
+                        {
+                            //尺寸切了后 结巴尾料不分离
+                            evokWork.CutStartMeasure(false, Constant.CutMeasureMode);
+                            break;
+                        }
+                    case Constant.ScarSplit:
+                        {
+                            //无尺寸 就去除结疤
+                            evokWork.CutStartMeasure(true, Constant.CutMeasureWithScarSplitNoSize);
+                            break;
+                        }
+
+                }               
                 //测试代码 后续回复弹窗
                 /**
                 qClr_Click(sender, e);
@@ -478,9 +482,9 @@ namespace evokNew0066
                 optBtn_Click(sender, e);
                 stbtn_Click(sender, e);
                 ***/
-            }
+            }     
             //测试代码 后续回复弹窗
-             stopBtnShow();
+            stopBtnShow();
         }
 
         private void stopBtn_Click(object sender, EventArgs e)
@@ -769,6 +773,16 @@ namespace evokNew0066
             {
                 evokWork.lliaoON();
             }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            evokWork.pressShift();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            evokWork.emgStop();
         }
     }
 }

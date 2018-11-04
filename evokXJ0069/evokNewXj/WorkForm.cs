@@ -23,7 +23,7 @@ namespace evokNew0069
 
         public WorkForm()
         {          
-            ConstantMethod.InitPassWd();
+           // ConstantMethod.InitPassWd();
             InitializeComponent();
         }
 
@@ -281,7 +281,7 @@ namespace evokNew0069
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
                 //不排版模式
                 //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-                ConstantMethod.ShowInfo(rtbResult, optSize.NoOpt(rtbResult));
+                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult,Constant.optNo));
                //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
            // }
 
@@ -306,7 +306,7 @@ namespace evokNew0069
             if ( DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
                 ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
-                int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
+                int num = ConstantMethod.IsWhichFile(DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {
                      evokWork.LoadCsvData(DialogExcelDataLoad.FileName);
@@ -758,6 +758,29 @@ namespace evokNew0069
         private void button6_Click(object sender, EventArgs e)
         {
             evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            evokWork.emgStop();
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if((e.KeyChar == '\r'))
+            {
+               if(evokWork.IsPause()) resetBtn.Focus();
+                else
+                {
+                    MessageBox.Show("数据只能在暂停时修改！");
+                }                          
+            }
+            
         }
     }
 }

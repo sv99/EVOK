@@ -91,9 +91,14 @@ namespace xjplc
             GetPlcDataTableFromFile(filestr);
 
             //找一下串口 不存在就报错 退出          
-
+           
             portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
+            if (!SerialPort.GetPortNames().Contains(portParam.m_portName))
+            {
+                MessageBox.Show(Constant.NoSerialPort);
+                ConstantMethod.AppExit();
+            }
             //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
             if (dataFormLst.Count > 0)
                 SetPlcReadDMData(dataFormLst[0]);
@@ -131,6 +136,7 @@ namespace xjplc
             if (!ConstantMethod.XJFindPort())
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
+                //报错 在外面调试 需要隐藏
                 ConstantMethod.AppExit();
             }
 
@@ -176,13 +182,24 @@ namespace xjplc
         }
         #endregion
         #region 正常通讯
+        public void startRepack()
+        {
+            comManager.IsRePackCmdReadDMDataOut = true;
+            comManager.IsRepackDone = false;
 
+        }
 
+        public void doneRepack()
+        {
+            comManager.IsRepackDone = true;
+
+        }
         public bool shiftDataFormSplit(int formid,int rowSt,int count)
         {
-            DataTable dt = dataFormLst[formid].Clone();
 
-            if((rowSt >0) && ((rowSt+count-1)<= dataFormLst[formid].Rows.Count) && count>0)
+            DataTable dt = dataFormLst[formid].Clone();
+            startRepack();
+            if ((rowSt >0) && ((rowSt+count-1)<= dataFormLst[formid].Rows.Count) && count>0)
             {
                 for (int i = rowSt; i < rowSt+count-1; i++)
                 {
@@ -190,10 +207,11 @@ namespace xjplc
                     dt.ImportRow(dataFormLst[formid].Rows[i]);
                 }
             }
+
             splitDataForm(dt,dataFormLst[formid]);
             isShiftDataForm = true;
 
-            comManager.IsRePackCmdReadDMDataOut = true;
+            doneRepack();
 
             return true;
         }
@@ -207,7 +225,10 @@ namespace xjplc
         public bool shiftDataForm(int formid)
         {
             if (dataFormLst[formid] != null && dataFormLst[formid].Rows.Count > 0)
-            {                                             
+            {
+                startRepack();
+
+                isShiftDataForm = true;
                 dataForm = dataFormLst[formid];
                 int dAreaCount = 0;
 
@@ -233,10 +254,8 @@ namespace xjplc
                 else                                                        
                 if (dataForm != null && dataForm.Rows.Count > 0)
                     PackCmdReadDMDataOut(dataForm);
-                
-                isShiftDataForm = true; 
-                                                                                                                                                                 
-                comManager.IsRePackCmdReadDMDataOut = true;                   
+
+                doneRepack();                                                                                                                                                                                  
 
                 return true;
 
@@ -988,7 +1007,6 @@ namespace xjplc
         {           
             return SetMultipleDArea(addr, value.Count(), value, area);
         }
-
         /// <summary>
         /// 测试M区域写
         /// </summary>

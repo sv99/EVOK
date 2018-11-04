@@ -103,6 +103,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.Microsoft.Office.Core, Version=2.3.0.0, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Debug\Interop.Microsoft.Office.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>bin\Debug\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
     <Reference Include="NPOI">
       <HintPath>bin\Debug\NPOI.dll</HintPath>
     </Reference>
@@ -132,14 +142,19 @@
     <Compile Include="datagridviewWithProgressBar\DataGridViewProgressCell.cs" />
     <Compile Include="datagridviewWithProgressBar\DataGridViewProgressColumn.cs" />
     <Compile Include="delta\DTCommManager.cs" />
+    <Compile Include="delta\TCP\DTModbusTcpCmdPackAndDataUnpack.cs" />
     <Compile Include="delta\DTPlcInfo.cs" />
     <Compile Include="delta\EvokDTWork.cs" />
     <Compile Include="delta\EvokDTDevice.cs" />
     <Compile Include="delta\DTDevice.cs" />
     <Compile Include="delta\SocServerManger.cs" />
+    <Compile Include="delta\TCP\DTTcpClientManager.cs" />
+    <Compile Include="delta\TCP\DTTcpDevice.cs" />
+    <Compile Include="delta\TCP\EvokDTTcpWork.cs" />
     <Compile Include="delta\YBDTDevice.cs" />
     <Compile Include="delta\YBDTWorkManger.cs" />
     <Compile Include="evokWorkManager.cs" />
+    <Compile Include="ExcelObject.cs" />
     <Compile Include="FileConverToMachone.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="workManager.cs" />

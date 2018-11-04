@@ -43,6 +43,12 @@ namespace xjplc
 
         bool isRePackCmdReadDMDataOut = false;
         bool IsRePackymp = false;
+        bool isRepackDone;
+        public bool IsRepackDone
+        {
+            get { return isRepackDone; }
+            set { isRepackDone = value; }
+        }
         public bool IsRePackCmdReadDMDataOut
         {
             get { return isRePackCmdReadDMDataOut; }
@@ -305,7 +311,8 @@ namespace xjplc
                             //设备通了 要开始 连接了哦 准备好了
                             //设置标志位 打开监控定时器 设置发送和 接收命令
                             isDeviceReady = true;
-                            isGoToGetData = true;                            
+                            isGoToGetData = true;
+                            ErrorConnCount = 0;
                             SetCmdOutToCmdReadDMDataOut();
                             m_buffer.Clear();
                             #endregion
@@ -316,6 +323,7 @@ namespace xjplc
                             //设备连接情况下 是写数据区域命令的反馈 还是读数据区域命令的反馈                           
                             if (isWriteCmd)
                             {
+                                ErrorConnCount = 0;
                                 #region 设备连接了 发送设置DM区域数据
                                 //操做XJPLCcmd.CmdOut 只能在一条主线上做 不能再好多地方不然会出错
                                 //这样 写寄存器的数据就要先放在一个缓存寄存命令里
@@ -332,15 +340,19 @@ namespace xjplc
                             else
                             {
                                 #region 数据处理
+                                ErrorConnCount = 0;
                                 //device重新打包监控数据命令
                                 if (IsRePackCmdReadDMDataOut)
-                                {                                  
-                                    SetCmdOutToCmdReadDMDataOut();
-                                    IsRePackCmdReadDMDataOut = false; 
-                                    IsRePackymp=true;
-                                    m_buffer.Clear();
-                                }  
-                                                                                           
+                                {
+                                    if (IsRepackDone)
+                                    {
+                                        SetCmdOutToCmdReadDMDataOut();
+                                        IsRePackCmdReadDMDataOut = false;
+                                        IsRePackymp = true;
+                                        m_buffer.Clear();
+                                    }
+                                }
+                                else                                                                                          
                                 //处理函数不为空 然后 数据开头也对 那就处理数据呗
                                 if ((EventDataProcess != null) )
                                 {                                    
@@ -364,12 +376,14 @@ namespace xjplc
                     {                      
                         m_SerialPort.Send(XJPLCcmd.CmdOut.ToArray());                       
                     }
+                    ErrorConnCount = 0;
                     m_buffer.Clear();
                     #endregion 数据长度合格了
                 }
                 else
-                {                 
-                    //收到字节数超出预计长度了   
+                {
+                    //收到字节数超出预计长度了
+                    ErrorConnCount = 0;
                     if (m_buffer.Count > receivedByteCount) m_buffer.Clear();
                  }
 
@@ -424,7 +438,11 @@ namespace xjplc
             if (isDeviceReady)
             {
                 XJPLCcmd.PackCmdSetBREGOut(Addr, count, value, Area);
-
+                //防止前面在写数据 
+                while (isWriteCmd)
+                {
+                    Application.DoEvents();
+                }
                 isWriteCmd = true;
 
                 ConstantMethod.DelayWriteCmd(Constant.WriteCommTimeOut, ref isWriteCmd);

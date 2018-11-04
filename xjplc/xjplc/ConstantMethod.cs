@@ -25,6 +25,33 @@ namespace xjplc
         static object locker = new object();
 
         public  static string LogFileName ;
+
+        public static void WriteProgramLogProdData(params string[] logs)
+        {
+            lock (locker)
+            {
+                string LogAddress = ConstantMethod.GetAppPath() + "Log";
+                if (!Directory.Exists(LogAddress))
+                {
+                    Directory.CreateDirectory(LogAddress);
+                }
+                LogAddress = string.Concat(LogAddress, "\\",
+                DateTime.Now.Year, '-', DateTime.Now.Month, '-',
+                DateTime.Now.Day, "生产.log");
+                if (!File.Exists(LogAddress))
+                {
+                    var newFile = File.Create(LogAddress);
+                    newFile.Close();
+                }
+                StreamWriter sw = new StreamWriter(LogAddress, true, System.Text.Encoding.Default);
+                foreach (string log in logs)
+                {
+                    sw.WriteLine(string.Format("[{0}] {1}", DateTime.Now.ToString(), log));
+                }
+                LogFileName = LogAddress;
+                sw.Close();
+            }
+        }
         /// <summary>
         /// 重要信息写入日志
         /// </summary>
@@ -77,15 +104,80 @@ namespace xjplc
                 ? localMachineRegistry
                 : localMachineRegistry.OpenSubKey(keyPath);
         }
-
+       
         public static object GetRegistryValue(string keyPath, string keyName)
         {
             RegistryKey registry = GetRegistryKey(keyPath);
             return registry.GetValue(keyName);
         }
     }
+     
     public class ConstantMethod
     {
+        //根据规则转换表格 得到数据表格
+        public static DataTable convertDataTableByRule(DataTable UserDtTmp, List<int> valueCol)
+        {
+            DataTable dtOutPutTmp = new DataTable("file");
+
+            for (int i = 0; i < valueCol.Count(); i++)
+            {
+                if (valueCol[i] >= UserDtTmp.Columns.Count) return null;
+            }
+            //收集数据 保存
+            if (valueCol.Count > 3 && UserDtTmp.Columns.Count >= valueCol.Count)
+            {
+
+                DataColumn dtcolSize = new DataColumn("尺寸");
+
+                DataColumn dtcolCnt = new DataColumn("设定数量");
+
+                DataColumn dtcolCntDone = new DataColumn("已切数量");
+
+                DataColumn dtcolBarCode = new DataColumn("条码");
+
+                dtOutPutTmp.Columns.Add(dtcolSize);
+                dtOutPutTmp.Columns.Add(dtcolCnt);
+                dtOutPutTmp.Columns.Add(dtcolCntDone);
+                dtOutPutTmp.Columns.Add(dtcolBarCode);
+
+                //增加列  ConstantMethod.ShowInfo(rtbResult,"开始转换，转换规则如下");
+                for (int i = 0; i < (valueCol.Count - 3); i++)
+                {
+                    DataColumn dtcolParm = new DataColumn("参数" + (i + 1).ToString());
+                    dtOutPutTmp.Columns.Add(dtcolParm);
+                }
+
+                //增加行
+                foreach (DataRow row in UserDtTmp.Rows)
+                {
+                    DataRow dr2 = dtOutPutTmp.NewRow();
+
+                    for (int i = 0; i < dr2.ItemArray.Length; i++)
+                    {
+                        if (i == 2)
+                        {
+                            dr2[i] = "0";
+                        }
+                        else
+                        {
+                            if (i < 2)
+                            {
+                                dr2[i] = row[valueCol[i]];
+                            }
+                            else
+                            {
+                                dr2[i] = row[valueCol[i - 1]];
+                            }
+                        }
+
+                    }
+
+                    dtOutPutTmp.Rows.Add(dr2);
+                }
+            }
+
+            return dtOutPutTmp;
+        }
         #region 信捷PLC 使用
         /// 变量与表格对应起来 可以实时读取数据
         /// </summary>
@@ -97,7 +189,7 @@ namespace xjplc
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     for (int j = 0; j < psLst.Count; j++)
-                    {                      
+                    {
                         if (dt.Rows[i]["bin"].ToString().Equals(psLst[j].Name))
                         {
 
@@ -107,7 +199,7 @@ namespace xjplc
                             int addrInt = 0;
                             string areaStr = "D";
                             string userdata = dt.Rows[i]["addr"].ToString();
-                            string param3= dt.Rows[i]["param3"].ToString();
+                            string param3 = dt.Rows[i]["param3"].ToString();
                             string param4 = dt.Rows[i]["param4"].ToString();
                             if (!string.IsNullOrWhiteSpace(param3))
                             {
@@ -121,19 +213,53 @@ namespace xjplc
                             //区域符号在前面 后面地址就可以计算了
                             psLst[j].Area = areaStr;
                             psLst[j].Addr = addrInt;
-                                                      
-                            
+
+
                         }
-                    }                  
+                    }
                 }
 
         }
 
-        public static void ShowInfo(string beginToListen)
+        public static bool setControlInPlcSimple(PlcInfoSimple simple2, Control control)
         {
-            throw new NotImplementedException();
+            //20181102 数据获取的唯一性 需要一致才行     XXX读  XXX读写 XXX写读
+            string str1 = control.Tag.ToString() + Constant.Read;
+            string str2 = control.Tag.ToString() + Constant.Write + Constant.Read;
+            string str3 = control.Tag.ToString() + Constant.Read + Constant.Write;
+
+
+            if (simple2.Name.Equals(str1) || simple2.Name.Equals(str2) || simple2.Name.Equals(str3))
+            {
+                simple2.ShowControl = control;
+                return true;
+            }
+
+            return false;
         }
 
+        public static bool setControlInPlcSimple(DTPlcInfoSimple simple2, Control control)
+        {
+            //20181102 数据获取的唯一性 需要一致才行     XXX读  XXX读写 XXX写读        
+
+            string str1 = simple2.Name;
+            string str2 = control.Tag.ToString();
+
+            //如果带读 字样 那就去掉 然后去掉读写 看下 是不是可以在一起
+            if (str1.Contains(Constant.Read))
+            {
+                str1= str1.Replace(Constant.Write, "");
+                str1= str1.Replace(Constant.Read, "");
+
+                if (str1.Equals(str2))
+                {
+                    simple2.ShowControl = control;
+                    return true;
+                }
+            }
+
+            return false;
+        }
         public static bool XJFindPort() //如果可以连接 则写到config里
         {
             SerialPort m_serialPort = new SerialPort();
@@ -180,7 +306,7 @@ namespace xjplc
                     {
                         //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
                         ConstantMethod.SetPortParam(Constant.ConfigSerialportFilePath, Constant.PortName, m_serialPort.PortName);
-                        return true ;
+                        return true;
                     }
 
                 }
@@ -204,6 +330,95 @@ namespace xjplc
 
         }
         #endregion
+        public static int getModeCount(string type)
+        {
+
+            int count = 0;
+            Dictionary<string, int> typerCount = new Dictionary<string, int>();
+            ConstantMethod.ArrayToDictionary(typerCount,Constant.tcpType,Constant.tcpTypeByteCount);
+
+            count = typerCount[type];
+            return count;
+        }
+
+
+        public static string GetParamPwd(int i)
+        {
+            string str = DateTime.Now.ToString("MMdd");
+            int psswdInt = 0;
+            int.TryParse(str, out psswdInt);
+            psswdInt = psswdInt + Constant.PwdOffSet * i;
+            return psswdInt.ToString();
+        }
+        public static string  getValueFromByte(string type,byte[] bytevalue)
+        {
+            string valueStr="";
+
+            if (type.Equals(Constant.Bool) && bytevalue.Count() == Constant.BoolMemory)
+            {
+                sbyte v = (sbyte)bytevalue[0];
+                valueStr = v.ToString();
+            }
+            if (type.Equals(Constant.SINT) && bytevalue.Count() == Constant.SINTMemory)
+            {             
+                sbyte v = (sbyte)bytevalue[0];
+                
+            }
+
+            if (type.Equals(Constant.USINT) && bytevalue.Count() == Constant.USINTMemory)
+            {
+                byte v = (byte)bytevalue[0];
+                valueStr = v.ToString();            
+            }
+            if (type.Equals(Constant.INT) && bytevalue.Count() == Constant.INTMemory)
+            {
+                short v  = BitConverter.ToInt16(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+
+            if (type.Equals(Constant.UINT) && bytevalue.Count() == Constant.UINTMemory)
+            {
+                ushort v = BitConverter.ToUInt16(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+
+            if (type.Equals(Constant.DINT) && bytevalue.Count() == Constant.DINTMemory)
+            {
+                int v = BitConverter.ToInt32(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+            if (type.Equals(Constant.UDINT) && bytevalue.Count() == Constant.UDINTMemory)
+            {
+                uint v = BitConverter.ToUInt32(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+
+            if (type.Equals(Constant.LINT) && bytevalue.Count() == Constant.LINTMemory)
+            {
+                Int64 v = BitConverter.ToInt64(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+            if (type.Equals(Constant.ULINT) && bytevalue.Count() == Constant.ULINTMemory)
+            {
+                UInt64 v = BitConverter.ToUInt64(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+
+            if (type.Equals(Constant.REAL) && bytevalue.Count() == Constant.REALMemory)
+            {
+                float v = BitConverter.ToSingle(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+
+            if (type.Equals(Constant.LREAL) && bytevalue.Count() == Constant.LREALMemory)
+            {
+                double v = BitConverter.ToDouble(bytevalue, 0);
+                valueStr = v.ToString();
+            }
+
+            return valueStr;
+        }
+
 
         public static List<int> DeleteDataFromARefB(List<int> A, List<int> B)
         {
@@ -222,7 +437,7 @@ namespace xjplc
             string keyPath = @"SOFTWARE\Microsoft\Windows\CurrentVersion\Run\";
             string keyName = softName;
             object connectionString = RegistryHelpers.GetRegistryValue(keyPath, keyName);
-            String dir="";
+            String dir = "";
             try
             {
                 dir = Path.GetDirectoryName(connectionString.ToString()) + "\\";
@@ -238,7 +453,7 @@ namespace xjplc
         }
         public static void AutoStart(bool isAuto)
         {
-                                 
+
             try
             {
                 if (isAuto == true)
@@ -271,6 +486,83 @@ namespace xjplc
             }
         }
 
+        public static void FindPosTcp(DataTable dt, List<DTPlcInfoSimple> psLst)
+        {
+            if (dt != null && psLst.Count > 0)
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    for (int j = 0; j < psLst.Count; j++)
+                    {
+                        if (dt.Rows[i]["bin"].ToString().Equals(psLst[j].Name))
+                        {
+
+                            psLst[j].Mode = dt.Rows[i]["mode"].ToString();
+                            psLst[j].RowIndex = i;
+                            psLst[j].BelongToDataform = dt;
+                            int addrInt = 0;
+                            string areaStr = "D";
+                            string userdata = dt.Rows[i]["addr"].ToString();
+                            string param3 = dt.Rows[i]["param3"].ToString();
+                            string param4 = dt.Rows[i]["param4"].ToString();
+                            if (!string.IsNullOrWhiteSpace(param3))
+                            {
+                                psLst[j].ShowStr.Add(param3);
+                            }
+                            if (!string.IsNullOrWhiteSpace(param4))
+                            {
+                                psLst[j].ShowStr.Add(param4);
+                            }
+
+                            ConstantMethod.getAddrAndAreaByStr(userdata, ref addrInt, ref areaStr);
+                           // ConstantMethod.SplitAreaAndAddr(userdata, ref addrInt, ref areaStr);
+                            //区域符号在前面 后面地址就可以计算了
+                            psLst[j].Area = areaStr;
+                            psLst[j].Addr = addrInt;
+
+
+                        }
+                    }
+                }
+
+        }
+        public static void getAddrAndAreaByStr(string strArea, ref int addr, ref string area)
+        {
+            string strSplit1;
+            string strSplit2;//地址区域          
+
+            strSplit1 = Regex.Replace(strArea.Trim(), "[A-Z]", "", RegexOptions.IgnoreCase);
+
+            //取字母
+            strSplit2 = Regex.Replace(strArea.Trim(), "[0-9]", "", RegexOptions.IgnoreCase);
+
+            strSplit1 = strSplit1.Trim();
+            strSplit2 = strSplit2.Trim();
+            strSplit2 = strSplit2.Replace(".", "");
+
+            area = strSplit2;
+
+
+            if (strSplit1.Contains("."))
+            {
+                int z = 0;
+                int x = 0;
+                string[] value = strSplit1.Split('.');
+                if (value.Count() == 2)
+                {
+                    if (int.TryParse(value[0], out z) && int.TryParse(value[1], out x))
+                    {
+                        addr = z * 8 + x;
+                    }
+                }
+            }
+            else
+            {
+                if (!int.TryParse(strSplit1, out addr))
+                {
+
+                }
+            }
+        }
         public static void FindPos(DataTable dt, List<DTPlcInfoSimple> psLst)
         {
             if (dt != null && psLst.Count > 0)
@@ -390,11 +682,11 @@ namespace xjplc
             D d = Activator.CreateInstance<D>(); //构造新实例
             try
             {
-               
+
 
                 var Types = s.GetType();//获得类型  
                 var Typed = typeof(D);
-              
+
                 foreach (PropertyInfo sp in Types.GetProperties())//获得类型的属性字段  
                 {
                     foreach (PropertyInfo dp in Typed.GetProperties())
@@ -413,7 +705,7 @@ namespace xjplc
             return d;
         }
 
-        public  static void CheckAllCtrls(Control item, Queue<Control> allCtrls)
+        public static void CheckAllCtrls(Control item, Queue<Control> allCtrls)
         {
             for (int i = 0; i < item.Controls.Count; i++)
             {
@@ -426,7 +718,7 @@ namespace xjplc
         }
         public static void ShowInfo(RichTextBox r1, string s)
         {
-            if (r1 != null && r1.IsHandleCreated )
+            if (r1 != null && r1.IsHandleCreated)
             {
                 r1.Invoke((EventHandler)(delegate
                 {
@@ -448,10 +740,10 @@ namespace xjplc
         {
             if (op1 != null)
             {
-                if(File.Exists(op1.FileName))
-                op1.InitialDirectory = Path.GetDirectoryName(op1.FileName);
+                if (File.Exists(op1.FileName))
+                    op1.InitialDirectory = Path.GetDirectoryName(op1.FileName);
             }
-               
+
         }
 
         public static string getStrInKuoHao(string s)
@@ -461,11 +753,11 @@ namespace xjplc
             int pos1 = s.IndexOf(">");
             if (pos0 > -1 && pos1 > -1 && pos1 > pos0)
             {
-                result = s.Substring(pos0+1, pos1 - pos0-1);          
+                result = s.Substring(pos0 + 1, pos1 - pos0 - 1);
             }
             return result;
         }
-        public static void SetText(Control  r1, string s)
+        public static void SetText(Control r1, string s)
         {
             if (r1 != null && r1.IsHandleCreated)
             {
@@ -487,7 +779,7 @@ namespace xjplc
             }
 
         }
-        
+
         #region 加密
 
         /// <summary>
@@ -502,14 +794,11 @@ namespace xjplc
             {
                 Application.DoEvents();
             }
-            string str = DateTime.Now.ToString("MMdd");
-            int psswdInt = 0;
-            int.TryParse(str, out psswdInt);
-            psswdInt = psswdInt + Constant.PwdOffSet;
-            if (psswd.userInput.Equals(psswdInt.ToString()))
+                 
+            if (psswd.userInput.Equals(ConstantMethod.GetParamPwd(1)))
             {
                 psswd.Close();
-                return true;              
+                return true;
             }
             else
             {
@@ -518,7 +807,7 @@ namespace xjplc
                 return false;
             }
 
-           
+
         }
         /// <summary>
         /// 程序 根据日期加密 日期乘以后面的count为密码
@@ -526,7 +815,7 @@ namespace xjplc
         /// <returns></returns>
         public static bool InitPassWd()
         {
-            ConfigFileManager passWdFile  = new ConfigFileManager();
+            ConfigFileManager passWdFile = new ConfigFileManager();
 
             passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
 
@@ -537,7 +826,7 @@ namespace xjplc
             int readCountInt = 0;
             passWdFile.Dispose();
 
-            if (int.TryParse(readTimeStr, out readTimeInt) && 
+            if (int.TryParse(readTimeStr, out readTimeInt) &&
                 int.TryParse(readCountStr, out readCountInt))
             {
                 DateTime dt = DateTime.ParseExact(readTimeStr, "yyyyMMdd", System.Globalization.CultureInfo.CurrentCulture);
@@ -547,7 +836,7 @@ namespace xjplc
                 if (dt <= DateTime.Now)
                 {
                     passWdForm form = new passWdForm();
-                    form.Pwd = (readCountInt* readTimeInt).ToString();
+                    form.Pwd = (readCountInt * readTimeInt).ToString();
                     form.PwdCount = readCountInt;
                     form.IsStart = true;
                     form.ShowDialog();
@@ -555,13 +844,13 @@ namespace xjplc
             }
             return true;
         }
-       
+
         #endregion
         public static void Optimize(int n, int[] w, int[] v, int[] x, int C)
-      {
+        {
 
-            int[,] V = new int[n+1,C+1];//前i个物品装入容量为j的背包中获得的最大价值
-	        int i, j;
+            int[,] V = new int[n + 1, C + 1];//前i个物品装入容量为j的背包中获得的最大价值
+            int i, j;
             for (i = 0; i <= n; i++)
             {
                 V[i, 0] = 0;
@@ -573,32 +862,32 @@ namespace xjplc
 
             for (i = 1; i <= n - 1; i++)
                 for (j = 1; j <= C; j++)
-                {      
+                {
                     if (j < w[i])
 
                         V[i, j] = V[i - 1, j];
                     else
                         V[i, j] = max(V[i - 1, j], V[i - 1, j - w[i]] + v[i]);
                 }
-			j = C;
-           for (i = n - 1;i > 0;i--)
-			{
-    
-                if (V[i,j] > V[i - 1,j])
-				{
-					x[i] = 1;
-					j = j - w[i];
-				}
-				else
-					x[i] = 0;
-			}
+            j = C;
+            for (i = n - 1; i > 0; i--)
+            {
+
+                if (V[i, j] > V[i - 1, j])
+                {
+                    x[i] = 1;
+                    j = j - w[i];
+                }
+                else
+                    x[i] = 0;
+            }
 
             V = null;
 
             //GC.Collect();
             //GC.WaitForPendingFinalizers();           
-            return; 
-    }
+            return;
+        }
         public static DataTable GetDgvToTable(DataGridView dgv)
         {
             DataTable dt = new DataTable();
@@ -621,6 +910,35 @@ namespace xjplc
                 dt.Rows.Add(dr);
             }
             return dt;
+        }
+        //返回整型数据的 字节表示 低位在前 高位在后 配合insert range 的方式
+        public static byte[] getDataLowHighByte(int addr)
+        {
+            if (addr < 0) return null;
+
+            List<byte> resultLst = new List<byte>();
+
+
+            int addr_low = addr & 0xFF;
+            resultLst.Add((byte)addr_low);
+
+            int addr_high = (addr & 0xFF00) >> 8;
+            resultLst.Add((byte)addr_high);
+            return resultLst.ToArray();
+        }
+        public static byte[] getDataHighLowByte(int addr)
+        {
+            if (addr < 0) return null;
+
+            List<byte> resultLst = new List<byte>();
+            int addr_high = (addr & 0xFF00) >> 8;
+            resultLst.Add((byte)addr_high);
+
+            int addr_low = addr & 0xFF;
+            resultLst.Add((byte)addr_low);
+            return resultLst.ToArray();
+
+
         }
         /// <summary>
         /// 判断是否八进制格式字符串
@@ -652,15 +970,15 @@ namespace xjplc
         public static int GetXYAddr10To8(int addr)
         {
             string strAddr = Convert.ToString(addr, 8);
-            if(int.TryParse(strAddr,out addr))
+            if (int.TryParse(strAddr, out addr))
             {
                 return addr;
             }
             return 0;
-          
+
         }
         //比较两个字节数据 是否相等 以最小的字节数组为基础 局部相等 则返回true
-        public static  bool compareByte(byte[] b1, byte[] b2)
+        public static bool compareByte(byte[] b1, byte[] b2)
         {
 
             int b1cnt = b1.Count();
@@ -683,7 +1001,7 @@ namespace xjplc
             if (j < 1) return false;
             for (int i = 0; i < j; i++)
             {
-                if (!b1[i] .Equals( b2[i]))
+                if (!b1[i].Equals(b2[i]))
                 { return false; }
             }
             return true;
@@ -710,7 +1028,7 @@ namespace xjplc
 
             return strColumns;
         }
-        public static bool SetPortParam(string filepath,string property,string value)
+        public static bool SetPortParam(string filepath, string property, string value)
         {
             ConfigFileManager configManager = new ConfigFileManager();
             if (File.Exists(filepath))
@@ -725,6 +1043,55 @@ namespace xjplc
             configManager.WriteConfig(property, value);
 
             return true;
+        }
+        //根据字符 将相应数组添加到字典
+        public static void ArrayToDictionary(Dictionary<string, int> dt, string[] r1, int[] r2)
+        {
+            if (r1.Length != r2.Length) return;
+            if (r1 == null || r2 == null || dt == null) return;
+            for (int i = 0; i < r1.Count(); i++)
+            {
+                dt.Add(r1[i],r2[i]);
+            }
+        }
+
+        public static void ArrayToDictionary(Dictionary<int, int> dt, int[] r1, int[] r2)
+        {
+            if (r1.Length != r2.Length) return;
+            if (r1 == null || r2 == null || dt == null) return;
+            for (int i = 0; i < r1.Count(); i++)
+            {
+                dt.Add(r1[i], r2[i]);
+            }
+        }
+        public static ServerInfo LoadServerParam(string filepath)
+        {
+            ServerInfo portparam0 = new ServerInfo();
+            ConfigFileManager configManager = new ConfigFileManager();
+
+            if (configManager != null)
+            {
+                if (File.Exists(filepath)) 
+                    configManager.LoadFile(filepath);
+                else
+                {
+                    MessageBox.Show(Constant.ErrorSerialportConfigFile);
+                    Application.Exit();
+                    System.Environment.Exit(0);
+                }
+
+                string ip = configManager.ReadConfig(Constant.ServerIp);
+
+                string port= configManager.ReadConfig(Constant.ServerIpPort);
+
+                portparam0.server_Ip = ip;
+
+                portparam0.server_Port = port;
+                //GC.Collect();
+                //GC.WaitForPendingFinalizers();
+
+            }
+            return portparam0;
         }
         public static PortParam LoadPortParam(string filepath)
         {
@@ -863,6 +1230,72 @@ namespace xjplc
              //返回指示文件是否已被其它程序使用的值
             return result;
         }//end method FileIsUsed
+
+        public static bool SplitAreaAndAddrTcp(string userdata, ref int addr, ref string area)
+        {
+            string strAddr;
+            //取数字 用替代的字符的方法 取数组就替换字母为空 取字母就替换数字
+            strAddr = Regex.Replace(userdata, "[A-Z]", "", RegexOptions.IgnoreCase);
+
+            //取字母
+            area = Regex.Replace(userdata, "[0-9]", "", RegexOptions.IgnoreCase);
+
+            
+            if (strAddr.Contains("."))
+            {
+                int z = 0;
+                int x = 0;
+                area = area.Replace(".", "");
+                string[] value = strAddr.Split('.');
+                if (value.Count() == 2)
+                {
+                    if (int.TryParse(value[0], out z) && int.TryParse(value[1], out x))
+                    {
+                        addr = z * 8 + x;
+                    }
+                }
+            }
+            else
+            {                         
+               if (!int.TryParse(strAddr, out addr)) return false;              
+            }
+
+            if (strAddr == null || area == null)
+            {
+                return false;
+            };
+            //地址超了 无效 暂且定XDM 最大69999
+            if (!int.TryParse(strAddr, out addr) || (addr < 0) || (addr > Constant.XJMaxAddr))
+            {
+                return false;
+            }
+
+
+
+            return true;
+        }
+        public static bool IsReadBit(byte[] cmd)
+        {
+            List<byte> cmdLst = new List<byte>();
+            cmdLst.AddRange(cmd);
+            if (cmd.Count() > 8)
+            {
+                return ConstantMethod.compareByteStrictly(cmdLst.Skip(7).Take(2).ToArray(), Constant.DTTcpFunctionReadBitCmd);
+            }
+
+            return false;
+        }
+        public static bool IsReadByte(byte[] cmd)
+        {
+            List<byte> cmdLst = new List<byte>();
+            cmdLst.AddRange(cmd);
+            if (cmd.Count() > 8)
+            {
+                return ConstantMethod.compareByteStrictly(cmdLst.Skip(7).Take(2).ToArray(), Constant.DTTcpFunctionReadByteCmd);
+            }
+
+            return false;
+        }
         public static bool SplitAreaAndAddr(string userdata,ref int addr,ref string area)
         {
             string strAddr;
@@ -893,6 +1326,25 @@ namespace xjplc
             else
                 return b;
             //return a>b?a:b;
+        }
+        //数组比较 指定几个前面几个数据
+        public static bool compareByteStrictly(byte[] b1, byte[] b2,int cnt)
+        {
+
+            int b1cnt = b1.Count();
+            int b2cnt = b2.Count();
+            if (cnt > b1cnt || cnt > b2cnt) return false;
+            if (b1cnt != b2cnt) return false;
+            //  int j = b1cnt > b2cnt ? b2cnt : b1cnt;
+            int j = cnt;
+            if (j < 1) return false;
+            for (int i = 0; i < j; i++)
+            {
+                if (b1[i] != b2[i])
+                { return false; }
+            }
+            return true;
+
         }
         //比较两个字节数据 是否相等 以最小的字节数组为基础 局部相等 则返回true
         public static bool compareByteStrictly(byte[] b1, byte[] b2)
@@ -1039,6 +1491,21 @@ namespace xjplc
                 Application.DoEvents();
             }
         }
+        //写数据的时候判断下 不等 或者 超时退出
+        public static void DelayWriteCmdOk(int milliSecond, ref int valueOld, ref PlcInfoSimple p,ref bool  IsWriteSuccess)
+        {
+            int start = Environment.TickCount;
+            IsWriteSuccess = false;
+            while ((Math.Abs(Environment.TickCount - start) < milliSecond))
+            {
+                if (valueOld == p.ShowValue)
+                {
+                    IsWriteSuccess = true;
+                    break;
+                }
+                Application.DoEvents();
+            }          
+        }
         public static void DelayWriteCmdOk(int milliSecond, ref int valueOld, ref DTPlcInfoSimple p)
         {
             int start = Environment.TickCount;
@@ -1135,9 +1602,10 @@ namespace xjplc
                 }
             }
             byte[] ReturnData = new byte[2];
-            ReturnData[0] = CRC16Hi;       //CRC高位 
-            ReturnData[1] = CRC16Lo;       //CRC低位 
+            ReturnData[0] =CRC16Lo;       //CRC高位 
+            ReturnData[1] = CRC16Hi;       //CRC低位 
             return ReturnData;
+
         }
         public static byte[] DeltaByteToCmd(byte[] cmd)
         {

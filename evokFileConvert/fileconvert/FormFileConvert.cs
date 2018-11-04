@@ -23,6 +23,8 @@ namespace fileconvert
 
         CsvStreamReader csvSaveDemo;
 
+        ConfigFileManager paraFile;
+
         int userSelectIdx = 0;
         public int UserSelectIdx
         {
@@ -78,108 +80,163 @@ namespace fileconvert
                 MessageBox.Show("条码文件不存在！");
             }
 
+
+            //20181018读取参数 因为欧派需要根据特定的参数进行分类
+            paraFile = new ConfigFileManager();
+            if (File.Exists(Constant.ConfigParamFilePath))
+            {
+                paraFile.LoadFile(Constant.ConfigParamFilePath);
+            }
+            paramStr = new List<string>();
+            int i = 1;
+            string s="";            
+            while (!string.IsNullOrWhiteSpace(s=paraFile.ReadConfig(Constant.strParam + i.ToString())))
+            {
+                string ss = s;
+                paramStr.Add(ss);
+                i++;
+            }
+
             string beizhu = "014180830001032-PWGA0002 01|";
             DeleteStr(ref beizhu,"|");         
 
         }
+
+        List<string> paramStr;
         public void DeleteStr(ref string beizhu, string s)
         {
             if (s.Length > 0 && beizhu.Contains(s))
                 beizhu = beizhu.Replace(s, "");
         }
-        private void button1_Click(object sender, EventArgs e)
-        {         
-                          
-        }
-        private void button2_Click(object sender, EventArgs e)
+        public void fileConvertFun(string PathStr)
         {
-         
+            //首先判断下 参数名 是否在源表格列名中存在
+            bool isParamExist = true;;
+            string[] strColumns = new string[UserDt.Columns.Count];
+            for (int i = 0; i < UserDt.Columns.Count; i++)
+            {
+                strColumns[i] = UserDt.Columns[i].ColumnName;
+            }
+            for (int i = 0; i < paramStr.Count; i++)
+            {
+                if (!strColumns.Contains(paramStr[i]))
+                {
+                    isParamExist = false;
+                }
+            }
+            //不存在就代表参数没用
+            if (!isParamExist)
+            {
+                if (
+                (dtOutPut = fileManager.
+                saveDataTableToFile(rtbResult, PathStr, pBar1, UserDt, valueCol, true, null)) == null)
+                {
+                    ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                }
+            }
+            else
+            {
+                //存在 则开始分割表格 把表格集合 第一给dtouput 用户可以查看条码
+                List<DataTable> dt = new List<DataTable>();
+                getDataTableByParam(dt, UserDt, paramStr);
+                foreach (DataTable dttemp in dt)
+                {
+                    if (dtOutPut == null)
+                    {
+                        if((dtOutPut = fileManager.saveDataTableToFile(rtbResult, PathStr, pBar1, dttemp, valueCol, false,paramStr))==null)
+                        {
+                            ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                        }
+                        
+                    }
+                    else
+                    {
+                        if (fileManager.saveDataTableToFile(rtbResult, PathStr, pBar1, dttemp, valueCol, false, paramStr) == null)
+                        {
+                            ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                        }
+                    }
+                }
+                
+            }
+
+           ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换结束！");
+
+        }
+        //传入要取的列名 paramL 和要比较的值 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>  要查询的表格
+        /// <param name="paramL"></param> 要取拿一列 其中的列名
+        /// <param name="value"></param> 这一列的 第一行的值
+        /// <returns></returns>
+        bool jugeIsParamExist(DataTable dt,List<string> paramL,List<string> value)
+        {
+            List<string> checkStr = new List<string>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (string s in paramL)
+                {
+                    checkStr.Add(dt.Rows[0][s].ToString());
+                }
+                return ConstantMethod.compareString(checkStr.ToArray(),value.ToArray());
+            }          
+            return false;
+        }
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dtLst"></param> 表格集合
+        /// <param name="res"></param>源表格
+        /// <param name="paramL"></param>根据哪几列 来分
+        void getDataTableByParam(List<DataTable> dtLst,DataTable res,List<string> paramL)
+        {
+            if (paramL.Count == 0) return;
            
+            //思路逐行扫描 扫到表格列表没有的样式 就新建表格
+            foreach(DataRow dr in res.Rows)
+            {
+                //获取当前行的值
+                List<string> paramStrLst = new List<string>();
+                foreach (string param in paramL)
+                {                 
+                    paramStrLst.Add(dr[param].ToString().Trim());                   
+                }
+
+                //开始判断当前行是否在表格集合里是否存在
+                bool isExit = false;
+                //寻找表格
+                foreach (DataTable dt in dtLst)
+                {
+                    if (jugeIsParamExist(dt, paramL, paramStrLst))
+                     {
+                        isExit = true;
+                        DataRow dr0 = dt.NewRow();
+                        dr0.ItemArray = dr.ItemArray;
+                        dt.Rows.Add(dr0);
+                        break;
+                     }
+                }
+                //如果样式没有那就创建表格
+                if (!isExit)
+                {
+                    DataTable dtTemp = res.Clone();
+                    DataRow dr0 = dtTemp.NewRow();
+                    dr0.ItemArray = dr.ItemArray;
+                    dtTemp.Rows.Add(dr0);
+                    dtLst.Add(dtTemp);
+                }                           
+            }
+
         }
 
         DataTable dtOutPut ;
         private void button3_Click(object sender, EventArgs e)
         {
-            dtOutPut = null;
-            dtOutPut = new DataTable("file");
-            rtbResult.Clear();
-            pBar1.Value = 0;
-            pBar1.Minimum = 0;
-            //收集数据 保存
-            if (valueCol.Count > 3  && UserDt.Columns.Count >= valueCol.Count)
-            {
-                pBar1.Maximum = UserDt.Rows.Count;
-
-                DataColumn dtcolSize = new DataColumn("尺寸");
-
-                DataColumn dtcolCnt = new DataColumn("设定数量");
-
-                DataColumn dtcolCntDone = new DataColumn("已切数量");
-
-                DataColumn dtcolBarCode = new DataColumn("条码");
-
-                dtOutPut.Columns.Add(dtcolSize);
-                dtOutPut.Columns.Add(dtcolCnt);
-                dtOutPut.Columns.Add(dtcolCntDone);
-                dtOutPut.Columns.Add(dtcolBarCode);
-                ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[0]].ColumnName + "=====>" + dtOutPut.Columns[0].ColumnName);
-                ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[1]].ColumnName + "=====>" + dtOutPut.Columns[1].ColumnName);
-                ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[2]].ColumnName + "=====>" + dtOutPut.Columns[3].ColumnName);
-
-                //增加列  ConstantMethod.ShowInfo(rtbResult,"开始转换，转换规则如下");
-                for (int i = 0; i < (valueCol.Count - 3); i++)
-                {
-                    DataColumn dtcolParm = new DataColumn("参数" + (i + 1).ToString());                   
-                    dtOutPut.Columns.Add(dtcolParm);
-                    ConstantMethod.ShowInfo(rtbResult, UserDt.Columns[valueCol[i+3]].ColumnName + "=====>" + dtOutPut.Columns[i+4].ColumnName);
-                }
-               
-               
-                
-                //增加行
-                foreach (DataRow row in UserDt.Rows)
-                {
-                    DataRow dr2 = dtOutPut.NewRow();
-
-                    pBar1.Value = pBar1.Value + 1;
-
-                    for (int i = 0; i < dr2.ItemArray.Length; i++)
-                    {
-                        if (i == 2)
-                        {
-                            dr2[i] = "0";
-                        }
-                        else
-                        {
-                            if (i < 2)
-                            {
-                                dr2[i] = row[valueCol[i]];
-                            }
-                            else
-                            {
-                                dr2[i] = row[valueCol[i - 1]];
-                            }
-                        }
-
-                    }
-
-                    dtOutPut.Rows.Add(dr2);
-                }
-
-            }
-
-            string filename = DialogExcelDataLoad.FileName;
-
-            string dir = Path.GetDirectoryName(filename);
-
-            string filestr = Path.GetFileNameWithoutExtension(filename);
-
-            filename = dir + "\\" + filestr + "Machine.csv";
-
-            SaveFile(dtOutPut, filename);
-
-            ConstantMethod.ShowInfo(rtbResult,DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss")+"转换结束！");
-
+                                  
+            fileConvertFun(DialogExcelDataLoad.FileName);
             if (File.Exists(Constant.barCodeDemo))
             {
                 barCodeButton.Enabled = true;
@@ -354,10 +411,7 @@ namespace fileconvert
 
         }
 
-        private void SaveFile(DataTable dt,string filename)
-        {
-            csvop.SaveCSV(dt,filename);
-        }
+        
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult drresult;

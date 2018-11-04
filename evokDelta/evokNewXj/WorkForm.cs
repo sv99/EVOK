@@ -25,7 +25,7 @@ namespace evokNewDT
         public WorkForm()
         {
            
-            ConstantMethod.InitPassWd();
+           // ConstantMethod.InitPassWd();
             InitializeComponent();
         }
 

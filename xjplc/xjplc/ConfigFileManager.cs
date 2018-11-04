@@ -38,7 +38,7 @@ namespace xjplc
         public String ReadConfig(string key)
             {
                 XmlAttribute atrr;
-                string str = "0";
+                string str = "";
                 XmlNodeList nodes = _xmldoc.GetElementsByTagName("config");
                 for (int i = 0; i < nodes.Count; i++)
                 {

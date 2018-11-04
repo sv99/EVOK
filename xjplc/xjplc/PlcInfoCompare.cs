@@ -30,4 +30,16 @@ namespace xjplc
             return obj.RelAddr.GetHashCode();
         }
     }
+    public class ModelComparerDTTcpInfo : IEqualityComparer<DTTcpPlcInfo>
+    {
+        public bool Equals(DTTcpPlcInfo x, DTTcpPlcInfo y)
+        {
+            return ((x.RelAddr == y.RelAddr) && (x.IntArea == y.IntArea));
+        }
+        public int GetHashCode(DTTcpPlcInfo obj)
+        {
+            return obj.RelAddr.GetHashCode();
+        }
+    }
+
 }

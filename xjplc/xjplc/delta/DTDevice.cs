@@ -10,6 +10,8 @@ using System.Windows.Forms;
 
 namespace xjplc
 {
+
+ 
     /// <summary>
     /// 此类的说明
     /// 1.使用commmanager来进行数据接收发送
@@ -90,7 +92,6 @@ namespace xjplc
         void Init(List<string> filestr)
         {
             
-
             DataFormLst = new List<DataTable>();
             CSVData = new CsvStreamReader();
             dgShowLst = new List<DataGridView>();
@@ -111,7 +112,7 @@ namespace xjplc
             if (dataFormLst.Count > 0)
                 SetPlcReadDMData(dataFormLst[0]);
 
-            //设置端口
+            //设置端口  
             SetComm(portParam);
 
             //监控通讯

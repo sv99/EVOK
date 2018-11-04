@@ -46,8 +46,13 @@
             this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button6 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.stopBtn = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.pauseBtn = new System.Windows.Forms.Button();
+            this.autoSLBtn = new System.Windows.Forms.Button();
+            this.ccBtn = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.printcb = new System.Windows.Forms.ComboBox();
             this.rtbWork = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -55,7 +60,9 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.slLbl = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -66,15 +73,10 @@
             this.UserData = new System.Windows.Forms.DataGridView();
             this.loadDataBtn = new System.Windows.Forms.Button();
             this.resetBtn = new System.Windows.Forms.Button();
-            this.autoSLBtn = new System.Windows.Forms.Button();
-            this.stopBtn = new System.Windows.Forms.Button();
-            this.pauseBtn = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
-            this.ccBtn = new System.Windows.Forms.Button();
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button11 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -252,8 +254,13 @@
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tabPage1.Controls.Add(this.button6);
+            this.tabPage1.Controls.Add(this.button11);
+            this.tabPage1.Controls.Add(this.stopBtn);
             this.tabPage1.Controls.Add(this.button5);
+            this.tabPage1.Controls.Add(this.pauseBtn);
+            this.tabPage1.Controls.Add(this.autoSLBtn);
+            this.tabPage1.Controls.Add(this.ccBtn);
+            this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.printcb);
             this.tabPage1.Controls.Add(this.rtbWork);
             this.tabPage1.Controls.Add(this.button1);
@@ -263,11 +270,7 @@
             this.tabPage1.Controls.Add(this.UserData);
             this.tabPage1.Controls.Add(this.loadDataBtn);
             this.tabPage1.Controls.Add(this.resetBtn);
-            this.tabPage1.Controls.Add(this.autoSLBtn);
-            this.tabPage1.Controls.Add(this.stopBtn);
-            this.tabPage1.Controls.Add(this.pauseBtn);
             this.tabPage1.Controls.Add(this.button10);
-            this.tabPage1.Controls.Add(this.ccBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
             this.tabPage1.Location = new System.Drawing.Point(4, 33);
@@ -278,23 +281,37 @@
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // button11
             // 
-            this.button6.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button6.Location = new System.Drawing.Point(1020, 130);
-            this.button6.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(164, 52);
-            this.button6.TabIndex = 124;
-            this.button6.Tag = "伺服上料位";
-            this.button6.Text = "伺服上料位";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button11.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button11.Location = new System.Drawing.Point(241, 133);
+            this.button11.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(164, 47);
+            this.button11.TabIndex = 90;
+            this.button11.Tag = "喷胶";
+            this.button11.Text = "喷胶";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // stopBtn
+            // 
+            this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.stopBtn.Location = new System.Drawing.Point(624, 250);
+            this.stopBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.stopBtn.Name = "stopBtn";
+            this.stopBtn.Size = new System.Drawing.Size(164, 52);
+            this.stopBtn.TabIndex = 111;
+            this.stopBtn.Tag = "停止";
+            this.stopBtn.Text = "停止";
+            this.stopBtn.UseVisualStyleBackColor = true;
+            this.stopBtn.Visible = false;
+            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
             // 
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button5.Location = new System.Drawing.Point(822, 130);
+            this.button5.Location = new System.Drawing.Point(833, 130);
             this.button5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(164, 52);
@@ -303,6 +320,60 @@
             this.button5.Text = "拉料";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // pauseBtn
+            // 
+            this.pauseBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.pauseBtn.Location = new System.Drawing.Point(833, 72);
+            this.pauseBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.pauseBtn.Name = "pauseBtn";
+            this.pauseBtn.Size = new System.Drawing.Size(164, 52);
+            this.pauseBtn.TabIndex = 112;
+            this.pauseBtn.Tag = "暂停";
+            this.pauseBtn.Text = "暂停";
+            this.pauseBtn.UseVisualStyleBackColor = true;
+            this.pauseBtn.Click += new System.EventHandler(this.pauseBtn_Click);
+            // 
+            // autoSLBtn
+            // 
+            this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.autoSLBtn.Location = new System.Drawing.Point(1020, 130);
+            this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.autoSLBtn.Name = "autoSLBtn";
+            this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
+            this.autoSLBtn.TabIndex = 111;
+            this.autoSLBtn.Tag = "自动上料";
+            this.autoSLBtn.Text = "自动上料";
+            this.autoSLBtn.UseVisualStyleBackColor = true;
+            this.autoSLBtn.Visible = false;
+            this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
+            // 
+            // ccBtn
+            // 
+            this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ccBtn.Location = new System.Drawing.Point(433, 128);
+            this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.ccBtn.Name = "ccBtn";
+            this.ccBtn.Size = new System.Drawing.Size(164, 52);
+            this.ccBtn.TabIndex = 109;
+            this.ccBtn.Tag = "自动测长标志";
+            this.ccBtn.Text = "测长";
+            this.ccBtn.UseVisualStyleBackColor = true;
+            this.ccBtn.Visible = false;
+            this.ccBtn.Click += new System.EventHandler(this.ccBtn_Click);
+            // 
+            // button6
+            // 
+            this.button6.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.button6.Location = new System.Drawing.Point(1208, 133);
+            this.button6.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(164, 52);
+            this.button6.TabIndex = 124;
+            this.button6.Tag = "伺服上料位";
+            this.button6.Text = "伺服上料位";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // printcb
             // 
@@ -325,10 +396,8 @@
             // 
             // button1
             // 
-            this.button1.Enabled = false;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(1208, 133);
+            this.button1.Location = new System.Drawing.Point(624, 72);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(164, 52);
@@ -336,6 +405,7 @@
             this.button1.Tag = "急停";
             this.button1.Text = "急停";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // qClr
             // 
@@ -357,7 +427,7 @@
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(10, 10);
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.rtbResult);
-            this.panel1.Location = new System.Drawing.Point(698, 189);
+            this.panel1.Location = new System.Drawing.Point(699, 193);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(674, 563);
@@ -365,15 +435,17 @@
             // 
             // rtbResult
             // 
-            this.rtbResult.Location = new System.Drawing.Point(19, 13);
+            this.rtbResult.Location = new System.Drawing.Point(17, 14);
             this.rtbResult.Name = "rtbResult";
-            this.rtbResult.Size = new System.Drawing.Size(632, 528);
+            this.rtbResult.Size = new System.Drawing.Size(639, 527);
             this.rtbResult.TabIndex = 5;
             this.rtbResult.Text = "";
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.lcTxt);
+            this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.slLbl);
             this.groupBox1.Controls.Add(this.label3);
@@ -386,6 +458,20 @@
             this.groupBox1.Size = new System.Drawing.Size(1332, 60);
             this.groupBox1.TabIndex = 117;
             this.groupBox1.TabStop = false;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox1.Location = new System.Drawing.Point(1087, 15);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(112, 38);
+            this.textBox1.TabIndex = 111;
+            this.textBox1.Tag = "门刀数";
+            this.textBox1.Text = "0";
+            this.textBox1.Enter += new System.EventHandler(this.AutoTextBox_Enter);
+            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
+            this.textBox1.Leave += new System.EventHandler(this.AutoTxt_Leave);
             // 
             // lcTxt
             // 
@@ -400,6 +486,17 @@
             this.lcTxt.Enter += new System.EventHandler(this.AutoTextBox_Enter);
             this.lcTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lcTxt_KeyPress);
             this.lcTxt.Leave += new System.EventHandler(this.AutoTxt_Leave);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label4.Location = new System.Drawing.Point(975, 18);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(124, 28);
+            this.label4.TabIndex = 110;
+            this.label4.Text = "门刀数：";
             // 
             // label10
             // 
@@ -484,7 +581,7 @@
             // UserData
             // 
             this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UserData.Location = new System.Drawing.Point(31, 189);
+            this.UserData.Location = new System.Drawing.Point(40, 191);
             this.UserData.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.UserData.Name = "UserData";
             this.UserData.RowTemplate.Height = 23;
@@ -520,45 +617,6 @@
             this.resetBtn.UseVisualStyleBackColor = true;
             this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
             // 
-            // autoSLBtn
-            // 
-            this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(241, 133);
-            this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.autoSLBtn.Name = "autoSLBtn";
-            this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
-            this.autoSLBtn.TabIndex = 111;
-            this.autoSLBtn.Tag = "自动上料";
-            this.autoSLBtn.Text = "自动上料";
-            this.autoSLBtn.UseVisualStyleBackColor = true;
-            this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
-            // 
-            // stopBtn
-            // 
-            this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stopBtn.Location = new System.Drawing.Point(624, 72);
-            this.stopBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.stopBtn.Name = "stopBtn";
-            this.stopBtn.Size = new System.Drawing.Size(164, 52);
-            this.stopBtn.TabIndex = 111;
-            this.stopBtn.Tag = "停止";
-            this.stopBtn.Text = "停止";
-            this.stopBtn.UseVisualStyleBackColor = true;
-            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
-            // 
-            // pauseBtn
-            // 
-            this.pauseBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.pauseBtn.Location = new System.Drawing.Point(822, 72);
-            this.pauseBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.pauseBtn.Name = "pauseBtn";
-            this.pauseBtn.Size = new System.Drawing.Size(164, 52);
-            this.pauseBtn.TabIndex = 112;
-            this.pauseBtn.Tag = "暂停";
-            this.pauseBtn.Text = "暂停";
-            this.pauseBtn.UseVisualStyleBackColor = true;
-            this.pauseBtn.Click += new System.EventHandler(this.pauseBtn_Click);
-            // 
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -571,20 +629,6 @@
             this.button10.Text = "条码预览";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // ccBtn
-            // 
-            this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ccBtn.Location = new System.Drawing.Point(433, 133);
-            this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.ccBtn.Name = "ccBtn";
-            this.ccBtn.Size = new System.Drawing.Size(164, 52);
-            this.ccBtn.TabIndex = 109;
-            this.ccBtn.Tag = "自动测长标志";
-            this.ccBtn.Text = "测长";
-            this.ccBtn.UseVisualStyleBackColor = true;
-            this.ccBtn.Visible = false;
-            this.ccBtn.Click += new System.EventHandler(this.ccBtn_Click);
             // 
             // stbtn
             // 
@@ -615,7 +659,6 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.Color.White;
-            this.tabPage2.Controls.Add(this.button11);
             this.tabPage2.Controls.Add(this.label2);
             this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.button3);
@@ -655,19 +698,6 @@
             this.tabPage2.Size = new System.Drawing.Size(1759, 759);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
-            // 
-            // button11
-            // 
-            this.button11.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button11.Location = new System.Drawing.Point(602, 414);
-            this.button11.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(168, 78);
-            this.button11.TabIndex = 89;
-            this.button11.Tag = "喷胶";
-            this.button11.Text = "喷胶";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // label2
             // 
@@ -1358,6 +1388,8 @@
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label4;
     }
 }
 

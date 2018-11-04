@@ -24,7 +24,7 @@ namespace evokNew0068
         public WorkForm()
         {
            
-            ConstantMethod.InitPassWd();
+            //ConstantMethod.InitPassWd();
             InitializeComponent();
         }
 
@@ -190,7 +190,8 @@ namespace evokNew0068
              evokWork.SetPrintReport(report1);
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
-             UpdateTimer.Enabled = true;
+             evokWork.SetShowCnt(comboBox1);
+            UpdateTimer.Enabled = true;
         }
 
         private void InitView0()
@@ -399,6 +400,7 @@ namespace evokNew0068
 
         private void startBtnShow()
         {
+           
              stbtn.Enabled = false;
              loadDataBtn.Enabled = false;
              optBtn.Enabled = false;
@@ -451,17 +453,20 @@ namespace evokNew0068
         private void stbtn_Click(object sender, EventArgs e)
         {
             startBtnShow();
-           // if ( evokWork.AutoMes)
-          //  {
-              //   evokWork.CutStartMeasure(Constant.CutMeasureMode);
-                //测试代码 后续回复弹窗
-                /**
-                qClr_Click(sender, e);
-                stbtn_Click(sender, e);
-              **/
-           // }
-           // else
-           // {
+
+            // if ( evokWork.AutoMes)
+            //  {
+            //   evokWork.CutStartMeasure(Constant.CutMeasureMode);
+            //测试代码 后续回复弹窗
+            /**
+            qClr_Click(sender, e);
+            stbtn_Click(sender, e);
+          **/
+            //}
+            // else
+            // {
+           
+            if (evokWork.SetCutProCnt(int.Parse(comboBox1.Text)))
                 evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
                 /***

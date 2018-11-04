@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,12 +48,15 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.printcb = new System.Windows.Forms.ComboBox();
             this.rtbWork = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.qClr = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.rtbResult = new System.Windows.Forms.RichTextBox();
+            this.autoSLBtn = new System.Windows.Forms.Button();
+            this.ccBtn = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -66,11 +69,9 @@
             this.UserData = new System.Windows.Forms.DataGridView();
             this.loadDataBtn = new System.Windows.Forms.Button();
             this.resetBtn = new System.Windows.Forms.Button();
-            this.autoSLBtn = new System.Windows.Forms.Button();
             this.stopBtn = new System.Windows.Forms.Button();
             this.pauseBtn = new System.Windows.Forms.Button();
             this.button10 = new System.Windows.Forms.Button();
-            this.ccBtn = new System.Windows.Forms.Button();
             this.stbtn = new System.Windows.Forms.Button();
             this.optBtn = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -253,6 +254,7 @@
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.button5);
+            this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Controls.Add(this.printcb);
             this.tabPage1.Controls.Add(this.rtbWork);
             this.tabPage1.Controls.Add(this.button1);
@@ -262,11 +264,9 @@
             this.tabPage1.Controls.Add(this.UserData);
             this.tabPage1.Controls.Add(this.loadDataBtn);
             this.tabPage1.Controls.Add(this.resetBtn);
-            this.tabPage1.Controls.Add(this.autoSLBtn);
             this.tabPage1.Controls.Add(this.stopBtn);
             this.tabPage1.Controls.Add(this.pauseBtn);
             this.tabPage1.Controls.Add(this.button10);
-            this.tabPage1.Controls.Add(this.ccBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
             this.tabPage1.Location = new System.Drawing.Point(4, 33);
@@ -304,6 +304,17 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(433, 138);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(164, 35);
+            this.comboBox1.TabIndex = 122;
+            this.comboBox1.Text = "1";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.printcb_SelectedIndexChanged);
             // 
             // printcb
             // 
@@ -357,6 +368,8 @@
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(10, 10);
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.rtbResult);
+            this.panel1.Controls.Add(this.autoSLBtn);
+            this.panel1.Controls.Add(this.ccBtn);
             this.panel1.Location = new System.Drawing.Point(698, 189);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
@@ -370,6 +383,34 @@
             this.rtbResult.Size = new System.Drawing.Size(632, 528);
             this.rtbResult.TabIndex = 5;
             this.rtbResult.Text = "";
+            // 
+            // autoSLBtn
+            // 
+            this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.autoSLBtn.Location = new System.Drawing.Point(-60, 34);
+            this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.autoSLBtn.Name = "autoSLBtn";
+            this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
+            this.autoSLBtn.TabIndex = 111;
+            this.autoSLBtn.Tag = "自动上料";
+            this.autoSLBtn.Text = "自动上料";
+            this.autoSLBtn.UseVisualStyleBackColor = true;
+            this.autoSLBtn.Visible = false;
+            this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
+            // 
+            // ccBtn
+            // 
+            this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ccBtn.Location = new System.Drawing.Point(-75, 90);
+            this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.ccBtn.Name = "ccBtn";
+            this.ccBtn.Size = new System.Drawing.Size(164, 52);
+            this.ccBtn.TabIndex = 109;
+            this.ccBtn.Tag = "自动测长标志";
+            this.ccBtn.Text = "测长";
+            this.ccBtn.UseVisualStyleBackColor = true;
+            this.ccBtn.Visible = false;
+            this.ccBtn.Click += new System.EventHandler(this.ccBtn_Click);
             // 
             // groupBox1
             // 
@@ -520,20 +561,6 @@
             this.resetBtn.UseVisualStyleBackColor = true;
             this.resetBtn.Click += new System.EventHandler(this.resetBtn_Click);
             // 
-            // autoSLBtn
-            // 
-            this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(241, 133);
-            this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.autoSLBtn.Name = "autoSLBtn";
-            this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
-            this.autoSLBtn.TabIndex = 111;
-            this.autoSLBtn.Tag = "自动上料";
-            this.autoSLBtn.Text = "自动上料";
-            this.autoSLBtn.UseVisualStyleBackColor = true;
-            this.autoSLBtn.Visible = false;
-            this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
-            // 
             // stopBtn
             // 
             this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -572,20 +599,6 @@
             this.button10.Text = "条码预览";
             this.button10.UseVisualStyleBackColor = true;
             this.button10.Click += new System.EventHandler(this.button10_Click);
-            // 
-            // ccBtn
-            // 
-            this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ccBtn.Location = new System.Drawing.Point(433, 133);
-            this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.ccBtn.Name = "ccBtn";
-            this.ccBtn.Size = new System.Drawing.Size(164, 52);
-            this.ccBtn.TabIndex = 109;
-            this.ccBtn.Tag = "自动测长标志";
-            this.ccBtn.Text = "测长";
-            this.ccBtn.UseVisualStyleBackColor = true;
-            this.ccBtn.Visible = false;
-            this.ccBtn.Click += new System.EventHandler(this.ccBtn_Click);
             // 
             // stbtn
             // 
@@ -1104,8 +1117,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1147,8 +1160,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;
@@ -1345,6 +1358,7 @@
         private System.Windows.Forms.Button lblY27;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

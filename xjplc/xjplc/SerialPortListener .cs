@@ -219,12 +219,7 @@ namespace xjplc
                 m_SerialPort.ReceivedBytesThreshold = m_receivedBytesThreshold;
                 m_SerialPort.WriteBufferSize = m_writeBufferSize;
                     if (!m_SerialPort.IsOpen)
-                    m_SerialPort.Open();
-                
-                //会出现超时现象 死循环 容易造成内存泄露
-               //m_threadMonitor = new Thread(new ThreadStart(SerialPortMonitor));
-               //m_threadMonitor.IsBackground = true;
-               //m_threadMonitor.Start();
+                    m_SerialPort.Open();    
                 return true;
             }        
             catch
@@ -239,8 +234,7 @@ namespace xjplc
             ConstantMethod.Delay(100);
             m_SerialPort.Close();
             m_buffer.Clear();
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+           
         }
         #endregion
 

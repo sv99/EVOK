@@ -66,20 +66,40 @@ namespace xjplc
             SetMValueOFF(p);
             SetMValueON(p);
         }
+
+        public void opposite(PlcInfoSimple p)
+        {
+            if (p.ShowValue > 0)
+            {
+                SetMValueOFF(p);
+            }else SetMValueON(p);
+        }
         public bool SetMultiPleDValue(PlcInfoSimple stPlcInfoSimple, int[] value0)
         {
-            if (stPlcInfoSimple != null && stPlcInfoSimple.BelongToDataform != null)
+            if (stPlcInfoSimple != null && stPlcInfoSimple.BelongToDataform != null && value0.Count()>0)
             {
+                bool writeok=
                 WriteMultiPleDMData(
                     stPlcInfoSimple.Addr, 
                     value0, 
                     stPlcInfoSimple.Area, 
                     stPlcInfoSimple.Mode);
-                ConstantMethod.DelayWriteCmdOk(Constant.WriteCommTimeOut, ref value0[0], ref stPlcInfoSimple);
-                //可能时间太久 要等下 
-                if (value0[0] == stPlcInfoSimple.ShowValue) return true; else return false;
+              //取消查看 在多次发送的时候会比较卡
+            //  LogManager.WriteProgramLog("数据下发地址："+ stPlcInfoSimple.Addr+"写入值："+ value0[0].ToString());
+                
+             // ConstantMethod.DelayWriteCmdOk(Constant.WriteCommTimeOut, ref value0[0], ref stPlcInfoSimple);
+               //可能时间太久 要等下
+             // LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "返回值：" + stPlcInfoSimple.ShowValue);
+        
+              return writeok;
+              
 
             }
+
+            if(stPlcInfoSimple ==null) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "附属类为空！");
+            if (stPlcInfoSimple.BelongToDataform == null) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "附属类所属表格为空！");
+            if(value0.Count()==0) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr  + "写入数据数量错误：" + value0.Count().ToString());
+
             return false;
         }
 

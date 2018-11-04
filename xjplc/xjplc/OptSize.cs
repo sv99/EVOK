@@ -28,6 +28,8 @@ namespace xjplc
             get { return barc; }
             set { barc = value; }
         }
+
+        
         private int cut;    //切割长度
         public int Cut
         {
@@ -627,12 +629,21 @@ namespace xjplc
             {
                 if ((len > 0) && (Cut.Count > 0))
                 {
-                    int jfbc = (Cut.Count + 1) * dbc;
-                    int ladd = 0;
+                    //因为结巴 已经算了刀补 看下 有结巴的话 不能算刀补
+                    int realSizeCnt = 0;
                     for (int i = 0; i < Cut.Count; i++)
                     {
-                        ladd = ladd + Cut[i];
+                        if (i < Barc.Count && !Barc[i].Equals(Constant.ScarId))
+                        {
+                            realSizeCnt++;
+                        }
                     }
+                    //刀补 要看 料头是不是为0
+                    int jfbc = (realSizeCnt + 1) * dbc;
+                    if (lbc==0) jfbc= (realSizeCnt) * dbc;
+                    //所有尺寸和
+                    int ladd = 0;
+                    ladd = Cut.Sum();                 
                     wl = len - ladd - jfbc - lbc;
                 }
                 return wl;
@@ -918,6 +929,13 @@ namespace xjplc
             get { return valueAbleRow; }
             set { valueAbleRow = value; }
         }
+        //表格里 还剩余多少数据 20181019
+        private int sizeLeft;
+        public int SizeLeft
+        {
+            get { return sizeLeft; }
+            set { sizeLeft = value; }
+        }
         bool IsSaving;
         public DataTable DtData
         {
@@ -964,14 +982,19 @@ namespace xjplc
             set { singleSizeLst = value; }
         }
 
+        //导入规则
+        List<int> valueCol = new List<int>();
 
         private  
         int optRealLen;//真实可用原料
         public int OptRealLen
         {
             get {
-                 optRealLen=Len - dbc - ltbc - safe;
 
+                if(ltbc>0)
+                 optRealLen=Len -dbc - ltbc - safe;
+                else
+                    optRealLen = Len  - safe;
                 return optRealLen; }
            
         }
@@ -980,6 +1003,13 @@ namespace xjplc
         {
             get { return safe; }
             set { safe = value; }
+        }
+
+        int optParam1 = 0;
+        public int OptParam1
+        {
+            get { return optParam1; }
+            set { optParam1 = value; }
         }
         #region 优化
 
@@ -1021,18 +1051,63 @@ namespace xjplc
                 ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
             }
         }
+        //20181026 tata 切割
+        //数据汇总到一起 一次性下发
+        public bool  dataGetTogether()
+        {
+          
+            List<SingleSize> sLst = new List<SingleSize>();
 
-        private void ShowMeasureResultWithCheck(List<int> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+            if (ProdInfoLst.Count == SingleSizeLst.Count && ProdInfoLst.Count > 0)
+            {
+                for (int i = 0; i < SingleSizeLst.Count; i++)
+                {
+                    if (SingleSizeLst[i].Count > 0)
+                        sLst.AddRange(SingleSizeLst[i]);
+                }
+            }
+            else return false;
+
+            if (sLst.Count > 0)
+            {
+                ProdInfo prodInfo = new ProdInfo(sLst);
+                prodInfo.DBC = dbc;
+                prodInfo.LBC = ltbc;
+                prodInfo.Len = len;
+                ProdInfoLst.Clear();
+                ProdInfoLst.Add(prodInfo);
+                SingleSizeLst.Clear();
+                singleSizeLst.Add(sLst);
+
+            }
+            else return false;
+
+            return true;
+        } 
+        //ltcheck  是否要加刀补
+        private void ShowMeasureResultWithCheck(List<int> resultOpt, List<SingleSize> prodLst, RichTextBox rt1,int ltcheck)
         {
             List<SingleSize> resultSingleSize = new List<SingleSize>();
 
+            //这里增加一个限制 料头如果计算出来 太长的话 机械上不好切 20181003
             int ltbc0 = resultOpt[0];
 
-            ltbc = ltbc0;
+            if (ltbc0 < Constant.LTBCMax )
+            {
+                if (ltcheck == Constant.LTBCAddDbc)
+                    ltbc = ltbc0 + dbc;
+                else
+                {
+                    ltbc = ltbc0;
+                }
+                resultOpt.RemoveAt(0);
+            }
+            else
+            {
+                ltbc = 0;
+            }            
 
-            resultOpt.RemoveAt(0);
-
-            ConstantMethod.ShowInfo(rt1, "料头:" + ltbc0.ToString());
+            ConstantMethod.ShowInfo(rt1, "料头:" + ltbc.ToString());
 
             // resultOpt.Sort();
 
@@ -1055,12 +1130,18 @@ namespace xjplc
                 if(isScar)
                 {
                         //是结疤    20180904 小莫 减去刀补                     
-                        SingleSize scar = new SingleSize();
-                        scar.Cut = resultOpt[i]-Dbc;
+                    SingleSize scar = new SingleSize();
+                  
+                    scar.Cut = resultOpt[i]-dbc;
+                    
+                    //结巴如果比刀补还小 那就不切了
+                    if (scar.Cut > 0)
+                    {                       
                         scar.Barc = Constant.ScarId;
+                        scar.ParamStrLst.Insert(0, Constant.ScarId);
                         resultSingleSize.Add(scar);
-                        
-                        ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀结疤:" + resultOpt[i].ToString()+"---------条码：" + scar.Barc);
+                        ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀结疤:" + scar.Cut.ToString() + "---------条码：" + scar.Barc);
+                    }                
 
                 }
             }
@@ -1085,79 +1166,32 @@ namespace xjplc
         /// <param name="resultOpt"></param>
         /// <param name="prodLst"></param>
         /// <param name="rt1"></param>
-        private void ShowMeasureResultWithCheckLtbc(List<int> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+        ComboBox cbResultCnt;
+        public System.Windows.Forms.ComboBox CbResultCnt
         {
-            List<SingleSize> resultSingleSize = new List<SingleSize>();
-
-            //int ltbc0 = resultOpt[0];
-
-            //ltbc = ltbc0;
-
-           // resultOpt.RemoveAt(0);
-
-           // ConstantMethod.ShowInfo(rt1, "料头:" + ltbc0.ToString());
-
-            // resultOpt.Sort();
-
-            for (int i = 0; i < resultOpt.Count; i++)
-            {
-                bool isScar = true;
-
-                for (int k = 0; k < prodLst.Count; k++)
-                {
-                    if (prodLst[k].Cut == resultOpt[i])
-                    {
-                        resultSingleSize.Add(prodLst[k]);
-                        ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀:" + resultOpt[i].ToString() + "---------条码：" + prodLst[k].Barc);
-                        prodLst.RemoveAt(k);
-                        isScar = false;
-                        break;
-                    }
-                }
-
-                if (isScar)
-                {
-                    //是结疤                        
-                    SingleSize scar = new SingleSize();
-                    scar.Cut = resultOpt[i];
-                    scar.Barc = Constant.ScarId;
-                    resultSingleSize.Add(scar);
-
-                    ConstantMethod.ShowInfo(rt1, "第" + (i + 1).ToString() + "刀结疤:" + resultOpt[i].ToString() + "---------条码：" + scar.Barc);
-
-                }
-            }
-            //一根 一根进行汇总
-            if (resultSingleSize.Count > 0)
-            {
-                ProdInfo prodInfo = new ProdInfo(resultSingleSize);
-                prodInfo.DBC = dbc;
-                prodInfo.LBC = ltbc;
-                prodInfo.Len = len;
-                ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
-                ProdInfoLst.Add(prodInfo);
-                singleSizeLst.Add(resultSingleSize);
-                ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
-                ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
-            }
+            get { return cbResultCnt; }
+            set { cbResultCnt = value; }
         }
-
         /// <summary>
         /// 测量结果显示
         /// </summary>
         /// <param name="resultOpt 数据结果"></param>
         /// <param name="prodLst 单行数据的总和 "></param>
         /// <param name="rt1"></param>
-        private void ShowNormalResult(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
+        private void ShowNormalResult(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1,int id)
         {
             ConstantMethod.ShowInfo(rt1, "--------------");
-
+            if (resultOpt.Count > Constant.MaxShowCount)
+            {
+                ConstantMethod.ShowInfo(rt1, "总料数超出最大显示数值！");
+                goto Next;
+            }         
             for (int i = 0; i < resultOpt.Count; i++)
             {
                 ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (i + 1).ToString() + "根：");
                 List<SingleSize> resultSingleSize = new List<SingleSize>();
                 //排个序
-                resultOpt[i].Sort();
+               if(id!=Constant.optNo) resultOpt[i].Sort();
                 for (int j = 0; j < resultOpt[i].Count; j++)
                 {
                     for (int k = 0; k < prodLst.Count; k++)
@@ -1165,7 +1199,8 @@ namespace xjplc
                         if (prodLst[k].Cut == resultOpt[i][j])
                         {
                             resultSingleSize.Add(prodLst[k]);
-                            ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (j + 1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].ParamStrLst[8]);
+                            if(prodLst[k].ParamStrLst.Count>0)
+                            ConstantMethod.ShowInfoNoScrollEnd(rt1, "第" + (j + 1).ToString() + "刀:" + resultOpt[i][j].ToString() + "---------条码：" + prodLst[k].ParamStrLst[0]);
                             prodLst.RemoveAt(k);
                             break;
                         }
@@ -1187,9 +1222,85 @@ namespace xjplc
                 }
 
             }
+          
+                if (CbResultCnt != null)
+                {
+                    CbResultCnt.Items.Clear();
+                    for (int i = 0; i < resultOpt.Count; i++)
+                    {
+                        CbResultCnt.Items.Add((i + 1).ToString());
+                    }
+                }
+            Next:
+            {
+                ConstantMethod.ShowInfo(rt1, "需要料数：" + resultOpt.Count.ToString() + "根");
+                ConstantMethod.ShowInfo(rt1, "材料利用率：" + ration(resultOpt));
+            }
+        }
+        #region 导入规则
+        CsvStreamReader csvSaveDemo;
+        public bool ReadFileDemo(string filename)
+        {
+            if (!File.Exists(filename)) return false;
 
-            ConstantMethod.ShowInfo(rt1, "需要料数：" + resultOpt.Count.ToString() + "根");
+            DataTable dt = new DataTable();
+            if (string.IsNullOrWhiteSpace(filename))
+                dt = csvSaveDemo.OpenCSV(Constant.SaveFileDemo);
+            else
+            {
+                dt = csvSaveDemo.OpenCSV(filename);
+            }
 
+            if (dt.Rows.Count == 1)
+            {
+                valueCol.Clear();
+
+                foreach (DataRow dr in dt.Rows)
+                {
+                    for (int i = 0; i < dr.ItemArray.Length; i++)
+                    {
+                        int s = 0;
+                        if (int.TryParse(dr.ItemArray[i].ToString(), out s))
+                        {
+                            valueCol.Add(s);
+                        }
+                        else
+                        {
+                            MessageBox.Show("指定列错误，错误列号：" + (i + 1).ToString());
+                            return false;
+                        }
+                    }
+                }
+                          
+            }
+            else
+            {
+                //MessageBox.Show("加载模板数据错误！");
+                return false;
+            }
+
+            return true;
+
+
+        }
+
+        #endregion
+        private string ration(List<List<int>> valueLst)
+        {
+            Int64 sizeSum = 0;           
+            Int64 lenSum = (Int64) len * valueLst.Count ;
+            foreach (List<int> sLst in valueLst)
+            {
+                foreach (int s in sLst)
+                {
+                    sizeSum = sizeSum + s;
+                }
+            }
+
+            double r = ((double)sizeSum / lenSum) * 100;
+
+            return (r.ToString("0.00")+"%");
+                       
         }
         private void ShowNormalResultNoSort(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
         {
@@ -1251,6 +1362,10 @@ namespace xjplc
             Excelop = new ExcelNpoi();
             ScarLst = new List<int>();
             valueAbleRow = new List<int>();
+
+            csvSaveDemo = new CsvStreamReader();
+
+           
         }
         public OptSize()
         {
@@ -1295,24 +1410,33 @@ namespace xjplc
                 && dtData.Rows.Count > 0)
             {
                 IsSaving = true;
+                //20181005增加一组函数 如果读取回来为空 那就再保存一次
                 CSVop.SaveCSV(dtData, CSVop.FileName);
+                DataTable dtIsNull = CSVop.OpenCSV(CSVop.FileName);
+                if (dtIsNull == null || dtIsNull.Rows.Count == 0)
+                {
+                    CSVop.SaveCSV(dtData, CSVop.FileName);
+                }
                 IsSaving = false;
             }
-        }
-        public void SaveCsv0()
-        {
-            if (this == null) return;
-            if (!IsLoadData
-                && !string.IsNullOrWhiteSpace(CSVop.FileName)
-                && File.Exists(CSVop.FileName)
-                && dtData != null
-                && dtData.Rows.Count > 0)
+            else
             {
-                IsSaving = true;
-                CSVop.SaveCSV0(dtData, CSVop.FileName);
-                IsSaving = false;
+                //如果CSVop 文件名为空 那就保存到默认文件名里
+                if(string.IsNullOrWhiteSpace(CSVop.FileName))
+                {
+                    IsSaving = true;
+                    //20181005增加一组函数 如果读取回来为空 那就再保存一次
+                    CSVop.SaveCSV(dtData, Constant.userdata);
+                    DataTable dtIsNull = CSVop.OpenCSV(Constant.userdata);
+                    if (dtIsNull == null || dtIsNull.Rows.Count == 0)
+                    {
+                        CSVop.SaveCSV(dtData, Constant.userdata);
+                    }
+                    IsSaving = false;
+                }
             }
         }
+       
         public void ShowErrorRow()
         {
             List<int> errorId = new List<int>();
@@ -1371,7 +1495,7 @@ namespace xjplc
         {
             List<int> errorId = new List<int>();
             //检查datagridview数据是否违法 得出错误列
-            errorId = CheckDataGridViewData0(OptRealLen, DtData);
+            errorId = CheckDataGridViewData(OptRealLen, DtData);
             for (int i = 0; i < UserDataView.Rows.Count; i++)
             {
                 UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
@@ -1402,7 +1526,7 @@ namespace xjplc
 
             if (str == null) return false;
 
-            if (! ConstantMethod.compareString(str, Constant.strformatZh))
+            if ((! ConstantMethod.compareString(str, Constant.strformatZh))&&(!ConstantMethod.compareString(str, Constant.strformatEh)))
             {
                 return false;
             }
@@ -1418,7 +1542,27 @@ namespace xjplc
             LogManager.WriteProgramLog(Constant.LoadFileEd);
             return true;
         }
+        //如果文件为空 那就重新建立一个
+        public void buildDefaultCsvFile(string filename)
+        {
+            DataTable dt = new DataTable();
 
+            for (int i = 0; i < Constant.strformatZh.Length; i++)
+            {
+                DataColumn dc = new DataColumn(Constant.strformatZh[i]);
+                dt.Columns.Add(dc);          
+            }
+            for (int i = 0; i<10; i++)
+            {
+                DataRow dr = dt.NewRow();
+                dr[0] = 600;
+                dr[1] = 0;
+                dr[2] = 0;
+                dt.Rows.Add(dr);
+            }
+            CSVop.SaveCSV(dt, filename);
+
+        }
         /// <summary>
         /// 加载数据
         /// </summary>
@@ -1437,17 +1581,39 @@ namespace xjplc
             if(dtData != null)          
             dtData.Clear();
 
-            CSVop.FileName = filename;
-            if (!CSVop.CheckCSVFile(Constant.strformatZh)) return false;
-          
-            dtData = CSVop.OpenCSV(filename);
+            if (ReadFileDemo(Constant.SaveFileDemoConfigPath))
+            {
+                DataTable dtTemp =
+                 CSVop.OpenCSV(filename);
+                if (valueCol.Max() >= dtTemp.Columns.Count) goto Default;
 
-            if (dtData.Rows.Count < 1) return false;
+                dtData = ConstantMethod.convertDataTableByRule(dtTemp,valueCol);
+                if (dtData.Rows.Count > 0) goto Next;
+                else goto Default;
+
+            }
+            Default:
+            {
+                CSVop.FileName = filename;
+                if ((!CSVop.CheckCSVFile(Constant.strformatZh)) && (!CSVop.CheckCSVFile(Constant.strformatEh)))
+                {
+                    return false;
+                }
+
+                dtData = CSVop.OpenCSV(filename);
+            }
+
+            Next:
+            if (dtData.Rows.Count < 1)
+            {
+                return false;
+            }
             Excelop.FileName = null;
-            UserDataView.DataSource= dtData;
+            UserDataView.DataSource = dtData;
             ShowErrorRow();
             IsLoadData = false;
             LogManager.WriteProgramLog(Constant.LoadFileEd);
+
             return true;
         }
         //分号
@@ -1507,8 +1673,8 @@ namespace xjplc
             //获取数据
             List<SingleSize> prodLst = new List<SingleSize>();
 
-            GetDataFromDtByDoorType(DtData, prodLst);
-
+            GetDataFromDt(DtData, prodLst);
+           
             //如果无数据 则返回-1
             if (prodLst.Count < 1) //
                 return Constant.prodLstNoData;
@@ -1525,9 +1691,12 @@ namespace xjplc
                     dataOpt.Add(sss.Cut);
                 }
 
+            if(optParam1==0)
             //----返回的结果 只有一组数据
             resultOpt = OptModuleMeasure(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
-                                                        
+            else
+            resultOpt = OptModuleMeasure(dataOpt.ToList<int>(), len, dbc, ltbc, safe, optParam1);
+
             if (resultOpt.Count > 0)
             {
                  ShowMeasureResult(resultOpt, prodLst, rt1);
@@ -1637,14 +1806,15 @@ namespace xjplc
             //只有一条结巴  没有结巴 多条结巴 
             if (scarLst0.Count == 5)
             {
-                 //第一刀 要特别对待       
+                 //第一刀要特别对待       
                 //结巴在料头内 或者安全距离内
                 if (scarLst0[2] < ltbc || scarLst0[1] > (len0 - safe))
                 {
                     resultOpt0 = OptModuleMeasure(dataOpt.ToList<int>(), len0, dbc0, ltbc0, safe0);
                     ConstantMethod.ShowInfo(rt1, "结疤在料头内或者结疤在安全距离内！");
                     resultOpt.Add(ltbc0);
-                    resultOpt.AddRange(resultOpt0);
+                    if(resultOpt0.Count>0)
+                    resultOpt.AddRange(resultOpt0);                   
                 }
                 else
                 //结巴与料头有交集
@@ -1653,15 +1823,29 @@ namespace xjplc
                     resultOpt0 = OptModuleMeasure(dataOpt.ToList<int>(), len0, dbc0, scarLst0[2], safe0);
                     resultOpt.Add(scarLst0[2]);
                     ConstantMethod.ShowInfo(rt1, "结疤为料头！");
-                    resultOpt.AddRange(resultOpt0);
+                    if (resultOpt0.Count > 0)
+                       resultOpt.AddRange(resultOpt0);
                 }
                 else //结巴与安全距离有交集
                 if (scarLst0[2] > (len0 - safe0) && scarLst0[1] < (len0 - safe0))          
                 {
                     resultOpt0 = OptModuleMeasure(dataOpt.ToList<int>(), len0, dbc0, ltbc0, len0 - scarLst0[1]);
                     resultOpt.Add(ltbc0);
-                    ConstantMethod.ShowInfo(rt1, "mmmj结疤在尾部，且大于安全距离！");
-                    resultOpt.AddRange(resultOpt0);
+                    ConstantMethod.ShowInfo(rt1, "结疤在尾部，且大于安全距离！");
+                    if (resultOpt0.Count > 0)
+                    {
+                        resultOpt.AddRange(resultOpt0);
+                        //安全距离就是0点到1点的距离
+                        if(split)
+                        resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[1] - scarLst0[0], dbc0, 0, 0));
+                    }
+                    else
+                    {
+
+                        //没有尺寸 就把结巴这里切掉 剩下扔了 因为安全距离 和 结巴交叉了
+                        resultOpt.Add(scarLst0[1] - scarLst0[0]);                       
+                    }
+
                 }
                 else
                 {
@@ -1671,15 +1855,38 @@ namespace xjplc
                         if (i == 2)  //把安全距离用结巴参数传进去 那就是每段料长 都有一个安全距离了  其他一样
                         {
                             resultOpt0 = OptModuleMeasure(dataOpt.ToList<int>(), scarLst0[2], dbc0, ltbc0, scarLst0[2] - scarLst0[1]);
+                            
                             if (resultOpt0.Count > 0)
                             {
                                 resultOpt.Add(ltbc0);
+                                resultOpt.AddRange(resultOpt0);
+                                if (split)
+                                {
+
+                                    resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[2] - scarLst0[0], dbc0, ltbc0, scarLst0[2] - scarLst0[1]));
+                                    resultOpt.Add(scarLst0[2] - scarLst0[1]);
+                                }
+                                else
+                                {
+                                    resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[2] - scarLst0[0], dbc0, ltbc0, 0));
+
+                                }
+
                             }
                             else
                             {
-                                resultOpt.Add(scarLst0[2]-dbc0);
+                                if (split)
+                                {
+                                    resultOpt.Add(scarLst0[1] - scarLst0[0] );
+                                    resultOpt.Add(scarLst0[2] - scarLst0[1] );
+
+                                }
+                                else
+                                {
+                                    resultOpt.Add(scarLst0[2] - scarLst0[0] );
+                                }
                             }
-                            resultOpt.AddRange(resultOpt0);
+                                                                            
                             dataOpt = ConstantMethod.DeleteDataFromARefB(dataOpt, resultOpt0);
                             //显示一下
                             ShowLenAndScarAndSize(rt1, scarLst0[2], (scarLst0[2] - scarLst0[1]), resultOpt0.ToArray());                           
@@ -1688,16 +1895,18 @@ namespace xjplc
                         else
                         if (i == 4)   //料头为0
                         {
+                            //这里不需要分了 结巴已经过去了
                             resultOpt0 = OptModuleMeasure(dataOpt.ToList<int>(), scarLst0[4]- scarLst0[2], dbc0, dbc0, safe);
                             //去掉已经选中的数据
                             if (resultOpt0.Count > 0)
                             {
-                                resultOpt.AddRange(resultOpt0);
+                                resultOpt.AddRange(resultOpt0);                          
+
                                 dataOpt = ConstantMethod.DeleteDataFromARefB(dataOpt, resultOpt0);
                             }
                             else
                             {
-                                resultOpt.Add(scarLst0[4] - scarLst0[2]-dbc0);
+                                resultOpt.Add(scarLst0[4] - scarLst0[2]);
                             }  
                                                                            
                         }                       
@@ -1726,7 +1935,7 @@ namespace xjplc
                                 {
 
                                     resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[2] - scarLst0[0], dbc0, ltbc0, scarLst0[2] - scarLst0[1]));
-                                    resultOpt.Add(scarLst0[2] - scarLst0[1]-dbc0);
+                                    resultOpt.Add(scarLst0[2] - scarLst0[1]);
                                 }
                                 else
                                 {
@@ -1742,13 +1951,13 @@ namespace xjplc
                             {
                                 if (split)
                                 {
-                                    resultOpt.Add(scarLst0[1] - scarLst0[0]-dbc0);
-                                    resultOpt.Add(scarLst0[2] - scarLst0[1]-dbc0);
+                                    resultOpt.Add(scarLst0[1] - scarLst0[0]);
+                                    resultOpt.Add(scarLst0[2] - scarLst0[1]);
 
                                 }
                                 else
                                 {
-                                    resultOpt.Add(scarLst0[2] - scarLst0[0]-dbc0);
+                                    resultOpt.Add(scarLst0[2] - scarLst0[0]);
                                 }
                             }                           
                         }
@@ -1772,12 +1981,12 @@ namespace xjplc
                                     {
                                         if (split)
                                         {
-                                            resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[i] - scarLst0[i - 2], dbc0, dbc0, scarLst0[i] - scarLst0[i - 1]));
-                                            resultOpt.Add(scarLst0[i] - scarLst0[i - 1]-dbc0);
+                                            resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[i] - scarLst0[i - 2], dbc0,0, scarLst0[i] - scarLst0[i - 1]));
+                                            resultOpt.Add(scarLst0[i] - scarLst0[i - 1]);
                                         }
                                         else
                                         {
-                                            resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[i] - scarLst0[i - 2], dbc0, dbc0, 0));
+                                            resultOpt.Add(CaculateWL(resultOpt0.ToArray(), scarLst0[i] - scarLst0[i - 2], dbc0,0, 0));
                                         }
                                     }
                    
@@ -1786,31 +1995,31 @@ namespace xjplc
                                 {
                                     if (split)
                                     {
-                                        resultOpt.Add(scarLst0[i-1] - scarLst0[i-2]-dbc0);
-                                        resultOpt.Add(scarLst0[i] - scarLst0[i-1]-dbc0);
+                                        resultOpt.Add(scarLst0[i-1] - scarLst0[i-2]);
+                                        resultOpt.Add(scarLst0[i] - scarLst0[i-1]);
 
                                     }
                                     else
                                     {
-                                        resultOpt.Add(scarLst0[i] - scarLst0[i-2]-dbc0);
+                                        resultOpt.Add(scarLst0[i] - scarLst0[i-2]);
                                     }                                   
                                 }
                             }
                             else
                             //没有数据了
                             {                            
-                                //如果不是部 安全距离 不需要分开
+                                //如果不是尾部  安全距离 不需要分开
                                 if (i != (scarLst0.Count - 1))
                                 {
                                     if (split)
                                     {
 
-                                        resultOpt.Add(scarLst0[i - 1] - scarLst0[i - 2] - dbc0);
-                                        resultOpt.Add(scarLst0[i] - scarLst0[i - 1] - dbc0);
+                                        resultOpt.Add(scarLst0[i - 1] - scarLst0[i - 2] );
+                                        resultOpt.Add(scarLst0[i] - scarLst0[i - 1] );
                                     }
                                     else
                                     {
-                                        resultOpt.Add(scarLst0[i] - scarLst0[i - 2] - dbc0);
+                                        resultOpt.Add(scarLst0[i] - scarLst0[i - 2]);
                                     }
                                 }                               
                             }
@@ -1827,12 +2036,16 @@ namespace xjplc
             int wl = -1;
             if ((len0 > 0) && (Cut.Count() > 0))
             {
-                int jfbc = (Cut.Count() + 1) * dbc0;
+                int jfbc = (Cut.Count()) * dbc0;
                 int ladd = 0;
                 for (int i = 0; i < Cut.Count(); i++)
                 {
                     ladd = ladd + Cut[i];
                 }
+                if (ltbc0 > 0)
+                {
+                    ltbc0 = ltbc0 + dbc0;
+                }    
                 wl = len0 - ladd - jfbc - ltbc0;
 
             }
@@ -1871,7 +2084,7 @@ namespace xjplc
             if (resultOpt.Count > 0)
             {
                 
-                ShowMeasureResultWithCheck(resultOpt, prodLst, rt1);
+                ShowMeasureResultWithCheck(resultOpt, prodLst, rt1,0);
             }
             else
             {
@@ -1925,7 +2138,7 @@ namespace xjplc
             //获取数据
             List<SingleSize> prodLst = new List<SingleSize>();
 
-            GetDataFromDtByDoorType(dtData0, prodLst);
+            GetDataFromDt(dtData0, prodLst);
 
             //如果无数据 则返回-1
             if (prodLst.Count < 1) 
@@ -1940,7 +2153,7 @@ namespace xjplc
 
             if (resultOpt.Count > 0)
             {
-                ShowMeasureResultWithCheck(resultOpt, prodLst, rt1);
+                ShowMeasureResultWithCheck(resultOpt, prodLst, rt1,0);
             }
             else
             {
@@ -1990,7 +2203,7 @@ namespace xjplc
             //检查错误行
             ShowErrorRow();
             List<SingleSize> prodLst = new List<SingleSize>();
-            GetDataFromDtByDoorType(DtData, prodLst);
+            GetDataFromDt(DtData, prodLst);
 
             //如果无数据 则返回-1
             if (prodLst.Count < 1) //
@@ -2010,12 +2223,84 @@ namespace xjplc
                 }
 
             //----
-            resultOpt = NoOptModule(dataOpt.ToList<int>(), len, dbc, ltbc, safe); ;
+            resultOpt = NoOptModule(dataOpt.ToList<int>(), len, dbc, ltbc, safe); 
 
 
             if (resultOpt.Count > 0)
             {
                 ShowNormalResultNoSort(resultOpt, prodLst, rt1);
+            }
+            else return Constant.optResultNoData;
+
+            resultOpt = null;
+            prodLst = null;
+            dataOpt = null;
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();     
+            return Constant.optSuccess;
+
+        }
+        //在正常优化模式下 可以选择优化模型 这里测试EXCEL
+        public string OptNormal(RichTextBox rt1,int id)
+        {
+            //干活之前 先清空数据 做好准备工作          
+            singleSizeLst.Clear();
+            ProdInfoLst.Clear();
+
+            if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
+
+            //检查错误行
+            ShowErrorRow();
+            List<SingleSize> prodLst = new List<SingleSize>();
+            GetDataFromDt(DtData, prodLst);
+
+            //如果无数据 则返回-1
+            if (prodLst.Count < 1) //
+                return Constant.prodLstNoData;
+
+
+            //进行优化 变成单个模块
+            List<List<int>> resultOpt = new List<List<int>>();
+            List<int> dataOpt = new List<int>();
+
+
+            //进行完整的优化
+            if (prodLst.Count > 0)
+                foreach (SingleSize sss in prodLst)
+                {
+                    dataOpt.Add(sss.Cut);
+                }
+
+            switch(id)
+            {
+                case Constant.optNormalExcel:
+                    {
+                        if (sizeTypeCount(dataOpt.ToList<int>()) < Constant.optNormalMax)
+                        {
+                            if (!File.Exists(Constant.ConfigExcelOpt)) goto default;
+                            resultOpt = OptModuleExcel(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+                        }
+                        else goto default;
+                        break;
+                    }
+                case Constant.optNo:
+                    {
+                        //----
+                        resultOpt = NoOptModule(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+                        break;
+                    }
+                default:
+                    {
+                        resultOpt = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+                        break;
+                    }
+
+            }
+
+
+            if (resultOpt.Count > 0)
+            {
+                ShowNormalResult(resultOpt, prodLst, rt1, id);
             }
             else return Constant.optResultNoData;
 
@@ -2038,7 +2323,7 @@ namespace xjplc
             //检查错误行
             ShowErrorRow();
             List<SingleSize> prodLst = new List<SingleSize>();
-            GetDataFromDtByDoorType(DtData,prodLst);
+            GetDataFromDt(DtData,prodLst);
 
             //如果无数据 则返回-1
             if (prodLst.Count < 1) //
@@ -2063,67 +2348,18 @@ namespace xjplc
                     
             if (resultOpt.Count > 0 )
             {
-                ShowNormalResult(resultOpt, prodLst, rt1);              
-            }
-            else return Constant.optResultNoData; 
-                
-            resultOpt = null;
-            prodLst = null;
-            dataOpt = null;
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();     
-            return Constant.optSuccess;
-
-        }
-        //现场 不同的是 CSV文件格式 
-        public string OptNormal0(RichTextBox rt1)
-        {
-            //干活之前 先清空数据 做好准备工作          
-            singleSizeLst.Clear();
-            ProdInfoLst.Clear();
-
-            if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
-
-            //检查错误行
-            ShowErrorRow0(); //这里不同 现场
-            List<SingleSize> prodLst = new List<SingleSize>();
-            GetDataFromDtByDoorType0(DtData, prodLst);
-
-            //如果无数据 则返回-1
-            if (prodLst.Count < 1) //
-                return Constant.prodLstNoData;
-
-
-            //进行优化 变成单个模块
-            List<List<int>> resultOpt = new List<List<int>>();
-            List<int> dataOpt = new List<int>();
-
-
-            //进行完整的优化
-            if (prodLst.Count > 0)
-                foreach (SingleSize sss in prodLst)
-                {
-                    dataOpt.Add(sss.Cut);
-                }
-
-            //----
-            resultOpt = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
-
-
-            if (resultOpt.Count > 0)
-            {
-                ShowNormalResult(resultOpt, prodLst, rt1);
+                ShowNormalResult(resultOpt, prodLst, rt1,Constant.optNormal);              
             }
             else return Constant.optResultNoData;
 
             resultOpt = null;
             prodLst = null;
             dataOpt = null;
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();     
+
             return Constant.optSuccess;
 
         }
+       
         private void GetSmallBigData(int c, List<int> data, List<int> dataBig, List<int> dataSmall, double index)
         {
             int len = (int)(c * index);
@@ -2144,7 +2380,86 @@ namespace xjplc
             }
 
         }
+        //索菲亚 余料优化 最保证至少两刀 小尺寸先添加 20181011
+        private List<int> OptModuleMeasure(List<int> data, int c, int dbc_tmp, int ltbc_tmp, int safe_tmp,int cutCount)
+        {
+            List<int> dataTmp = new List<int>();
 
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i] < (c - safe_tmp-ltbc_tmp-dbc))
+                {
+                    int s = data[i];
+                    dataTmp.Add(s);
+                }
+            }
+            List<int> dataResult = new List<int>();
+
+            if (dataTmp.Count < 1) return dataResult.ToList();
+
+            //设置一个参数 如果数据在上面都没有 也就是大家都是小类 尺寸  也没有必要再进行优化了 都是同一类尺寸
+            //double indexBigDouble = (double)dataTmp.ToArray().Max() / c + 0.1;
+
+            List<int> dataBig = new List<int>();
+            List<int> dataSmall = new List<int>();
+            List<int> dataRes = new List<int>();
+            int[] dataResL = null;
+
+            if (cutCount == 0)//如果是0 还是原来那种模式
+            {
+                dataBig.Add(dataTmp.ToArray().Max());
+
+                if (dataBig.Count > 0)
+                    dataTmp.Remove(dataBig[0]);
+
+
+                //剩下全是短料
+                dataSmall = dataTmp.ToList();
+
+                //只进行一次优化
+                if (dataSmall.Count > 0 && dataSmall.Min() < (c - dataBig[0] - dbc_tmp))
+                    dataResL = OptModule0(dataSmall, c - dataBig[0] - dbc_tmp, dbc_tmp, ltbc_tmp, safe_tmp);
+                //统计结果
+                if (dataResL != null)
+                    dataResult.AddRange(dataResL);
+                //把长料增加进去
+                if (dataBig.Count > 0)
+                    dataResult.Add(dataBig[0]);
+            }
+            else
+            {
+                int len = c-dbc_tmp-ltbc_tmp-safe_tmp; 
+                //索菲亚希望有两根
+                //找到最靠近料长的尺寸
+                for (int i = 0; i < cutCount; i++)
+                {
+                    
+                    int sizetmp = dataTmp.ToArray().Min();                   
+                    len=len - sizetmp - dbc_tmp;
+                    if (len <= 0) break;
+                    dataBig.Add(sizetmp);
+                    dataTmp.Remove(sizetmp);
+                    if (dataTmp.Count == 0) break;
+                }
+
+                //剩下全是短料
+                dataSmall = dataTmp.ToList();
+
+                //只进行一次优化
+                if (dataSmall.Count > 0 && dataSmall.Min() < len)
+                    dataResL = OptModule0(dataSmall, len, dbc_tmp, ltbc_tmp, safe_tmp);
+                //统计结果
+                if (dataResL != null)
+                    dataResult.AddRange(dataResL);
+                //把长料增加进去
+                if (dataBig.Count > 0)
+                    dataResult.AddRange(dataBig) ;
+
+            }
+
+
+            return dataResult.ToList();
+        }
         /// <summary>
         /// //自动测长情况下 只优化一根出来就可以了 
         //选一个最靠近料长的 尺寸
@@ -2162,7 +2477,7 @@ namespace xjplc
 
             for (int i = 0; i < data.Count; i++)
             {
-                if (data[i] < (c-safe_tmp))
+                if (data[i] < (c-safe_tmp-ltbc_tmp-dbc_tmp))
                 {
                     int s = data[i];
                     dataTmp.Add(s);
@@ -2203,6 +2518,188 @@ namespace xjplc
                       
             return dataResult.ToList();
         }
+
+        public int sizeTypeCount(List<int> data)
+        {
+            List<int> dataTmp = data.ToList<int>();
+            //统计数据 之前因为是乘以一个系数了 所以要修改回去
+            Dictionary<double, int> dataDic = new Dictionary<double, int>();
+
+            foreach (int s in dataTmp)
+            {
+                double size = (double)s / Constant.dataMultiple;
+                int i = 1;
+                if (dataDic.TryGetValue(size, out i))
+                {
+                    dataDic[size] = dataDic[size] + 1;
+                }
+                else
+                {
+                    dataDic.Add(size, 1);
+                }
+            }
+
+            return dataDic.Count();
+
+
+        }
+
+        //根据EXCEL 优化引擎进行排版
+        private List<List<int>> OptModuleExcel(List<int> data, int c, int dbc_tmp, int ltbc_tmp, int safe_tmp)
+        {
+            List<int> dataTmp = data.ToList<int>();
+
+            List<List<int>> dataResult = new List<List<int>>();
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (((data[i]+dbc_tmp) <= optRealLen))
+                {
+                    data[i] = data[i]; //这里加一个刀补偿 后面要减掉
+                    
+                }
+            }
+            //统计数据 之前因为是乘以一个系数了 所以要修改回去
+            Dictionary<double, int> dataDic = new Dictionary<double, int>();
+
+            foreach (int s in dataTmp)
+            {
+                double size = (double)s / Constant.dataMultiple;
+                int i = 1;
+                if (dataDic.TryGetValue(size, out i))
+                {
+                    dataDic[size] = dataDic[size] + 1;
+                }
+                else
+                {
+                    dataDic.Add(size,1);
+                }
+            }
+
+            
+            //加载EXCEL 文件
+            ConstantMethod.KillProcess("EXCEL");
+            ExcelObject eop = new ExcelObject();
+           // MessageBox.Show("开始优化！");
+            try
+            {
+                eop.Open(Constant.ConfigExcelOpt);
+                //清空原有数据
+                int rowId = 2;
+                int colId = 2;
+                while (!String.IsNullOrWhiteSpace(eop.GetStrCellValue(eop.ws, rowId, colId)))
+                {
+                    Application.DoEvents();
+                    eop.SetCellValue(eop.ws, rowId, colId,"");
+                    eop.SetCellValue(eop.ws, rowId+1, colId, "");
+                    colId++;
+                }       
+                //设置数据
+                List<double> test = new List<double>(dataDic.Keys);
+                for (int m = 0; m < dataDic.Count; m++)
+                {
+                    eop.SetCellValue(eop.ws, 2, 2 + m, test[m].ToString());
+                    eop.SetCellValue(eop.ws, 3, 2 + m, dataDic[test[m]].ToString());
+                }
+
+                //设置料长
+                double len = (double)OptRealLen / Constant.dataMultiple;
+                double dbc0 = (double)dbc_tmp / Constant.dataMultiple;
+                eop.SetCellValue(eop.ws, 13, 6, Constant.strParam1);
+                eop.SetCellValue(eop.ws, 6, 2, len.ToString());
+                eop.SetCellValue(eop.ws, 7, 2, dbc0.ToString());
+                eop.ExcelRunMacro();
+
+                //等待排版
+                for (int i = 0; i < 1200; i++)
+                {
+                   ConstantMethod.Delay(100);
+                   # region 开始提取数据
+                    if (eop.GetStrCellValue(eop.ws, 13, 6).Equals(len.ToString()))
+                    {
+                        int row = 12;// 数据在表格中的位置
+                        int col = 5;
+                        #region//获取到数据了 开始解析
+                        while (!String.IsNullOrWhiteSpace(eop.GetStrCellValue(eop.ws, row, col)))
+                        {
+                            row++;
+                            Application.DoEvents();
+                                                                                 
+                            int count = eop.GetIntCellValue(eop.ws, row, 7);
+                            if (count > 0)
+                            {
+                                List<int> r = new List<int>();
+                                string sizeLst = eop.GetStrCellValue(eop.ws, row, 11);
+                                for (int x = 0; x < count; x++)
+                                {
+                                    double[] value = splitStrToSizeLst(sizeLst);
+                                    dataResult.Add((double2Int(value)).ToList<int>());
+                                }
+                            }
+
+                        }
+                        #endregion
+                        break;
+                    }
+                    #endregion                 
+                }
+            }
+            catch(Exception ex)
+            {
+                //MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                eop.Close0();
+            }
+            //输入数据
+            //检测是否完成
+
+
+            return dataResult;
+
+        }
+
+        int[] double2Int(double[] value)
+        {
+            List<int> intvalue = new List<int>();
+            for (int i = 0; i < value.Count(); i++)
+            {
+                int temp = 0;
+                temp = Convert.ToInt32(value[i]*Constant.dataMultiple);
+                //这里减一个刀补偿               
+                intvalue.Add(temp);
+            }
+
+            return intvalue.ToArray();
+
+        }
+        //1603*1+769*1 字符分解
+        double[] splitStrToSizeLst(string str)
+        {
+            int count = 0;
+            double size = 0;
+            List<double> sizeLst = new List<double>();
+            string[] sLst = str.Split('+');
+            if (sLst.Count() == 0) return sizeLst.ToArray();
+            for (int i = 0; i < sLst.Count(); i++)
+            {
+                string[] ss = sLst[i].Split('*');
+                if (ss.Count() == 2)
+                {
+                   
+                  if(int.TryParse(ss[1],out count) &&double.TryParse(ss[0],out size))
+                  {
+                    for (int x = 0; x < count; x++)
+                    {
+                       sizeLst.Add(size);
+                    }
+                  }
+               }
+            }
+
+
+            return sizeLst.ToArray();            
+        }
         /// <summary>
         /// 优化主程序
         /// 先进行大小分类，再进行优化排版 
@@ -2221,12 +2718,24 @@ namespace xjplc
         {        
             double index = 0;//取值是0~1 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
                                 
-            List<int> dataTmp = data.ToList<int>();
-
+            List<int> dataTmp = new List<int>();
+            List<int> dataOrgin = new List<int>();
             List<List<int>> dataResult = new List<List<int>>();
 
+            for (int i = 0; i < data.Count; i++)
+            {
+              
+                    if (((data[i] + dbc_tmp) < optRealLen))
+                    {
+                        int s = data[i];
+                        dataTmp.Add(s);
+                       dataOrgin.Add(s);
+                    }
+                
+            }
             //设置一个参数 如果数据在上面都没有 也就是大家都是小类 尺寸  也没有必要再进行优化了 都是同一类尺寸
             double indexBigDouble = (double)dataTmp.ToArray().Max() / c + 0.1;
+
             
             //优化9次
             for (int i = 1; i <10; i++)
@@ -2234,7 +2743,9 @@ namespace xjplc
                               
                 index = 0.1 * i;
                 if (index > indexBigDouble) break;
-                dataTmp = data.ToList<int>();
+
+                dataTmp = dataOrgin.ToList<int>();  //这里反了一个致命错误 数据源 居然没筛选 直接就把data 这个list拿来用 导致排版不出来
+
                 List<List<int>> dataResultM = new List<List<int>>();
 
                 //每次优化把数据优化完
@@ -2289,8 +2800,7 @@ namespace xjplc
                     dataBig = null;
                     dataSmall = null;
                     dataRes = null;
-                    //GC.Collect();
-                    //GC.WaitForPendingFinalizers();
+
                 }
                
                 dataTmp = null;
@@ -2298,7 +2808,7 @@ namespace xjplc
                 {
                     if (dataResult.Count > 0)
                     {
-                        if (dataResult.Count > dataResultM.Count)
+                        if (dataResult.Count >= dataResultM.Count)
                         {
                             dataResult = dataResultM.ToList();
                         }
@@ -2324,11 +2834,21 @@ namespace xjplc
         {
             double index = 0;//取值是0~1 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
 
-            List<int> dataTmp = data.ToList<int>();
-
+        
             List<List<int>> dataResult = new List<List<int>>();
 
             List<List<int>> dataResultM = new List<List<int>>();
+
+            List<int> dataTmp = new List<int>();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i] < (c - safe_tmp - ltbc_tmp - dbc))
+                {
+                    int s = data[i];
+                    dataTmp.Add(s);
+                }
+            }
 
             while (dataTmp.Count > 0)
             {
@@ -2418,9 +2938,10 @@ namespace xjplc
                // ConstantMethod.
                Optimize(n, c,w, v, x);//UserData.RowCount;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-              //  Optimize(n, w, v, x, c);
+                MessageBox.Show(ex.Message);
+                //Optimize(n, w, v, x, c);
             }
             finally
             {
@@ -2448,8 +2969,7 @@ namespace xjplc
 
             return selectedData.ToArray();                        
                        
-        }
-        
+        }        
         #endregion
         //主要针对第一列数据进行检查TaT
         /// <summary>
@@ -2464,40 +2984,40 @@ namespace xjplc
             double dblevaluesize; //尺寸
             int intcounttocut; //要切的数量
             int intcountdone;//已切数量
-
+            ValueAbleRow.Clear();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 int m = i;
                                         
-                if (dt.Rows[i][Constant.strformatZh[0]] == null)
+                if (dt.Rows[i][0] == null)
                 {
                     errRow.Add(m);
                     continue;
                 }
-                if (dt.Rows[i][Constant.strformatZh[1]] == null)
+                if (dt.Rows[i][0] == null)
                 {
                     errRow.Add(m);
                     continue;
                 }
-                if (dt.Rows[i][Constant.strformatZh[2]] == null)
+                if (dt.Rows[i][2] == null)
                 {
                     errRow.Add(m);
                     continue;
                 }
-                if (!Double.TryParse(dt.Rows[i][Constant.strformatZh[0]].ToString(), out dblevaluesize))
+                if (!Double.TryParse(dt.Rows[i][0].ToString(), out dblevaluesize))
                 {
                     errRow.Add(m);
                     continue;
                 }
-                if (!int.TryParse(dt.Rows[i][Constant.strformatZh[1]].ToString(), out intcounttocut))
+                if (!int.TryParse(dt.Rows[i][1].ToString(), out intcounttocut))
                 {
                     errRow.Add(m);
                     continue;
                 }
                 //已切数量没有 默认为0
-                if (!int.TryParse(dt.Rows[i][Constant.strformatZh[2]].ToString(), out intcountdone))
+                if (!int.TryParse(dt.Rows[i][2].ToString(), out intcountdone))
                 {
-                    dt.Rows[i][Constant.strformatZh[2]] = 0;
+                    dt.Rows[i][2] = 0;
                     intcountdone = 0;
                     // errRow.Add(m);
                 }
@@ -2512,11 +3032,13 @@ namespace xjplc
                 {
 
                     int size = (int)(dblevaluesize * 100);
-                    if (size > reallen)
+                    if (size > reallen )
                     {
-                        errRow.Add(m);
-                        ValueAbleRow.Add(m);
+                        errRow.Add(m);                                               
                     }
+
+                   if(intcounttocut>intcountdone)
+                    ValueAbleRow.Add(m);
 
                 }
                 else
@@ -2527,79 +3049,13 @@ namespace xjplc
             }
 
             return errRow;
-        }
-        private List<int> CheckDataGridViewData0(int reallen, DataTable dt)
-        {
-            List<int> errRow = new List<int>();
-            double dblevaluesize; //尺寸
-            int intcounttocut; //要切的数量
-            int intcountdone;//已切数量
-
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                int m = i;
-
-                if (dt.Rows[i][Constant.strformatEh[0]] == null)
-                {
-                    errRow.Add(m);
-                    continue;
-                }
-                if (dt.Rows[i][Constant.strformatEh[1]] == null)
-                {
-                    errRow.Add(m);
-                    continue;
-                }
-                if (dt.Rows[i][Constant.strformatEh[2]] == null)
-                {
-                    errRow.Add(m);
-                    continue;
-                }
-                if (!Double.TryParse(dt.Rows[i][Constant.strformatEh[0]].ToString(), out dblevaluesize))
-                {
-                    errRow.Add(m);
-                    continue;
-                }
-                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[1]].ToString(), out intcounttocut))
-                {
-                    errRow.Add(m);
-                    continue;
-                }
-                //已切数量没有 默认为0
-                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[2]].ToString(), out intcountdone))
-                {
-                    dt.Rows[i][Constant.strformatEh[2]] = 0;
-                    intcountdone = 0;
-                    // errRow.Add(m);
-                }
-
-                if (intcounttocut < intcountdone)
-                {
-                    errRow.Add(m);
-                    continue;
-                }
-
-                if ((dblevaluesize > 0) && (intcounttocut > -1) && (intcountdone > -1))
-                {
-
-                    int size = (int)(dblevaluesize * 100);
-                    if (size > reallen)
-                    {
-                        errRow.Add(m);
-                    }
-                }
-                else
-                { errRow.Add(m); continue; }
-            }
-
-            return errRow;
-        }
-
+        }      
         /// <summary>
         /// 在给定的dt里寻找数据
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="ProdLst"></param>
-        private void GetDataFromDtByDoorType(DataTable dt, List<SingleSize> ProdLst)
+        private void GetDataFromDt(DataTable dt, List<SingleSize> ProdLst)
         {
             double dblevaluesize; //尺寸
             int intcounttocut; //要切的数量
@@ -2609,10 +3065,10 @@ namespace xjplc
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                //判断 尺寸 设定数量 已切数量
-                if (!Double.TryParse(dt.Rows[i][Constant.strformatZh[0]].ToString(), out dblevaluesize)) continue;
-                if (!int.TryParse(dt.Rows[i][Constant.strformatZh[1]].ToString(), out intcounttocut)) continue;
-                if (!int.TryParse(dt.Rows[i][Constant.strformatZh[2]].ToString(), out intcountdone)) continue;
+                //判断尺寸 设定数量 已切数量
+                if (!Double.TryParse(dt.Rows[i][0].ToString(), out dblevaluesize)) continue;
+                if (!int.TryParse(dt.Rows[i][1].ToString(), out intcounttocut)) continue;
+                if (!int.TryParse(dt.Rows[i][2].ToString(), out intcountdone)) continue;
 
                 if (intcounttocut <= intcountdone) continue;
 
@@ -2630,7 +3086,7 @@ namespace xjplc
                         
                         //设定尺寸 条码
                         pi.Cut = size;                       
-                        pi.Barc = dt.Rows[i][Constant.strformatZh[3]].ToString();
+                        pi.Barc = dt.Rows[i][3].ToString();
                         pi.DtUser = dt;
                         //添加参数   
                         List<string> paramLst = new List<string>();                   
@@ -2645,112 +3101,13 @@ namespace xjplc
                         }
                         pi.ParamStrLst.Clear();
                         pi.ParamStrLst.AddRange(paramLst) ;
-
-                        /***
-                        if (pi.ParamStrLst.Count > 20)
-                        {                                                                               
-                            pi.ParamStr1 = pi.ParamStrLst[0];
-                            pi.ParamStr2 = pi.ParamStrLst[1];
-                            pi.ParamStr3 = pi.ParamStrLst[2];
-                            pi.ParamStr4 = pi.ParamStrLst[3];
-                            pi.ParamStr5 = pi.ParamStrLst[4];
-                            pi.ParamStr6 = pi.ParamStrLst[5];
-                            pi.ParamStr7 = pi.ParamStrLst[6];
-                            pi.ParamStr8 = pi.ParamStrLst[7];
-                            pi.ParamStr9 = pi.ParamStrLst[8];
-                            pi.ParamStr10 = pi.ParamStrLst[9];
-                            pi.ParamStr11 = pi.ParamStrLst[10];
-                            pi.ParamStr12 = pi.ParamStrLst[11];
-                            pi.ParamStr13 = pi.ParamStrLst[12];
-                            pi.ParamStr14 = pi.ParamStrLst[13];
-                            pi.ParamStr15 = pi.ParamStrLst[14];
-                            pi.ParamStr16 = pi.ParamStrLst[15];
-                            pi.ParamStr17 = pi.ParamStrLst[16];
-                            pi.ParamStr18 = pi.ParamStrLst[17];
-                            pi.ParamStr19 = pi.ParamStrLst[18];
-                            pi.ParamStr20 = pi.ParamStrLst[19];
-
-
-                        }
-                        ***/
                         pi.ParamStrLst.Insert(0,pi.Barc);
-
                     }
                 }
 
-            }      
-    }
-        private void GetDataFromDtByDoorType0(DataTable dt, List<SingleSize> ProdLst)
-        {
-            double dblevaluesize; //尺寸
-            int intcounttocut; //要切的数量
-            int intcountdone;//已切数量
-
-            ProdLst.Clear();
-
-            for (int i = 0; i < dt.Rows.Count; i++)
-            {
-                //判断 尺寸 设定数量 已切数量
-                if (!Double.TryParse(dt.Rows[i][Constant.strformatEh[0]].ToString(), out dblevaluesize)) continue;
-                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[1]].ToString(), out intcounttocut)) continue;
-                if (!int.TryParse(dt.Rows[i][Constant.strformatEh[2]].ToString(), out intcountdone)) continue;
-
-                if (intcounttocut <= intcountdone) continue;
-
-                //尺寸需要扩大一下 有精度要求 小数点后面两位            
-                int size = (int)(dblevaluesize * 100);
-
-                if (!(size < OptRealLen)) continue;
-
-                if ((dblevaluesize > 0) && (intcounttocut > 0) && (intcountdone > -1))
-                {
-                    for (int j = 0; j < (intcounttocut - intcountdone); j++)
-                    {
-                        SingleSize pi = new SingleSize(dt, i);
-                        ProdLst.Add(pi);
-
-                        //设定尺寸 条码
-                        pi.Cut = size;
-                        pi.Barc = dt.Rows[i][Constant.strformatEh[3]].ToString();
-                        pi.DtUser = dt;
-                        //添加参数                      
-                        for (int m = 0; m < pi.ParamStrLst.Count; m++)
-                        {
-                            if ((m + 4) < dt.Rows[i].ItemArray.Count() && dt.Rows[i][4 + m] != null)  //参数
-                                pi.ParamStrLst[m] = dt.Rows[i][4 + m].ToString();
-                        }
-
-                        if (pi.ParamStrLst.Count > 20)
-                        {
-                            pi.ParamStr1 = pi.ParamStrLst[0];
-                            pi.ParamStr2 = pi.ParamStrLst[1];
-                            pi.ParamStr3 = pi.ParamStrLst[2];
-                            pi.ParamStr4 = pi.ParamStrLst[3];
-                            pi.ParamStr5 = pi.ParamStrLst[4];
-                            pi.ParamStr6 = pi.ParamStrLst[5];
-                            pi.ParamStr7 = pi.ParamStrLst[6];
-                            pi.ParamStr8 = pi.ParamStrLst[7];
-                            pi.ParamStr9 = pi.ParamStrLst[8];
-                            pi.ParamStr10 = pi.ParamStrLst[9];
-                            pi.ParamStr11 = pi.ParamStrLst[10];
-                            pi.ParamStr12 = pi.ParamStrLst[11];
-                            pi.ParamStr13 = pi.ParamStrLst[12];
-                            pi.ParamStr14 = pi.ParamStrLst[13];
-                            pi.ParamStr15 = pi.ParamStrLst[14];
-                            pi.ParamStr16 = pi.ParamStrLst[15];
-                            pi.ParamStr17 = pi.ParamStrLst[16];
-                            pi.ParamStr18 = pi.ParamStrLst[17];
-                            pi.ParamStr19 = pi.ParamStrLst[18];
-                            pi.ParamStr20 = pi.ParamStrLst[19];
-
-
-                        }
-                        pi.ParamStrLst.Insert(0, pi.Barc);
-
-                    }
-                }
             }
-        }
 
+            SizeLeft = ProdLst.Count();
+        }        
     }
 }

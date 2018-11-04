@@ -24,7 +24,7 @@ namespace evokNew0070
         public WorkForm()
         {
            
-            ConstantMethod.InitPassWd();
+            //ConstantMethod.InitPassWd();
             InitializeComponent();
         }
 

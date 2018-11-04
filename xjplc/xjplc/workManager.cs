@@ -13,12 +13,74 @@ namespace xjplc
         FileConvertToMachine fileConvert;
 
         List<doorTypeInfo> doorLst;
+
+        int shell_height_offset=0;
+
+        int shell_width_offset=0;
         public workManager()
         {
             fileConvert = new FileConvertToMachine();
             doorLst = new List<doorTypeInfo>();
         }
+        //获取指定数据的表格集合
+        DataTable getUserData(int id)
+        {
+            DataTable dtUser = new DataTable();
 
+            for (int i = 0; i < Constant.strformatZh.Length; i++)
+            {
+                dtUser.Columns.Add(Constant.strformatZh[i]);               
+            }
+
+            switch (id)
+            {
+                case Constant.doorSizeId:
+                    {
+                        foreach (doorTypeInfo dr in doorLst)
+                        {
+                            foreach (DataRow drr in dr.Door_Size.Rows)
+                                dtUser.ImportRow(drr);
+                        }
+                        break;
+                    }
+                case Constant.doorBanId:
+                    {
+                        foreach (doorTypeInfo dr in doorLst)
+                        {
+                            foreach (DataRow drr in dr.Door_Ban.Rows)
+                                dtUser.ImportRow(drr);
+                        }
+                        break;
+                    }
+                case Constant.doorShellId:
+                    {
+                        foreach (doorTypeInfo dr in doorLst)
+                        {
+                            foreach (DataRow drr in dr.Door_shell.Rows)
+                                dtUser.ImportRow(drr);
+                        }
+                        break;
+                    }
+                
+            }
+
+            return dtUser;
+
+
+        }
+        //将需要的数据 码头 门板 门边 数据显示在表格中
+        public void ShowDoor(int id,DataGridView userShow)
+        {
+            //按照要求倒个序
+            if (id == Constant.doorShellId)            
+                doorLst.Reverse();
+            DataTable dt = getUserData(id);  
+            if(dt.Rows.Count>0)
+            userShow.DataSource = dt;
+            
+            // ConstantMethod.ShowInfo(rtbresult, "总共" + doorLst.Count.ToString() + "扇门！");
+
+        }
         public void ShowDoor(int id, DataGridView dgSize, DataGridView dgDoorBan, DataGridView dgDoorShell)
         {
             if (id < doorLst.Count)

@@ -42,7 +42,12 @@ namespace xjplc
 
         private int count;
 
-
+        int sizeid;
+        public int Sizeid
+        {
+            get { return sizeid; }
+            set { sizeid = value; }
+        }
         public string Name
         {
             get { return name; }
@@ -108,11 +113,13 @@ namespace xjplc
     public class FileConvertToMachine
     {
         Dictionary<string,int> valCol;
+
         List<sizeLstByDoorType> UserSplitType = null;
 
         List<sizeFormula> FormulaType = null;
 
         ExcelNpoi exop;
+
         CsvStreamReader csvOp;
 
         public FileConvertToMachine()
@@ -179,9 +186,8 @@ namespace xjplc
 
                 while (!string.Equals(dtFormula.Rows[i - offset][0].ToString(), ProdType))
                 {
-                    sizename = dtFormula.Rows[i - offset][1].ToString();
+                    sizename = dtFormula.Rows[i - offset][0].ToString();
                     singleSize singlesize = new singleSize(sizename);
-
 
                     //公式 长 宽 
                     formulaname = dtFormula.Rows[i - offset][1].ToString();
@@ -191,7 +197,7 @@ namespace xjplc
                     formula.Strexe = formulastr;
                     singlesize.Formula.Add(formula); 
 
-
+                    //宽度
                     formulastr = dtFormula.Rows[i - offset][2].ToString();
                     if (!string.IsNullOrWhiteSpace(formulastr))
                     {
@@ -199,14 +205,25 @@ namespace xjplc
                         formula0.Strexe = formulastr;
                         singlesize.Formula.Add(formula0);
                     }
-
+                    //数量
                     if (int.TryParse(dtFormula.Rows[i - offset][4].ToString(), out tmp))
                     {
                         singlesize.Count = tmp;                     
                     }
                     else
                     {
-                        MessageBox.Show("数量数据错误,第" + (i - offset).ToString() + "行");                       
+                        MessageBox.Show("拆单规则数量错误,第" + (i - offset).ToString() + "行");
+                        ConstantMethod.AppExit();                      
+                    }
+                    //备注1
+                    if (int.TryParse(dtFormula.Rows[i - offset][5].ToString(), out tmp))
+                    {
+                        singlesize.Sizeid = tmp;
+                    }
+                    else
+                    {
+                        MessageBox.Show("拆单规则尺寸类型错误,第" + (i - offset).ToString() + "行");
+                        ConstantMethod.AppExit();
                     }
 
                     sptype.Size.Add(singlesize);
@@ -227,8 +244,73 @@ namespace xjplc
             }
             return 0;
         }
+        public bool LoadDoorTypeDataTable(string filename, List<doorTypeInfo> doorLst,int id)
+        {
+            DataTable doorType = exop.ImportExcel(filename);
+            if (doorType.Rows.Count > 0)
+            {
+                doorLst.Clear();
+            }
+            else
+            {
+                return false;
+            }
+            foreach (DataRow dr in doorType.Rows)
+            {
+                doorTypeInfo door = new doorTypeInfo();
 
-        public bool LoadDoorTypeDataTable(string filename,List<doorTypeInfo> doorLst )
+                door.Name = dr[valCol["产品名称"]].ToString();
+
+                double height = 0;
+                if (!double.TryParse(dr[valCol["高"]].ToString(), out height))
+                {
+                    MessageBox.Show("门高数据错误！");
+                    return false;
+                }
+
+                door.Height = (int)height;
+
+                double width = 0;
+                if (!double.TryParse(dr[valCol["宽"]].ToString(), out width))
+                {
+                    MessageBox.Show("门宽数据错误！");
+                    return false;
+                }
+                door.Width = (int)width;
+
+                double thickness = 0;
+                if (!double.TryParse(dr[valCol["厚"]].ToString(), out width))
+                {
+                    MessageBox.Show("门厚数据错误！");
+                    return false;
+                }
+                door.Thickness = (int)thickness;
+
+
+                int cnt = 0;
+                if (!int.TryParse(dr[valCol["数量"]].ToString(), out cnt))
+                {
+                    MessageBox.Show("门数量数据错误！");
+                    return false;
+                }
+                door.Count = cnt;
+
+
+                door.BarCodeStr.Add(dr[valCol["门扇条码"]].ToString());
+
+                foreach (string key in valCol.Keys)
+                {
+                    door.BarCodeStr.Add(dr[valCol[key]].ToString());
+                }
+                doorLst.Add(door);
+
+                getSizeDataTable(door);
+
+            }
+            
+            return true;
+        }
+        public bool LoadDoorTypeDataTable(string filename,List<doorTypeInfo> doorLst)
         {
             DataTable doorType = exop.ImportExcel(filename);
             if (doorType.Rows.Count > 0)
@@ -280,7 +362,7 @@ namespace xjplc
                 door.Count = cnt;
 
 
-                door.BarCodeStr.Add(dr[valCol["数量"]].ToString());
+                door.BarCodeStr.Add(dr[valCol["门扇条码"]].ToString());
 
                 foreach (string key in valCol.Keys)
                 {
@@ -291,6 +373,8 @@ namespace xjplc
                 getSizeDataTable(door);
 
             }
+            //按照要求倒个序
+ 
             return true;                                               
         }
         public int GetFormulaResult(string formulaStr, doorTypeInfo door)
@@ -309,6 +393,7 @@ namespace xjplc
 
             return resultInt;
         }
+        //获取门皮 门板 码头等尺寸 门型 还他妈的有字母和文字
         public bool getSizeDataTable(doorTypeInfo door)
         {
             string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
@@ -318,37 +403,51 @@ namespace xjplc
                 //匹配成功 找到公式  找到尺寸
                 if (split.Name.Contains(doorType))
                 {
-                    //添加门皮
-                    DataRow dr0 = door.Door_shell.NewRow();
-                    dr0[Constant.strformatZh[0]] = door.Height;
-                    dr0[Constant.strformatZh[1]] = "2";// GetFormulaResult(size.Formula[0].Strexe, door);
-                    dr0[Constant.strformatZh[2]] = "0";
-                    dr0[Constant.strformatZh[3]] = door.Name;
-                    dr0[Constant.strformatZh[4]] = door.Width;// GetFormulaResult(size.Formula[1].Strexe, door);
-                    door.Door_shell.Rows.Add(dr0);
-
+                   
+                    
 
                     foreach (singleSize size in split.Size)
                     {                      
-
                         //刨花板 桥洞力学板
                         if (size.Formula.Count == 2)
                         {
-                            DataRow dr = door.Door_Ban.NewRow();
-                            
-                            dr[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);
-                            dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
-                            dr[Constant.strformatZh[2]] = "0";
-                            dr[Constant.strformatZh[3]] = size.Name;
-                            dr[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
+                            //当公式有两个的时候
 
-                            door.Door_Ban.Rows.Add(dr);
+                            switch (size.Sizeid)
+                            {
+                                case Constant.doorBanId:
+                                    {
+                                        DataRow dr = door.Door_Ban.NewRow();
 
+                                        dr[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);
+                                        dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
+                                        dr[Constant.strformatZh[2]] = "0";
+                                        dr[Constant.strformatZh[3]] = size.Name;
+                                        dr[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
+
+                                        door.Door_Ban.Rows.Add(dr);
+
+                                        break;
+                                    }
+                                case Constant.doorShellId:
+                                    {
+                                        //添加门皮
+                                        DataRow dr0 = door.Door_shell.NewRow();
+                                        dr0[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);
+                                        dr0[Constant.strformatZh[1]] = "1";//门皮两个一起切
+                                        dr0[Constant.strformatZh[2]] = "0";
+                                        dr0[Constant.strformatZh[3]] = door.Name;
+                                        dr0[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
+                                        door.Door_shell.Rows.Add(dr0);
+
+                                        break;
+                                    }
+                            }                           
                         }
                         else
                         {
                             //添加尺寸 条子
-                            if (size.Formula.Count == 1)
+                            if (size.Formula.Count == 1 && size.Sizeid ==Constant.doorSizeId)
                             {
                                 DataRow dr = door.Door_Size.NewRow();
                                 dr[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);

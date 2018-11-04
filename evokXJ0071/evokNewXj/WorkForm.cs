@@ -23,7 +23,7 @@ namespace evokNew0071
 
         public WorkForm()
         {        
-           // ConstantMethod.InitPassWd();
+           //ConstantMethod.InitPassWd();
             InitializeComponent();
         }
 
@@ -77,17 +77,7 @@ namespace evokNew0071
             }
         }
 
-        private static void CheckAllCtrls(Control item)
-        {
-            for (int i = 0; i < item.Controls.Count; i++)
-            {
-                if (item.Controls[i].HasChildren)
-                {
-                    CheckAllCtrls(item.Controls[i]);
-                }
-                allCtrls.Enqueue(item.Controls[i]);
-            }
-        }
+       
 
        
         private void connectMachine_Click(object sender, EventArgs e)
@@ -211,7 +201,6 @@ namespace evokNew0071
                  optBtn.Enabled = true;
             }
         }
-   
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -279,12 +268,12 @@ namespace evokNew0071
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
+
         }
 
         private void pauseBtn_Click(object sender, EventArgs e)
         {
-             evokWork.pause();
-          
+             evokWork.pause();          
         }
 
         private void qClr_Click(object sender, EventArgs e)
@@ -522,7 +511,7 @@ namespace evokNew0071
             if ( tc1.SelectedIndex == 0)
             {    
                 //现场 改回 20180805 无锡欧派                          
-                IsoptBtnShow( evokWork.AutoMes);
+                IsoptBtnShow(evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
@@ -559,8 +548,7 @@ namespace evokNew0071
                             {
                                 errorList.RemoveAt(index);
                             }                            
-                        }
-                                              
+                        }                                            
                     }
                 }
             }
