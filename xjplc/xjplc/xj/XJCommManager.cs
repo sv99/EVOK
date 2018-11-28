@@ -149,23 +149,24 @@ namespace xjplc
             isGoToGetData = false;
             isWriteCmd    = false;
             status = false;
+           
             m_buffer.Clear();
             ConstantMethod.Delay(50);
             closePort();           
-           
+                       
         }
         
         //通讯错误引发的事件
         private void ErrorConnTimerEvent(object sender, EventArgs e)
         {
-            if (isNoConnection)
-                return;
+            if (isNoConnection) return;
             ErrorConnCount++;
             //通讯错误次数太多 就直接停了吧
             if (ErrorConnCount < Constant.ErrorConnCountMax && ErrorConnCount > 1)
             {
                 GetData();
-                LogManager.WriteProgramLog(Constant.CommManageError);
+                
+                LogManager.WriteProgramLog(m_SerialPort.PortName+Constant.CommManageError);
                 return;
             }
             else if (ErrorConnCount > Constant.ErrorConnCountMax)
@@ -216,11 +217,11 @@ namespace xjplc
                         ErrorConnTimer.Enabled = true;
                         break;
                     }
+
                 }
             }
-
-            m_buffer.Clear();
-
+            
+            m_buffer.Clear();           
             return  isDeviceReady ;
 
         } 

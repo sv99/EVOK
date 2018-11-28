@@ -346,11 +346,14 @@ namespace evokNew0066
             {
                 if (control.Tag != null)
                 {
-                    if ((control.Parent ==  tabPage1) || (control.Parent ==  groupBox1)  )
+                    if ((control.Parent ==  tabPage1) || (control.Parent.Parent == tabPage1)  )
                     {
                         foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                         {
-                            ConstantMethod.setControlInPlcSimple(simple, control);
+
+                       
+                                    ConstantMethod.setControlInPlcSimple(simple, control);
+                         
                         }
                     }
                     if (control.Parent ==  tabPage2)

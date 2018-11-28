@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace xjplc
-{
-    
+{   
     public class EvokXJDevice:XJDevice
     {
 
@@ -67,12 +66,17 @@ namespace xjplc
             SetMValueON(p);
         }
 
-        public void opposite(PlcInfoSimple p)
+        public bool opposite(PlcInfoSimple p)
         {
             if (p.ShowValue > 0)
             {
-                SetMValueOFF(p);
-            }else SetMValueON(p);
+                return SetMValueOFF(p);
+            }
+            else
+            {
+                return SetMValueON(p);
+            }
+          
         }
         public bool SetMultiPleDValue(PlcInfoSimple stPlcInfoSimple, int[] value0)
         {
@@ -85,13 +89,15 @@ namespace xjplc
                     stPlcInfoSimple.Area, 
                     stPlcInfoSimple.Mode);
               //取消查看 在多次发送的时候会比较卡
-            //  LogManager.WriteProgramLog("数据下发地址："+ stPlcInfoSimple.Addr+"写入值："+ value0[0].ToString());
+              LogManager.WriteProgramLog("数据下发地址："+ stPlcInfoSimple.Addr+"写入值："+ value0[0].ToString());
                 
-             // ConstantMethod.DelayWriteCmdOk(Constant.WriteCommTimeOut, ref value0[0], ref stPlcInfoSimple);
+              ConstantMethod.DelayWriteCmdOk(300, ref value0[0], ref stPlcInfoSimple);
                //可能时间太久 要等下
-             // LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "返回值：" + stPlcInfoSimple.ShowValue);
-        
-              return writeok;
+              LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "返回值：" + stPlcInfoSimple.ShowValue);
+
+              if (value0[0] == stPlcInfoSimple.ShowValue) return true;
+                
+              return false;
               
 
             }

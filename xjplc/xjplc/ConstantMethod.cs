@@ -84,6 +84,7 @@ namespace xjplc
         }
     }
 
+
     public class RegistryHelpers
     {
 
@@ -178,6 +179,12 @@ namespace xjplc
 
             return dtOutPutTmp;
         }
+
+        //color convert
+        public static Int32 ParseRGB(Color color)
+        {
+            return (Int32)(((uint)color.B << 16) | (ushort)(((ushort)color.G << 8) | color.R));
+        }
         #region 信捷PLC 使用
         /// 变量与表格对应起来 可以实时读取数据
         /// </summary>
@@ -242,6 +249,10 @@ namespace xjplc
         {
             //20181102 数据获取的唯一性 需要一致才行     XXX读  XXX读写 XXX写读        
 
+            if (simple2.Name == "H37读写")
+            {
+                int s = 0;
+            };
             string str1 = simple2.Name;
             string str2 = control.Tag.ToString();
 
@@ -340,6 +351,19 @@ namespace xjplc
             count = typerCount[type];
             return count;
         }
+        //统计字符出现次数
+        public static int CharNum(string str, string search)
+        {
+            int count = 0;
+            if (!string.IsNullOrEmpty(str) || !string.IsNullOrEmpty(search))
+            {
+                string[] resultString = Regex.Split(str, search, RegexOptions.IgnoreCase);
+
+                count = resultString.Length;
+            }
+            return count;
+
+        }
 
 
         public static string GetParamPwd(int i)
@@ -431,6 +455,21 @@ namespace xjplc
             return A;
         }
         #region 台达PLC 
+
+        public static DTPlcInfoSimple getDtPlcSimple(string name,List<DTPlcInfoSimple> pLst)
+        {                                       
+            foreach (DTPlcInfoSimple p in pLst)           
+            {
+                if (p.Name.Contains(name) )
+                {
+                     return p;
+                }
+            }
+
+            return null;
+
+        }
+
         public static string GetAppPath()
         {
             string softName = Path.GetFileName(Application.ExecutablePath);
@@ -914,10 +953,11 @@ namespace xjplc
         //返回整型数据的 字节表示 低位在前 高位在后 配合insert range 的方式
         public static byte[] getDataLowHighByte(int addr)
         {
-            if (addr < 0) return null;
+            
 
             List<byte> resultLst = new List<byte>();
 
+            if (addr < 0) return resultLst.ToArray();
 
             int addr_low = addr & 0xFF;
             resultLst.Add((byte)addr_low);

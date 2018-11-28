@@ -76,14 +76,7 @@ namespace evokNew0073
 
         private void ccBtn_Click(object sender, EventArgs e)
         {
-            if ( evokWork.AutoMes)
-            {
-                 evokWork.autoMesOFF();
-            }
-            else
-            {
-                 evokWork.autoMesON();
-            }
+
         }
 
         private static void CheckAllCtrls(Control item)
@@ -552,7 +545,7 @@ namespace evokNew0073
         {
             if ( tc1.SelectedIndex == 0)
             {                               
-               // IsoptBtnShow( evokWork.AutoMes);
+               //IsoptBtnShow( evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
@@ -574,7 +567,18 @@ namespace evokNew0073
             }
             if (tc1.SelectedIndex == 0)
             {
-                foreach(PlcInfoSimple p in evokWork.PsLstAuto)
+                if (evokWork.startTip)
+                {
+                    showStartTipTmr.Enabled = true;
+
+                }
+                else
+                {
+                    showStartTipTmr.Enabled = true;
+                    autoSLBtn.BackColor = Color.Transparent;
+                }
+
+                foreach (PlcInfoSimple p in evokWork.PsLstAuto)
                 {
                     if (p.Name.Contains(Constant.Alarm)&& p.ShowStr != null && p.ShowStr.Count > 0)
                     {
@@ -801,5 +805,24 @@ namespace evokNew0073
         {
 
         }
+
+        private void showStartTipTmr_Tick(object sender, EventArgs e)
+        {
+            if (evokWork.startTip)
+            {
+                if (autoSLBtn.BackColor == Color.Red)
+                {
+                    autoSLBtn.BackColor = Color.Transparent;
+                }
+                else
+                {
+                    autoSLBtn.BackColor = Color.Red;
+                }
+            }
+            else
+            {
+                showStartTipTmr.Enabled = false;
+            }        
+    }
     }
 }

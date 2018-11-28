@@ -255,7 +255,7 @@ namespace xjplc
 
             if (!ConstantMethod.DTFindPort())
             {
-                MessageBox.Show(Constant.ConnectMachineFail);
+                MessageBox.Show( Constant.ConnectMachineFail);
                 Application.Exit();
                 System.Environment.Exit(0);
             }

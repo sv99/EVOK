@@ -735,11 +735,7 @@ namespace xjplc.delta.TCP
             if ((mCount > 0))
             {           
                 for (int i = 0; i < mCount; i++)
-                {
-                    if (mplcInfoLst[i].RelAddr == 4024)
-                    {
-                        string s = datform.Rows[mplcInfoLst[i].Row]["value"].ToString();
-                    }                 
+                {                                
                     if (!datform.Rows[mplcInfoLst[i].Row]["value"].ToString().Equals(mplcInfoLst[i].PlcValue)
                             && !mplcInfoLst[i].IsInEdit)
                     {
@@ -752,7 +748,48 @@ namespace xjplc.delta.TCP
                             )
                         {
                             datform.Rows[mplcInfoLst[i].Row]["value"] = mplcInfoLst[i].PlcValue;
-                            datform.Rows[mplcInfoLst[i].Row]["param6"] = mplcInfoLst[i].PlcValue;
+                            if (datform.Columns.Contains("param7"))
+                            {
+                                string ration = datform.Rows[mplcInfoLst[i].Row]["param7"].ToString();                                
+                                double rationDouble = 1;
+                                double valueDouble = 1;
+                                double minDouble = -1000;
+                                double maxDouble = 1000000;
+                                                           
+                                if (double.TryParse(ration, out rationDouble)
+                                    && double.TryParse(mplcInfoLst[i].PlcValue, out valueDouble))
+                                {
+
+                                    valueDouble = valueDouble / rationDouble;
+                                    //大小比较 如果没有参数8 9 那就直接显示数值 如果有大小那就显示比较结果
+                                    if (datform.Columns.Contains("param8") && datform.Columns.Contains("param9"))
+                                    {
+                                        string minStr = datform.Rows[mplcInfoLst[i].Row]["param9"].ToString();
+                                        string maxStr = datform.Rows[mplcInfoLst[i].Row]["param8"].ToString();
+
+                                        if (double.TryParse(maxStr, out maxDouble) && (double.TryParse(minStr, out minDouble)))
+                                        {
+                                            if (valueDouble <= maxDouble && valueDouble > minDouble)
+                                            {
+                                                datform.Rows[mplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
+                                            }
+                                            else
+                                            {
+                                                datform.Rows[mplcInfoLst[i].Row]["param6"] = Constant.dataOutOfRange;
+                                            }
+                                        }else datform.Rows[mplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
+                                    }
+                                    else
+                                    {
+                                        datform.Rows[mplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
+                                    }                                                                      
+                                }
+                                else
+                                {
+                                    datform.Rows[mplcInfoLst[i].Row]["param6"] = mplcInfoLst[i].PlcValue;
+                                }                              
+                            }
+                            
                         }
 
                     }                   
@@ -767,8 +804,7 @@ namespace xjplc.delta.TCP
         #region 针对plcinfosimple 进行操作
 
         public bool SetDValue(DTPlcInfoSimple p, string[] value0)
-        {
-            
+        {          
             if (p != null && p.BelongToDataform != null)
             {
                 return WriteMultiPleDMData(p.Addr, value0, p.Area, p.Mode);
@@ -777,7 +813,7 @@ namespace xjplc.delta.TCP
         }      
         public bool SetMValueON(DTPlcInfoSimple p)
         {
-            string[] value0 = { "1" };
+            string[] value0 = { "1" };         
             if (p != null && p.BelongToDataform != null)
             {
                return  WriteMultiPleDMData(p.Addr, value0, p.Area, p.Mode);
@@ -796,6 +832,7 @@ namespace xjplc.delta.TCP
         public void SetMValueON2OFF(DTPlcInfoSimple p)
         {
             SetMValueON(p);
+           // ConstantMethod.Delay(500);
             SetMValueOFF(p);
         }
         public void SetMValueOFF2ON(DTPlcInfoSimple p)
@@ -846,14 +883,13 @@ namespace xjplc.delta.TCP
                         break;
                     }
                 case 2:
-                    { 
-                   
+                    {                   
                         //uint
                         int data1Byte = 0;
 
                         if (int.TryParse(value, out data1Byte))
                         {
-                            valueByte.AddRange(ConstantMethod.getDataHighLowByte(data1Byte));
+                            valueByte.AddRange(ConstantMethod.getDataLowHighByte(data1Byte));
                         }
 
                         break;

@@ -961,6 +961,12 @@ namespace xjplc
             set { len = value; }
         }
 
+        int wlMiniValue = 0;
+        public int WlMiniValue
+        {
+            get { return wlMiniValue; }
+            set { wlMiniValue = value; }
+        }
         List<int> scarLst;
         public System.Collections.Generic.List<int> ScarLst
         {
@@ -1397,44 +1403,49 @@ namespace xjplc
         {
          
             if (this == null) return;
-
+            if (CSVop == null) return;
+            if (dtData == null) return;
             while (IsSaving)
             {
                 Application.DoEvents();
             }
 
-            if (!IsLoadData
-                && !string.IsNullOrWhiteSpace(CSVop.FileName)
-                && File.Exists(CSVop.FileName)
-                && dtData != null
-                && dtData.Rows.Count > 0)
+            try
             {
-                IsSaving = true;
-                //20181005增加一组函数 如果读取回来为空 那就再保存一次
-                CSVop.SaveCSV(dtData, CSVop.FileName);
-                DataTable dtIsNull = CSVop.OpenCSV(CSVop.FileName);
-                if (dtIsNull == null || dtIsNull.Rows.Count == 0)
-                {
-                    CSVop.SaveCSV(dtData, CSVop.FileName);
-                }
-                IsSaving = false;
-            }
-            else
-            {
-                //如果CSVop 文件名为空 那就保存到默认文件名里
-                if(string.IsNullOrWhiteSpace(CSVop.FileName))
+                if (!IsLoadData
+                    && !string.IsNullOrWhiteSpace(CSVop.FileName)
+                    && File.Exists(CSVop.FileName)
+                    && dtData != null
+                    && dtData.Rows.Count > 0)
                 {
                     IsSaving = true;
                     //20181005增加一组函数 如果读取回来为空 那就再保存一次
-                    CSVop.SaveCSV(dtData, Constant.userdata);
-                    DataTable dtIsNull = CSVop.OpenCSV(Constant.userdata);
+                    CSVop.SaveCSV(dtData, CSVop.FileName);
+                    DataTable dtIsNull = CSVop.OpenCSV(CSVop.FileName);
                     if (dtIsNull == null || dtIsNull.Rows.Count == 0)
                     {
-                        CSVop.SaveCSV(dtData, Constant.userdata);
+                        CSVop.SaveCSV(dtData, CSVop.FileName);
                     }
                     IsSaving = false;
                 }
+                else
+                {
+                    //如果CSVop 文件名为空 那就保存到默认文件名里
+                    if (string.IsNullOrWhiteSpace(CSVop.FileName))
+                    {
+                        IsSaving = true;
+                        //20181005增加一组函数 如果读取回来为空 那就再保存一次
+                        CSVop.SaveCSV(dtData, Constant.userdata);
+                        DataTable dtIsNull = CSVop.OpenCSV(Constant.userdata);
+                        if (dtIsNull == null || dtIsNull.Rows.Count == 0)
+                        {
+                            CSVop.SaveCSV(dtData, Constant.userdata);
+                        }
+                        IsSaving = false;
+                    }
+                }
             }
+            catch { }
         }
        
         public void ShowErrorRow()
@@ -1615,6 +1626,7 @@ namespace xjplc
             LogManager.WriteProgramLog(Constant.LoadFileEd);
 
             return true;
+
         }
         //分号
         public bool LoadCsvData0(string filename)
@@ -2457,7 +2469,6 @@ namespace xjplc
 
             }
 
-
             return dataResult.ToList();
         }
         /// <summary>
@@ -2514,8 +2525,13 @@ namespace xjplc
             dataResult.AddRange(dataResL);
             //把长料增加进去
             if (dataBig.Count > 0)
-                dataResult.Add(dataBig[0]); 
-                      
+            dataResult.Add(dataBig[0]);
+
+            //20181114 按照要求所有优化,需要考虑机械的限制 尾料太短不行 
+            if (CaculateWL(dataResult.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp) <= WlMiniValue && dataResult.Count() > 0)
+            {
+                dataResult.RemoveAt(dataResult.Count - 1);
+            }
             return dataResult.ToList();
         }
 
@@ -2784,9 +2800,17 @@ namespace xjplc
                             }
                         }
                     }
+
+                    if (dataRes.Count > 0)                    
+                        //20181114 按照要求 所有优化 需要考虑机械的限制 尾料太短不行
+                     while ((CaculateWL(dataRes.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp)+ dataRes[dataRes.Count-1]) <= WlMiniValue && dataRes.Count > 0)
+                    {
+                         dataRes.RemoveAt(dataRes.Count - 1); 
+                    }
                     //每一根的优化结果 然后在 datatmp中删除已经选中的数据
                     if (dataRes.Count > 0)
                     {
+                       
                         dataResultM.Add(dataRes.ToList<int>());
                         //删除已经选中的数据
                         for (int j = 0; j < dataRes.Count; j++)

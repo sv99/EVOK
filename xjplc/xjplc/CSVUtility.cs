@@ -6,6 +6,8 @@ using System.Data;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Collections.Generic;
+
 namespace xjplc
 {
     public class CsvStreamReader
@@ -135,7 +137,7 @@ namespace xjplc
             fs.Close();
             //MessageBox.Show("CSV文件保存成功！");
         }
-
+        
         public void SaveCSV0(DataTable dt, string fileName)
         {
             FileStream fs = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
@@ -441,19 +443,58 @@ namespace xjplc
             //记录每次读取的一行记录
             string strLine = "";
             //记录每行记录中的各字段内容
-            string[] aryLine;
+            string[] aryLine = null;;
             //标示列数
             int columnCount = 0;
             //标示是否是读取的第一行
             bool IsFirst = true;
-
+            int CsvSplitDoubleQuaotaionCount = 0;//统计遇到几个" 因为：
             //逐行读取CSV中的数据
             while ((strLine = sr.ReadLine()) != null)
             {
-                if(strLine.Contains(";"))
-                aryLine = strLine.Split(';');
+                //if is first read not execute
+                int idCount = ConstantMethod.CharNum(strLine, Constant.CsvSplitComma);
+                int idCount0 = ConstantMethod.CharNum(strLine, Constant.CsvSplitSemiColon);
+
+                if (IsFirst == false)
+                {                   
+                    if (idCount >= (dt.Columns.Count ))
+                    {
+                        //碰到字符中有逗号的情况 欧派遇到了                        
+                        aryLine = strLine.Split(Constant.CsvSplitCommaChar);
+                        List<string> resultStr = new List<string>();
+                        for(int i=0;i<aryLine.Length;i++)
+                        {                          
+                            if (aryLine[i].Contains(Constant.CsvSplitDoubleQuaotaion))
+                            {
+                                CsvSplitDoubleQuaotaionCount++;
+                                if (CsvSplitDoubleQuaotaionCount >= 2)
+                                {
+                                    CsvSplitDoubleQuaotaionCount = 0;
+                                    resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1] + Constant.CsvSplitComma + aryLine[i];
+                                    resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1].Replace(Constant.CsvSplitDoubleQuaotaion, "");
+                                }else resultStr.Add(aryLine[i]);
+                            }
+                            else
+                            resultStr.Add(aryLine[i]);
+                        }
+                        aryLine = resultStr.ToArray();
+                    }
+                    else
+                    {
+                        if (idCount0 == (dt.Columns.Count))
+                            aryLine = strLine.Split(Constant.CsvSplitSemiColonChar);
+                        else return null;
+                    }
+                }
                 else
-                    aryLine = strLine.Split(',');
+                {
+                    if (idCount > idCount0) aryLine = strLine.Split(Constant.CsvSplitCommaChar);
+                    else
+                    {
+                        aryLine = strLine.Split(Constant.CsvSplitSemiColonChar);
+                    }
+                }
 
                 if (IsFirst == true)
                 {

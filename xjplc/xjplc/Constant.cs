@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
@@ -127,13 +128,16 @@ namespace xjplc
                                                                       //网络客户端进来
     public delegate void ydtdWorkChanged(object s, YBDTWork ybtdWork0);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     public class Constant
-        {
+    {
 
         public static readonly string CsvSplitComma = ",";
-        public static readonly string CsvSplitSemiColon= ";";
+        public static readonly string CsvSplitSemiColon = ";";
+        public static readonly char CsvSplitCommaChar = ',';
+        public static readonly string CsvSplitDoubleQuaotaion = "\"";
+        public static readonly char CsvSplitSemiColonChar = ';';
         public static readonly string ConnectMachineSuccess = "设备连接成功！";
-        public static readonly string ConnectMachineFail    = "设备连接失败,请检查设备端口！";
-        public static readonly string ReadPlcInfoFail       = "读取设备数据文件失败，软件即将关闭！";
+        public static readonly string ConnectMachineFail = "设备连接失败,请检查设备端口！";
+        public static readonly string ReadPlcInfoFail = "读取设备数据文件失败，软件即将关闭！";
         public static readonly string CSVFileEX = ".csv";
         public static readonly string ExcelFileEX0 = ".xlsx";
         public static readonly string ExcelFileEX1 = ".xls";
@@ -157,14 +161,15 @@ namespace xjplc
         public static readonly int CsvFile = 2;
         public static readonly int ErrorFile = 0;
         public const int AutoPage = 0;
-        public const  int HandPage = 1;
-        public const  int ParamPage = 2;
-        public const  int IOPage = 3;
+        public const int HandPage = 1;
+        public const int ParamPage = 2;
+        public const int IOPage = 3;
+        public const int Param1Page = 4;
         public static readonly int AutoPageID = 2;
         public static readonly int HandPageID = 3;
         public static readonly string Alarm = "报警";
         public static readonly int DataRowWatchMax = 50; //监控太多不行 还是少监控一点吧
-        public static readonly string[] plcDataFile = {"addr","mode","bin","count","value","param1","param2","param3","param4","param5","param6"};
+        public static readonly string[] plcDataFile = { "addr", "mode", "bin", "count", "value", "param1", "param2", "param3", "param4", "param5", "param6" };
         public static readonly string sqlChar10 = "char(10)";
         public static readonly string sqlChar20 = "char(20)";
 
@@ -188,12 +193,12 @@ namespace xjplc
         public const int LTBCAddDbc = 1;
         public const int SizeScarSplit = 0;
         public const int SizeScarNoSplit = 1;
-        public const int ScarSplit = 2;   
+        public const int ScarSplit = 2;
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
         //PLC 要读取的数据的文件列名 CSV
-        public static readonly string[] PLCstrCol = {"addr","mode", "bin", "count","value","param1","param2","param3","param4","param5","param6"};
+        public static readonly string[] PLCstrCol = { "addr", "mode", "bin", "count", "value", "param1", "param2", "param3", "param4", "param5", "param6" };
         public static readonly string PlcDataFilePathAuto = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto.csv";
         public static readonly string PlcDataFilePathHand = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand.csv";
         public static readonly string PlcDataFilePathParam = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param.csv";
@@ -204,7 +209,7 @@ namespace xjplc
         public static readonly string PlcDataFilePathParam1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param1.csv";
         public static readonly string PlcDataFilePathIO1 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_IO1.csv";
 
-        public static readonly string userdata = ConstantMethod.GetAppPath() + "user data.csv"; 
+        public static readonly string userdata = ConstantMethod.GetAppPath() + "user data.csv";
 
         public static readonly string PlcDataFilePathAuto2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_auto2.csv";
         public static readonly string PlcDataFilePathHand2 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand2.csv";
@@ -216,7 +221,7 @@ namespace xjplc
         public static readonly string PlcDataFilePathScar = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_scar.csv";
 
         public static readonly string ErrorMValue = "位值只能为1或者0！";
-        
+
         //public static readonly string ConstantMethod.GetAppPath() = ConstantMethod.GetAppPath();// System.AppDomain.CurrentDomain.BaseDirectory; //Application.StartupPath + "\\";// Path.GetDirectoryName(Application.ExecutablePath)+"\\";//System.AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ConfigSerialportFilePath = ConstantMethod.GetAppPath() + "config\\configSerialport.xml";
         public static readonly string ConfigSerialportFilePath1 = ConstantMethod.GetAppPath() + "config\\configSerialport1.xml";
@@ -235,13 +240,13 @@ namespace xjplc
         public static readonly string strParam4 = "param4";
         public static readonly string strParam5 = "param5";
         public static readonly string strParam6 = "param6";
-        public static readonly string passwdTime = "passwdTime"; 
+        public static readonly string passwdTime = "passwdTime";
         public static readonly string passwd = "passwd";
         public static readonly string NoSerialPort = "端口错误或者不存在！";
         public static readonly string passwdCount = "passwdCount";
         public static readonly string PortName = "PortName";
         public static readonly string Bin = "bin";
-        public static readonly string Read= "读";
+        public static readonly string Read = "读";
         public static readonly string Write = "写";
         public static readonly string printBarcodeMode = "printBarcodeMode";
         public static readonly string optParam1 = "optParam1";
@@ -249,13 +254,26 @@ namespace xjplc
         public static readonly int NoPrintBarCode = 0;
         public static readonly int AutoBarCode = 1;
         public static readonly int HandBarCode = 2;
-        public const  int doorSizeId = 0;
-        public const  int doorBanId = 1;
-        public const  int doorShellId = 2;
+        public const int doorSizeId = 0;
+        public const int doorBanId = 1;  
+        public const int doorShellId = 2;           //0       1          2        3        4         5        6           7
+        public static string[] constantStatusStr = {"未知","报警中", "运行中", "复位中", "停止中", "暂停中","启动就绪","待机中" };
+        public static int[]    constantStatusId  = {0,1,2,3,4,5,6,7};
+        public static Color[] colorRgb = {
+                                        Color.LightGray,
+                                        Color.Red,
+                                        Color.Green,
+                                        Color.Blue,
+                                        Color.Brown,
+                                        Color.Pink,
+                                        Color.Yellow,
+                                        Color.Yellow,
+                                        };
         public static readonly string[] printBarcodeModeStr = {"无条码","自动贴条码","手动贴条码" };
 
-        public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1" };
-        public static readonly string[] strformatZh = { "尺寸", "设定数量", "已切数量", "条码", "参数1" };
+        public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1", "param2", "param3", "param4", "param5", "param6", "para7", "param8", "param9", "param10", "param11", "param12", "param13" };
+        public static readonly string[] strformatZh = { "尺寸", "设定数量", "已切数量", "条码", "参数1" ,
+            "参数2" , "参数3" , "参数4","参数5" , "参数6" , "参数7", "参数8" , "参数9" , "参数10" ,"参数11", "参数12" , "参数13" , "参数14" };
         public static readonly string pwdWrong = "密码错误！";
         public static readonly string pwdOk = "密码正确！";
         public static readonly int pwdCountMax = 6;
@@ -277,14 +295,16 @@ namespace xjplc
         public static readonly string InOPT = "优化中,请稍等。。。。。。。。";
         public static readonly int MeaSureMaxTime = 120000;
 
-        public static readonly int StartWaitMaxTime = 10000;
+        public static readonly int StartWaitMaxTime = 100000;
         #endregion
 
         #region 运行数据
-        public const  int devicePropertyA = 0;//设备类别 分为两种 一种是一维 一种是二维
-        public const  int devicePropertyB = 1;
-        public static readonly int devicePropertyC = 0;
+        public const  int devicePropertyA = 0;//设备类别 分为两种 一种是一维 
+        public const  int devicePropertyB = 1;//门皮 一种是二维
+
+        public const int devicePropertyC = 2;//门板 一种是二维
         public static readonly string emgStopTip = "急停或紧急退出中，请复位！";
+        public static readonly string alreadyStart = "设备生产中!";
         public static readonly string noData = "无数据！";
         public static readonly string measureOutOfTime = "测量超时！";
         public static readonly string IsWorking = "设备生产中！";
@@ -328,21 +348,87 @@ namespace xjplc
         #region 台达PLC专用
         public static readonly string ConfigSource = ConstantMethod.GetAppPath() + "source\\";
         #region 门锁机
-        public static readonly string[] proCutType = {          "垂直方槽",
+        public static readonly int msjDeivceId = 1;
+
+        #region 锁槽
+
+        public static readonly string[] scCutType = {
+                                                               "垂直方槽",
                                                                 "垂直圆孔",
                                                                 "水平方槽",
                                                                 "水平圆孔",
-                                                                "合页槽",
-                                                                "上开口合页",
-                                                                "下开口合页" };
-        public static readonly string[] proCutTypeImage = {     "w1",
+                                                                // "椭圆槽"
+                                                                // "合页槽",
+                                                                // "上开口合页槽",
+                                                                //"下开口合页槽" 
+                                                        };
+
+        public static readonly int[] scCutTypeShowId = {       16,
+                                                                17,
+                                                                18,
+                                                                19,
+                                                                //22,
+                                                                //23,
+                                                                //24
+                                                          };
+
+
+        public static readonly string[] scCutTypeImage = {     "w1",
                                                                 "w2",
                                                                 "w3",
                                                                 "w4",
+                                                                //"w5",
+                                                                //"w6",
+                                                                //"w7"
+
+        };
+        #endregion
+
+        #region 合页
+
+        public static readonly string[] hyCutType =           {                                                              
+                                                                "合页槽",
+                                                                "上开口合页槽",
+                                                                "下开口合页槽" };
+
+        public static readonly int[] hyCutTypeShowId = {      
+                                                                22,
+                                                                23,
+                                                                24
+                                                          };
+
+        public static readonly string[] hyCutTypeImage = {     
                                                                 "w5",
                                                                 "w6",
                                                                 "w7"
- };
+                                                          };
+
+        #endregion 合页
+
+
+
+        public static readonly string[] axisStr = {          "X1",
+                                                                "Y1",
+                                                                "Z1",
+                                                                "X2",
+                                                                "Y2",
+                                                                "Z2",
+                                                                "A" };
+
+        public static readonly string[] schyStrLst = {" ",
+                                                                "垂直方槽",
+                                                                "垂直圆孔",
+                                                                "水平方槽",
+                                                                "水平圆孔",
+                                                                "水平圆孔",
+                                                                "右底边插销",
+                                                                "合页槽" ,
+                                                                "上开口合页槽",
+                                                                "下开口合页槽",
+                                                                "左底边圆孔",
+                                                                "右底边圆孔" };
+        
+        public static readonly string errClrValue = "8";
         #endregion
         #region MODBUSTCP
 
@@ -352,6 +438,11 @@ namespace xjplc
         public const  int floatShow = 0;
         public const int intShow = 1;
         public static readonly string dataOutOfRange = "数据超范围！";
+        public static readonly string scLight = "锁槽工位指示";
+        public static readonly string scData = "锁槽工位数据";
+        public static readonly string hyLight = "合页工位指示";
+        public static readonly string hyData = "合页工位数据";
+        public static readonly string dataConvertError = "数据转换错误！";
         public static readonly string[] tcpType = { "BOOL", "SINT", "USINT",
                                                         "INT", "UINT",
                                                         "DINT",  "UDINT",
@@ -537,9 +628,9 @@ namespace xjplc
         //01 03 02 00  02 39 85
         public static readonly byte[] XJExistByteIn = { 0x01, 0x03, 0x02, 0x00, 0x02, 0x39, 0x85 };
         //device类和设备重新握手的次数
-        public static readonly int DeviceErrorConnCountMax = 2;
+        public static readonly int DeviceErrorConnCountMax = 200; //最大连接次数
         //通讯过程中 commmanager 重复通讯的最大次数
-        public static readonly int ErrorConnCountMax =3;
+        public static readonly int ErrorConnCountMax =5;
         //信捷专用码 最大区域
         public static readonly int XJMaxAddr = 50000;
         public static readonly int XJMaxDAddr = 7000;

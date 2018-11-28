@@ -64,13 +64,10 @@ namespace evokNew0072
             loadDataBtn.Enabled = false;
             if (workMan.LoadData())
             {
+
                 workMan.ShowDoor(Constant.doorShellId,UserData);
-
                 if (evokWork.SetOptSizeData((DataTable)UserData.DataSource))
-                    optNoGetData();
-
-               
-
+                    optNoGetData();              
             }
             loadDataBtn.Enabled = true;
            
@@ -218,6 +215,7 @@ namespace evokNew0072
 
             workMan = new workManager() ;
             UpdateTimer.Enabled = true;
+
         }
 
         private void InitView0()
@@ -307,8 +305,7 @@ namespace evokNew0072
 
         private void pauseBtn_Click(object sender, EventArgs e)
         {
-             evokWork.pause();
-          
+             evokWork.pause();       
         }
 
         private void qClr_Click(object sender, EventArgs e)
@@ -456,7 +453,7 @@ namespace evokNew0072
             startBtnShow();
             //数据已经加载了
             evokWork.CutDoorStartNormal(Constant.CutNormalDoorShellMode);         
-          
+                      
             stopBtnShow();
         }
 
@@ -506,7 +503,8 @@ namespace evokNew0072
 
         private void FileSave_Tick(object sender, EventArgs e)
         {
-             evokWork.SaveFile();
+            //20181117 关闭数据保存
+             //evokWork.SaveFile();
         }
 
         private void UpdataAuto()
@@ -533,8 +531,20 @@ namespace evokNew0072
                  statusLabel.Text = Constant.ConnectMachineFail;
                  statusLabel.BackColor = Color.Red;
             }
+
             if (tc1.SelectedIndex == 0)
             {
+                if (evokWork.startTip)
+                {
+                    showStartTipTmr.Enabled = true;
+
+                }
+                else
+                {
+                    showStartTipTmr.Enabled = true;
+                    button1.BackColor = Color.Transparent;
+                }
+
                 foreach(PlcInfoSimple p in evokWork.PsLstAuto)
                 {
                     if (p.Name.Contains(Constant.Alarm)&& p.ShowStr != null && p.ShowStr.Count > 0)
@@ -749,6 +759,25 @@ namespace evokNew0072
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void showStartTipTmr_Tick(object sender, EventArgs e)
+        {
+            if (evokWork.startTip)
+            {
+                if (button1.BackColor == Color.Red)
+                {
+                    button1.BackColor = Color.Transparent;
+                }
+                else
+                {
+                    button1.BackColor = Color.Red;
+                }
+            }
+            else
+            {
+                showStartTipTmr.Enabled = false;
+            }
         }
     }
 }

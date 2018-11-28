@@ -664,6 +664,7 @@ namespace xjplc
         /// <returns></returns>
         public int PackCmdReadDMDataOut(List<int> addrLst, List<int> idLst, List<int> addrcount,int DMDataReceCount)
         {
+         
             //验证数据
             if (addrLst.Count != idLst.Count || addrLst.Count != addrcount.Count) return -1;
 

@@ -59,7 +59,7 @@ namespace xjplc
             showStr = new List<string>();
         }
         //最小值
-        private int minValue=0;
+        private int minValue=-1000000;
         public int MinValue
         {
             get { return minValue; }
@@ -121,16 +121,20 @@ namespace xjplc
         void controlValueShow(int id)
         {
             //没有在编辑状态
-            if (!IsInEdit)
+            if (!IsInEdit || showControl.Focused==false)
             {
-                if (showControl != null && pTcpInfo != null && (showControl is TextBox || showControl is Label))
+                if (showControl != null && pTcpInfo != null && (showControl is TextBox || showControl is Label ))
                 {
+             
                     switch (id)
                     {
                         case Constant.floatShow:
                             {
+                                //保留两位小数
                                 if (IsValueNormal)
-                                    showControl.Text = showValueFloat.ToString();
+                                {                            
+                                    showControl.Text = String.Format("{0:F}", ShowValueFloat);
+                                }
                                 else
                                     showControl.Text = Constant.dataOutOfRange;
                                 break;
@@ -149,8 +153,13 @@ namespace xjplc
                 }
                 else
                 {
-                    if (showControl != null && showControl is Button)
+                    if (showControl != null && (showControl is Button || showControl is ComboBox))
                     {
+                        if (ShowControl is ComboBox && showValue < ((ComboBox)ShowControl).Items.Count)
+                        {
+                            (showControl as ComboBox).SelectedIndex = showValue;                        
+                        }
+                        else
                         if (showValue == 0)
                         {
                             showControl.BackColor = System.Drawing.Color.Transparent;
@@ -238,7 +247,8 @@ namespace xjplc
                         {
                             if (ration > 0)
                             {
-                                showValueFloat = showValueFloat / ration;
+                               showValueFloat = showValueFloat / ration;
+                                
                             }
                             controlValueShow(0);
                         }                    

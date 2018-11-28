@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -935,7 +935,6 @@
             this.button4.Tag = "H101";
             this.button4.Text = "H101";
             this.button4.UseVisualStyleBackColor = false;
-            this.button4.Visible = false;
             this.button4.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // button3
@@ -1149,7 +1148,7 @@
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label17.Location = new System.Drawing.Point(161, 144);
+            this.label17.Location = new System.Drawing.Point(171, 34);
             this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(217, 40);
@@ -1160,7 +1159,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label18.Location = new System.Drawing.Point(183, 48);
+            this.label18.Location = new System.Drawing.Point(161, 153);
             this.label18.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(217, 40);
@@ -1242,7 +1241,7 @@
             // TxtHSD4
             // 
             this.TxtHSD4.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.TxtHSD4.Location = new System.Drawing.Point(194, 190);
+            this.TxtHSD4.Location = new System.Drawing.Point(194, 211);
             this.TxtHSD4.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.TxtHSD4.Name = "TxtHSD4";
             this.TxtHSD4.Size = new System.Drawing.Size(145, 38);
@@ -1339,7 +1338,7 @@
             // BtnM119
             // 
             this.BtnM119.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnM119.Location = new System.Drawing.Point(356, 180);
+            this.BtnM119.Location = new System.Drawing.Point(356, 201);
             this.BtnM119.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.BtnM119.Name = "BtnM119";
             this.BtnM119.Size = new System.Drawing.Size(160, 52);
@@ -1382,7 +1381,7 @@
             // BtnM118
             // 
             this.BtnM118.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.BtnM118.Location = new System.Drawing.Point(22, 174);
+            this.BtnM118.Location = new System.Drawing.Point(22, 195);
             this.BtnM118.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.BtnM118.Name = "BtnM118";
             this.BtnM118.Size = new System.Drawing.Size(153, 52);
@@ -1432,7 +1431,6 @@
             this.lblY24.Tag = "H102";
             this.lblY24.Text = "H102";
             this.lblY24.UseVisualStyleBackColor = true;
-            this.lblY24.Visible = false;
             this.lblY24.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // lblY26
@@ -1782,8 +1780,8 @@
             this.dgvParam.Location = new System.Drawing.Point(29, 38);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(995, 540);
             this.dgvParam.TabIndex = 1;
@@ -1825,8 +1823,8 @@
             this.dgvIO.Location = new System.Drawing.Point(29, 38);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1094, 540);
             this.dgvIO.TabIndex = 2;

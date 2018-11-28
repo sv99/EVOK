@@ -18,6 +18,12 @@ namespace xjplc
     /// </summary>
     public class XJDevice 
     {
+        string deviceId="无设备id";
+        public string DeviceId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
+        }
         CsvStreamReader CSVData ;
 
         private List<DataTable> dataFormLst; //表格 
@@ -96,7 +102,7 @@ namespace xjplc
 
             if (!SerialPort.GetPortNames().Contains(portParam.m_portName))
             {
-                MessageBox.Show(Constant.NoSerialPort);
+                MessageBox.Show(Constant.NoSerialPort+ portParam.m_portName);
                 ConstantMethod.AppExit();
             }
             //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
@@ -117,6 +123,12 @@ namespace xjplc
 
 
         }
+
+        public void setDeviceId(string idStr)
+        {
+            DeviceId = idStr;
+
+        }
         /// <summary>
         /// 针对信捷PLC 进行设备的存在获取
         /// </summary>
@@ -135,7 +147,8 @@ namespace xjplc
             //找一下串口 不存在就报错 退出
             if (!ConstantMethod.XJFindPort())
             {
-                MessageBox.Show(Constant.ConnectMachineFail);
+               
+                MessageBox.Show(DeviceId+Constant.ConnectMachineFail);
                 //报错 在外面调试 需要隐藏
                 ConstantMethod.AppExit();
             }
@@ -164,20 +177,30 @@ namespace xjplc
         //通讯错误引发的事件
         private void WatchTimerEvent(object sender, EventArgs e)
         {
-            if (!comManager.Status  && IsStopConnection ==  false)
-            {          
-                status = Constant.DeviceNoConnection;
-                CommError++;
-                LogManager.WriteProgramLog(Constant.DeviceConnectionError);
+            if(DeviceId=="门板机")
+            {
+                int s = 0;
+            }
+            if (!comManager.Status)
+            {
                 //先停了再说省的下一个定时事件又来
                 WatchCommTimer.Enabled = false;
+                status = Constant.DeviceNoConnection;
+                CommError++;
+                LogManager.WriteProgramLog(DeviceId+Constant.DeviceConnectionError);
+
                 if (CommError < Constant.DeviceErrorConnCountMax)
-                    getDeviceData();
+                {
+                    getDeviceData();                
+                }
                 else
                 {
+                   
                     MessageBox.Show("设备连接失败！");
                     return;
                 }
+               
+                
             }
         }
         #endregion
@@ -284,14 +307,15 @@ namespace xjplc
             
             ConstantMethod.Delay(50);
 
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+          //  portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
+            /*****
             if (!ConstantMethod.XJFindPort())
             {
-                MessageBox.Show(Constant.ConnectMachineFail);
+                MessageBox.Show(DeviceId+Constant.ConnectMachineFail);
                 ConstantMethod.AppExit();
             }
-
+            *****/
             if (dataFormLst.Count>0)
             SetPlcReadDMData(dt);
             if (portParam.m_portName != null)
@@ -315,6 +339,7 @@ namespace xjplc
 
             if (XJPLCcmd !=null)
 
+
             if (comManager.ConnectMachine())
             {
                     CommError = 0;
@@ -322,6 +347,7 @@ namespace xjplc
                     return true;
              }
 
+            comManager.Status = false;
             return false;
         }
         /// <summary>

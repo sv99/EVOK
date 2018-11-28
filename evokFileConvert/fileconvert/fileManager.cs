@@ -20,7 +20,7 @@ namespace fileconvert
             csvop.SaveCSV(dt, filename);
         }
 
-        
+       
         //根据转换公式 转换表格 最后一个参数代表是用默认规则保存文件还是用带参数名的
         /// <summary>
         /// 
@@ -45,7 +45,7 @@ namespace fileconvert
                 if (valueCol[i] >= UserDtTmp.Columns.Count) return null;
             }
             //收集数据 保存
-            if (valueCol.Count > 3 && UserDtTmp.Columns.Count >= valueCol.Count)
+            if (valueCol.Count > 3 )
             {
                 pBar1.Maximum = UserDtTmp.Rows.Count;
 

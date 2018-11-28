@@ -93,11 +93,7 @@ namespace xjplc
             get
             {
                
-
-              return ((showValue > (minValue - 1)) && (showValue < (maxValue + 1))) ? true : false;
-                                  
-
-
+                return ((showValue > (minValue - 1)) && (showValue < (maxValue + 1))) ? true : false;                               
 
             }
 

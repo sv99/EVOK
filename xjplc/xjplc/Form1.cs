@@ -46,7 +46,7 @@ namespace xjplc
                    
             if (!ConstantMethod.XJFindPort())
             {
-                MessageBox.Show(Constant.ConnectMachineFail);
+                MessageBox.Show( Constant.ConnectMachineFail);
                 Application.Exit();
             }
 

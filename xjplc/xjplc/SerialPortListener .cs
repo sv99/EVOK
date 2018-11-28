@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace xjplc
 {
@@ -204,7 +205,7 @@ namespace xjplc
         #region 开启关闭串口
         public bool Start()
         {
-            
+
             try
             {
                 //如果之前端口没变 且端口打开的 那就不改了 不去停止             
@@ -218,14 +219,16 @@ namespace xjplc
                 m_SerialPort.ReadBufferSize = m_readBufferSize;
                 m_SerialPort.ReceivedBytesThreshold = m_receivedBytesThreshold;
                 m_SerialPort.WriteBufferSize = m_writeBufferSize;
-                    if (!m_SerialPort.IsOpen)
-                    m_SerialPort.Open();    
+                if (!m_SerialPort.IsOpen)
+                    m_SerialPort.Open();
                 return true;
-            }        
+            }
             catch
             {
-                throw new SerialPortException(string.Format("无法打开串口:{0}", m_SerialPort.PortName));
+                MessageBox.Show(string.Format("无法打开口:{0}", m_SerialPort.PortName));
             }
+
+            return false;
         }
 
         public void Stop()

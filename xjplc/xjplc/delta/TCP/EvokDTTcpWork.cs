@@ -43,7 +43,13 @@ namespace xjplc
             set { printBarCodeMode = value; }
         }
         //
-        List<List<DTPlcInfoSimple>> AllPlcSimpleLst;
+        List<List<DTPlcInfoSimple>> allPlcSimpleLst;
+        public System.Collections.Generic.List<System.Collections.Generic.List<xjplc.DTPlcInfoSimple>> AllPlcSimpleLst
+        {
+            get { return allPlcSimpleLst; }
+            set { allPlcSimpleLst = value; }
+        }
+
         public DataTable UserDataTable
         {
             get { return userDataTable; }
@@ -215,6 +221,13 @@ namespace xjplc
 
                         
         }
+
+        int deviceId;
+        public int DeviceId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
+        }
         #region 自动
         //自动页面
         List<DTPlcInfoSimple> psLstAuto;
@@ -251,24 +264,44 @@ namespace xjplc
 
 
         #endregion
-        public DTPlcInfoSimple x1resetOutPs = new DTPlcInfoSimple("x1复位写");
-        public DTPlcInfoSimple x1resetInPs = new DTPlcInfoSimple("x1复位读");
 
-        public DTPlcInfoSimple y1resetOutPs = new DTPlcInfoSimple("y1复位写");
-        public DTPlcInfoSimple y1resetInPs = new DTPlcInfoSimple("y1复位读");
+        #region 门锁机
 
-        public DTPlcInfoSimple z1resetOutPs = new DTPlcInfoSimple("z1复位写");
-        public DTPlcInfoSimple z1resetInPs = new DTPlcInfoSimple("z1复位读");
+        DataTable dtScHyShow = new DataTable();
+    
+        public DTPlcInfoSimple gwShiftInOutPs = new DTPlcInfoSimple("工位指示读写");
+        public DTPlcInfoSimple knifeSelectInOutPs = new DTPlcInfoSimple("刀具选择读写");
+        public DTPlcInfoSimple programNoShiftInOutPs = new DTPlcInfoSimple("程序号读写");
+        public DTPlcInfoSimple openProgramOutPs = new DTPlcInfoSimple("打开选定程序写");
+        public DTPlcInfoSimple selectProgramOutPs = new DTPlcInfoSimple("当前程序写");
+        public DTPlcInfoSimple selectProgramInPs = new DTPlcInfoSimple("当前程序读");
+        public DTPlcInfoSimple scProgramOutPs = new DTPlcInfoSimple("锁槽写");
+        public DTPlcInfoSimple hyProgramOutPs = new DTPlcInfoSimple("合页写");
+        public DTPlcInfoSimple scSureProgramOutPs = new DTPlcInfoSimple("锁槽确认写");
+        public DTPlcInfoSimple hySureProgramOutPs = new DTPlcInfoSimple("合页确认写");
+        public DTPlcInfoSimple doorWidthInOutPs = new DTPlcInfoSimple("门宽读写");
+        public DTPlcInfoSimple doorHeightInOutPs = new DTPlcInfoSimple("门长读写");
+        public System.Data.DataTable DtScHyShow
+        {
+            get { return dtScHyShow; }
+            set { dtScHyShow = value; }
+        }
+        public List<DTPlcInfoSimple> ProgramConfigPsLst = new List<DTPlcInfoSimple>();
 
-        public DTPlcInfoSimple x2resetOutPs = new DTPlcInfoSimple("x2复位写");
-        public DTPlcInfoSimple x2resetInPs = new DTPlcInfoSimple("x2复位读");
+        public DTPlcInfoSimple errorResetOutPs = new DTPlcInfoSimple("报警清除写");
 
-        public DTPlcInfoSimple y2resetOutPs = new DTPlcInfoSimple("y2复位写");
-        public DTPlcInfoSimple y2resetInPs = new DTPlcInfoSimple("y2复位读");
 
-        public DTPlcInfoSimple z2resetOutPs = new DTPlcInfoSimple("z2复位写");
-        public DTPlcInfoSimple z2resetInPs = new DTPlcInfoSimple("z2复位读");
 
+        public List<DTPlcInfoSimple> hyDataInLst = new List<DTPlcInfoSimple>();
+        public List<DTPlcInfoSimple> scLightInLst = new List<DTPlcInfoSimple>();
+        public List<DTPlcInfoSimple> scDataInLst = new List<DTPlcInfoSimple>();
+        public List<DTPlcInfoSimple> hyLightInLst = new List<DTPlcInfoSimple>();
+       
+
+
+
+
+        #endregion
         public DTPlcInfoSimple handModeOutInPs = new DTPlcInfoSimple("手动模式读写");
         public DTPlcInfoSimple autoModeOutInPs = new DTPlcInfoSimple("自动模式读写");
        
@@ -344,12 +377,11 @@ namespace xjplc
         public DTPlcInfoSimple startCountInOutPs = new DTPlcInfoSimple("开始计数读写");
         public DTPlcInfoSimple ldsCountInOutPs = new DTPlcInfoSimple("料段数读写");
         public DTPlcInfoSimple autoSLOutPs    = new DTPlcInfoSimple("自动上料写");
-        public DTPlcInfoSimple pageShiftOutPs = new DTPlcInfoSimple("页面切换写");          
+        public DTPlcInfoSimple pageShiftInOutPs = new DTPlcInfoSimple("页面切换读写");          
         public DTPlcInfoSimple autoSLInPs     = new DTPlcInfoSimple("自动上料读");
         public DTPlcInfoSimple autoCCInPs     = new DTPlcInfoSimple("自动测长读");
         public DTPlcInfoSimple clInPs         = new DTPlcInfoSimple("出料读");
         public DTPlcInfoSimple slInPs         = new DTPlcInfoSimple("送料读");
-
 
         
         #endregion
@@ -365,9 +397,10 @@ namespace xjplc
         List<DTPlcInfoSimple> psLstParam;
         public System.Collections.Generic.List<xjplc.DTPlcInfoSimple> PsLstParam
         {
-            get { return psLstParam; }
+            get { return psLstParam;  }
             set { psLstParam = value; }
         }
+
         #endregion
         #region IO监控
         List<DTPlcInfoSimple> psLstIO;
@@ -377,7 +410,6 @@ namespace xjplc
             set { psLstIO = value; }
         }
         #endregion
-
         #region 参数1
         List<DTPlcInfoSimple> psLstParam1;
         public System.Collections.Generic.List<xjplc.DTPlcInfoSimple> PsLstParam1
@@ -386,12 +418,16 @@ namespace xjplc
             set { psLstParam1 = value; }
         }
         #endregion
-       
 
-
+        //页面切换要读写的吧
+        public void ShiftShowPage(int id)
+        {
+            string[] valurStr = { id.ToString() };
+            evokDevice.SetDValue(pageShiftInOutPs, valurStr);
+        }
         public void SetPage(int id)
         {
-            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[id].Rows.Count > 0)
+            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[id].Rows.Count > 0 && id< evokDevice.DataFormLst.Count && id < AllPlcSimpleLst.Count)
             {
 
                 AllPlcSimpleLst[id].Clear();
@@ -428,12 +464,23 @@ namespace xjplc
                             //区域符号在前面 后面地址就可以计算了
                             p.Area = areaStr;
                             p.Addr = addrInt;
-                            string ration = dr["param7"].ToString();
-                            string max = dr["param8"].ToString();
-                            string min= dr["param9"].ToString();
-                            if (!string.IsNullOrWhiteSpace(ration)) p.Ration = int.Parse(ration);
-                            if (!string.IsNullOrWhiteSpace(max)) p.MaxValue = int.Parse(max);
-                            if (!string.IsNullOrWhiteSpace(min)) p.MinValue = int.Parse(min);
+
+                            if (evokDevice.DataFormLst[id].Columns.Contains("param7"))
+                            {
+                                string ration = dr["param7"].ToString();
+                                if (!string.IsNullOrWhiteSpace(ration)) p.Ration = int.Parse(ration);
+
+                            }
+                            if (evokDevice.DataFormLst[id].Columns.Contains("param8"))
+                            {
+                                string max = dr["param8"].ToString();
+                                if (!string.IsNullOrWhiteSpace(max)) p.MaxValue = int.Parse(max);
+                            }
+                            if (evokDevice.DataFormLst[id].Columns.Contains("param9"))
+                            {
+                                string min = dr["param9"].ToString();
+                                if (!string.IsNullOrWhiteSpace(min)) p.MinValue = int.Parse(min);
+                            }
 
                             AllPlcSimpleLst[id].Add(p);
                         }
@@ -443,7 +490,7 @@ namespace xjplc
                 }
             }
         }
-
+        
         public void InitUsual()
         {
 
@@ -459,6 +506,61 @@ namespace xjplc
             AllPlcSimpleLst.Add(PsLstIO);
 
             #region 自动页面数据处理
+
+            SetPage(Constant.AutoPage);
+            
+            #endregion
+            #region handpage
+
+            //手动自动读取
+            SetPage(Constant.HandPage);
+
+            #endregion
+            //参数页面
+            SetPage(Constant.ParamPage);
+
+
+
+            #region 设备处理
+            #region 门锁机
+
+            if (deviceId == Constant.msjDeivceId)
+            {
+
+                errorResetOutPs = ConstantMethod.getDtPlcSimple(errorResetOutPs.Name, psLstAuto);
+                pageShiftInOutPs = ConstantMethod.getDtPlcSimple(pageShiftInOutPs.Name, psLstAuto);
+                openProgramOutPs = ConstantMethod.getDtPlcSimple(openProgramOutPs.Name, psLstAuto);
+                selectProgramOutPs = ConstantMethod.getDtPlcSimple(selectProgramOutPs.Name, psLstAuto);
+                selectProgramInPs = ConstantMethod.getDtPlcSimple(selectProgramInPs.Name, psLstAuto);
+                scProgramOutPs = ConstantMethod.getDtPlcSimple(scProgramOutPs.Name, psLstAuto);
+                hyProgramOutPs = ConstantMethod.getDtPlcSimple(hyProgramOutPs.Name, psLstAuto);
+                doorWidthInOutPs = ConstantMethod.getDtPlcSimple(doorWidthInOutPs.Name, psLstAuto);
+                doorHeightInOutPs = ConstantMethod.getDtPlcSimple(doorHeightInOutPs.Name, psLstAuto);
+
+                //添加一个页面
+                AllPlcSimpleLst.Add(ProgramConfigPsLst);
+                SetPage(Constant.ScarPage);
+
+                knifeSelectInOutPs = ConstantMethod.getDtPlcSimple(knifeSelectInOutPs.Name, ProgramConfigPsLst);
+                gwShiftInOutPs = ConstantMethod.getDtPlcSimple(gwShiftInOutPs.Name, ProgramConfigPsLst);
+                programNoShiftInOutPs = ConstantMethod.getDtPlcSimple(programNoShiftInOutPs.Name, ProgramConfigPsLst);
+                scSureProgramOutPs = ConstantMethod.getDtPlcSimple(scSureProgramOutPs.Name, ProgramConfigPsLst);
+                hySureProgramOutPs = ConstantMethod.getDtPlcSimple(hySureProgramOutPs.Name, ProgramConfigPsLst);
+
+
+                DtScHyShow.Columns.Add("步序");
+                DtScHyShow.Columns.Add("锁槽工位");
+                DtScHyShow.Columns.Add("合页工位");
+                for (int i = 0; i < 12; i++)
+                {
+                    DataRow dr = DtScHyShow.NewRow();
+                    dr[0] = (i + 1).ToString();
+                    DtScHyShow.Rows.Add(dr);
+                }
+
+
+            }
+            #endregion
 
             #region 四边锯数据处理
             /***
@@ -529,17 +631,7 @@ namespace xjplc
          PsLstAuto.Add(prodOutInPs);
          ****/
             #endregion
-            SetPage(Constant.AutoPage);
             #endregion
-            #region handpage
-            
-            //手动自动读取
-            SetPage(Constant.HandPage);
-
-            #endregion
-            //参数页面
-            
-
             UserDataTable = new DataTable();
          
 
@@ -575,7 +667,7 @@ namespace xjplc
             {
 
                 
-                MessageBox.Show(Constant.ConnectMachineFail);
+                MessageBox.Show(DeviceId + Constant.ConnectMachineFail);
                 Environment.Exit(0);
             }
             
@@ -586,8 +678,10 @@ namespace xjplc
 
             optSize = new OptSize();
 
+            ConstantMethod.Delay(200);
+            openProgram(selectProgramInPs.ShowValue);
         }
-        public EvokDTTcpWork()
+        public EvokDTTcpWork(int id)
         {
 
             //初始化设备
@@ -615,6 +709,7 @@ namespace xjplc
             }
             evokDevice = new DTTcpDevice(strDataFormPath);
 
+            deviceId = id;
             InitUsual();          
 
         }
@@ -627,14 +722,29 @@ namespace xjplc
 
         }
         #region 运行部分
-        public bool lcTxt_KeyPress(object sender, KeyPressEventArgs e)
+        public bool KeyPress_AutoPage(object sender, KeyPressEventArgs e)
+        {
+            return KeyPress_Page(sender, e, Constant.AutoPage);
+        }
+        
+        public bool KeyPress_Page(object sender, KeyPressEventArgs e,int id)
         {
             if (e.KeyChar == '\r')
-            {                                          
-                SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, ((TextBox)sender).Text);               
+            {
+                SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, AllPlcSimpleLst[id], ((TextBox)sender).Text);
                 return true;
             }
             return false;
+        }
+        public bool KeyPress_Param1Page(object sender, KeyPressEventArgs e)
+        {
+            return KeyPress_Page(sender, e, Constant.ScarPage);
+            
+        }
+        public bool KeyPress_HandPage(object sender, KeyPressEventArgs e)
+        {
+            return KeyPress_Page(sender, e, Constant.HandPage);
+           
         }
         public bool mouseDown(object sender, MouseEventArgs e,int id)
         {
@@ -642,6 +752,13 @@ namespace xjplc
                 SetMPsOn(((Button)sender).Tag.ToString(), Constant.Write, AllPlcSimpleLst[id]);
                 return true;
             
+        }
+
+        public DTPlcInfoSimple getDtPlcSimple(int id,string name)
+        {
+            if (id < AllPlcSimpleLst.Count)
+                return ConstantMethod.getDtPlcSimple(name, AllPlcSimpleLst[id]);
+            else return null;
         }
         public bool mouseUp(object sender, MouseEventArgs e, int id)
         {
@@ -704,7 +821,7 @@ namespace xjplc
             }
 
         }
-
+       
         public void bitOff2On(string str1, string str2, List<DTPlcInfoSimple> pLst)
         {
             DTPlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
@@ -717,6 +834,7 @@ namespace xjplc
                 MessageBox.Show(Constant.SetDataFail);
             }
         }
+
         public void oppositeBitClick(string str1, string str2, int id)
         {
             if (id < AllPlcSimpleLst.Count)
@@ -733,6 +851,26 @@ namespace xjplc
             }
 
         }
+        public void bitOnClick(string str1, string str2, int id)
+        {
+            if (id < AllPlcSimpleLst.Count)
+            {
+                DTPlcInfoSimple p = getPsFromPslLst(str1, str2, AllPlcSimpleLst[id]);
+                if (p != null)
+                {
+                    bitOn(p);
+                }
+                else
+                {
+                    MessageBox.Show(Constant.SetDataFail);
+                }
+            }
+
+        }
+        private void bitOn(DTPlcInfoSimple p)
+        {          
+            evokDevice.SetMValueON(p);      
+        }
         public void oppositeBitClick(string str1, string str2, List<DTPlcInfoSimple> pLst)
         {
             DTPlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
@@ -747,7 +885,7 @@ namespace xjplc
             
         }
         //点位取反
-        public void oppositeBit(DTPlcInfoSimple p)
+        private void oppositeBit(DTPlcInfoSimple p)
         {
             if (p.ShowValue > 0)
             {
@@ -788,6 +926,83 @@ namespace xjplc
         {
             evokDevice.SetMValueOFF2ON(autoSLOutPs);
         }
+
+        #region 门锁机
+ 
+
+        public void setDoorWidthAndHeight(string width, string height)
+        {
+       
+            SetDValue(doorWidthInOutPs, width);
+            ConstantMethod.Delay(100);
+
+            SetDValue(doorHeightInOutPs, height);
+  
+            ConstantMethod.Delay(100);
+
+        }
+        public void openProgram(int id,int hy)
+        {
+            if (!(id == scProgramOutPs.ShowValue))
+            {
+                string[] value = { id.ToString() };
+                evokDevice.SetDValue(scProgramOutPs, value);
+                ConstantMethod.Delay(100);
+            }
+            if (!(hy == hyProgramOutPs.ShowValue))
+            {
+                string[] value = { hy.ToString() };
+                evokDevice.SetDValue(hyProgramOutPs, value);
+                ConstantMethod.Delay(100);
+            }
+            evokDevice.SetMValueON2OFF(openProgramOutPs);
+        }
+        public void openProgram(int id)
+        {
+            string[] value = { id.ToString() };
+            evokDevice.SetDValue(selectProgramOutPs,value);
+            ConstantMethod.Delay(100);
+            evokDevice.SetMValueON2OFF(openProgramOutPs);
+        }
+        //多个轴复位
+       
+        public void selectKnife(int value)
+        {
+            List<string> valuestr = new List<string>();
+            valuestr.Add(value.ToString());
+            evokDevice.SetDValue(knifeSelectInOutPs, valuestr.ToArray());
+        }
+        public void selectSc(int value)
+        {
+            List<string> valuestr = new List<string>();
+            valuestr.Add(value.ToString());
+            evokDevice.SetDValue(scProgramOutPs, valuestr.ToArray());
+            ConstantMethod.Delay(100);
+            evokDevice.SetMValueON2OFF(scSureProgramOutPs);
+        }
+        public void selectHy(int value)
+        {
+            List<string> valuestr = new List<string>();
+            valuestr.Add(value.ToString());
+            evokDevice.SetDValue(hyProgramOutPs, valuestr.ToArray());
+            ConstantMethod.Delay(100);
+            evokDevice.SetMValueON2OFF(hySureProgramOutPs);
+        }
+        //工位双击后 要给下面发数据
+        public void selectGw(int value)
+        {
+            List<string> valuestr = new List<string>();
+            valuestr.Add(value.ToString());
+            evokDevice.SetDValue(gwShiftInOutPs, valuestr.ToArray());
+            ConstantMethod.Delay(100);
+        }
+        public void selectProgramNo(int value)
+        {
+            List<string> valuestr = new List<string>();
+            valuestr.Add(value.ToString());
+            evokDevice.SetDValue(programNoShiftInOutPs, valuestr.ToArray());
+        }
+        #endregion
         //复位
         public void reset()
         {
@@ -1484,24 +1699,7 @@ namespace xjplc
                 dgvParam.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns["param6"].ToString();
             }
         }
-        public void InitControl()
-        {
-
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[0] != null))
-            {
-                ConstantMethod.FindPosTcp(evokDevice.DataFormLst[0], PsLstAuto);
-            }
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[1] != null))
-            {
-                ConstantMethod.FindPosTcp(evokDevice.DataFormLst[1], PsLstHand);
-            }
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[2] != null))
-            {
-                ConstantMethod.FindPosTcp(evokDevice.DataFormLst[2], PsLstParam);
-            }
-
-        }
-
+      
         public void buildCmd(int pageid)
         {
             evokDevice.shiftDataForm(pageid);
@@ -1520,13 +1718,14 @@ namespace xjplc
                 if (pageid == Constant.AutoPage)
                 {
                     //切换
+                    ShiftShowPage(pageid+1);                  
                     evokDevice.SetMValueON(autoModeOutInPs);
                                                        
                 }
                 if (pageid == Constant.HandPage)
                 {
-                    evokDevice.SetMValueON(handModeOutInPs);
-               
+                    ShiftShowPage(pageid + 1);
+                    evokDevice.SetMValueON(handModeOutInPs);               
                 }
 
                 if (pageid == Constant.ParamPage)
@@ -1534,14 +1733,26 @@ namespace xjplc
                     if (!ConstantMethod.UserPassWd())
                     {
                         return false;
-                    }
+                    }                  
+                    ShiftShowPage(5);
                 }
-
+                if (pageid == Constant.IOPage)
+                {
+                    ShiftShowPage(6);
+                }
+                if (pageid == Constant.ScarPage)
+                {
+                    if (!ConstantMethod.UserPassWd())
+                    {
+                        return false;
+                    }                 
+                   ShiftShowPage(10);
+                }
                 evokDevice.shiftDataForm(pageid);
                                                                             
                 FindPlcSimpleInPlcInfoLst(pageid);
 
-               // ConstantMethod.Delay(500);
+                ConstantMethod.Delay(100);
 
                 return true;
             }
@@ -1558,6 +1769,13 @@ namespace xjplc
         }
 
         #region 寄存器操作部分
+
+        public void ClearError()
+        {
+            string[] valurStr = {Constant.errClrValue };
+            evokDevice.SetDValue(errorResetOutPs, valurStr);
+            
+        }
         private DTPlcInfoSimple getPsFromPslLst(string tag0, string str0, List<DTPlcInfoSimple> pslLst)
         {
             foreach (DTPlcInfoSimple simple in pslLst)
@@ -1576,6 +1794,56 @@ namespace xjplc
                 }
             }
             return null;
+        }
+        public void SetInEdit(string str1, string str2, int id)
+        {
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, AllPlcSimpleLst[id]);
+            if (p != null)
+            {
+                p.IsInEdit = true;
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+        public void SetOutEdit(string str1, string str2, int id)
+        {
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, AllPlcSimpleLst[id]);
+            if (p != null)
+            {
+                p.IsInEdit = false;
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+        public void SetMPsONToOFF(string str1, string str2, int id)
+        {
+            if (id >= AllPlcSimpleLst.Count) return;
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, AllPlcSimpleLst[id]);
+            if (p != null)
+            {
+                evokDevice.SetMValueON2OFF(p);
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+        public void SetMPsONToOFF(string str1, string str2, List<DTPlcInfoSimple> pLst)
+        {
+
+            DTPlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p != null)
+            {
+                evokDevice.SetMValueON2OFF(p);
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
         }
         public void  SetMPsOFFToOn(string str1,string str2 ,List<DTPlcInfoSimple> pLst)
         {
@@ -1641,6 +1909,31 @@ namespace xjplc
             }
 
         }
+        public void SetDValue(DTPlcInfoSimple p, string num)
+        {
+            List<string> valueStr = new List<string>();
+
+            double valueShift = 0;
+            if (double.TryParse(num, out valueShift))
+            {
+
+                if (!(valueShift <= p.MaxValue && valueShift >= p.MinValue))
+                {
+                    MessageBox.Show(Constant.dataOutOfRange + p.MinValue.ToString() + "--" + p.MaxValue.ToString());
+                    return;
+                }
+                valueShift = valueShift * p.Ration;
+                valueStr.Add(valueShift.ToString());
+            }
+            if (p != null)
+            {
+                evokDevice.SetDValue(p, valueStr.ToArray());
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
         //这里输入数据要筛选下 是否大于最大值
         //不知道数据类型 就传字节
         public void SetDValue(string str1, string str2, List<DTPlcInfoSimple> pLst, string num)
@@ -1705,14 +1998,31 @@ namespace xjplc
             int addr = 0;
             string area = "D";
             string mode = evokDevice.DataForm.Rows[rowIndex]["mode"].ToString();
-           //ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
-            ConstantMethod.getAddrAndAreaByStr(userdata,ref addr,ref area);
-            DTPlcInfoSimple dp = new DTPlcInfoSimple(addr,area);
+
+            string name = evokDevice.DataForm.Rows[rowIndex]["bin"].ToString();
+            //ConstantMethod.getAddrAndAreaByStr(userdata,ref addr,ref area);
+
+            DTPlcInfoSimple dp = ConstantMethod.getDtPlcSimple(name,PsLstParam);
+
             dp.Mode = mode;
             dp.BelongToDataform = evokDevice.DataForm;
             List<string> value = new List<string>();
-            value.Add(num3);
-            evokDevice.SetDValue(dp, value.ToArray());
+
+            double valueDouble = 0;
+
+            if (double.TryParse(num3,out valueDouble))
+            {
+
+                if (valueDouble <= dp.MaxValue && valueDouble >= dp.MinValue)
+                {
+
+                    valueDouble = valueDouble * dp.Ration;
+                    value.Add(valueDouble.ToString());
+                    evokDevice.SetDValue(dp, value.ToArray());
+                }
+            }
+                      
+            
 
         }
         public void InitDgvIO(DataGridView dgvIO)

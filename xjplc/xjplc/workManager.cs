@@ -14,16 +14,14 @@ namespace xjplc
 
         List<doorTypeInfo> doorLst;
 
-        int shell_height_offset=0;
 
-        int shell_width_offset=0;
         public workManager()
         {
             fileConvert = new FileConvertToMachine();
             doorLst = new List<doorTypeInfo>();
         }
         //获取指定数据的表格集合
-        DataTable getUserData(int id)
+       public  DataTable getUserData(int id)
         {
             DataTable dtUser = new DataTable();
 
@@ -81,6 +79,51 @@ namespace xjplc
             // ConstantMethod.ShowInfo(rtbresult, "总共" + doorLst.Count.ToString() + "扇门！");
 
         }
+        //选择多行了之后 显示数据20181110
+        public void ShowDoor(string doorName, DataGridView dgSize, DataGridView dgDoorBan, DataGridView dgDoorShell)
+        {
+            if (string.IsNullOrWhiteSpace(doorName)) return;
+            if (doorLst.Count < 1) return;
+            if (dgSize == null  || dgDoorShell ==null || dgDoorBan==null) return;
+            DataTable dtDoorSize = doorLst[0].Door_Size.Clone();
+            DataTable dtDoorBan = doorLst[0].Door_Ban.Clone();
+            DataTable dtDoorShell = doorLst[0].Door_shell.Clone();
+            foreach (doorTypeInfo dTI in doorLst)
+            {
+                if (dTI.Name.Equals(doorName))
+                {
+                    foreach (DataRow drSize in dTI.Door_Size.Rows)
+                    {
+                        DataRow dtNew = dtDoorSize.NewRow();
+                        dtNew.ItemArray = drSize.ItemArray.ToArray();
+                        dtDoorSize.Rows.Add(dtNew);
+                    }
+                    foreach (DataRow drShell in dTI.Door_shell.Rows)
+                    {
+                        DataRow dtNew = dtDoorShell.NewRow();
+                        dtNew.ItemArray = drShell.ItemArray.ToArray();
+                        dtDoorShell.Rows.Add(dtNew);
+                    }
+                    foreach (DataRow drBan in dTI.Door_Ban.Rows)
+                    {
+                        DataRow dtNew = dtDoorBan.NewRow();
+                        dtNew.ItemArray = drBan.ItemArray.ToArray();
+                        dtDoorBan.Rows.Add(dtNew);
+                    }
+                }
+
+            }
+
+            if (dtDoorSize.Rows.Count > 0)
+            {
+                dgSize.DataSource = dtDoorSize;
+                dgDoorBan.DataSource = dtDoorBan;
+                dgDoorShell.DataSource = dtDoorShell;
+            }
+
+            // ConstantMethod.ShowInfo(rtbresult, "总共" + doorLst.Count.ToString() + "扇门！");
+
+        }
         public void ShowDoor(int id, DataGridView dgSize, DataGridView dgDoorBan, DataGridView dgDoorShell)
         {
             if (id < doorLst.Count)
@@ -89,12 +132,30 @@ namespace xjplc
                 dgDoorBan.DataSource = doorLst[id].Door_Ban;
                 dgDoorShell.DataSource = doorLst[id].Door_shell;
             }      
+
             // ConstantMethod.ShowInfo(rtbresult, "总共" + doorLst.Count.ToString() + "扇门！");
 
         }
-        public void ShowResult(ListBox listresult)
+        public void ShowResult(ListView listresult)
         {
             int j = 0;
+            listresult.Clear();
+            listresult.View = View.Details;
+
+            ColumnHeader c1h;
+
+            c1h = new ColumnHeader();
+
+            c1h.Text = "序号";
+
+            listresult.Columns.Add(c1h);
+
+            c1h = new ColumnHeader();
+
+            c1h.Text = "门型";
+            c1h.Width = 600;
+            listresult.Columns.Add(c1h);
+
             for (int i = doorLst.Count - 1; i > -1; i--)
             {
                 if (doorLst[i].Door_Size.Rows.Count == 0)
@@ -104,13 +165,36 @@ namespace xjplc
                 else
                 {
                     j++;
-                    listresult.Items.Add(doorLst[i].Name);
+                    ListViewItem item = listresult.Items.Add(j.ToString());
+                    item.SubItems.Add(doorLst[i].Name);
+            
                     //ConstantMethod.ShowInfo(rtbresult, "第" + j.ToString() + "扇门:" + doorLst[i].Name);
                 }
             }
 
            // ConstantMethod.ShowInfo(rtbresult, "总共" + doorLst.Count.ToString() + "扇门！");
 
+        }
+
+        public void showDoorTypeList(ComboBox cb1, int id)
+        {
+            List<string> typeNameLst = new List<string>();
+            if (cb1 != null)
+            {
+                cb1.Items.Clear();
+                foreach (doorTypeInfo dti in doorLst)
+                {
+                    if (!typeNameLst.Contains(dti.Name))
+                    {
+                        typeNameLst.Add(dti.Name);
+                    }
+                }
+            }
+            if (typeNameLst.Count > 0)
+            {
+                cb1.DataSource = typeNameLst.ToArray();
+                cb1.SelectedIndex = 0;
+            }
         }
 
         public void ShowResult(RichTextBox rtbresult)
@@ -152,6 +236,12 @@ namespace xjplc
     {
         string name;
 
+        string gwId = "1";
+        public string GwId
+        {
+            get { return gwId; }
+            set { gwId = value; }
+        }
         int height;
         public int Height
         {

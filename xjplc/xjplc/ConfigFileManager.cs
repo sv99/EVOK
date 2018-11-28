@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml;
 
 namespace xjplc
@@ -17,16 +18,24 @@ namespace xjplc
                 _xmldoc = new XmlDocument();
             }
         //
+        
         public ConfigFileManager(string file)
         {
             _xmldoc = new XmlDocument();
-            FilePath = file;
-            _xmldoc.Load(file);
+            LoadFile(file);
         }
         public void LoadFile(string file)
         {          
             FilePath = file;
-            _xmldoc.Load(file);
+            try
+            {
+                _xmldoc.Load(file);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("加载参数文件错误！请重新配置或者还原文件");
+                ConstantMethod.AppExit();
+            }
         }
 
         public void Dispose()
@@ -47,6 +56,7 @@ namespace xjplc
                     if (atrr != null)
                         str = atrr.Value.ToString();
                 }
+                _xmldoc.Save(FilePath);
                 return str;
             }
 
@@ -62,7 +72,7 @@ namespace xjplc
                     atrr.Value = value;
                 }
                 _xmldoc.Save(FilePath);
-
+     
                 return 0;
             }
         

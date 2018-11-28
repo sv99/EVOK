@@ -21,17 +21,18 @@ namespace evokNew0071
         CsvStreamReader csvop;
         OptSize optsize;
 
-        OptSize op1;
+        
         OptSize op0;
+        OptSize op1;
+        OptSize op2;
         private EvokXJWork evokWork0;
         private EvokXJWork evokWork1;
         private EvokXJWork evokWork2;
 
 
+
         List<EvokXJWork> evokWorkLst = new List<EvokXJWork>();
         workManager workMan;
-        //private OptSize optSize;
-        //private WatchForm wForm;
         doorTypeInfo doorLst;
 
         ConfigFileManager paraFile;
@@ -42,7 +43,7 @@ namespace evokNew0071
      
         }
 
-   
+       
 
         public void Init()
         {
@@ -78,15 +79,15 @@ namespace evokNew0071
            
             csvop = new CsvStreamReader();
             optsize = new OptSize();
-            op1 = new OptSize();
             op0 = new OptSize();
+            op1 = new OptSize();          
+            op2 = new OptSize();
 
             evokWork0 = new EvokXJWork(strDataFormPath0, p0);
 
-            evokWork1 = new EvokXJWork(strDataFormPath1, p1);
-           
+            evokWork1 = new EvokXJWork(strDataFormPath1, p1);          
          
-            //evokWork2 = new EvokXJWork(strDataFormPath1, p2);
+            evokWork2 = new EvokXJWork(strDataFormPath2, p2);
 
             InitWork();
 
@@ -95,15 +96,14 @@ namespace evokNew0071
             doorLst = new doorTypeInfo();
 
             workMan = new workManager();
-
-         
+     
 
         }
         private void UpdataEvokWork(EvokXJWork work, ToolStripStatusLabel s)
         {
-
+            if (work == null) return;
             UpdataError(work, s);
-
+           
             //自动页面
             if (work.CurrentPageId== Constant.AutoPage)
             {
@@ -155,6 +155,7 @@ namespace evokNew0071
                             }
                         }
                     }
+                 
                     if ((control.Parent == tabPage11))
                     {
                         foreach (PlcInfoSimple simple in evokWork1.PsLstAuto)
@@ -166,6 +167,19 @@ namespace evokNew0071
                             }
                         }
                     }
+                  
+                    if ((control.Parent == tabPage12))
+                    {
+                        foreach (PlcInfoSimple simple in evokWork2.PsLstAuto)
+                        {
+                            if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
+                            {
+                                simple.ShowControl = control;
+                                break;
+                            }
+                        }
+                    }
+          
                 }
             }
         }
@@ -181,40 +195,52 @@ namespace evokNew0071
             evokWork0.DeviceProperty = Constant.devicePropertyA;
             evokWork0.SetRtbResult(richTextBox2);
             evokWork0.SetRtbWork(richTextBox1);
+            evokWork0.SetLblStatus(label8);
             evokWork0.SetOptSize(op0);
-
-
+            evokWork0.SetPrintReport(report1);
+    
             evokWork1.InitDgvParam(dgvParam1);
             evokWork1.InitDgvIO(dgvIO1);
             evokWork1.DeviceProperty = Constant.devicePropertyB;        
             evokWork1.SetRtbResult(richTextBox3);
             evokWork1.SetRtbWork(richTextBox4);
+            evokWork1.SetLblStatus(label9);
             evokWork1.SetOptSize(op1);
-
-
-
+          
+            evokWork2.InitDgvParam(dgvParam2);
+            evokWork2.InitDgvIO(dgvIO2);
+            evokWork2.DeviceProperty = Constant.devicePropertyC;
+            evokWork2.SetRtbResult(richTextBox5);
+            evokWork2.SetRtbWork(richTextBox6);
+            evokWork2.SetLblStatus(label11);
+            evokWork2.SetOptSize(op2);
+        
             //读取设备名
             paraFile = new ConfigFileManager();
             paraFile.LoadFile(Constant.ConfigParamFilePath);
             evokWork0.DeviceName = paraFile.ReadConfig("work0");
             evokWork1.DeviceName = paraFile.ReadConfig("work1");
-            //evokWork2.DeviceName = paraFile.ReadConfig("work2");
+            evokWork2.DeviceName = paraFile.ReadConfig("work2");
 
 
             evokWorkLst.Add(evokWork0);
             evokWorkLst.Add(evokWork1);
-           // evokWorkLst.Add(evokWork2);        
+            evokWorkLst.Add(evokWork2);        
 
         }
 
         private void tabPage2_Enter(object sender, EventArgs e)
         {
-            evokWork0.ShiftPage(Constant.AutoPage);
+            //  evokWork0.ShiftPage(Constant.AutoPage);
+            evokWork0.SetRtbWork(richTextBox1);
+            evokWork0.shiftToLine();
         }
 
         private void tabPage3_Enter(object sender, EventArgs e)
         {
-            evokWork1.ShiftPage(Constant.AutoPage);
+            evokWork1.SetRtbWork(richTextBox4);
+            evokWork1.shiftToLine();
+            // evokWork1.ShiftPage(Constant.AutoPage);
         }
 
         private void UpdataError(EvokXJWork evokWork,ToolStripStatusLabel statusLabel)
@@ -228,7 +254,10 @@ namespace evokNew0071
             {
                 statusLabel.Text = Constant.ConnectMachineFail;
                 statusLabel.BackColor = Color.Red;
+                return;
             }
+
+            evokWork.ShowLblStatus();
 
             foreach (PlcInfoSimple p in evokWork.PsLstAuto)
             {
@@ -249,19 +278,21 @@ namespace evokNew0071
                 }
             }
         }
-
-
+       
+     
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
+
+
             UpdataEvokWork(evokWork0, statusLabel1);
             UpdataEvokWork(evokWork1, statusLabel2);
-
-           //UpdataEvokWork(evokWork2, statusLabel1);
+            UpdataEvokWork(evokWork2, statusLabel3);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            DialogResult dr = MessageBox.Show("是否继续关闭程序？", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+            DialogResult dr = MessageBox.Show("关闭软件前，请关闭各个设备，是否继续关闭程序？", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+            
             if (dr == DialogResult.No)
             {
                 e.Cancel = true;//就不退了
@@ -269,6 +300,15 @@ namespace evokNew0071
             }
             else
             {
+                foreach (EvokXJWork work in evokWorkLst)
+                {
+                    Thread t1 = new Thread(new ThreadStart(delegate
+                    {
+                        work.stop();
+                    }));
+                    t1.Start();
+                }
+
                 e.Cancel = false;//退了
             }
 
@@ -293,20 +333,7 @@ namespace evokNew0071
             Environment.Exit(0);
         }
 
-        private void tabPage7_Enter(object sender, EventArgs e)
-        {
-            evokWork0.ShiftPage(Constant.ParamPage);
-        }
-
-        private void tabPage8_Enter(object sender, EventArgs e)
-        {
-            evokWork1.ShiftPage(Constant.ParamPage);
-        }
-
-        private void tabPage5_Enter(object sender, EventArgs e)
-        {
-            evokWork1.ShiftPage(Constant.IOPage);
-        }
+       
      
         private void work0IO_Selecting(object sender, TabControlCancelEventArgs e)
         {
@@ -339,87 +366,137 @@ namespace evokNew0071
 
         private void tabControl3_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (work1Tab.SelectedIndex == 0)
+            int id = tabControl1.SelectedIndex - 1;
+            int id1 = ((TabControl)sender).SelectedIndex;
+            //这里要加1 因为页面少了一个 和序号对不上了
+            if (id1 > 0) id1++;
             {
-                if (!evokWork1.ShiftPage(Constant.AutoPage))
-                {
-                    e.Cancel = true;
-                }
-                
-            }
-            if (work1Tab.SelectedIndex == 1)
-            {
-                if (!evokWork1.ShiftPage(Constant.IOPage))
-                {
-                    e.Cancel = true;
-                }
 
-            }
-            if (work1Tab.SelectedIndex == 2)
-            {
-                if (!evokWork1.ShiftPage(Constant.ParamPage))
+                if (!evokWorkLst[id].ShiftPage(id1))
                 {
                     e.Cancel = true;
                 }
-                
-            }
+            }       
 
         }
 
         private void loadDataBtn_Click(object sender, EventArgs e)
         {
-
+            comboBox1.DataSource = null;
+            dgSize.DataSource = null;
+            dgDoorBan.DataSource = null;
+            dgDoorShell.DataSource = null;
             if (workMan.LoadData())
             {
-                workMan.ShowResult(listBox1);
-                listBox1.SelectedIndex = 0;
-                workMan.
-                ShowDoor(listBox1.SelectedIndex, dgSize, dgDoorBan, dgDoorShell);
-               
-            }          
+                workMan.ShowResult(listView1);               
+                workMan.showDoorTypeList(comboBox1, 0);
+            }                                         
         }
-
-
-
-        private void stbtn_Click(object sender, EventArgs e)
+        void shift()
         {
-          
+            evokWork0.SetRtbWork(richTextBox7);
+            evokWork0.shiftToLine();
            
-            //HandleTest();
-           // evokWork1.optReady(Constant.optNormal);
-            //确定设备处于电脑控制状态
-            //发送启动信号
-            //进行数据统计
-          //  ConstantMethod.ShowInfo(rtbResult, op0.OptNormal(rtbResult));
-            //ConstantMethod.ShowInfo(rtbResult, op1.OptNormal(rtbResult));
+
+            evokWork1.SetRtbWork(richTextBox8);
+            evokWork1.shiftToLine();
+         
+
+            evokWork2.SetRtbWork(rtbResult);
+            evokWork2.shiftToLine();
+         
+        }
+        void startLine()
+        {
+            op0.DtData = (DataTable)dgSize.DataSource;
+            op1.DtData = (DataTable)dgDoorShell.DataSource;
+            op2.DtData = (DataTable)dgDoorBan.DataSource;
 
             
-           // evokWork1.CutDoorStartNormal(Constant.CutNormalDoorMode);
-           // evokWork0.CutStartNormal(Constant.CutNormalMode);
-           // evokWork1.CutStartNormal(Constant.CutNormalMode);
+           StartWork(0);
+           StartWork(1);
+           StartWork(2);
+            
+        }
+                                     
+        private void stbtn_Click(object sender, EventArgs e)
+        {
+
+
+            if (dgDoorBan.DataSource == null || dgDoorBan.Rows.Count < 1)
+            {
+
+                MessageBox.Show("数据为空，请重新加载！");
+                return;
+            }
+
+
+            DialogResult dr = MessageBox.Show("各个设备是否就绪？请检查废料和工位", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+
+
+
+            if (dr == DialogResult.No)
+            {
+
+                return;
+            }
+            dr = MessageBox.Show("各个设备料长是否已切换为联机模式？", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+
+            if (dr == DialogResult.No)
+            {
+                
+                return;
+            }
+
+            dr = MessageBox.Show("各个设备料长是否设置？", "关闭提示", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+
+
+            if (dr == DialogResult.No)
+            {
+                return;
+            }
+
+           
+            foreach (EvokXJWork work in evokWorkLst)
+            {
+                if (work.IsInEmg)
+                {
+                    MessageBox.Show(work.DeviceName + "急停中！线启动失败！");
+                    return;
+                }
+                if (work.DeviceMode == Constant.M_ON)
+                {              
+                    MessageBox.Show(work.DeviceName + "设备模式错误！线启动失败！");
+                    return;
+                }
+                if (
+                    work.deviceStatusId == Constant.constantStatusId[1] ||
+                    work.deviceStatusId == Constant.constantStatusId[2] ||
+                    work.deviceStatusId == Constant.constantStatusId[3] ||
+                    work.deviceStatusId == Constant.constantStatusId[4] ||
+                    work.deviceStatusId == Constant.constantStatusId[5] 
+                   
+                    )
+                {
+                    work.showWorkInfo();
+                }
+
+            }
+
+            startLine();
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (listBox1.SelectedIndex > 0)
-            {
-                workMan.
-                ShowDoor(listBox1.SelectedIndex, dgSize, dgDoorBan, dgDoorShell);
-            }
-        }
+      
         #region  设备启动
         public void StartWork(int id)
         {
-
             
             Thread cutdoorStartThread;
 
             cutdoorStartThread = new Thread(new ParameterizedThreadStart(startCut));
 
             cutdoorStartThread.Start(id);
-
-          
-
+                    
 
         }
 
@@ -427,42 +504,66 @@ namespace evokNew0071
         {
             int id = (int)obj;
 
-          
-            evokWorkLst[id].optReady(Constant.optNormal);
-
-            switch(evokWorkLst[id].DeviceProperty)
+             //20181118增加状态 判断
+            if( evokWorkLst[id].deviceStatusId == Constant.constantStatusId[1]
+                || evokWorkLst[id].deviceStatusId == Constant.constantStatusId[2]
+                || evokWorkLst[id].deviceStatusId == Constant.constantStatusId[3]
+                || evokWorkLst[id].deviceStatusId == Constant.constantStatusId[4]
+                || evokWorkLst[id].deviceStatusId == Constant.constantStatusId[5])
             {
-                case Constant.devicePropertyA:
+                MessageBox.Show(evokWorkLst[id].DeviceName+Constant.constantStatusStr[evokWorkLst[id].deviceStatusId]);
+                return;
+
+            }
+            //已运行
+            if (evokWorkLst[id].RunFlag)
+            { MessageBox.Show(Constant.alreadyStart); }
+            switch (evokWorkLst[id].DeviceProperty)
+            {
+                case Constant.devicePropertyA: 
                     {
-                        evokWorkLst[id].CutDoorStartNormal(Constant.CutNormalMode);
+                           
+                        evokWorkLst[id].optReady(Constant.optNo);
+                        evokWorkLst[id].CutStartNormal(Constant.CutNormalWithShuChiMode);
                         break;
                     }
+                    //门皮
                 case Constant.devicePropertyB:
                     {
-                        evokWorkLst[id].CutDoorStartNormal(Constant.CutNormalDoorMode);
+                        evokWorkLst[id].optReady(Constant.optNo);
+                        if (!evokWorkLst[id].DataJoin())
+                        {
+                            MessageBox.Show("数据排版错误！");
+                        }
+
+                        evokWorkLst[id].CutDoorStartNormal(Constant.CutNormalDoorShellMode);
+                        break;
+                    }
+                //ban
+                case Constant.devicePropertyC:
+                    {
+                        evokWorkLst[id].optReady(Constant.optNo);              
+
+                        evokWorkLst[id].CutDoorStartNormal(Constant.CutNormalDoorBanMode);
                         break;
                     }
                 default:
                     {
+                        evokWorkLst[id].optReady(Constant.optNormal);
+
                         evokWorkLst[id].CutDoorStartNormal(Constant.CutNormalMode);
+
                         break;
                     }
-
-            }
-          
-
-            
+            }                    
         }
         private void button2_Click(object sender, EventArgs e)
         {
            
            op0.DtData = (DataTable)dgSize.DataSource;
-
            StartWork(tabControl1.SelectedIndex-1);
 
-
         }
-
         #endregion
         public void writeData(object sender, KeyPressEventArgs e,EvokXJWork evokWork)
         {
@@ -549,19 +650,260 @@ namespace evokNew0071
 
         private void button6_Click(object sender, EventArgs e)
         {
-            op1.DtData = (DataTable)dgDoorBan.DataSource;
-
+            op1.DtData = (DataTable)dgDoorShell.DataSource;
+           
             StartWork(tabControl1.SelectedIndex - 1);
         }
 
         private void tabControl1_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if(tabControl1.SelectedIndex>0)
+            
+            if (tabControl1.SelectedIndex>0)
             if(evokWorkLst==null||evokWorkLst.Count==0||evokWorkLst[tabControl1.SelectedIndex-1] ==null || !evokWorkLst[tabControl1.SelectedIndex - 1].DeviceStatus )
             {
+
+                evokWorkLst[tabControl1.SelectedIndex - 1].ShiftPage(Constant.AutoPage);
                 MessageBox.Show("设备错误！");
                 e.Cancel = true;
             }
+           
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        { 
+            op2.DtData = (DataTable)dgDoorBan.DataSource;
+
+
+            StartWork(tabControl1.SelectedIndex - 1);       
+              
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            workMan.ShowDoor(comboBox1.SelectedItem.ToString(),dgSize, dgDoorBan, dgDoorShell);
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox2.Checked)
+            {
+                workMan.ShowDoor(Constant.doorShellId, dgDoorShell);
+                workMan.ShowDoor(Constant.doorBanId, dgDoorBan);
+                workMan.ShowDoor(Constant.doorSizeId, dgSize);
+            }
+            else
+            {
+                dgDoorShell.DataSource = null;
+                dgDoorBan.DataSource = null;
+                dgSize.DataSource = null;
+            }
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int rowid = listView1.Items.IndexOf(listView1.FocusedItem);
+            workMan.ShowDoor(rowid, dgSize, dgDoorBan, dgDoorShell);
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+                       
+            foreach (EvokXJWork work in evokWorkLst)
+            {
+                
+                    Thread t1 = new Thread(new ThreadStart(delegate
+                    {
+                        work.pause();
+                    }));
+                    t1.Start();
+                           
+            }
+        }
+        void buttonOperation(bool value)
+        {
+            stbtn.Enabled = value;
+            button11.Enabled = value;
+            button12.Enabled = value;
+            stopBtn.Enabled = value;
+        }
+        void waitEnd(List<Thread> thLst)
+        {
+            //等待结束才走 超时60秒退出
+            bool loop = true;
+            int start = Environment.TickCount;
+            if (thLst.Count > 0)
+                while (loop)
+                {
+                    loop = false;
+                    Application.DoEvents();
+                    
+                    foreach (Thread th in thLst)
+                    {
+                        if (th.IsAlive) loop = true;
+                    }                   
+                    if(Math.Abs(Environment.TickCount - start) < 60000)
+                    {
+                        Application.DoEvents();
+                    }
+                }
+        }
+        private void stopBtn_Click(object sender, EventArgs e)
+        {
+            buttonOperation(false);
+            List<Thread> thLst = new List<Thread>();
+
+            foreach (EvokXJWork work in evokWorkLst)
+            {
+                Thread t1 = new Thread(new ThreadStart(delegate
+                {
+                    work.stop();
+                }));
+                t1.Start();
+                thLst.Add(t1);
+            }
+
+            waitEnd(thLst);
+
+
+            buttonOperation(true);
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabControl1_Enter(object sender, EventArgs e)
+        {
+            evokWork2.SetRtbWork(richTextBox6);
+        }
+
+        private void tabPage1_Leave(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void tabControl1_Deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (tabControl1.SelectedIndex == 0)
+                //如果在运行中 报警中 暂停中
+                foreach (EvokXJWork work in evokWorkLst)
+                {
+                    //如果在运行中 则不切换
+                    if (
+                         work.deviceStatusId  == Constant.constantStatusId[1]
+                      || work.deviceStatusId == Constant.constantStatusId[2]
+                      || work.deviceStatusId == Constant.constantStatusId[3]
+                      || work.deviceStatusId == Constant.constantStatusId[5])
+                    {
+                        MessageBox.Show(work.DeviceName+Constant.constantStatusStr[work.deviceStatusId]);
+                        e.Cancel = true;
+                        return;
+
+                    }  
+                //如果已启动            
+                if (work.RunFlag )
+                {
+                    MessageBox.Show(work.DeviceName + "设备运行中，请先停止！");
+                    tabControl1.SelectedIndex = 0;
+                    e.Cancel = true;
+                    return;
+                }
+            }
+        }
+
+        private void button12_Click_1(object sender, EventArgs e)
+        {
+            buttonOperation(false);
+            List<Thread> thLst = new List<Thread>();
+            foreach (EvokXJWork work in evokWorkLst)
+            {
+                if (!work.RunFlag)
+                {
+                    Thread t1 = new Thread(new ThreadStart(delegate
+                    {
+                        work.reset();
+                    }));
+                    t1.Start();
+                    thLst.Add(t1);
+                }
+                else MessageBox.Show(work.DeviceName+"请先发送停止信号！");
+            }
+
+            //等待结束才走
+            waitEnd(thLst);
+
+            buttonOperation(true);
+
+        }
+        private void Opposite_Click_Auto_2(object sender, EventArgs e)
+        {
+            if (sender != null && ((Control)sender).Tag != null)
+            {
+                evokWork2.oppositeBitClick(((Control)sender).Tag.ToString(), Constant.Write, evokWork2.PsLstAuto);
+            }
+        }
+        private void ccBtn_Click(object sender, EventArgs e)
+        {
+            Opposite_Click_Auto_2(sender, e);
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+
+            foreach (EvokXJWork work in evokWorkLst)
+            {
+                Thread t1 = new Thread(new ThreadStart(delegate
+                {
+                    work.emgStop();
+                }));
+                t1.Start();
+
+            }          
+            
+        }
+
+        private void tabPage1_Enter(object sender, EventArgs e)
+        {
+            shift();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            richTextBox7.Clear();
+            richTextBox8.Clear();
+            rtbResult.Clear();
+        }
+
+        private void tabPage4_Enter(object sender, EventArgs e)
+        {
+            evokWork2.SetRtbWork(richTextBox6);
+            evokWork2.shiftToLine();
+        }
+
+        private void connectMachine_Click(object sender, EventArgs e)
+        {
+
+            if (tabControl1.SelectedIndex == 0)
+            {
+                UpdateTimer.Enabled = false;
+                foreach (EvokXJWork evokWork in evokWorkLst)
+                {
+                    if (!evokWork.DeviceStatus)
+                        if (evokWork.RestartDevice(0))
+                    {
+                        SetControlInEvokWork();
+                        UpdateTimer.Enabled = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(evokWork.DeviceName + Constant.ConnectMachineFail);
+                    }
+
+                }
+            }
+            else MessageBox.Show("请先切换到主页面！");
+           
         }
     }
 }
