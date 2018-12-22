@@ -187,16 +187,16 @@ namespace evokNew0066
             //所以早点设置好 然后在 那个selectindexchanged事件里增加 通讯正常判断
             printcb.DataSource = Constant.printBarcodeModeStr;
 
-            LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);                        
-             evokWork = new EvokXJWork();
-             evokWork.SetUserDataGridView(UserData);
-             evokWork.SetRtbWork( rtbWork);
-             evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
-             evokWork.InitDgvParam(dgvParam);
-             evokWork.InitDgvIO(dgvIO);
-             evokWork.SetOptParamShowCombox(comboBox2);
-             UpdateTimer.Enabled = true;
+            LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
+            evokWork = new EvokXJWork();
+            evokWork.SetUserDataGridView(UserData);
+            evokWork.SetRtbWork(rtbWork);
+            evokWork.SetRtbResult(rtbResult);
+            evokWork.SetPrintReport(report1);
+            evokWork.InitDgvParam(dgvParam);
+            evokWork.InitDgvIO(dgvIO);
+            evokWork.SetOptParamShowCombox(comboBox2);
+            UpdateTimer.Enabled = true;
         }
 
         private void InitView0()

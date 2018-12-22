@@ -164,7 +164,7 @@
   </metadata>
   <data name="report1.ReportResourceString" xml:space="preserve">
     <value>﻿&lt;?xml version="1.0" encoding="utf-8"?&gt;
-&lt;Report ScriptLanguage="CSharp" ReportInfo.Created="08/29/2018 15:33:17" ReportInfo.Modified="11/20/2018 09:20:56" ReportInfo.CreatorVersion="2013.2.2.0"&gt;
+&lt;Report ScriptLanguage="CSharp" ReportInfo.Created="08/29/2018 15:33:17" ReportInfo.Modified="12/02/2018 21:28:02" ReportInfo.CreatorVersion="2013.2.2.0"&gt;
   &lt;Dictionary/&gt;
 &lt;/Report&gt;
 </value>
@@ -179,7 +179,7 @@
     <value>445, 60</value>
   </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>25</value>
+    <value>199</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

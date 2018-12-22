@@ -16,12 +16,11 @@ namespace evokNew0071
     {
         private static Queue<Control> allCtrls = new Queue<Control>();
 
-        //List<string> errorList = new List<string>();
-        //int errorId = 0;
         CsvStreamReader csvop;
         OptSize optsize;
-
-        
+        bool propertyA = true;
+        bool propertyB = true;
+        bool propertyC = true;
         OptSize op0;
         OptSize op1;
         OptSize op2;
@@ -43,7 +42,7 @@ namespace evokNew0071
      
         }
 
-       
+    
 
         public void Init()
         {
@@ -74,20 +73,18 @@ namespace evokNew0071
             strDataFormPath2.Add(Constant.PlcDataFilePathHand2);
             strDataFormPath2.Add(Constant.PlcDataFilePathParam2);
             strDataFormPath2.Add(Constant.PlcDataFilePathIO2);
-
-
-           
+         
             csvop = new CsvStreamReader();
             optsize = new OptSize();
             op0 = new OptSize();
             op1 = new OptSize();          
             op2 = new OptSize();
+            if (propertyA) evokWork0 = new EvokXJWork(strDataFormPath0, p0);
 
-            evokWork0 = new EvokXJWork(strDataFormPath0, p0);
-
-            evokWork1 = new EvokXJWork(strDataFormPath1, p1);          
+            if (propertyB) evokWork1 = new EvokXJWork(strDataFormPath1, p1);
+        
+            if (propertyC) evokWork2 = new EvokXJWork(strDataFormPath2, p2);
          
-            evokWork2 = new EvokXJWork(strDataFormPath2, p2);
 
             InitWork();
 
@@ -144,7 +141,8 @@ namespace evokNew0071
             {
                 if (control.Tag != null)
                 {
-                    if ((control.Parent == tabPage7))
+                    if (propertyA)
+                        if ((control.Parent == tabPage7))
                    {
                         foreach (PlcInfoSimple simple in evokWork0.PsLstAuto)
                         {
@@ -155,31 +153,35 @@ namespace evokNew0071
                             }
                         }
                     }
-                 
-                    if ((control.Parent == tabPage11))
+
+                    if (propertyB)
                     {
-                        foreach (PlcInfoSimple simple in evokWork1.PsLstAuto)
+                        if ((control.Parent == tabPage11))
                         {
-                            if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
+                            foreach (PlcInfoSimple simple in evokWork1.PsLstAuto)
                             {
-                                simple.ShowControl = control;
-                                break;
+                                if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
+                                {
+                                    simple.ShowControl = control;
+                                    break;
+                                }
                             }
                         }
                     }
-                  
-                    if ((control.Parent == tabPage12))
-                    {
-                        foreach (PlcInfoSimple simple in evokWork2.PsLstAuto)
+                    if (propertyC)
+                        if ((control.Parent == tabPage12))
                         {
-                            if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
+                            foreach (PlcInfoSimple simple in evokWork2.PsLstAuto)
                             {
-                                simple.ShowControl = control;
-                                break;
+                                if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
+                                {
+                                    simple.ShowControl = control;
+                                    break;
+                                }
                             }
                         }
-                    }
-          
+                    
+            
                 }
             }
         }
@@ -188,50 +190,66 @@ namespace evokNew0071
         {
 
             SetControlInEvokWork();
-
-
-            evokWork0.InitDgvParam(dgvParam);
-            evokWork0.InitDgvIO(dgvIO);
-            evokWork0.DeviceProperty = Constant.devicePropertyA;
-            evokWork0.SetRtbResult(richTextBox2);
-            evokWork0.SetRtbWork(richTextBox1);
-            evokWork0.SetLblStatus(label8);
-            evokWork0.SetOptSize(op0);
-            evokWork0.SetPrintReport(report1);
-    
-            evokWork1.InitDgvParam(dgvParam1);
-            evokWork1.InitDgvIO(dgvIO1);
-            evokWork1.DeviceProperty = Constant.devicePropertyB;        
-            evokWork1.SetRtbResult(richTextBox3);
-            evokWork1.SetRtbWork(richTextBox4);
-            evokWork1.SetLblStatus(label9);
-            evokWork1.SetOptSize(op1);
-          
-            evokWork2.InitDgvParam(dgvParam2);
-            evokWork2.InitDgvIO(dgvIO2);
-            evokWork2.DeviceProperty = Constant.devicePropertyC;
-            evokWork2.SetRtbResult(richTextBox5);
-            evokWork2.SetRtbWork(richTextBox6);
-            evokWork2.SetLblStatus(label11);
-            evokWork2.SetOptSize(op2);
-        
+            if (propertyA)
+            {
+                evokWork0.InitDgvParam(dgvParam);
+                evokWork0.InitDgvIO(dgvIO);
+                evokWork0.DeviceProperty = Constant.devicePropertyA;
+                evokWork0.SetRtbResult(richTextBox2);
+                evokWork0.SetRtbWork(richTextBox1);
+                evokWork0.SetLblStatus(label8);
+                evokWork0.SetOptSize(op0);
+                evokWork0.SetPrintReport(report1);
+            }
+            if (propertyB)
+            {
+                evokWork1.InitDgvParam(dgvParam1);
+                evokWork1.InitDgvIO(dgvIO1);
+                evokWork1.DeviceProperty = Constant.devicePropertyB;
+                evokWork1.SetRtbResult(richTextBox3);
+                evokWork1.SetRtbWork(richTextBox4);
+                evokWork1.SetLblStatus(label9);
+                evokWork1.SetOptSize(op1);
+            }
+             if (propertyC)
+            { 
+               evokWork2.InitDgvParam(dgvParam2);
+                evokWork2.InitDgvIO(dgvIO2);
+                evokWork2.DeviceProperty = Constant.devicePropertyC;
+                evokWork2.SetRtbResult(richTextBox5);
+                evokWork2.SetRtbWork(richTextBox6);
+                evokWork2.SetLblStatus(label11);
+                evokWork2.SetOptSize(op2);
+            }
             //读取设备名
             paraFile = new ConfigFileManager();
             paraFile.LoadFile(Constant.ConfigParamFilePath);
-            evokWork0.DeviceName = paraFile.ReadConfig("work0");
-            evokWork1.DeviceName = paraFile.ReadConfig("work1");
-            evokWork2.DeviceName = paraFile.ReadConfig("work2");
+            if (propertyA)
+            {
+                evokWork0.DeviceName = paraFile.ReadConfig("work0");
+                evokWorkLst.Add(evokWork0);
+            }
 
+            if (propertyB)
+            {
+                evokWork1.DeviceName = paraFile.ReadConfig("work1");
+                evokWorkLst.Add(evokWork1);
 
-            evokWorkLst.Add(evokWork0);
-            evokWorkLst.Add(evokWork1);
-            evokWorkLst.Add(evokWork2);        
+            }
+            if (propertyC)
+            {
+                evokWork2.DeviceName = paraFile.ReadConfig("work2");
+                evokWorkLst.Add(evokWork2);
+            }
+
+                 
+
+          
 
         }
 
         private void tabPage2_Enter(object sender, EventArgs e)
         {
-            //  evokWork0.ShiftPage(Constant.AutoPage);
             evokWork0.SetRtbWork(richTextBox1);
             evokWork0.shiftToLine();
         }
@@ -239,8 +257,7 @@ namespace evokNew0071
         private void tabPage3_Enter(object sender, EventArgs e)
         {
             evokWork1.SetRtbWork(richTextBox4);
-            evokWork1.shiftToLine();
-            // evokWork1.ShiftPage(Constant.AutoPage);
+            evokWork1.shiftToLine();      
         }
 
         private void UpdataError(EvokXJWork evokWork,ToolStripStatusLabel statusLabel)
@@ -282,11 +299,17 @@ namespace evokNew0071
      
         private void UpdateTimer_Tick(object sender, EventArgs e)
         {
+            if (propertyA)
+                UpdataEvokWork(evokWork0, statusLabel1);
 
-
-            UpdataEvokWork(evokWork0, statusLabel1);
-            UpdataEvokWork(evokWork1, statusLabel2);
-            UpdataEvokWork(evokWork2, statusLabel3);
+            if (propertyB)
+            {
+                UpdataEvokWork(evokWork1, statusLabel2);
+            }
+            if (propertyC)
+            {
+                UpdataEvokWork(evokWork2, statusLabel3);
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -334,36 +357,8 @@ namespace evokNew0071
         }
 
        
-     
-        private void work0IO_Selecting(object sender, TabControlCancelEventArgs e)
-        {
-            if (work0Tab.SelectedIndex == 1)
-            {
-                if (!evokWork0.ShiftPage(Constant.IOPage))
-                {
-                    e.Cancel = true;
-                }                
-            }
-
-            if (work0Tab.SelectedIndex == 0)
-            {
-                if (!evokWork0.ShiftPage(Constant.AutoPage))
-                {
-                    e.Cancel = true;
-                }
-
-            }
-
-            if (work0Tab.SelectedIndex == 2)
-            {
-                if (!evokWork0.ShiftPage(Constant.ParamPage))
-                {
-                    e.Cancel = true;
-                }
-                
-            }
-        }
-
+   
+        //每个标签页都按照这个来  
         private void tabControl3_Selecting(object sender, TabControlCancelEventArgs e)
         {
             int id = tabControl1.SelectedIndex - 1;
@@ -377,7 +372,6 @@ namespace evokNew0071
                     e.Cancel = true;
                 }
             }       
-
         }
 
         private void loadDataBtn_Click(object sender, EventArgs e)
@@ -386,24 +380,36 @@ namespace evokNew0071
             dgSize.DataSource = null;
             dgDoorBan.DataSource = null;
             dgDoorShell.DataSource = null;
+            checkBox2.Checked = false; 
             if (workMan.LoadData())
             {
                 workMan.ShowResult(listView1);               
                 workMan.showDoorTypeList(comboBox1, 0);
-            }                                         
+                checkBox2.Checked=true;
+                richTextBox7.Text = "当前木方数据数量行数为："+((DataTable)dgSize.DataSource).Rows.Count.ToString();
+                richTextBox8.Text = "当前门皮数据数量行数为：" + ((DataTable)dgDoorShell.DataSource).Rows.Count.ToString();
+                rtbResult.Text    = "当前门板数据数量行数为：" + ((DataTable)dgDoorBan.DataSource).Rows.Count.ToString();
+            }                                                                           
         }
+        //每个单机切换回来 都切换显示
         void shift()
         {
-            evokWork0.SetRtbWork(richTextBox7);
-            evokWork0.shiftToLine();
-           
+            if (propertyA)
+            {
+                evokWork0.SetRtbWork(richTextBox7);
+                evokWork0.shiftToLine();
+            }
 
-            evokWork1.SetRtbWork(richTextBox8);
-            evokWork1.shiftToLine();
-         
-
-            evokWork2.SetRtbWork(rtbResult);
-            evokWork2.shiftToLine();
+            if (propertyB)
+            {
+                evokWork1.SetRtbWork(richTextBox8);
+                evokWork1.shiftToLine();
+            }
+            if (propertyC)
+            {
+                evokWork2.SetRtbWork(rtbResult);
+                evokWork2.shiftToLine();
+            }
          
         }
         void startLine()
@@ -521,8 +527,7 @@ namespace evokNew0071
             switch (evokWorkLst[id].DeviceProperty)
             {
                 case Constant.devicePropertyA: 
-                    {
-                           
+                    {                         
                         evokWorkLst[id].optReady(Constant.optNo);
                         evokWorkLst[id].CutStartNormal(Constant.CutNormalWithShuChiMode);
                         break;
@@ -703,6 +708,8 @@ namespace evokNew0071
         {
             int rowid = listView1.Items.IndexOf(listView1.FocusedItem);
             workMan.ShowDoor(rowid, dgSize, dgDoorBan, dgDoorShell);
+            checkBox2.Checked = false;
+
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -785,8 +792,10 @@ namespace evokNew0071
 
         private void tabControl1_Deselecting(object sender, TabControlCancelEventArgs e)
         {
+            /**********
             if (tabControl1.SelectedIndex == 0)
                 //如果在运行中 报警中 暂停中
+                //20181201因为在运行 想看下 其他单机 那就运行的时候 就切换过去吧 可选吧
                 foreach (EvokXJWork work in evokWorkLst)
                 {
                     //如果在运行中 则不切换
@@ -801,15 +810,17 @@ namespace evokNew0071
                         return;
 
                     }  
-                //如果已启动            
-                if (work.RunFlag )
+                        
+                if (work.RunFlag)
                 {
                     MessageBox.Show(work.DeviceName + "设备运行中，请先停止！");
                     tabControl1.SelectedIndex = 0;
                     e.Cancel = true;
                     return;
                 }
+                
             }
+          **********/
         }
 
         private void button12_Click_1(object sender, EventArgs e)
@@ -904,6 +915,19 @@ namespace evokNew0071
             }
             else MessageBox.Show("请先切换到主页面！");
            
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if(checkBox2.Checked)
+            {
+
+                workMan.doorLstReverse();
+                workMan.ShowDoor(Constant.doorShellId, dgDoorShell);
+                workMan.ShowDoor(Constant.doorBanId, dgDoorBan);
+                workMan.ShowDoor(Constant.doorSizeId, dgSize);
+
+            }
         }
     }
 }

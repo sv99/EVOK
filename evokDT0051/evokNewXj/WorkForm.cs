@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using xjplc;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace evokNew0051
 {
@@ -178,8 +179,8 @@ namespace evokNew0051
 
                 for (int i = 0; i < 20; i++)
                 {                  
-                    comboBox6.Items.Add((i).ToString());
-                    comboBox2.Items.Add((i).ToString());
+                  //  comboBox6.Items.Add((i).ToString());
+                  //  comboBox2.Items.Add((i).ToString());
                     comboBox7.Items.Add((i).ToString());
                     comboBox3.Items.Add((i).ToString());
                 }
@@ -1081,11 +1082,11 @@ namespace evokNew0051
 
         private void comboBox6_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(comboBox6.Text.ToString())) return;
+           // if (string.IsNullOrWhiteSpace(comboBox6.Text.ToString())) return;
             // evokWork.openProgram(int.Parse(comboBox6.Text.ToString()));
             try
             {
-                evokWork.openProgram(int.Parse(comboBox6.Text.ToString()), int.Parse(comboBox2.Text.ToString()));
+             //   evokWork.openProgram(int.Parse(comboBox6.Text.ToString()), int.Parse(comboBox2.Text.ToString()));
                 evokWork.SetOutEdit(((ComboBox)sender).Tag.ToString(), Constant.Read, evokWork.PsLstAuto);
             }
             catch (Exception ex)
@@ -1205,8 +1206,20 @@ namespace evokNew0051
                 label51.Visible = true;
                 label47.Visible = true;
             }
+            if ((comboBox5.Text.Equals(Constant.scCutType[4])))
+                {
+                textBox24.Visible = false;
+                label47.Visible = false;
+            }
+            else
+            {
+                textBox24.Visible = true;
+                label47.Visible = true;
+            }
 
-            if ((comboBox5.Text.Equals(Constant.hyCutType[1])) ||  (comboBox5.Text.Equals(Constant.hyCutType[2])))
+            if ((comboBox5.Text.Equals(Constant.hyCutType[1])) 
+                ||  (comboBox5.Text.Equals(Constant.hyCutType[2]))
+                )
             {
                 textBox25.Visible = false;
                 label48.Visible = false;
@@ -1283,39 +1296,94 @@ namespace evokNew0051
         {
             if (e.KeyChar == '\r')
             {
-                string scanStr = ((TextBox)sender).Text;
+                string scanStr = textBox31.Text;
                 string[] strSplit = scanStr.Split('/');
 
                 double doorWidth = 0;
             
                 double doorHeight = 0;
 
+                double thickness = 0;
+
+                int hymode = 0;
+                int hyCount = 0;
                 int scId = -1;
                 int hyId = -1;
-                if (! (strSplit.Count() == 8))
+                if (! (strSplit.Count() == 10))
                 {
                     MessageBox.Show("条码数据量错误！");
                     return;
                 }
-                if (!double.TryParse(strSplit[1], out doorHeight) || !double.TryParse(strSplit[2], out doorWidth))
+                if (!double.TryParse(strSplit[1], out doorHeight) 
+                    || !double.TryParse(strSplit[2], out doorWidth)
+                    || !double.TryParse(strSplit[4], out thickness))
+
+
                 {
-                    MessageBox.Show("门长或者门宽数据错误！");
+                    MessageBox.Show("门长/门宽/门厚数据错误！");
                     return;
                 }
 
-                if (!int.TryParse(strSplit[4], out scId) || !int.TryParse(strSplit[6], out hyId))
+               
+                if (!int.TryParse(strSplit[5], out scId)
+                    || !int.TryParse(strSplit[8], out hyId)
+                    || !int.TryParse(strSplit[9], out hyCount)
+                    || !int.TryParse(strSplit[6], out hymode)
+                    )
                 {
-                    MessageBox.Show("锁槽号或者合页号数据错误！");
+                    MessageBox.Show("锁槽号/合页号/合页数/合页模式数据错误！");
                     return;
                 }
+
                 evokWork.
-                setDoorWidthAndHeight(strSplit[2], strSplit[1]);
+                setScanParam(strSplit[2], strSplit[1], strSplit[4], hymode, strSplit[9]);
 
-                evokWork.openProgram(scId,hyId);
+                evokWork.openProgramBarCode(scId,hyId);
 
-                MessageBox.Show("扫码结束！");
+                //显示扫码信息
+                /***
+                0:编号
+                1:长
+                2:宽
+                3:正反面
+                4:门厚
+                5:锁号
+                6:模式
+                7:左右开
+                8:合页号
+                9:合页数
+                ***/
+                StringBuilder sb = new StringBuilder();
+                string[] stringParam = {
+                                       "编号",
+                                        "长",
+                                        "宽",
+                                        "正反面",
+                                        "门厚",
+                                        "锁号",
+                                        "模式",
+                                        "左右开",
+                                        "合页号",
+                                        "合页数",
+                                      };
+                if (stringParam.Count() == strSplit.Count())
+                {
+                    sb.Append(DateTime.Now.ToShortTimeString());
+                    sb.Append("扫码信息：");
+                    for (int i = 0; i < strSplit.Count(); i++)
+                    {
+                        sb.Append(stringParam[i]);
+                        sb.Append(strSplit[i]);
+                    }
+                }
 
-                ((TextBox)sender).Text = "";
+
+
+                t2.Text = sb.ToString();
+
+                //MessageBox.Show("扫码结束！");
+
+                textBox31.Text = "";
 
             }
         }
@@ -1323,6 +1391,56 @@ namespace evokNew0051
         private void button16_Click(object sender, EventArgs e)
         {
             evokWork.SetMPsONToOFF(((Control)sender).Tag.ToString(), Constant.Write, tc1.SelectedIndex);
+        }
+
+        private void textBox31_Enter(object sender, EventArgs e)
+        {
+            ((TextBox)sender).Text = "";
+        }
+
+        private void button59_Click(object sender, EventArgs e)
+        {
+            if (button59.Text == "扫码关")
+            {
+                button59.Text = "扫码开";
+                button59.BackColor = Color.Green;
+            }
+            else
+            {
+                button59.Text = "扫码关";
+                button59.BackColor = Color.Gray;
+            }
+        }
+
+        private void WorkForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+           // MessageBox.Show(tc1.SelectedIndex.ToString()+ button59.Text);
+            if ((tc1.SelectedIndex == 0) && (button59.Text.Equals("扫码开")))
+            {
+              
+                textBox31.Focus();
+
+                int i = (int)e.KeyChar;
+            
+                if (
+                    (i <= 57 && i >= 47) 
+                    || 
+                    (i == 0) 
+                    ||
+                    (i>=65&&i<=90)                  
+                    )
+                {
+                    textBox31.AppendText(e.KeyChar.ToString());
+                }
+
+                if (e.KeyChar == 13)
+                {
+                    textBox31_KeyPress(sender, e);
+                }
+
+                e.Handled = true;
+
+            }
         }
     }
 

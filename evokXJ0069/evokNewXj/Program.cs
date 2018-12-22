@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using xjplc;
 
 namespace evokNew0069
 {
@@ -14,6 +15,10 @@ namespace evokNew0069
         [STAThread]
         static void Main()
         {
+            if (ConstantMethod.IsRuning())
+            {
+                return;
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new WorkForm());

@@ -65,14 +65,7 @@ namespace evokNew0050
 
         private void ccBtn_Click(object sender, EventArgs e)
         {
-            if ( evokWork.AutoMes)
-            {
-                 evokWork.autoMesOFF();
-            }
-            else
-            {
-                 evokWork.autoMesON();
-            }
+
         }
 
         private static void CheckAllCtrls(Control item)
@@ -187,10 +180,10 @@ namespace evokNew0050
 
              LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
 
-             evokWork = new EvokDTTcpWork();
+             evokWork = new EvokDTTcpWork(Constant.sbjDeivceId);
              evokWork.SetUserDataGridView(UserData);
-             evokWork.SetRtbWork( rtbWork);
-             evokWork.SetRtbResult( rtbResult);
+             evokWork.SetRtbWork(rtbWork);
+             evokWork.SetRtbResult(rtbResult);
              evokWork.SetPrintReport(report1);
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
@@ -228,8 +221,9 @@ namespace evokNew0050
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(evokWork.lcTxt_KeyPress(sender,e))
-            label10.Focus();
+            if (evokWork.KeyPress_AutoPage(sender, e))
+            
+                label10.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -817,15 +811,12 @@ namespace evokNew0050
 
         }
 
-        private void button5_Click_1(object sender, EventArgs e)
-        {
-
-        }
 
         private void button5_Click_2(object sender, EventArgs e)
         {
             evokWork.angleModeChoose();
         }
+
 
         private void button11_Click(object sender, EventArgs e)
         {
@@ -845,6 +836,42 @@ namespace evokNew0050
         private void label14_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double c = 0;
+            
+                if(double.TryParse(textBox4.Text,out c))
+                if (evokWork.checkCutChang(c))
+                {
+                    lcTxt_KeyPress(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("加工数据错误！");
+                }
+            }
+        }
+
+        private void textBox5_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                
+                double k = 0;
+                if (double.TryParse(textBox5.Text, out k))
+                if (evokWork.checkCutKuan(k))
+                {
+                    lcTxt_KeyPress(sender, e);
+                }
+                else
+                {
+                    MessageBox.Show("加工数据错误！");
+                }
+            }
         }
     }
 }

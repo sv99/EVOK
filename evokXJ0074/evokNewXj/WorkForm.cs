@@ -275,7 +275,8 @@ namespace evokNew0074
             {
                 e.Cancel = false;//退了
             }
-
+            evokWork.
+            ChangtToAuto();
             UpdateTimer.Enabled = false;
             FileSaveTimer.Enabled = false;
             if ( evokWork != null)

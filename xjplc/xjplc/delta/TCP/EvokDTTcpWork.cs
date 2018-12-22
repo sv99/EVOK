@@ -262,7 +262,8 @@ namespace xjplc
         public DTPlcInfoSimple stopInPs = new DTPlcInfoSimple("停止读");
         public DTPlcInfoSimple stopOutPs = new DTPlcInfoSimple("停止写");
 
-
+        public DTPlcInfoSimple cutSizeRangeChangOutInPs = new DTPlcInfoSimple("加工限制长读写");
+        public DTPlcInfoSimple cutSizeRangeKuanOutInPs = new DTPlcInfoSimple("加工限制宽读写");
         #endregion
 
         #region 门锁机
@@ -273,6 +274,7 @@ namespace xjplc
         public DTPlcInfoSimple knifeSelectInOutPs = new DTPlcInfoSimple("刀具选择读写");
         public DTPlcInfoSimple programNoShiftInOutPs = new DTPlcInfoSimple("程序号读写");
         public DTPlcInfoSimple openProgramOutPs = new DTPlcInfoSimple("打开选定程序写");
+        public DTPlcInfoSimple openProgramBarCodeOutPs = new DTPlcInfoSimple("扫码选定程序写");
         public DTPlcInfoSimple selectProgramOutPs = new DTPlcInfoSimple("当前程序写");
         public DTPlcInfoSimple selectProgramInPs = new DTPlcInfoSimple("当前程序读");
         public DTPlcInfoSimple scProgramOutPs = new DTPlcInfoSimple("锁槽写");
@@ -281,6 +283,9 @@ namespace xjplc
         public DTPlcInfoSimple hySureProgramOutPs = new DTPlcInfoSimple("合页确认写");
         public DTPlcInfoSimple doorWidthInOutPs = new DTPlcInfoSimple("门宽读写");
         public DTPlcInfoSimple doorHeightInOutPs = new DTPlcInfoSimple("门长读写");
+        public DTPlcInfoSimple doorThicknessInOutPs = new DTPlcInfoSimple("合页侧厚度读写");
+        public DTPlcInfoSimple hyModeInOutPs = new DTPlcInfoSimple("合页模式读写");
+        public DTPlcInfoSimple hyCountInOutPs = new DTPlcInfoSimple("合页数量读写");
         public System.Data.DataTable DtScHyShow
         {
             get { return dtScHyShow; }
@@ -530,13 +535,17 @@ namespace xjplc
                 errorResetOutPs = ConstantMethod.getDtPlcSimple(errorResetOutPs.Name, psLstAuto);
                 pageShiftInOutPs = ConstantMethod.getDtPlcSimple(pageShiftInOutPs.Name, psLstAuto);
                 openProgramOutPs = ConstantMethod.getDtPlcSimple(openProgramOutPs.Name, psLstAuto);
+                openProgramBarCodeOutPs = ConstantMethod.getDtPlcSimple(openProgramBarCodeOutPs.Name, psLstAuto);
                 selectProgramOutPs = ConstantMethod.getDtPlcSimple(selectProgramOutPs.Name, psLstAuto);
                 selectProgramInPs = ConstantMethod.getDtPlcSimple(selectProgramInPs.Name, psLstAuto);
                 scProgramOutPs = ConstantMethod.getDtPlcSimple(scProgramOutPs.Name, psLstAuto);
                 hyProgramOutPs = ConstantMethod.getDtPlcSimple(hyProgramOutPs.Name, psLstAuto);
                 doorWidthInOutPs = ConstantMethod.getDtPlcSimple(doorWidthInOutPs.Name, psLstAuto);
                 doorHeightInOutPs = ConstantMethod.getDtPlcSimple(doorHeightInOutPs.Name, psLstAuto);
-
+                doorThicknessInOutPs = ConstantMethod.getDtPlcSimple(doorThicknessInOutPs.Name, psLstAuto);
+                hyModeInOutPs = ConstantMethod.getDtPlcSimple(hyModeInOutPs.Name, psLstAuto);
+                hyCountInOutPs = ConstantMethod.getDtPlcSimple(hyCountInOutPs.Name, psLstAuto);
+                     
                 //添加一个页面
                 AllPlcSimpleLst.Add(ProgramConfigPsLst);
                 SetPage(Constant.ScarPage);
@@ -546,7 +555,7 @@ namespace xjplc
                 programNoShiftInOutPs = ConstantMethod.getDtPlcSimple(programNoShiftInOutPs.Name, ProgramConfigPsLst);
                 scSureProgramOutPs = ConstantMethod.getDtPlcSimple(scSureProgramOutPs.Name, ProgramConfigPsLst);
                 hySureProgramOutPs = ConstantMethod.getDtPlcSimple(hySureProgramOutPs.Name, ProgramConfigPsLst);
-
+               
 
                 DtScHyShow.Columns.Add("步序");
                 DtScHyShow.Columns.Add("锁槽工位");
@@ -562,74 +571,23 @@ namespace xjplc
             }
             #endregion
 
-            #region 四边锯数据处理
-            /***
-         PsLstAuto.Add(handModeOutInPs);
-         PsLstAuto.Add(autoModeOutInPs);
-         PsLstAuto.Add(YLCOutInPs);
-         PsLstAuto.Add(YLKOutInPs);
-         PsLstAuto.Add(sizeLengthOutInPs);
-         PsLstAuto.Add(sizeWidthOutInPs);
-         PsLstAuto.Add(errorResetOutInPs);
-         PsLstAuto.Add(angleModeOutInPs);         
-         PsLstAuto.Add(startOutPs);
-         PsLstAuto.Add(resetOutPs);    
-         PsLstAuto.Add(startInPs);
-         PsLstAuto.Add(resetInPs);
-         PsLstAuto.Add(autoModeLightInPs);    
-         PsLstAuto.Add(alarm1InPs);
-         PsLstAuto.Add(alarm2InPs);
-         PsLstAuto.Add(alarm3InPs);
-         PsLstAuto.Add(alarm4InPs);
-         PsLstAuto.Add(alarm5InPs);
-         PsLstAuto.Add(alarm6InPs);
-         PsLstAuto.Add(alarm7InPs);
-         PsLstAuto.Add(alarm8InPs);
-         PsLstAuto.Add(alarm9InPs);
-         PsLstAuto.Add(alarm10InPs);
-         PsLstAuto.Add(alarm11InPs);
-         PsLstAuto.Add(alarm12InPs);
-         PsLstAuto.Add(alarm13InPs);
-         PsLstAuto.Add(alarm14InPs);
-         PsLstAuto.Add(alarm15InPs);
-         PsLstAuto.Add(alarm16InPs);
-         PsLstAuto.Add(alarm17InPs);
-         PsLstAuto.Add(alarm18InPs);
-         PsLstAuto.Add(alarm19InPs);
-         PsLstAuto.Add(alarm20InPs);
-         PsLstAuto.Add(alarm21InPs);
-         PsLstAuto.Add(alarm22InPs);
-         PsLstAuto.Add(alarm23InPs);
-         PsLstAuto.Add(alarm24InPs);
-         PsLstAuto.Add(alarm25InPs);
-         PsLstAuto.Add(alarm26InPs);
-         PsLstAuto.Add(alarm27InPs);
-         PsLstAuto.Add(alarm28InPs);
-         PsLstAuto.Add(alarm29InPs);
-         PsLstAuto.Add(alarm30InPs);
-         PsLstAuto.Add(alarm31InPs);
-         PsLstAuto.Add(alarm32InPs);
-         PsLstAuto.Add(alarm33InPs);
-         PsLstAuto.Add(alarm34InPs);
-         PsLstAuto.Add(alarm35InPs);
-         PsLstAuto.Add(alarm36InPs);
-         PsLstAuto.Add(alarm37InPs);
-         PsLstAuto.Add(alarm38InPs);
-         PsLstAuto.Add(alarm39InPs);
-         PsLstAuto.Add(alarm40InPs);
-         PsLstAuto.Add(alarm41InPs);
-         PsLstAuto.Add(alarm42InPs);
-         PsLstAuto.Add(alarm43InPs);
-         PsLstAuto.Add(alarm44InPs);
-         PsLstAuto.Add(alarm45InPs);
-         PsLstAuto.Add(alarm46InPs);
-         PsLstAuto.Add(alarm47InPs);
-         PsLstAuto.Add(alarm48InPs);
-         PsLstAuto.Add(alarm49InPs);
-         PsLstAuto.Add(alarm50InPs);
-         PsLstAuto.Add(alarm51InPs);
-         PsLstAuto.Add(prodOutInPs);
-         ****/
+            #region 四边锯处理
+            if (deviceId == Constant.sbjDeivceId)
+            {
+                startOutPs = ConstantMethod.getDtPlcSimple(startOutPs.Name, psLstAuto);
+
+                resetOutPs = ConstantMethod.getDtPlcSimple(resetOutPs.Name, psLstAuto);
+
+                angleModeOutInPs = ConstantMethod.getDtPlcSimple(angleModeOutInPs.Name, psLstAuto);
+                 YLCOutInPs = ConstantMethod.getDtPlcSimple(YLCOutInPs.Name, psLstAuto);
+                YLKOutInPs = ConstantMethod.getDtPlcSimple(YLKOutInPs.Name, psLstAuto);
+                sizeLengthOutInPs = ConstantMethod.getDtPlcSimple(sizeLengthOutInPs.Name, psLstAuto);
+                sizeWidthOutInPs = ConstantMethod.getDtPlcSimple(sizeWidthOutInPs.Name, psLstAuto);
+                handModeOutInPs = ConstantMethod.getDtPlcSimple(handModeOutInPs.Name, psLstAuto);
+                autoModeOutInPs = ConstantMethod.getDtPlcSimple(autoModeOutInPs.Name, psLstAuto);
+                cutSizeRangeChangOutInPs = ConstantMethod.getDtPlcSimple(cutSizeRangeChangOutInPs.Name, psLstAuto);
+                cutSizeRangeKuanOutInPs = ConstantMethod.getDtPlcSimple(cutSizeRangeKuanOutInPs.Name, psLstAuto);
+            }
             #endregion
             #endregion
             UserDataTable = new DataTable();
@@ -680,6 +638,60 @@ namespace xjplc
 
             ConstantMethod.Delay(200);
             openProgram(selectProgramInPs.ShowValue);
+        }
+        public bool checkCutChang(double c)
+        {
+            if (DeviceId == Constant.sbjDeivceId)
+                if ((YLCOutInPs.ShowValueFloat - c) <= cutSizeRangeChangOutInPs.ShowValue                                    
+                    &&
+                    YLCOutInPs.ShowValueFloat > 0                                  
+                    &&
+                    YLCOutInPs.ShowValueFloat - c > 0
+                    )
+
+                {
+                    return true;
+                }
+            return false;
+        }
+        public bool checkCutKuan(double k)
+        {
+            if (DeviceId == Constant.sbjDeivceId)
+                if (
+                    (YLKOutInPs.ShowValueFloat - k) <= cutSizeRangeKuanOutInPs.ShowValue
+                    &&
+                   
+                    YLKOutInPs.ShowValueFloat > 0
+                    &&
+                    YLKOutInPs.ShowValueFloat - k > 0                  
+                    )
+
+                {
+                    return true;
+                }
+            return false;
+        }
+        //四边锯数据判断 
+        public bool checkDataUseful(double c,double k)
+        {
+            if(DeviceId ==Constant.sbjDeivceId )
+            if ((YLCOutInPs.ShowValueFloat - c) <= cutSizeRangeChangOutInPs.ShowValue
+                &&
+                (YLKOutInPs.ShowValueFloat - k) <= cutSizeRangeKuanOutInPs.ShowValue
+                &&
+                YLCOutInPs.ShowValueFloat>0
+                &&
+                YLKOutInPs.ShowValueFloat>0
+                &&
+                YLKOutInPs.ShowValueFloat - k >0
+                &&
+                YLCOutInPs.ShowValueFloat -c>0
+                )
+
+            {
+                return true;
+            }
+            return false;
         }
         public EvokDTTcpWork(int id)
         {
@@ -805,7 +817,7 @@ namespace xjplc
         //启动
         public void start(int id)
         {
-            if ((YLCOutInPs.ShowValueFloat - sizeLengthOutInPs.ShowValueFloat) >= 20 && (YLKOutInPs.ShowValueFloat - sizeWidthOutInPs.ShowValueFloat) >= 20)
+            if (checkDataUseful(sizeLengthOutInPs.ShowValueFloat,sizeWidthOutInPs.ShowValueFloat))
             {
                 evokDevice.SetMValueON2OFF(startOutPs);
 
@@ -814,6 +826,8 @@ namespace xjplc
                 rtbWork.Clear();
 
                 LogManager.WriteProgramLog(Constant.DeviceStartCut);
+
+
             }
             else
             {
@@ -870,6 +884,10 @@ namespace xjplc
         private void bitOn(DTPlcInfoSimple p)
         {          
             evokDevice.SetMValueON(p);      
+        }
+        private void bitOff(DTPlcInfoSimple p)
+        {
+            evokDevice.SetMValueOFF(p);
         }
         public void oppositeBitClick(string str1, string str2, List<DTPlcInfoSimple> pLst)
         {
@@ -930,7 +948,7 @@ namespace xjplc
         #region 门锁机
  
 
-        public void setDoorWidthAndHeight(string width, string height)
+        public void setScanParam(string width, string height,string thickness,int hymode ,string hycnt)
         {
        
             SetDValue(doorWidthInOutPs, width);
@@ -939,6 +957,20 @@ namespace xjplc
             SetDValue(doorHeightInOutPs, height);
   
             ConstantMethod.Delay(100);
+
+
+            SetDValue(doorThicknessInOutPs, thickness);
+
+            ConstantMethod.Delay(100);
+            if (hymode > 0) bitOn(hyModeInOutPs);
+            else bitOff(hyModeInOutPs);
+            ConstantMethod.Delay(100);
+
+            SetDValue(hyCountInOutPs, hycnt);
+
+          //  MessageBox.Show("门宽"+ width+"门长"+ height+"门厚" + thickness +"合页数量"+ hycnt);
+
+
 
         }
         public void openProgram(int id,int hy)
@@ -956,6 +988,22 @@ namespace xjplc
                 ConstantMethod.Delay(100);
             }
             evokDevice.SetMValueON2OFF(openProgramOutPs);
+        }
+        public void openProgramBarCode(int id, int hy)
+        {
+            if (!(id == scProgramOutPs.ShowValue))
+            {
+                string[] value = { id.ToString() };
+                evokDevice.SetDValue(scProgramOutPs, value);
+                ConstantMethod.Delay(100);
+            }
+            if (!(hy == hyProgramOutPs.ShowValue))
+            {
+                string[] value = { hy.ToString() };
+                evokDevice.SetDValue(hyProgramOutPs, value);
+                ConstantMethod.Delay(100);
+            }
+            evokDevice.SetMValueON2OFF(openProgramBarCodeOutPs);
         }
         public void openProgram(int id)
         {
@@ -1006,10 +1054,11 @@ namespace xjplc
         //复位
         public void reset()
         {
-            stop();
+            //stop();
             evokDevice.SetMValueON2OFF(resetOutPs);
             LogManager.WriteProgramLog(Constant.DeviceReset);
         }
+
         #endregion
         public void SaveFile()
         {
@@ -1720,7 +1769,7 @@ namespace xjplc
                     //切换
                     ShiftShowPage(pageid+1);                  
                     evokDevice.SetMValueON(autoModeOutInPs);
-                                                       
+                                                                           
                 }
                 if (pageid == Constant.HandPage)
                 {

@@ -14,6 +14,10 @@ namespace xjplc
         [STAThread]
         static void Main()
         {
+            if (ConstantMethod.IsRuning())
+            {
+                return;
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain0());

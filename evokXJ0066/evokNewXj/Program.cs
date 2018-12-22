@@ -15,6 +15,10 @@ namespace evokNew0066
         [STAThread]
         static void Main()
         {
+            if (ConstantMethod.IsRuning())
+            {
+                return;
+            }
            // ConstantMethod.AutoStart(true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

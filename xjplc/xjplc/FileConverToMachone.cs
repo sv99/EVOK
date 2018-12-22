@@ -355,7 +355,6 @@ namespace xjplc
                 }
                 door.Thickness = (int)thickness;
 
-
                 int cnt = 0;
                 if (!int.TryParse(dr[valCol["数量"]].ToString(), out cnt))
                 {
@@ -364,14 +363,18 @@ namespace xjplc
                 }
                 door.Count = cnt;
 
-
                 door.BarCodeStr.Add(dr[valCol["门扇条码"]].ToString());
                 foreach (string key in valCol.Keys)
                 {
                     door.BarCodeStr.Add(dr[valCol[key]].ToString());
                 }
+
+                door.Xuhao = dr[valCol["总序号"]].ToString();
+
                 doorLst.Add(door);
                 door.GwId = gwid[gwidCount];
+
+
                 gwidCount++;
                 if (gwidCount >= gwid.Count()) gwidCount = 0;
                 if (!getSizeDataTable(door)) return false;
@@ -412,19 +415,17 @@ namespace xjplc
                         if (size.Formula.Count == 2)
                         {
                             //当公式有两个的时候
-
                             switch (size.Sizeid)
                             {
                                 case Constant.doorBanId:
                                     {
                                         DataRow dr = door.Door_Ban.NewRow();
-
                                         dr[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);
                                         dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
                                         dr[Constant.strformatZh[2]] = "0";
                                         dr[Constant.strformatZh[3]] = size.Name;
                                         dr[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
-
+                                        dr[Constant.strformatZh[5]] = door.Xuhao;
                                         door.Door_Ban.Rows.Add(dr);
 
                                         break;
@@ -445,7 +446,7 @@ namespace xjplc
                                         }
                                         dr0[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
                                         door.Door_shell.Rows.Add(dr0);
-
+                                        dr0[Constant.strformatZh[5]] = door.Xuhao;
                                         break;
                                     }
                             }                           
@@ -459,6 +460,7 @@ namespace xjplc
                                 dr[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);
                                 dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
                                 dr[Constant.strformatZh[2]] = "0";
+                                dr[Constant.strformatZh[5]] = door.Xuhao;
                                 dr[Constant.strformatZh[13]] = doorType+ door.GwId;
                                 dr[Constant.strformatZh[15]] = door.GwId;
                                 door.Door_Size.Rows.Add(dr);

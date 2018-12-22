@@ -961,6 +961,23 @@ namespace xjplc
             set { len = value; }
         }
 
+        public void checkIsDone(int row)
+        {
+            int cntdone = 0;
+            int setcnt = 0;
+            if (UserDataView == null) return;
+            if (UserDataView.DataSource == null) return;
+            if (UserDataView.Rows.Count < row) return;
+            if (UserDataView.ColumnCount < 3) return;
+         
+            if (int.TryParse(UserDataView.Rows[row].Cells[1].Value.ToString(), out cntdone) 
+                && int.TryParse(UserDataView.Rows[row].Cells[2].Value.ToString(), out setcnt))
+            {
+                if(cntdone>0 && setcnt >0 && cntdone ==setcnt)
+                UserDataView.Rows[row].DefaultCellStyle.BackColor = Color.Green;
+            }
+            
+        }
         int wlMiniValue = 0;
         public int WlMiniValue
         {
@@ -1709,6 +1726,9 @@ namespace xjplc
             else
             resultOpt = OptModuleMeasure(dataOpt.ToList<int>(), len, dbc, ltbc, safe, optParam1);
 
+
+
+
             if (resultOpt.Count > 0)
             {
                  ShowMeasureResult(resultOpt, prodLst, rt1);
@@ -2038,7 +2058,16 @@ namespace xjplc
                         }
                     }
                 }
-            }                                       
+            }
+
+            if (resultOpt.Count > 0 && WlMiniValue > 0 && WlMiniValue < len0)
+                //20181114 按照要求 所有优化 需要考虑机械的限制 尾料太短不行
+                while (resultOpt.Count > 0 && (CaculateWL(resultOpt.ToArray(), len0, dbc0, ltbc0, safe0) + resultOpt[resultOpt.Count - 1]) <= WlMiniValue)
+                {
+
+                    resultOpt.RemoveAt(resultOpt.Count - 1);
+                }
+
             return Constant.GetScarSuccess;
         }
 
@@ -2527,11 +2556,21 @@ namespace xjplc
             if (dataBig.Count > 0)
             dataResult.Add(dataBig[0]);
 
-            //20181114 按照要求所有优化,需要考虑机械的限制 尾料太短不行 
-            if (CaculateWL(dataResult.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp) <= WlMiniValue && dataResult.Count() > 0)
+            if (dataResult.Count > 0 && WlMiniValue > 0 && WlMiniValue < c)
+                //20181114 按照要求 所有优化 需要考虑机械的限制 尾料太短不行
+                while (dataResult.Count > 0 && (CaculateWL(dataResult.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp) + dataResult[dataResult.Count - 1]) <= WlMiniValue)
+                {
+
+                    dataResult.RemoveAt(dataResult.Count - 1);
+                }
+            /***
+            if (dataRes.Count > 0 && WlMiniValue > 0 && WlMiniValue < c)
+                //20181114 按照要求所有优化,需要考虑机械的限制 尾料太短不行 
+                if (CaculateWL(dataResult.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp) <= WlMiniValue && dataResult.Count() > 0)
             {
                 dataResult.RemoveAt(dataResult.Count - 1);
             }
+            ****/
             return dataResult.ToList();
         }
 
@@ -2801,11 +2840,12 @@ namespace xjplc
                         }
                     }
 
-                    if (dataRes.Count > 0)                    
+                    if (dataRes.Count > 0 && WlMiniValue>0 && WlMiniValue<c)                    
                         //20181114 按照要求 所有优化 需要考虑机械的限制 尾料太短不行
-                     while ((CaculateWL(dataRes.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp)+ dataRes[dataRes.Count-1]) <= WlMiniValue && dataRes.Count > 0)
+                     while (dataRes.Count > 0&&(CaculateWL(dataRes.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp)+ dataRes[dataRes.Count-1]) <= WlMiniValue )
                     {
-                         dataRes.RemoveAt(dataRes.Count - 1); 
+                           
+                            dataRes.RemoveAt(dataRes.Count - 1); 
                     }
                     //每一根的优化结果 然后在 datatmp中删除已经选中的数据
                     if (dataRes.Count > 0)

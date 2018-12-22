@@ -32,6 +32,7 @@ namespace xjplc
 
         public bool SetMValueON(PlcInfoSimple p)
         {
+            if (p == null) return false;
             int value0 = 1;
             if (p != null && p.BelongToDataform != null)
             {
@@ -45,7 +46,7 @@ namespace xjplc
         public bool SetMValueOFF(PlcInfoSimple p)
         {
             int value0 = 0;
-            if (p != null && p.BelongToDataform != null)
+            if (p != null && p.BelongToDataform != null) 
             {
                 WriteSingleMData(p.Addr, value0, p.Area, p.Mode);
             }
@@ -102,9 +103,9 @@ namespace xjplc
 
             }
 
-            if(stPlcInfoSimple ==null) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "附属类为空！");
-            if (stPlcInfoSimple.BelongToDataform == null) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr + "附属类所属表格为空！");
-            if(value0.Count()==0) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Addr  + "写入数据数量错误：" + value0.Count().ToString());
+            if(stPlcInfoSimple ==null) LogManager.WriteProgramLog(stPlcInfoSimple.Name+"数据下发地址：附属类为空！");
+            if (stPlcInfoSimple != null && stPlcInfoSimple.BelongToDataform == null) LogManager.WriteProgramLog(stPlcInfoSimple.Name+"附属类所属表格为空！");
+            if(value0.Count()==0 && stPlcInfoSimple !=null) LogManager.WriteProgramLog("数据下发地址：" + stPlcInfoSimple.Name+stPlcInfoSimple.Addr  + "写入数据数量错误：" + value0.Count().ToString());
 
             return false;
         }

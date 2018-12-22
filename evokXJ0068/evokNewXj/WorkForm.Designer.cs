@@ -695,6 +695,7 @@
             this.button7.Tag = "上料架推料";
             this.button7.Text = "上料架推料";
             this.button7.UseVisualStyleBackColor = false;
+            this.button7.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
             // label2
             // 

@@ -33,10 +33,12 @@ namespace xjplc
             }
             catch (Exception ex)
             {
-                MessageBox.Show("加载参数文件错误！请重新配置或者还原文件");
-                ConstantMethod.AppExit();
+                throw new Exception(ex.Message);
+                // MessageBox.Show("加载参数文件错误！请重新配置或者还原文件");
+               // ConstantMethod.AppExit();
             }
         }
+    
 
         public void Dispose()
         {

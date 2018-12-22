@@ -172,7 +172,7 @@ namespace xjplc
                         {
                             if (showValue > 0)
                             {
-                                showControl.BackColor = System.Drawing.Color.Red;
+                                showControl.BackColor = System.Drawing.Color.Red;                              
                                 if (showStr.Count > showValue)
                                 {
                                     showControl.Text = showStr[showValue];

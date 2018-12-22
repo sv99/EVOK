@@ -212,9 +212,9 @@ namespace evokNew0072
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              evokWork.SetOptParamShowCombox(comboBox2);
-
-            workMan = new workManager() ;
-            UpdateTimer.Enabled = true;
+             evokWork.DeviceProperty = Constant.devicePropertyB;
+             workMan = new workManager() ;
+             UpdateTimer.Enabled = true;
 
         }
 
@@ -778,6 +778,11 @@ namespace evokNew0072
             {
                 showStartTipTmr.Enabled = false;
             }
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

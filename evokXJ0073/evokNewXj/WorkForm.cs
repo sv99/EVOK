@@ -194,12 +194,13 @@ namespace evokNew0073
 
              evokWork = new EvokXJWork(Constant.evokGetDefaultMode);
              evokWork.SetUserDataGridView(UserData);
-             evokWork.SetRtbWork( rtbWork);
-             evokWork.SetRtbResult( rtbResult);
+             evokWork.SetRtbWork(rtbWork);
+             evokWork.SetRtbResult(rtbResult);
              evokWork.SetPrintReport(report1);
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              evokWork.SetOptParamShowCombox(comboBox2);
+             evokWork.DeviceProperty = Constant.devicePropertyC;
              workMan = new workManager();
              UpdateTimer.Enabled = true;
         }
@@ -362,6 +363,43 @@ namespace evokNew0073
              evokWork.reset();
         }
 
+        void findSimplePlcWithControl(Queue<Control> allCs, TabControl tc, EvokXJWork ek)
+        {
+            if (tc.TabPages.Count != ek.AllPlcSimpleLst.Count)
+            {
+                MessageBox.Show("配置参数和软件版本不一致，请检查参数配置！");
+                ConstantMethod.AppExit();
+            }
+            foreach (Control control in allCs)
+            {
+                if (control.Tag != null && !string.IsNullOrWhiteSpace(control.Tag.ToString()))
+                {
+                   
+                    for (int i=0;i<ek.AllPlcSimpleLst.Count;i++)
+                    {
+
+                        if ((control.Parent == tc.TabPages[i]) || (control.Parent.Parent == tc.TabPages[i]))
+                        {
+
+                            foreach (PlcInfoSimple simple in ek.AllPlcSimpleLst[i])
+                            {
+
+                                if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
+                                {
+                                    string str1 = simple.Name.Replace(Constant.Read,"");
+                                     str1 = str1.Replace(Constant.Write, "");
+                                    if(str1.Equals(control.Tag.ToString()))
+                                    simple.ShowControl = control;
+                                    break;
+                                }
+                            }
+                        }
+
+                    }                                        
+                }
+            }
+        }
+
         /// <summary>
         /// 控件tag 名称和plcsimple 结合起来
         /// plcsimple name只要包含 就可以和这个控件联合起来了 
@@ -370,22 +408,27 @@ namespace evokNew0073
         {
             ConstantMethod.
             CheckAllCtrls(this, allCtrls);
+            findSimplePlcWithControl(allCtrls, tc1, evokWork);
+            /*****
             foreach (Control control in allCtrls)
             {
-                if (control.Tag != null)
+                if (control.Tag != null && !string.IsNullOrWhiteSpace(control.Tag.ToString()))
                 {
-                    if ((control.Parent ==  tabPage1) || (control.Parent ==  groupBox1))
+                    if ((control.Parent ==  tabPage1) || (control.Parent.Parent == tabPage1))
                     {
+                        
                         foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                         {
+                           
                             if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
                             {
+                               
                                 simple.ShowControl = control;
                                 break;
                             }
                         }
                     }
-                    if (control.Parent ==  tabPage2)
+                    if (control.Parent ==  tabPage2 || (control.Parent.Parent == tabPage2))
                     {
                         foreach (PlcInfoSimple simple2 in  evokWork.PsLstHand)
                         {
@@ -405,7 +448,7 @@ namespace evokNew0073
                             }
                         }
                     }
-                    if (control.Parent ==  tabPage3)
+                    if (control.Parent ==  tabPage3 || (control.Parent.Parent == tabPage3))
                     {
                         foreach (PlcInfoSimple simple3 in  evokWork.PsLstParam)
                         {
@@ -416,7 +459,7 @@ namespace evokNew0073
                             }
                         }
                     }
-                    if (control.Parent == tabPage4)
+                    if (control.Parent == tabPage4 || (control.Parent.Parent == tabPage4))
                     {
                         foreach (PlcInfoSimple simple4 in evokWork.PsLstIO)
                         {
@@ -428,7 +471,9 @@ namespace evokNew0073
                         }
                     }
                 }
-            }
+
+    
+            }****/
         }
 
         private void startBtnShow()

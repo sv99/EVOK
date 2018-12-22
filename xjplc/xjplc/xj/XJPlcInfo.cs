@@ -99,20 +99,23 @@ namespace xjplc
 
         }
 
-        int showValue;
+        int showValue=0;
         public int ShowValue //从表格读取数据回来
         {
+          
             get
             {
+                if (this == null) return 0;
                 if (pInfo != null)
                 {
-                
+                  
                     //201810222控件没获取 就发现showvalue != pInfo.PlcValue 已经相等了 控件就不显示了 所以增加控件显示的判断 
                     if (showValue != pInfo.PlcValue || showValue == 0 || (showControl!=null &&!showControl.Text.Equals(showValue.ToString())))
                     {
                         showValue =pInfo.PlcValue;
-                        if (ration > 0) showValue = (int)((double)showValue / ration);
 
+                        if (ration > 0) showValue = (int)((double)showValue / ration);
+                    
                         if (!IsInEdit)
                         {
                           
@@ -143,7 +146,7 @@ namespace xjplc
                           
                             if (showControl != null && (showControl is TextBox || showControl is Label))
                             {
-
+                           
                                 if (!IsValueNormal)
                                 {
                                     ConstantMethod.SetText(showControl, Constant.dataOutOfRange);

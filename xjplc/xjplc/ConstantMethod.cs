@@ -52,6 +52,7 @@ namespace xjplc
                 sw.Close();
             }
         }
+        
         /// <summary>
         /// 重要信息写入日志
         /// </summary>
@@ -115,6 +116,33 @@ namespace xjplc
      
     public class ConstantMethod
     {
+
+        public static bool fileCopy(string source, string dest)
+        {
+
+            if (!File.Exists(source)) return false;
+            //filestram copy
+            FileStream fsread = new FileStream(source, FileMode.OpenOrCreate, FileAccess.Read);
+
+            FileStream fswrite = new FileStream(dest, FileMode.OpenOrCreate, FileAccess.Write);
+
+            int r = 0;
+            byte[] buffer = new byte[1024 * 1024 * 5];
+            while (true)
+            {
+                r = fsread.Read(buffer, 0, buffer.Length);
+
+
+                if (r == 0) break;
+
+                fswrite.Write(buffer, 0, r);
+
+
+            }
+            fswrite.Close();
+            fsread.Close();
+            return true;
+        }
         //根据规则转换表格 得到数据表格
         public static DataTable convertDataTableByRule(DataTable UserDtTmp, List<int> valueCol)
         {
@@ -469,7 +497,20 @@ namespace xjplc
             return null;
 
         }
+        public static PlcInfoSimple getPlcSimple(string name, List<PlcInfoSimple> pLst)
+        {
+            foreach (PlcInfoSimple p in pLst)
+            {
+                if (p.Name.Contains(name))
+                {
+                    return p;
+                }
+               
+            }
 
+            return new PlcInfoSimple(name); 
+
+        }
         public static string GetAppPath()
         {
             string softName = Path.GetFileName(Application.ExecutablePath);

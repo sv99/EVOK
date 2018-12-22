@@ -298,7 +298,6 @@
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tabPage1.Controls.Add(this.button11);
-            this.tabPage1.Controls.Add(this.printcb);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.optBtn);
             this.tabPage1.Controls.Add(this.stopBtn);
@@ -344,7 +343,7 @@
             // 
             this.printcb.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.printcb.FormattingEnabled = true;
-            this.printcb.Location = new System.Drawing.Point(550, 256);
+            this.printcb.Location = new System.Drawing.Point(-80, -4);
             this.printcb.Name = "printcb";
             this.printcb.Size = new System.Drawing.Size(164, 35);
             this.printcb.TabIndex = 122;
@@ -449,7 +448,8 @@
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(10, 10);
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.rtbResult);
-            this.panel1.Location = new System.Drawing.Point(692, 245);
+            this.panel1.Controls.Add(this.printcb);
+            this.panel1.Location = new System.Drawing.Point(698, 245);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(674, 507);
@@ -474,9 +474,6 @@
             this.textBox7.TabIndex = 118;
             this.textBox7.Tag = "H100";
             this.textBox7.Text = "100";
-            this.textBox7.Enter += new System.EventHandler(this.AutoTextBox_Enter);
-            this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lcTxt_KeyPress);
-            this.textBox7.Leave += new System.EventHandler(this.AutoTxt_Leave);
             // 
             // groupBox1
             // 
@@ -763,7 +760,7 @@
             // UserData
             // 
             this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UserData.Location = new System.Drawing.Point(31, 245);
+            this.UserData.Location = new System.Drawing.Point(40, 245);
             this.UserData.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.UserData.Name = "UserData";
             this.UserData.RowTemplate.Height = 23;
@@ -1137,7 +1134,7 @@
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(145, 38);
             this.textBox5.TabIndex = 74;
-            this.textBox5.Tag = "H35读";
+            this.textBox5.Tag = "H35";
             this.textBox5.Text = "H35读";
             this.textBox5.Visible = false;
             // 
@@ -1149,7 +1146,7 @@
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(145, 38);
             this.textBox2.TabIndex = 74;
-            this.textBox2.Tag = "H32读";
+            this.textBox2.Tag = "H32";
             this.textBox2.Text = "H32读";
             // 
             // textBox4
@@ -1160,7 +1157,7 @@
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(145, 38);
             this.textBox4.TabIndex = 74;
-            this.textBox4.Tag = "H36读";
+            this.textBox4.Tag = "H36";
             this.textBox4.Text = "H36读";
             this.textBox4.Visible = false;
             // 
@@ -1172,7 +1169,7 @@
             this.textBox16.Name = "textBox16";
             this.textBox16.Size = new System.Drawing.Size(145, 38);
             this.textBox16.TabIndex = 74;
-            this.textBox16.Tag = "H33读";
+            this.textBox16.Tag = "H33";
             this.textBox16.Text = "H33读";
             // 
             // label6
@@ -1274,7 +1271,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(145, 38);
             this.textBox3.TabIndex = 72;
-            this.textBox3.Tag = "H34读";
+            this.textBox3.Tag = "H34";
             this.textBox3.Text = "H34读";
             // 
             // TxtHSD4
@@ -1285,7 +1282,7 @@
             this.TxtHSD4.Name = "TxtHSD4";
             this.TxtHSD4.Size = new System.Drawing.Size(145, 38);
             this.TxtHSD4.TabIndex = 72;
-            this.TxtHSD4.Tag = "H31读";
+            this.TxtHSD4.Tag = "H31";
             this.TxtHSD4.Text = "H31读";
             // 
             // TxtHSD0
@@ -1296,7 +1293,7 @@
             this.TxtHSD0.Name = "TxtHSD0";
             this.TxtHSD0.Size = new System.Drawing.Size(145, 38);
             this.TxtHSD0.TabIndex = 71;
-            this.TxtHSD0.Tag = "H30读";
+            this.TxtHSD0.Tag = "H30";
             this.TxtHSD0.Text = "H30读";
             // 
             // button20

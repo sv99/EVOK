@@ -11,13 +11,13 @@ namespace xjplc.delta.TCP
 {
     public class DTTcpClientManager
     {
-        Socket socketDt;
-        ServerInfo serverParam;
-        public byte[] CmdOut = Constant.IsDtTcpExitOut;
-        public byte[] CmdIn = Constant.IsDtTcpExitIn;
-        List<List<byte>> CmdOutLst;
-        List<List<byte>> CmdInLst;
-        public List<byte>  ReadDCmdOut ;
+       Socket socketDt;
+       ServerInfo serverParam;
+       public byte[] CmdOut = Constant.IsDtTcpExitOut;
+       public byte[] CmdIn = Constant.IsDtTcpExitIn;
+       List<List<byte>> CmdOutLst;
+       List<List<byte>> CmdInLst;
+       public List<byte>  ReadDCmdOut ;
        public List<byte>  ReadDCmdIn  ;
 
        public List<byte>  ReadMCmdOut ;
@@ -121,6 +121,7 @@ namespace xjplc.delta.TCP
 
             CmdOutLst = new List<List<byte>>();
             CmdInLst = new List<List<byte>>();
+
 
         }
         void SetRead()

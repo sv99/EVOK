@@ -228,6 +228,7 @@ namespace xjplc
         public static readonly string ConfigExcelOpt = ConstantMethod.GetAppPath() + "source\\1.xlsm";
         public static readonly string ConfigSerialportFilePath2 = ConstantMethod.GetAppPath() + "config\\configSerialport2.xml";
         public static readonly string ConfigParamFilePath = ConstantMethod.GetAppPath() + "config\\configParam.xml";
+        public static readonly string ConfigParamFilePath1 = ConstantMethod.GetAppPath() + "config\\configParam1.xml";
         public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
         public static readonly string ErrorSerialportConfigFile = "端口配置文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
@@ -347,6 +348,8 @@ namespace xjplc
 
         #region 台达PLC专用
         public static readonly string ConfigSource = ConstantMethod.GetAppPath() + "source\\";
+
+        public static readonly int sbjDeivceId = 2;
         #region 门锁机
         public static readonly int msjDeivceId = 1;
 
@@ -357,17 +360,17 @@ namespace xjplc
                                                                 "垂直圆孔",
                                                                 "水平方槽",
                                                                 "水平圆孔",
-                                                                // "椭圆槽"
+                                                                 "椭圆槽"
                                                                 // "合页槽",
                                                                 // "上开口合页槽",
                                                                 //"下开口合页槽" 
                                                         };
 
-        public static readonly int[] scCutTypeShowId = {       16,
+        public static readonly int[] scCutTypeShowId = {        16,
                                                                 17,
                                                                 18,
                                                                 19,
-                                                                //22,
+                                                                20,
                                                                 //23,
                                                                 //24
                                                           };
@@ -377,6 +380,7 @@ namespace xjplc
                                                                 "w2",
                                                                 "w3",
                                                                 "w4",
+                                                                "w8",
                                                                 //"w5",
                                                                 //"w6",
                                                                 //"w7"
@@ -420,13 +424,17 @@ namespace xjplc
                                                                 "垂直圆孔",
                                                                 "水平方槽",
                                                                 "水平圆孔",
-                                                                "水平圆孔",
+                                                                "椭圆槽",
                                                                 "右底边插销",
                                                                 "合页槽" ,
                                                                 "上开口合页槽",
                                                                 "下开口合页槽",
                                                                 "左底边圆孔",
-                                                                "右底边圆孔" };
+                                                                "右底边圆孔"
+
+
+
+        };
         
         public static readonly string errClrValue = "8";
         #endregion
@@ -645,8 +653,8 @@ namespace xjplc
         public static readonly int XJINTDoubleMode = 2;
 
         public static readonly int XJConnectMaxCount = 5;
-        public static readonly int XJConnectTimeOut = 300;
-        public static readonly int XJRestartTimeOut =2000;
+        public static readonly int XJConnectTimeOut = 300;//300;
+        public static readonly int XJRestartTimeOut = 2000;//2000;
         //读取超时 COMM超时 soc连接比较慢 所以要4秒 进行缓冲
         public static readonly int ReadCommTimeOut = 4000; 
 

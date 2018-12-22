@@ -209,7 +209,7 @@ namespace xjplc.delta.TCP
 
                 doneRepack();
 
-                return true;
+               return true;
 
             }
             else return false;
@@ -351,8 +351,6 @@ namespace xjplc.delta.TCP
                     {
                         MessageBox.Show(Constant.FileIsInUse);
                         ConstantMethod.AppExit();
-
-
                     }
                     if (File.Exists(s) && (Path.GetExtension(s).Equals(Constant.CSVFileEX)))
                         CSVData.FileName = s;
@@ -371,9 +369,9 @@ namespace xjplc.delta.TCP
                     }
                     else
                     {
+
                         MessageBox.Show(Constant.ReadPlcInfoFail);
-                        Application.Exit();
-                        System.Environment.Exit(0);
+                        ConstantMethod.AppExit();
                     }
                 }
 

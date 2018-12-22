@@ -779,6 +779,5 @@ namespace evokNew0068
         {
             evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);
         }
-
     }
 }

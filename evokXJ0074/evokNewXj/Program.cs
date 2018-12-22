@@ -15,7 +15,11 @@ namespace evokNew0074
         [STAThread]
         static void Main()
         {
-           // ConstantMethod.AutoStart(true);
+            if (ConstantMethod.IsRuning())
+            {
+                return;
+            }
+            // ConstantMethod.AutoStart(true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new WorkForm());

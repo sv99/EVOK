@@ -458,7 +458,7 @@ namespace xjplc
 
                 if (IsFirst == false)
                 {                   
-                    if (idCount >= (dt.Columns.Count ))
+                    if (idCount >= (dt.Columns.Count ) || idCount>idCount0)
                     {
                         //碰到字符中有逗号的情况 欧派遇到了                        
                         aryLine = strLine.Split(Constant.CsvSplitCommaChar);
@@ -513,6 +513,7 @@ namespace xjplc
                     DataRow dr = dt.NewRow();
                     for (int j = 0; j < dr.ItemArray.Length; j++)
                     {
+                        if(j< aryLine.Length)
                         dr[j] = aryLine[j];
                     }
                     dt.Rows.Add(dr);
@@ -521,6 +522,7 @@ namespace xjplc
             }
                 sr.Close();
                 fs.Close();
+                this.fileName = fileName;
                 return dt;            
         }
         //分号
@@ -574,6 +576,7 @@ namespace xjplc
             }
             sr.Close();
             fs.Close();
+            this.fileName = fileName;
             return dt;
         }
         /// 将CSV文件的数据读取到DataTable中

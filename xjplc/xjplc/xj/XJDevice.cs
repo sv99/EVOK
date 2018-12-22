@@ -96,15 +96,15 @@ namespace xjplc
             //获取监控数据 dataformLst 填充
             GetPlcDataTableFromFile(filestr);
 
-            //找一下串口 不存在就报错 退出          
-           
-            portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+            //找一下串口 不存在就报错 退出                     
+            portParam = p0;// ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
 
-            if (!SerialPort.GetPortNames().Contains(portParam.m_portName))
+            if(!SerialPort.GetPortNames().Contains(portParam.m_portName))
             {
-                MessageBox.Show(Constant.NoSerialPort+ portParam.m_portName);
+                MessageBox.Show(Constant.NoSerialPort+portParam.m_portName);
                 ConstantMethod.AppExit();
             }
+
             //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
             if (dataFormLst.Count > 0)
                 SetPlcReadDMData(dataFormLst[0]);

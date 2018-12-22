@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("序号");
-            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("门型");
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("序号");
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("门型");
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -48,6 +48,7 @@
             this.序号 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.门型 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -195,7 +196,6 @@
             this.tabControl1.TabIndex = 0;
             this.tabControl1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
             this.tabControl1.Deselecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Deselecting);
-            this.tabControl1.Enter += new System.EventHandler(this.tabControl1_Enter);
             // 
             // tabPage1
             // 
@@ -205,6 +205,7 @@
             this.tabPage1.Controls.Add(this.button14);
             this.tabPage1.Controls.Add(this.listView1);
             this.tabPage1.Controls.Add(this.comboBox1);
+            this.tabPage1.Controls.Add(this.checkBox1);
             this.tabPage1.Controls.Add(this.checkBox2);
             this.tabPage1.Controls.Add(this.label3);
             this.tabPage1.Controls.Add(this.label2);
@@ -277,8 +278,8 @@
             this.listView1.GridLines = true;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem3,
-            listViewItem4});
+            listViewItem1,
+            listViewItem2});
             this.listView1.Location = new System.Drawing.Point(1380, 115);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(263, 572);
@@ -294,6 +295,17 @@
             this.comboBox1.Size = new System.Drawing.Size(268, 35);
             this.comboBox1.TabIndex = 126;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(1553, 77);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(90, 32);
+            this.checkBox1.TabIndex = 125;
+            this.checkBox1.Text = "反序";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // checkBox2
             // 
@@ -359,7 +371,7 @@
             // 
             // dgDoorShell
             // 
-            this.dgDoorShell.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgDoorShell.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
             this.dgDoorShell.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgDoorShell.ColumnHeadersHeight = 30;
             this.dgDoorShell.Location = new System.Drawing.Point(516, 199);
@@ -371,7 +383,7 @@
             // 
             // dgDoorBan
             // 
-            this.dgDoorBan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgDoorBan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
             this.dgDoorBan.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgDoorBan.ColumnHeadersHeight = 30;
             this.dgDoorBan.Location = new System.Drawing.Point(940, 199);
@@ -383,7 +395,7 @@
             // 
             // dgSize
             // 
-            this.dgSize.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.dgSize.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
             this.dgSize.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgSize.ColumnHeadersHeight = 30;
             this.dgSize.Location = new System.Drawing.Point(71, 197);
@@ -478,7 +490,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 37);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1865, 718);
+            this.tabPage2.Size = new System.Drawing.Size(1686, 718);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "横切锯";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -494,7 +506,7 @@
             this.work0Tab.SelectedIndex = 0;
             this.work0Tab.Size = new System.Drawing.Size(1356, 597);
             this.work0Tab.TabIndex = 0;
-            this.work0Tab.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl1_Selecting);
+            this.work0Tab.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl3_Selecting);
             // 
             // tabPage7
             // 
@@ -629,8 +641,8 @@
             this.dgvParam.Location = new System.Drawing.Point(19, 21);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(862, 414);
             this.dgvParam.TabIndex = 2;
@@ -667,8 +679,8 @@
             this.dgvIO.Location = new System.Drawing.Point(6, 6);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(1034, 584);
             this.dgvIO.TabIndex = 3;
@@ -691,7 +703,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 37);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1865, 718);
+            this.tabPage3.Size = new System.Drawing.Size(1686, 718);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "纵横切锯(门皮)";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -870,8 +882,8 @@
             this.dgvParam1.Location = new System.Drawing.Point(19, 21);
             this.dgvParam1.MultiSelect = false;
             this.dgvParam1.Name = "dgvParam1";
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam1.RowsDefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam1.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvParam1.RowTemplate.Height = 35;
             this.dgvParam1.Size = new System.Drawing.Size(862, 414);
             this.dgvParam1.TabIndex = 2;
@@ -908,8 +920,8 @@
             this.dgvIO1.Location = new System.Drawing.Point(6, 6);
             this.dgvIO1.MultiSelect = false;
             this.dgvIO1.Name = "dgvIO1";
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO1.RowsDefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO1.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvIO1.RowTemplate.Height = 35;
             this.dgvIO1.Size = new System.Drawing.Size(1034, 448);
             this.dgvIO1.TabIndex = 3;
@@ -932,7 +944,7 @@
             this.tabPage4.Location = new System.Drawing.Point(4, 37);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(1865, 718);
+            this.tabPage4.Size = new System.Drawing.Size(1686, 718);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "纵横切锯(门板)";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1179,8 +1191,8 @@
             this.dgvParam2.Location = new System.Drawing.Point(19, 21);
             this.dgvParam2.MultiSelect = false;
             this.dgvParam2.Name = "dgvParam2";
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam2.RowsDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam2.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvParam2.RowTemplate.Height = 35;
             this.dgvParam2.Size = new System.Drawing.Size(862, 414);
             this.dgvParam2.TabIndex = 2;
@@ -1217,8 +1229,8 @@
             this.dgvIO2.Location = new System.Drawing.Point(6, 6);
             this.dgvIO2.MultiSelect = false;
             this.dgvIO2.Name = "dgvIO2";
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO2.RowsDefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO2.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.dgvIO2.RowTemplate.Height = 35;
             this.dgvIO2.Size = new System.Drawing.Size(1034, 448);
             this.dgvIO2.TabIndex = 3;
@@ -1549,5 +1561,6 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
