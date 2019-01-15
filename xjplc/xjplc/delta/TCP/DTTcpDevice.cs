@@ -95,8 +95,7 @@ namespace xjplc.delta.TCP
             //设置端口 放前面 因为SetPlcReadDMData 要用tcpclientManager
             SetComm(serverParam);
             //监控第一个列表数据
-            if (dataFormLst.Count > 0)
-                SetPlcReadDMData(dataFormLst[0]);      
+            if (dataFormLst.Count > 0) SetPlcReadDMData(dataFormLst[0]);      
 
             //监控通讯
             WatchCommTimer = new System.Timers.Timer(Constant.XJRestartTimeOut);  //这里1.5 秒别改 加到常量里 工控机性能不行 

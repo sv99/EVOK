@@ -105,7 +105,7 @@ namespace xjplc
                             //更新监控表格数据
                            
                             if (!datform.Rows[dplcInfoLst[i].Row]["value"].ToString().Equals(dplcInfoLst[i].PlcValue.ToString()) 
-                                && !dplcInfoLst[i].IsInEdit )
+                                && !dplcInfoLst[i].IsInEdit)
                             {
                                 if (datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].RelAddr.ToString())
                                     && datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].StrArea)

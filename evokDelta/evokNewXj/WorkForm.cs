@@ -219,8 +219,7 @@ namespace evokNewDT
             evokWork.SetEvokDevice(evokDevice);
             evokWork.SetOptSize(optSize);
             evokWork.SetRtbWork(rtbWork);
-            evokWork.SetRtbResult(rtbResult);
-            evokWork.SetPrintReport(report1);
+            evokWork.SetRtbResult(rtbResult);   
             evokWork.InitDgvParam(dgvParam);
 
         }

@@ -93,8 +93,15 @@ namespace xjplc
         private string paramStr10;
         public string ParamStr10
         {
-            get { return paramStr10; }
-            set { paramStr10 = value; }
+            get {
+             
+                return paramStr10;
+
+            }
+            set
+            {
+                paramStr10 = value;
+                 }
         }
         private string paramStr11;
         public string ParamStr11
@@ -1230,16 +1237,17 @@ namespace xjplc
                     }
 
                 }
-
+               
                 if (resultSingleSize.Count > 0)
                 {
                     ProdInfo prodInfo = new ProdInfo(resultSingleSize);
                     prodInfo.DBC = dbc;
                     prodInfo.LBC = ltbc;
-                    prodInfo.Len = len;
-                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
+                    prodInfo.Len = len;                  
                     ProdInfoLst.Add(prodInfo);
                     singleSizeLst.Add(resultSingleSize);
+                    if(prodInfo.WL>0)
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "尾料：" + prodInfo.WL.ToString());
                     ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
                     ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
                 }
@@ -1257,6 +1265,7 @@ namespace xjplc
             Next:
             {
                 ConstantMethod.ShowInfo(rt1, "需要料数：" + resultOpt.Count.ToString() + "根");
+                
                 ConstantMethod.ShowInfo(rt1, "材料利用率：" + ration(resultOpt));
             }
         }
@@ -1321,8 +1330,10 @@ namespace xjplc
             }
 
             double r = ((double)sizeSum / lenSum) * 100;
+            if (r > 100) r = 100;
 
-            return (r.ToString("0.00")+"%");
+                return (r.ToString("0.00") + "%");
+          
                        
         }
         private void ShowNormalResultNoSort(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
@@ -1477,7 +1488,20 @@ namespace xjplc
                 for (int i = 0; i < UserDataView.Rows.Count; i++)
                 {
                     UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
-                   
+                    int needToCut = 0;
+                    int doneCut = 0;
+                    if(UserDataView.Rows[i].Cells[1].Value!=null 
+                        && UserDataView.Rows[i].Cells[2].Value!=null)
+                    if (int.TryParse(UserDataView.Rows[i].Cells[1].Value.ToString(), out needToCut)
+                        && int.TryParse(UserDataView.Rows[i].Cells[2].Value.ToString(),out doneCut))                   
+                        {
+                        if (needToCut == doneCut)
+                        {
+                            UserDataView.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+
+                        }
+                    }
+
                 }
 
                 for (int i = errorId.Count - 1; i >= 0; i--)
@@ -1485,6 +1509,9 @@ namespace xjplc
                     UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
                  
                 }
+
+
+
             }
 
         }
@@ -1685,6 +1712,7 @@ namespace xjplc
                        dr[2] = 0;
                     }                  
                 }
+            ShowErrorRow();
         }
        
         public string OptMeasure(RichTextBox rt1)
@@ -2330,6 +2358,11 @@ namespace xjplc
                         resultOpt = NoOptModule(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
                         break;
                     }
+                case Constant.optShuChi:
+                    {
+                        resultOpt = OptModuleByDoorType(prodLst);
+                        break;
+                    }
                 default:
                     {
                         resultOpt = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
@@ -2842,10 +2875,9 @@ namespace xjplc
 
                     if (dataRes.Count > 0 && WlMiniValue>0 && WlMiniValue<c)                    
                         //20181114 按照要求 所有优化 需要考虑机械的限制 尾料太短不行
-                     while (dataRes.Count > 0&&(CaculateWL(dataRes.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp)+ dataRes[dataRes.Count-1]) <= WlMiniValue )
-                    {
-                           
-                            dataRes.RemoveAt(dataRes.Count - 1); 
+                    while (dataRes.Count > 0&&(CaculateWL(dataRes.ToArray(), c, dbc_tmp, ltbc_tmp, safe_tmp)+ dataRes[dataRes.Count-1]) <= WlMiniValue )
+                    {                         
+                        dataRes.RemoveAt(dataRes.Count - 1); 
                     }
                     //每一根的优化结果 然后在 datatmp中删除已经选中的数据
                     if (dataRes.Count > 0)
@@ -2969,6 +3001,84 @@ namespace xjplc
 
         }
 
+        private List<List<int>> OptModuleByDoorType(List<SingleSize> singleLst)
+        {
+            List<List<int>> dataResult = new List<List<int>>();
+            List<int> dataTmp = new List<int>();
+            string doorType = "";
+            foreach(SingleSize ss in singleLst)
+            {
+                if (!doorType.Equals(ss.ParamStrLst[10]))
+                {
+                    dataTmp = new List<int>();
+                    doorType = ss.ParamStrLst[10];
+                    dataResult.Add(dataTmp);
+                }
+                dataTmp.Add(ss.Cut);
+            }
+
+
+            /***
+            double index = 0;//取值是0~1  0.1   0.2    0.3   0.4   0.5  0.6   0.7  0.8  0.9           
+
+            List<List<int>> dataResultM = new List<List<int>>();
+
+            List<int> dataTmp = new List<int>();
+          
+            while (dataTmp.Count > 0)
+            {
+                List<int> dataRes = new List<int>();
+
+                int sum = 0;
+                for (int i = 0; i < dataTmp.Count; i++)
+                {
+                    sum += dataTmp[i];
+                    if (sum < (c - ltbc_tmp - dbc_tmp - safe_tmp))
+                    {
+                        dataRes.Add(dataTmp[i]);
+                    }
+                    else
+                        break;
+                }
+                if (dataRes.Count > 0)
+                {
+                    dataResultM.Add(dataRes.ToList<int>());
+                    //删除已经选中的数据
+                    for (int j = 0; j < dataRes.Count; j++)
+                    {
+                        int FindSize = dataTmp.IndexOf(dataRes[j]);
+                        if (FindSize > -1)
+                            dataTmp.RemoveAt(FindSize);
+                    }
+                }
+            }
+
+
+            if (dataResultM.Count > 0)
+            {
+                if (dataResult.Count > 0)
+                {
+                    if (dataResult.Count > dataResultM.Count)
+                    {
+                        dataResult = dataResultM.ToList();
+                    }
+                }
+                else
+                {
+                    dataResult = dataResultM.ToList();
+                }
+            }
+
+            dataResultM = null;
+            dataTmp = null;
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+            ****/
+
+            return dataResult.ToList();
+
+        }
 
         //单个模块进行排版
         private int[] OptModule0(List<int> data,  int c, int dbc_tmp, int ltbc_tmp, int safe_tmp)
@@ -3124,7 +3234,6 @@ namespace xjplc
             double dblevaluesize; //尺寸
             int intcounttocut; //要切的数量
             int intcountdone;//已切数量
-
             ProdLst.Clear();
 
             for (int i = 0; i < dt.Rows.Count; i++)
@@ -3135,7 +3244,7 @@ namespace xjplc
                 if (!int.TryParse(dt.Rows[i][2].ToString(), out intcountdone)) continue;
 
                 if (intcounttocut <= intcountdone) continue;
-
+               
                 //尺寸需要扩大一下 有精度要求 小数点后面两位            
                 int size = (int)(dblevaluesize * 100);
 

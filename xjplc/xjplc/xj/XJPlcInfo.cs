@@ -154,10 +154,18 @@ namespace xjplc
                                 else
                                 {
                                     if (IsParam)
-                                        ConstantMethod.SetText(showControl, ((double)showValue / Constant.dataMultiple).ToString());
+                                    { //为了兼容前面的产品 当设置了 数据比例的时候 Constant.dataMultiple 就无效了
+                                        if (Ration > 1)
+                                        {
+                                            ConstantMethod.SetText(showControl, showValue.ToString());
+                                        }
+                                        else
+                                        {
+                                            ConstantMethod.SetText(showControl, ((double)showValue / Constant.dataMultiple).ToString());
+                                        }
+                                    }
                                     else
-                                        ConstantMethod.
-                                        SetText(showControl, showValue.ToString());
+                                        ConstantMethod.SetText(showControl, showValue.ToString());
                                 }
                             }
                         }

@@ -19,7 +19,8 @@ namespace evokNew0074
             {
                 return;
             }
-            // ConstantMethod.AutoStart(true);
+           // ConstantMethod.InitPassWd();
+            //ConstantMethod.AutoStart(true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new WorkForm());

@@ -522,7 +522,7 @@ namespace xjplc
             }
                 sr.Close();
                 fs.Close();
-                this.fileName = fileName;
+             
                 return dt;            
         }
         //分号
@@ -576,7 +576,7 @@ namespace xjplc
             }
             sr.Close();
             fs.Close();
-            this.fileName = fileName;
+      
             return dt;
         }
         /// 将CSV文件的数据读取到DataTable中

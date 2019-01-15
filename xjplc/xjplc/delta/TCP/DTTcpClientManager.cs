@@ -340,8 +340,7 @@ namespace xjplc.delta.TCP
                             else
                             {
                                 CmdOut = SetDMCmdOut.ToArray();// CmdOutLst[0].ToArray();
-                                CmdIn  = SetDMCmdIn.ToArray();// CmdInLst[0].ToArray();
-                                
+                                CmdIn  = SetDMCmdIn.ToArray();// CmdInLst[0].ToArray();                                
                             }                                              
                         }
                         else

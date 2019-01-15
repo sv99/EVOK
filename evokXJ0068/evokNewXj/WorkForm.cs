@@ -187,7 +187,7 @@ namespace evokNew0068
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              evokWork.SetShowCnt(comboBox1);
@@ -733,8 +733,10 @@ namespace evokNew0068
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (UserData.CurrentRow.Index > -1)
-                evokWork.ShowBarCode(report1, UserData.CurrentRow.Index);    
+            if (UserData.RowCount > 0
+                 && UserData.CurrentRow.Index > -1
+                 && UserData.CurrentRow != null)
+                evokWork.ShowBarCode(UserData.CurrentRow.Index);
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)

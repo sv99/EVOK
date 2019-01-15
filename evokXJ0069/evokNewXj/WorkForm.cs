@@ -124,8 +124,6 @@ namespace evokNew0069
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             evokWork.dgvParam_CellEndEdit(dgvParam, sender, e);
-
-
         }
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)
@@ -183,10 +181,11 @@ namespace evokNew0069
                         
              optSize = new OptSize( UserData);
              evokWork = new EvokXJWork();
+             evokWork.DeviceProperty = Constant.scjDeivceId;
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              UpdateTimer.Enabled = true;
@@ -281,10 +280,11 @@ namespace evokNew0069
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
                 //不排版模式
                 //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult,Constant.optNo));
-               //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-           // }
-
+                ////老模式 ---201901090921 隐藏
+                //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult,Constant.optNo));
+                //20190109
+                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, Constant.optShuChi));
+            //}
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
@@ -322,6 +322,7 @@ namespace evokNew0069
         private void resetBtn_Click(object sender, EventArgs e)
         {
              evokWork.reset();
+             stopBtnShow();
         }
 
         /// <summary>
@@ -405,8 +406,7 @@ namespace evokNew0069
             button10.Enabled = false;
             qClr.Enabled = false;
             autoSLBtn.Enabled = false;
-            ccBtn.Enabled = false;
-            UserData.ReadOnly = true;
+            ccBtn.Enabled = false;      
             stopBtn.Enabled = false;
             pauseBtn.Enabled = false;
             resetBtn.Enabled = false;
@@ -425,8 +425,7 @@ namespace evokNew0069
             button10.Enabled = true;
             qClr.Enabled = true;
             autoSLBtn.Enabled = true;
-            ccBtn.Enabled = true;
-            UserData.ReadOnly = true;
+            ccBtn.Enabled = true;        
             stopBtn.Enabled = true;
             pauseBtn.Enabled = true;
             resetBtn.Enabled = true;
@@ -476,7 +475,7 @@ namespace evokNew0069
              qClr.Enabled = true;
              autoSLBtn.Enabled = true;
              ccBtn.Enabled = true;
-             UserData.ReadOnly = false;
+            UserData.ReadOnly = false;
              printcb.Enabled = true;
             设备ToolStripMenuItem.Enabled = true;
 
@@ -714,7 +713,10 @@ namespace evokNew0069
 
         private void button10_Click(object sender, EventArgs e)
         {
-            report1.Show();
+            if (UserData.RowCount > 0
+             && UserData.CurrentRow.Index > -1
+             && UserData.CurrentRow != null)
+                evokWork.ShowBarCode(UserData.CurrentRow.Index);
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -738,11 +740,15 @@ namespace evokNew0069
 
         }
 
-        private void ScrollTimer_Tick(object sender, EventArgs e)
+        private void dgvParam_Scroll(object sender, ScrollEventArgs e)
         {
+            ScrollTimer.Enabled = false;
+            ScrollTimer.Interval = Constant.ScrollTimerValue;
+           // ConstantMethod.Delay(100);
+            ScrollTimer.Enabled = true;
 
+            //evokWork.shiftDataFormSplit(tc1.SelectedIndex,dgvParam.FirstDisplayedScrollingRowIndex,dgvParam.DisplayedRowCount(true));
         }
-
         private void button5_Click(object sender, EventArgs e)
         {
             if (evokWork.lliao)
@@ -781,6 +787,17 @@ namespace evokNew0069
                 }                          
             }
             
+        }
+
+        private void ScrollTimer_Tick(object sender, EventArgs e)
+        {
+            dgvParam.Refresh();
+            ScrollTimer.Enabled = false;
+            evokWork.shiftDataFormSplit(tc1.SelectedIndex, dgvParam.FirstDisplayedScrollingRowIndex, dgvParam.DisplayedRowCount(true));
+            //label6.Text = dgvParam.FirstDisplayedScrollingRowIndex.ToString();
+            //label7.Text = dgvParam.DisplayedRowCount(true).ToString();
+
+
         }
     }
 }

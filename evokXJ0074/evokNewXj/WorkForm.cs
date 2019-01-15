@@ -14,31 +14,46 @@ namespace evokNew0074
 
         List<string> errorList = new List<string>();
         int errorId = 0;
-    
+
         private EvokXJWork evokWork;
 
         private WatchForm wForm;
-        workManager workMan;
+
         public WorkForm()
         {
-           
-          //  ConstantMethod.InitPassWd();
+            //addDataTable();
+            //ConstantMethod.InitPassWd();
             InitializeComponent();
         }
+        #region 手动画面操作
+        private void HandTextBox_Enter(object sender, EventArgs e)
+        {
+            evokWork.SetInEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
+        }
+        private void HandTextTxt_Leave(object sender, EventArgs e)
+        {
+            evokWork.SetOutEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
+        }
+        private void HandTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (evokWork.HandParamTxt_KeyPress(sender, e))
+                button2.Focus();
+        }
 
+        #endregion
         private void autoSLBtn_Click(object sender, EventArgs e)
         {
-             evokWork.autoSL();
+            evokWork.autoSL();
         }
 
         private void AutoTextBox_Enter(object sender, EventArgs e)
         {
-            evokWork.SetInEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);           
+            evokWork.SetInEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);
         }
 
         private void AutoTxt_Leave(object sender, EventArgs e)
         {
-            evokWork.SetOutEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);           
+            evokWork.SetOutEdit(((TextBox)sender).Tag.ToString(), Constant.Write, evokWork.PsLstAuto);
         }
 
         private void BtnM101_MouseDown(object sender, MouseEventArgs e)
@@ -59,29 +74,20 @@ namespace evokNew0074
             } 
             ****/
             loadDataBtn.Enabled = false;
-
-            if (workMan.LoadData())
-            {
-                workMan.ShowDoor(Constant.doorBanId, UserData);
-            
-
-                //数据整理成一次性下发的数据            
-
-            }
+            ReadCSVData();
             loadDataBtn.Enabled = true;
-
 
         }
 
         private void ccBtn_Click(object sender, EventArgs e)
         {
-            if ( evokWork.AutoMes)
+            if (evokWork.AutoMes)
             {
-                 evokWork.autoMesOFF();
+                evokWork.autoMesOFF();
             }
             else
             {
-                 evokWork.autoMesON();
+                evokWork.autoMesON();
             }
         }
 
@@ -113,9 +119,9 @@ namespace evokNew0074
 
         private void connectMachine_Click(object sender, EventArgs e)
         {
-             
-             UpdateTimer.Enabled = false;
-             
+
+            UpdateTimer.Enabled = false;
+
             if (evokWork.RestartDevice(tc1.SelectedIndex))
             {
                 InitControl();
@@ -124,13 +130,13 @@ namespace evokNew0074
             else
             {
                 MessageBox.Show(Constant.ConnectMachineFail);
-            }         
+            }
         }
 
         private void dgvParam_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
-            int rowIndex =  dgvParam.SelectedCells[0].RowIndex;
-            evokWork.DgvInOutEdit(rowIndex,true);            
+            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
+            evokWork.DgvInOutEdit(rowIndex, true);
         }
 
         private void dgvParam_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -140,20 +146,20 @@ namespace evokNew0074
 
         private void dgvParam_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
-             dgvParam.EndEdit();
+            dgvParam.EndEdit();
         }
 
         private void dgvParam_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
         }
-      
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Visible = false;               
+            this.Visible = false;
             InitParam();
             InitControl();
-            InitView0();            
+            InitView0();
             Application.DoEvents();
             this.Visible = true;
         }
@@ -185,10 +191,10 @@ namespace evokNew0074
             }
         }
         private void InitControl()
-        {        
+        {
             SetControlInEvokWork();
             printcb.SelectedIndex = evokWork.PrintBarCodeMode;
-            evokWork.ChangePrintMode(printcb.SelectedIndex);         
+            evokWork.ChangePrintMode(printcb.SelectedIndex);
         }
         public void InitParam()
         {
@@ -196,70 +202,86 @@ namespace evokNew0074
             //所以早点设置好 然后在 那个selectindexchanged事件里增加 通讯正常判断
             printcb.DataSource = Constant.printBarcodeModeStr;
 
-             LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
-             evokWork = new EvokXJWork(Constant.evokGetDefaultMode);
-             evokWork.SetUserDataGridView(UserData);
-             evokWork.SetRtbWork( rtbWork);
-             evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
-             evokWork.InitDgvParam(dgvParam);
-             evokWork.InitDgvIO(dgvIO);
-             evokWork.SetOptParamShowCombox(comboBox2);
-             workMan = new workManager();
-             UpdateTimer.Enabled = true;
+            LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
+            evokWork = new EvokXJWork();
+            //梳齿机需要增加数据
+            InitShuChi();
+            evokWork.SetUserDataGridView(UserData);
+            evokWork.SetRtbWork(rtbWork);
+            evokWork.SetRtbResult(rtbResult);
+            evokWork.SetPrintReport();
+            evokWork.InitDgvParam(dgvParam);
+            evokWork.InitDgvIO(dgvIO);
+          //  evokWork.SetOptParamShowCombox(comboBox2);
+            UpdateTimer.Enabled = true;
+
+
         }
+        #region 梳齿机
+        public void InitShuChi()
+        {
+            evokWork.DeviceName = Constant.scjDeivceName;
+            evokWork.DeviceProperty = Constant.scjDeivceId;
+            addDataTable();
+        }
+        public void addDataTable()
+        {
+            List<string> strLst = new List<string>();
+            string handFile = "";
+            for (int i = 1; i < Constant.constantHandName.Length; i++)
+            {
+                try
+                {
+                    handFile = "";
+                    handFile = Constant.PlcDataFilePathHandSC + Constant.constantHandName[i] + ".csv";
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+
+                if (File.Exists(handFile))
+                {
+                    strLst.Add(handFile);
+                }
+            }
+            evokWork.addDataForm(strLst);
+        }
+        #endregion
 
         private void InitView0()
-        {         
+        {
             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
             DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
             DialogExcelDataLoad.FileName = "请选择数据文件";
 
-            logOPF.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory+"Log";
+            logOPF.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "Log";
             logOPF.Filter = "文件(*.log)|*.log";
             logOPF.FileName = "请选择日志文件";
-            comboBox1.SelectedIndex = 2;
+            //comboBox1.SelectedIndex = 2;
             errorTimer.Enabled = true;
 
             evokWork.ReadCSVDataDefault();
 
-            ConstantMethod.Delay(1000);
-            evokWork.ReadCSVDataDefault();
-            optNoGetData();
-
         }
-        void optNoGetData()
-        {
-            optBtn.Enabled = false;
-            optBtn.BackColor = Color.Red;
-            rtbResult.Clear();
-            rtbWork.Clear();
-            startOptShow();
-            evokWork.optReady(Constant.optNo);
-            //ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, Constant.optNo));
 
-
-            stopOptShow();
-            optBtn.BackColor = Color.Transparent;
-            optBtn.Enabled = true;
-        }
         private void IsoptBtnShow(bool showvalue)
         {
-            if (showvalue ||  evokWork.RunFlag)
+            if (showvalue || evokWork.RunFlag)
             {
-                 optBtn.Enabled = false;
+                optBtn.Enabled = false;
             }
-            else if (! evokWork.RunFlag)
+            else if (!evokWork.RunFlag)
             {
-                 optBtn.Enabled = true;
+                optBtn.Enabled = true;
             }
         }
-   
+
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(evokWork.lcTxt_KeyPress(sender,e))
-            resetBtn.Focus();
+            if (evokWork.AutoParamTxt_KeyPress(sender, e))
+                resetBtn.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -275,25 +297,20 @@ namespace evokNew0074
             {
                 e.Cancel = false;//退了
             }
-            evokWork.
-            ChangtToAuto();
+
             UpdateTimer.Enabled = false;
             FileSaveTimer.Enabled = false;
-            if ( evokWork != null)
+            if (evokWork != null)
             {
-                 evokWork.Dispose();
+                evokWork.Dispose();
             }
             ConstantMethod.Delay(100);
-           
+
             Environment.Exit(0);
         }
 
         private void optBtn_Click(object sender, EventArgs e)
         {
-
-            if (evokWork.SetOptSizeData((DataTable)UserData.DataSource))
-                optNoGetData();
-           /****
             optBtn.Enabled = false;
             optBtn.BackColor = Color.Red;
             rtbResult.Clear();
@@ -316,9 +333,11 @@ namespace evokNew0074
             if (!evokWork.AutoMes)
             {
                 //测试用 EXCEL
-               // evokWork.optReady(Constant.optNormalExcel);
-               // ConstantMethod.Delay(2000);
-                evokWork.optReady(Constant.optNormal);
+                // evokWork.optReady(Constant.optNormalExcel);
+                //ConstantMethod.Delay(2000);
+                //   ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, Constant.optShuChi));
+
+                evokWork.optReady(Constant.optShuChi);
                 /****
                 optSize.Len = evokWork.lcOutInPs.ShowValue;
                 optSize.Dbc = evokWork.dbcOutInPs.ShowValue;
@@ -327,7 +346,6 @@ namespace evokNew0074
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                 ****/
             }
-            /****** /*/
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
@@ -335,8 +353,8 @@ namespace evokNew0074
 
         private void pauseBtn_Click(object sender, EventArgs e)
         {
-             evokWork.pause();
-          
+            evokWork.pause();
+
         }
 
         private void qClr_Click(object sender, EventArgs e)
@@ -349,23 +367,23 @@ namespace evokNew0074
             if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
                 ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
-                int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
+                int num = ConstantMethod.IsWhichFile(DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
                 {
-                     evokWork.LoadCsvData(DialogExcelDataLoad.FileName);
+                    evokWork.LoadCsvData(DialogExcelDataLoad.FileName);
                 }
                 if (num == Constant.ExcelFile)
                 {
-                     evokWork.LoadExcelData(DialogExcelDataLoad.FileName);
+                    evokWork.LoadExcelData(DialogExcelDataLoad.FileName);
                 }
             }
             return 0;
         }
-        
+
 
         private void resetBtn_Click(object sender, EventArgs e)
         {
-             evokWork.reset();
+            evokWork.reset();
         }
 
         /// <summary>
@@ -380,57 +398,36 @@ namespace evokNew0074
             {
                 if (control.Tag != null)
                 {
-                    if ((control.Parent ==  tabPage1) || (control.Parent ==  groupBox1))
+                    if ((control.Parent == tabPage1) || (control.Parent.Parent == tabPage1))
                     {
-                        foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
+                        foreach (PlcInfoSimple simple in evokWork.PsLstAuto)
                         {
-                            if (simple.Name.Contains(control.Tag.ToString()) && simple.Name.Contains(Constant.Read))
-                            {
-                                simple.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple, control);
                         }
                     }
-                    if (control.Parent ==  tabPage2)
+                    if ((control.Parent == tabPage2)
+                        || (control.Parent.Parent == tabPage2)
+                        || control.Parent.Parent.Parent == tabPage2
+                        || control.Parent.Parent.Parent.Parent == tabPage2
+                        )
                     {
-                        foreach (PlcInfoSimple simple2 in  evokWork.PsLstHand)
+                        foreach (PlcInfoSimple simple2 in evokWork.PsLstHand)
                         {
-                          
-                            //20181026 修改 增加匹配 数字拿出来看下 才最终匹配上
-                            if (simple2.Name.Contains(control.Tag.ToString()) && simple2.Name.Contains(Constant.Read))
-                            {
-                              
-                                string result0 = System.Text.RegularExpressions.Regex.Replace(simple2.Name, @"[^0-9]+", "");
-                                string result1 = System.Text.RegularExpressions.Regex.Replace(control.Tag.ToString(), @"[^0-9]+", "");
-                                if (result0.Equals(result1))
-                                {
-                                    simple2.ShowControl = control;
-
-                                    break;
-                                }
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple2, control);
                         }
                     }
-                    if (control.Parent ==  tabPage3)
+                    if (control.Parent == tabPage3)
                     {
-                        foreach (PlcInfoSimple simple3 in  evokWork.PsLstParam)
+                        foreach (PlcInfoSimple simple3 in evokWork.PsLstParam)
                         {
-                            if ((simple3.Name.Contains(control.Tag.ToString()) && simple3.Name.Contains(Constant.Read)) && (control.Parent ==  tabPage3))
-                            {
-                                simple3.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple3, control);
                         }
                     }
                     if (control.Parent == tabPage4)
                     {
                         foreach (PlcInfoSimple simple4 in evokWork.PsLstIO)
                         {
-                            if ((simple4.Name.Contains(control.Tag.ToString()) && simple4.Name.Contains(Constant.Read)) && (control.Parent == tabPage4))
-                            {
-                                simple4.ShowControl = control;
-                                break;
-                            }
+                            ConstantMethod.setControlInPlcSimple(simple4, control);
                         }
                     }
                 }
@@ -439,15 +436,15 @@ namespace evokNew0074
 
         private void startBtnShow()
         {
-             stbtn.Enabled = false;
-             loadDataBtn.Enabled = false;
-             optBtn.Enabled = false;
-             button10.Enabled = false;
-             qClr.Enabled = false;
-             autoSLBtn.Enabled = false;
-             ccBtn.Enabled = false;
-             UserData.ReadOnly = true;
-             printcb.Enabled = false;
+            stbtn.Enabled = false;
+            loadDataBtn.Enabled = false;
+            optBtn.Enabled = false;
+            button10.Enabled = false;
+            qClr.Enabled = false;
+            autoSLBtn.Enabled = false;
+            ccBtn.Enabled = false;
+            UserData.ReadOnly = true;
+            printcb.Enabled = false;
             设备ToolStripMenuItem.Enabled = false;
         }
         private void startOptShow()
@@ -459,7 +456,7 @@ namespace evokNew0074
             qClr.Enabled = false;
             autoSLBtn.Enabled = false;
             ccBtn.Enabled = false;
-            
+
             stopBtn.Enabled = false;
             pauseBtn.Enabled = false;
             resetBtn.Enabled = false;
@@ -489,14 +486,12 @@ namespace evokNew0074
 
         private void stbtn_Click(object sender, EventArgs e)
         {
-                     
-         
+
             startBtnShow();
-            //数据已经加载了
-            evokWork.CutDoorStartNormal(Constant.CutNormalDoorBanMode);        
-            //测试代码 后续回复弹窗
+            evokWork.CutStartNormal(Constant.CutNormalWithShuChiMode);       
+           
             stopBtnShow();
-        }
+    }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {
@@ -551,7 +546,7 @@ namespace evokNew0074
         {
             if ( tc1.SelectedIndex == 0)
             {                               
-               // IsoptBtnShow( evokWork.AutoMes);
+                IsoptBtnShow( evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in  evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
@@ -744,8 +739,10 @@ namespace evokNew0074
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (UserData.CurrentRow.Index > -1)
-                evokWork.ShowBarCode(report1, UserData.CurrentRow.Index);
+            if (UserData.RowCount>0 
+                && UserData.CurrentRow.Index > -1  
+                && UserData.CurrentRow !=null)
+                evokWork.ShowBarCode(UserData.CurrentRow.Index);
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -796,9 +793,29 @@ namespace evokNew0074
             evokWork.emgStop();
         }
 
-        private void label13_Click(object sender, EventArgs e)
+        private void textBox16_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void label49_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void handTc_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (handTc.SelectedIndex == 0)
+            {
+                if (!evokWork.ShiftPage(Constant.HandPage))
+                {
+                    e.Cancel = true;
+                }
+            }else
+            if (!evokWork.ShiftPage(3+handTc.SelectedIndex))
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

@@ -49,6 +49,7 @@ namespace evokNew0067
         {
             evokWork.SetMPsOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
         }
+  
 
         private void button4_Click(object sender, EventArgs e)
         {
@@ -168,7 +169,7 @@ namespace evokNew0067
             evokWork.SetOptSize(optSize);
             evokWork.SetRtbWork(rtbWork);
             evokWork.SetRtbResult(rtbResult);
-            evokWork.SetPrintReport(report1);
+            evokWork.SetPrintReport();
             evokWork.InitDgvParam(dgvParam);
             evokWork.InitDgvIO(dgvIO);
 
@@ -695,5 +696,12 @@ namespace evokNew0067
             ScrollTimer.Enabled = false;
         }
 
+        private void button10_Click_1(object sender, EventArgs e)
+        {
+            if (UserData.RowCount > 0
+                && UserData.CurrentRow.Index > -1
+                && UserData.CurrentRow != null)
+                evokWork.ShowBarCode(UserData.CurrentRow.Index);
+        }
     }
 }

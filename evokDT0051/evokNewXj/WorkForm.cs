@@ -130,6 +130,7 @@ namespace evokNew0051
 
         private void dgvParam_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
+
         }
       
 
@@ -245,7 +246,7 @@ namespace evokNew0051
              evokWork.SetUserDataGridView(UserData1);
              evokWork.SetRtbWork(rtbWork);
              evokWork.SetRtbResult(rtbResult);
-             evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              UpdateTimer.Enabled = true;
@@ -866,13 +867,11 @@ namespace evokNew0051
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (UserData1.CurrentRow.Index > -1)
-                evokWork.ShowBarCode(report1, UserData1.CurrentRow.Index);
+            
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            
+        {           
             evokWork.ShowNowLog(LogManager.LogFileName);
         }
 

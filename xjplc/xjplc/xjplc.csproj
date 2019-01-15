@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>xjplc</RootNamespace>
     <AssemblyName>xjplc</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -35,11 +35,12 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -78,26 +79,29 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>evok.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="FastReport, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新版方案\evokNew\evokNew\bin\x86\Debug\FastReport.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.Bars, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新版方案\evokNew\evokNew\bin\x86\Debug\FastReport.Bars.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Bars.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.Editor, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新版方案\evokNew\evokNew\bin\x86\Debug\FastReport.Editor.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Editor.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.Install, Version=1.0.0.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新版方案\evokNew\evokNew\bin\x86\Debug\FastReport.Install.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Install.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.Web, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\新版方案\evokNew\evokNew\bin\x86\Debug\FastReport.Web.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Web.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -112,6 +116,10 @@
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>bin\Debug\Microsoft.Office.Interop.Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="NModbus4, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\NModbus4.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>bin\Debug\NPOI.dll</HintPath>
@@ -156,6 +164,7 @@
     <Compile Include="evokWorkManager.cs" />
     <Compile Include="ExcelObject.cs" />
     <Compile Include="FileConverToMachone.cs" />
+    <Compile Include="ky\DeviceManager.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="workManager.cs" />
     <Compile Include="xj\EvokXJWork.cs" />
@@ -260,6 +269,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Schneider\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="evok.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

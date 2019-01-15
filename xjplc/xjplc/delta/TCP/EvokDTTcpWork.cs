@@ -161,6 +161,65 @@ namespace xjplc
                 return evokDevice.Status==Constant.DeviceConnected;
             }
         }
+
+        public void SetPrintReport()
+        {
+            if (printReport == null)
+            {
+                printReport = new FastReport.Report();
+            }
+            string filter = "*.frx";
+            string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
+            string[] getbarcodepath;
+            getbarcodepath = Directory.GetFiles(FilePath, filter);
+            if (Directory.GetFiles(FilePath, filter).Length == 0)
+            {
+                MessageBox.Show("条码文件不存在");
+            }
+            else
+            {
+                if (Directory.GetFiles(FilePath, filter).Length > 1)
+                {
+                    MessageBox.Show("多个条码文件，请点击条码查看选择");
+                }
+                if (Directory.GetFiles(FilePath, filter).Length == 1)
+                {
+                    printReport.Load(getbarcodepath[0]);
+                }
+            }
+
+        }
+        public void ShowBarCode(int rowindex)
+        {
+            if (printReport != null)
+            {
+                List<string> valuestr = new List<string>();
+
+                if (optSize.DtData != null && optSize.DtData.Rows.Count > 0)
+                {
+
+
+                    DataRow dr = optSize.DtData.Rows[rowindex];
+                    for (int j = 3; j < optSize.DtData.Columns.Count; j++)
+                    {
+                        valuestr.Add(dr[j].ToString());
+                    }
+
+
+
+                    printBarcode(printReport, valuestr.ToArray(), 0);
+                }
+                else
+                {
+                    MessageBox.Show("无数据，请先导出数据！");
+                }
+            }
+            else
+            {
+                MessageBox.Show("条码加载错误");
+            }
+        }
+
         public void SetPrintReport(FastReport.Report r1)
         {
             if (r1 != null) printReport = r1;

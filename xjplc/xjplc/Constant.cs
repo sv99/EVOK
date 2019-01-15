@@ -157,6 +157,8 @@ namespace xjplc
         public const int optNormalWithParamCount = 1;
         public const int optNormalExcel = 2;
         public const int optNo = 3;
+        //20190109 梳齿模式增加
+        public const int optShuChi = 4;
         public const int optNormalMax = 1500;
         public static readonly int CsvFile = 2;
         public static readonly int ErrorFile = 0;
@@ -194,6 +196,7 @@ namespace xjplc
         public const int SizeScarSplit = 0;
         public const int SizeScarNoSplit = 1;
         public const int ScarSplit = 2;
+        public const int doorId = 10;
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
@@ -224,13 +227,21 @@ namespace xjplc
 
         //public static readonly string ConstantMethod.GetAppPath() = ConstantMethod.GetAppPath();// System.AppDomain.CurrentDomain.BaseDirectory; //Application.StartupPath + "\\";// Path.GetDirectoryName(Application.ExecutablePath)+"\\";//System.AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ConfigSerialportFilePath = ConstantMethod.GetAppPath() + "config\\configSerialport.xml";
+        public static readonly string ConfigSerialportFilePath_bak = ConstantMethod.GetAppPath() + "config\\configSerialport_bak.xml";
         public static readonly string ConfigSerialportFilePath1 = ConstantMethod.GetAppPath() + "config\\configSerialport1.xml";
+        public static readonly string ConfigDevice1 = ConstantMethod.GetAppPath() + "Plc Data\\device1.csv";
+        public static readonly string ConfigDevice2 = ConstantMethod.GetAppPath() + "Plc Data\\device2.csv";
+        public static readonly string ConfigDevice3 = ConstantMethod.GetAppPath() + "Plc Data\\device3.csv";
+        public static readonly string ConfigDevice4 = ConstantMethod.GetAppPath() + "Plc Data\\device4.csv";
+        public static readonly string ConfigDevice5 = ConstantMethod.GetAppPath() + "Plc Data\\device5.csv";
         public static readonly string ConfigExcelOpt = ConstantMethod.GetAppPath() + "source\\1.xlsm";
         public static readonly string ConfigSerialportFilePath2 = ConstantMethod.GetAppPath() + "config\\configSerialport2.xml";
         public static readonly string ConfigParamFilePath = ConstantMethod.GetAppPath() + "config\\configParam.xml";
-        public static readonly string ConfigParamFilePath1 = ConstantMethod.GetAppPath() + "config\\configParam1.xml";
+        public static readonly string ConfigParamFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configParam_bak.xml";
         public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
+        public static readonly string ConfigPassWdFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configPwd__Bak.xml";
         public static readonly string ErrorSerialportConfigFile = "端口配置文件不存在，请检查config文件夹，软件即将关闭！";
+        public static readonly string ErrorPwdConfigFile = "密钥文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
         public static readonly string ErrorPlcFile = "设备数据文件不存在，请检查plc data文件夹，软件即将关闭！";
         public static readonly string strValue = "value";
@@ -241,6 +252,8 @@ namespace xjplc
         public static readonly string strParam4 = "param4";
         public static readonly string strParam5 = "param5";
         public static readonly string strParam6 = "param6";
+  
+
         public static readonly string passwdTime = "passwdTime";
         public static readonly string passwd = "passwd";
         public static readonly string NoSerialPort = "端口错误或者不存在！";
@@ -272,7 +285,7 @@ namespace xjplc
                                         };
         public static readonly string[] printBarcodeModeStr = {"无条码","自动贴条码","手动贴条码" };
 
-        public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1", "param2", "param3", "param4", "param5", "param6", "para7", "param8", "param9", "param10", "param11", "param12", "param13" };
+        public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1", "param2", "param3", "param4", "param5", "param6", "param7", "param8", "param9", "param10", "param11", "param12", "param13" };
         public static readonly string[] strformatZh = { "尺寸", "设定数量", "已切数量", "条码", "参数1" ,
             "参数2" , "参数3" , "参数4","参数5" , "参数6" , "参数7", "参数8" , "参数9" , "参数10" ,"参数11", "参数12" , "参数13" , "参数14" };
         public static readonly string pwdWrong = "密码错误！";
@@ -281,7 +294,7 @@ namespace xjplc
         public static readonly int PwdOffSet = 1000;
         public static readonly string prodResult = "生产结果";
         public static readonly int dataMultiple = 100;
-        public static readonly int MaxShowCount = 1000;
+        public static readonly int MaxShowCount = 2000;
         public static readonly string ScarId = "-1";
         public static readonly string barCodeDemo = ConstantMethod.GetAppPath() + "零部件打印.frx";
         public static readonly string SplitTypeFile = ConstantMethod.GetAppPath() + "config\\SplitType.xls";
@@ -298,7 +311,15 @@ namespace xjplc
 
         public static readonly int StartWaitMaxTime = 100000;
         #endregion
-
+        #region 开阳
+        public static readonly string devSTHY = "双头合页机";
+        public static readonly string devSCLS = "锁槽拉手机";
+        public static readonly string devSC = "锁槽机";
+        public static readonly string devSBJ = "四边锯";
+        public static readonly string[] sthyDataCol = { "门长", "门厚", "门宽", "角度阀", "配方" };
+        public static readonly string[] sclsDataCol = { "门长", "门厚", "门宽", "配方1" ,"配方2" };
+        public static readonly string[] scDataCol = { "门长", "门厚", "门宽", "配方" };
+        #endregion
         #region 运行数据
         public const  int devicePropertyA = 0;//设备类别 分为两种 一种是一维 
         public const  int devicePropertyB = 1;//门皮 一种是二维
@@ -345,7 +366,25 @@ namespace xjplc
         public const int CutNormalDoorBanMode = 7;
         public const string CutMeasureTips0 = "请选择模式或者导入数据";
         #endregion
+        #region 梳齿机
+           public static readonly int scjDeivceId = 3;
+           public static readonly string scjDeivceName = "梳齿机";
+           public static readonly string PlcDataFilePathHandSC = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand-";
+           public static string[] constantHandName = 
+            {
+              "机械手", "铣槽","推料", "前送料", "同步接料", "送料切料", "打码拉料", "分料"
+            };
 
+        #endregion
+        #region PLC
+        public static readonly int schneiderPlc= 0;
+           public static readonly int xinjiePlc = 1;
+           public static readonly int deltaPlc = 2;
+           public static readonly int mitsubishiPlc = 3;
+           public static readonly int[] PlcDAddressOffset = { 040000, 0, 0, 0 };
+        public static readonly int[] PlcMAddressOffset = { 040000, 0, 0, 0x2000 };
+
+        #endregion
         #region 台达PLC专用
         public static readonly string ConfigSource = ConstantMethod.GetAppPath() + "source\\";
 
@@ -441,6 +480,12 @@ namespace xjplc
         #region MODBUSTCP
 
         public static readonly string ConfigServerPortFilePath = ConstantMethod.GetAppPath() + "config\\configServerport.xml";
+        public static readonly string ConfigServerPortFilePath1 = ConstantMethod.GetAppPath() + "config\\configServerport1.xml";
+        public static readonly string ConfigServerPortFilePath2 = ConstantMethod.GetAppPath() + "config\\configServerport2.xml";
+        public static readonly string ConfigServerPortFilePath3 = ConstantMethod.GetAppPath() + "config\\configServerport3.xml";
+        public static readonly string ConfigServerPortFilePath4 = ConstantMethod.GetAppPath() + "config\\configServerport4.xml";
+        public static readonly string ConfigServerPortFilePath5 = ConstantMethod.GetAppPath() + "config\\configServerport5.xml";
+
         public static readonly string ServerIp = "ServerIp"; 
         public static readonly string ServerIpPort = "Port";
         public const  int floatShow = 0;

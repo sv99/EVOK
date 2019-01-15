@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace xjplc
 {
-    public class ConfigFileManager
+    public class ConfigFileManager 
     {    
             XmlDocument _xmldoc = null;
             string FilePath;

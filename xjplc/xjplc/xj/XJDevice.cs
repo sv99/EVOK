@@ -107,7 +107,7 @@ namespace xjplc
 
             //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
             if (dataFormLst.Count > 0)
-                SetPlcReadDMData(dataFormLst[0]);
+            SetPlcReadDMData(dataFormLst[0]);
 
             //设置端口
             SetComm(p0);
@@ -177,10 +177,7 @@ namespace xjplc
         //通讯错误引发的事件
         private void WatchTimerEvent(object sender, EventArgs e)
         {
-            if(DeviceId=="门板机")
-            {
-                int s = 0;
-            }
+           
             if (!comManager.Status)
             {
                 //先停了再说省的下一个定时事件又来
@@ -222,12 +219,23 @@ namespace xjplc
 
             DataTable dt = dataFormLst[formid].Clone();
             startRepack();
-            if ((rowSt >0) && ((rowSt+count-1)<= dataFormLst[formid].Rows.Count) && count>0)
+            if ((rowSt > 0) && ((rowSt + count - 1) <= dataFormLst[formid].Rows.Count) && count > 0)
             {
-                for (int i = rowSt; i < rowSt+count-1; i++)
+                for (int i = rowSt; i < rowSt + count - 1; i++)
                 {
-                    
+
                     dt.ImportRow(dataFormLst[formid].Rows[i]);
+                }
+            }
+            else
+            {
+                if(rowSt > 0 && count>0 &&((rowSt + count - 1) >= dataFormLst[formid].Rows.Count))
+                {
+                    for (int i = rowSt; i < dataFormLst[formid].Rows.Count; i++)
+                    {
+
+                        dt.ImportRow(dataFormLst[formid].Rows[i]);
+                    }
                 }
             }
 
@@ -463,10 +471,8 @@ namespace xjplc
                         Application.Exit();
                         System.Environment.Exit(0);
                     }
-                }
-             
-           
-        }
+                }                      
+         }
         public System.Data.DataTable DataForm
         {
             get { return dataForm; }
@@ -1109,123 +1115,7 @@ namespace xjplc
         #endregion
 
         #region 开始更新表格数据
-        /******
-        Thread DataUpDateThread;
-
-        bool UpdateFlag = true;
-
-        //这里先不更新 在数据处理的时候更新
-        public void StartUpdateUI()
-        {
-            if (DataUpDateThread != null)
-            {
-                UpdateFlag = false;
-                DataUpDateThread.Abort();
-                DataUpDateThread = null;
-            }
-            UpdateFlag = true;
-            DataUpDateThread = new Thread(DataUpdateToDataFormThreadMethod);
-            DataUpDateThread.Start();
-        }
-
-        public void CloseUpdateUI()
-        {
-            if (DataUpDateThread != null)
-            {
-                UpdateFlag = false;
-                DataUpDateThread.Abort();
-                DataUpDateThread.Join();
-                DataUpDateThread = null;                
-            }
-
-        }
-
         
-
-        private void DataUpdateToDataFormThreadMethod()
-        {
-            while (UpdateFlag)
-            {
-                Thread.Sleep(10);
-                UpdateUI0();
-                Application.DoEvents();
-            }
-        }
-
-        private void UpdataUI1(int rowindex,int colindex,string value)
-        {
-
-        }
-        /// <summary>
-        /// 这种更新 从dataform触发 遍历dplcinfo和Mplcinfo 
-        /// 但还有一种是在数据处理的时候实时更新dataform
-        /// </summary>
-        private void UpdateUI0()
-        {
-            SetUpdateUIBuffer(dgShow);
-                      
-            if (DPlcInfo == null && MPlcInfoAll == null) return;      
-            
-            foreach (DataRow row in DataForm.Rows)
-            {
-                string area; //单字还是双字
-                int mArea;
-                string strNewValue = "-1";
-                int index = DataForm.Rows.IndexOf(row);
-                //取字母
-                area = Regex.Replace(row["addr"].ToString(), "[0-9]", "", RegexOptions.IgnoreCase);
-                mArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area);
-                int[] pos = new int[2];
-                if (int.TryParse(row["param1"].ToString(), out pos[0]) && (int.TryParse(row["param2"].ToString(), out pos[1])))
-                {
-                    if (mArea < Constant.M_ID && mArea > -1)
-                    {
-                        if(pos[0]< DPlcInfo.Count())
-                        strNewValue = DPlcInfo[pos[0]].PlcValue.ToString();                      
-                    }
-                    else
-                    {
-                        if(pos[0]< MPlcInfoAll.Count && pos[1]< MPlcInfoAll[pos[0]].Count())
-                        strNewValue = MPlcInfoAll[pos[0]][pos[1]].PlcValue.ToString();
-                    }
-                    
-                    if (row!=null && row["value"]!=null && !row["value"].ToString().Equals(strNewValue))
-                    {                    
-                        if (dgShow !=null && dgShow.SelectedCells.Count > 0 && dgShow.SelectedCells[0].RowIndex == index && dgShow.SelectedCells[0].IsInEditMode)
-                        {
-                                                       
-                        }
-                        else                      
-                        row["value"] = strNewValue;//FindValueFromDPlcInfo(mAddr, mArea, DSmode);
-                    }
-                    Thread.Sleep(5);
-                    Application.DoEvents();
-                }
-
-            }
-        }
-        
-        /// <summary>
-        /// device 这里重新打包监控数据命令 那就要更改下
-        /// </summary>
-        private void SetUpdateUIBuffer(DataGridView dataGridView1)
-        {
-            if (IsShiftDataForm)
-            {
-                if (dataGridView1 != null)
-                {
-                    dataGridView1.Invoke((EventHandler)(delegate
-                    {
-                      dataGridView1.DataSource = DataForm;             
-                    }));
-            }
-                IsShiftDataForm = false;
-            }
-        }
-
-
-       ****/
-
         public void DeviceShutDown()
         {
             WatchCommTimer.Enabled = false;

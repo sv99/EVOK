@@ -116,7 +116,11 @@ namespace xjplc
      
     public class ConstantMethod
     {
-
+        //去掉字符串中的非数字
+        public static string RemoveNotNumber(string key)
+        {
+            return Regex.Replace(key, @"[^\d]*", "");
+        }
         public static bool fileCopy(string source, string dest)
         {
 
@@ -143,6 +147,18 @@ namespace xjplc
             fsread.Close();
             return true;
         }
+        public static DataTable getDataTableByString(string[] valueCol)
+        {
+         
+            DataTable dt = new DataTable();
+
+            for (int i = 0; i < valueCol.Length; i++)
+            {
+                dt.Columns.Add(valueCol[i]);
+            }
+            return dt;
+        }
+
         //根据规则转换表格 得到数据表格
         public static DataTable convertDataTableByRule(DataTable UserDtTmp, List<int> valueCol)
         {
@@ -306,9 +322,43 @@ namespace xjplc
             string[] str = SerialPort.GetPortNames();
 
             List<string> portNameLst = new List<string>();
+            PortParam portparam0 = new PortParam(); 
 
-            PortParam portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+            try
+            {
+                if (File.Exists(Constant.ConfigSerialportFilePath))
+                {
+                    portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+                    ConstantMethod.fileCopy(Constant.ConfigSerialportFilePath, Constant.ConfigSerialportFilePath_bak);
+                }
+                else
+                {
+                    if (!ConstantMethod.fileCopy(Constant.ConfigSerialportFilePath_bak, Constant.ConfigSerialportFilePath))
+                    {
+                        MessageBox.Show(Constant.ConfigSerialportFilePath_bak + Constant.ErrorSerialportConfigFile);
 
+                        Application.Exit();
+
+                        System.Environment.Exit(0);
+
+                    }
+                }
+
+            }
+            catch
+            {
+
+                if (!ConstantMethod.fileCopy(Constant.ConfigSerialportFilePath_bak, Constant.ConfigSerialportFilePath))
+                {
+                    MessageBox.Show(Constant.ConfigSerialportFilePath_bak+Constant.ErrorSerialportConfigFile);
+
+                    Application.Exit();
+
+                    System.Environment.Exit(0);
+
+                }
+                portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+            }
             for (int i = 0; i < (str.Length + 1); i++)
             {
                 try
@@ -402,6 +452,66 @@ namespace xjplc
             psswdInt = psswdInt + Constant.PwdOffSet * i;
             return psswdInt.ToString();
         }
+        public static string getDataMultipleZero(string str)
+        {
+            float s = 0;
+
+            if (float.TryParse(str, out s))
+            {
+                s = s * 1000;
+               // return s.ToString();
+            }
+
+            return s.ToString() ;
+        }
+
+        public static byte[] convertSingleToBytesFromString(string value)
+        {
+            float mc = 0;
+            if (float.TryParse(value, out mc))
+            {
+                byte[] bytes = BitConverter.GetBytes(mc);
+                return bytes;
+            }
+            else return null;
+
+        }
+        //4个字节 转化为2个字节 在4字节浮点数 转换为 2个寄存器单元过程中
+        public static ushort[] convert4BytesTo2Bytes(byte[] sourceByte)
+        {
+            if (sourceByte == null) return null;
+            if (sourceByte.Count() == 4)
+            {
+                byte[] desByteL = new byte[2];
+                byte[] desByteH = new byte[2];
+                Array.Copy(sourceByte,0, desByteL,0, 2);
+                Array.Copy(sourceByte, 2, desByteH, 0, 2);
+
+
+                ushort u16;
+                u16 = (ushort)((desByteL[1] << 8) + desByteL[0]);
+                ushort u17;
+                u17 = (ushort)((desByteH[1] << 8) + desByteH[0]);
+                List<ushort> uLst = new List<ushort>();
+                uLst.Add(u16);
+                uLst.Add(u17);
+                return uLst.ToArray();
+            }
+            return null;
+
+        }
+        public static ushort convertBytesToShort(byte[] bytes)
+        {
+            if (bytes.Count() == 2)
+            {
+             
+                ushort u16;
+                u16 = (ushort)((bytes[0] << 8) + bytes[1]);
+                return u16;
+            }
+            return 0;
+        }
+
         public static string  getValueFromByte(string type,byte[] bytevalue)
         {
             string valueStr="";
@@ -896,8 +1006,22 @@ namespace xjplc
         public static bool InitPassWd()
         {
             ConfigFileManager passWdFile = new ConfigFileManager();
+            try
+            {
+                passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
+                ConstantMethod.fileCopy(Constant.ConfigPassWdFilePath, Constant.ConfigPassWdFilePath_Bak);
+            }
+            catch
+            {
+                if (!ConstantMethod.fileCopy(Constant.ConfigPassWdFilePath_Bak, Constant.ConfigPassWdFilePath))
+                {
+                    MessageBox.Show(Constant.ErrorPwdConfigFile);
+                    ConstantMethod.AppExit();
+                }
+                passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
 
-            passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
+            }
+
 
             string readTimeStr = passWdFile.ReadConfig(Constant.passwdTime);
             string readCountStr = passWdFile.ReadConfig(Constant.passwdCount);
@@ -1182,7 +1306,9 @@ namespace xjplc
             if (configManager != null)
             {
                 if (File.Exists(filepath))
+                {
                     configManager.LoadFile(filepath);
+                }
                 else
                 {
                     MessageBox.Show(Constant.ErrorSerialportConfigFile);
