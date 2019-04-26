@@ -66,6 +66,12 @@ namespace xjplc
             SetMValueOFF(p);
             SetMValueON(p);
         }
+        public void SetMValueOFF2ON2OFF(PlcInfoSimple p)
+        {
+            SetMValueOFF(p);
+            SetMValueON(p);
+            SetMValueOFF(p);
+        }
 
         public bool opposite(PlcInfoSimple p)
         {

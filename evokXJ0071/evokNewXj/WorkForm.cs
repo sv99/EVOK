@@ -167,7 +167,7 @@ namespace evokNew0071
              evokWork.SetOptSize(optSize);
              evokWork.SetRtbWork(rtbWork);
              evokWork.SetRtbResult(rtbResult);
-             evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              UpdateTimer.Enabled = true;
@@ -204,7 +204,7 @@ namespace evokNew0071
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(evokWork.lcTxt_KeyPress(sender,e))
+            if(evokWork.AutoParamTxt_KeyPress(sender,e))
             resetBtn.Focus();
         }
 
@@ -705,7 +705,7 @@ namespace evokNew0071
 
         private void button10_Click(object sender, EventArgs e)
         {
-            report1.Show();
+            //report1.Show();
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)

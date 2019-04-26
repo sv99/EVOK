@@ -559,6 +559,50 @@ namespace xjplc
             return addr;
         }
 
+
+        //不同PLC 地址不同 台达的
+        public static int RelAbsGet(int maddr, int XYM, int deviceid)
+        {
+            //去个最大值
+            int addr = maddr;
+            switch (XYM)
+            {
+
+                case Constant.X_ID:
+                    {
+                        addr = addr + Constant.DeltaAs_X_addr;
+
+                        break;
+                    }
+                case Constant.Y_ID:
+                    {
+                        addr = addr + Constant.DeltaAs_Y_addr;
+
+                        break;
+                    }
+                case Constant.M_ID:
+                    {
+                        addr = addr + Constant.DeltaAs_M_addr;
+
+                        break;
+                    }
+                             
+                case Constant.D_ID:
+                    {
+                        addr = addr + Constant.DeltaAs_D_addr;
+
+                        break;
+                    }             
+                default:
+                    {
+                        addr = addr + Constant.DeltaAs_M_addr;
+
+                        break;
+                    }
+
+            }
+            return addr;
+        }
         /// <summary>
         /// 通过绝对地址，获取寄存器所在区域相对
         /// </summary>

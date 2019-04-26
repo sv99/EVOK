@@ -97,8 +97,8 @@ namespace fileconvert
                 i++;
             }
 
-            string beizhu = "014180830001032-PWGA0002 01|";
-            DeleteStr(ref beizhu,"|");         
+
+            stopConfig();
 
         }
 
@@ -136,7 +136,7 @@ namespace fileconvert
             }
             else
             {
-                //存在 则开始分割表格 把表格集合 第一给dtouput 用户可以查看条码
+                //存在则开始分割表格 把表格集合 第一给dtouput 用户可以查看条码
                 List<DataTable> dt = new List<DataTable>();
                 getDataTableByParam(dt, UserDt, paramStr);
                 foreach (DataTable dttemp in dt)
@@ -280,13 +280,18 @@ namespace fileconvert
             }
 
             valueCol.Add(e.ColumnIndex);
+           
             string colname = UserDt.Columns[e.ColumnIndex].ColumnName;
+            
+            listBox2.Items.Add(colname);
+
             int colid = e.ColumnIndex + 1;
 
-            if (valueCol.Count==1)
-            ConstantMethod.ShowInfo(rtbResult,"添加第"+ colid.ToString()+"列:"+ colname+ "====>尺寸！");
-
+            if (valueCol.Count == 1)           
+               ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() + "列:" + colname + "====>尺寸！");
+            
             if (valueCol.Count == 2)
+             
                 ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() + "列:"+ colname + "====>设定数量！");
 
             if (valueCol.Count == 3)
@@ -296,6 +301,7 @@ namespace fileconvert
             {
                 ConstantMethod.ShowInfo(rtbResult, "添加第" + colid.ToString() +  "列:" + colname + "====>参数:" + (valueCol.Count-3).ToString());
             }
+
         }
         public void startConfig()
         {
@@ -304,6 +310,7 @@ namespace fileconvert
             valueCol.Clear();
             rtbResult.Clear();
             IsSaveConfig = true;
+            InitSaveConfig();
         }
 
         public void stopConfig()
@@ -311,8 +318,10 @@ namespace fileconvert
             
 
             button3.Enabled = true;
-            IsSaveConfig = false;            
-
+            IsSaveConfig = false;
+            listBox1.Visible = false;
+            listBox2.Visible = false;
+            button1.Visible = false;
         }
 
         public void SaveFileDemo()
@@ -401,8 +410,24 @@ namespace fileconvert
                 return false;
             }
 
-            return true;
-           
+            return true;          
+
+        }
+
+        public void showColName()
+        {
+            rtbResult.Clear();
+            if (valueCol.Count > 0)
+            {
+                ConstantMethod.ShowInfo(rtbResult, "尺寸====>第" + valueCol[0] + "列:" + UserDt.Columns[valueCol[0]].ColumnName);
+                ConstantMethod.ShowInfo(rtbResult, "设定数量====>第" + valueCol[1] + "列:" + UserDt.Columns[valueCol[1]].ColumnName);
+                ConstantMethod.ShowInfo(rtbResult, "条码====>第" + valueCol[2] + "列:" + UserDt.Columns[valueCol[2]].ColumnName);
+
+                for (int i = 3; i < valueCol.Count; i++)
+                {
+                    ConstantMethod.ShowInfo(rtbResult, "参数" + (i - 2).ToString() + "====>第" + valueCol[i] + "列:" + UserDt.Columns[valueCol[i]].ColumnName);
+                }
+            }
 
         }
         private void button5_Click(object sender, EventArgs e)
@@ -411,7 +436,14 @@ namespace fileconvert
 
         }
 
-        
+        public void AddBlankSpace(DataTable userdt,int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                DataColumn dcol = new DataColumn("空白"+i.ToString());
+                userdt.Columns.Add(dcol);
+            }
+        }
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             DialogResult drresult;
@@ -453,9 +485,12 @@ namespace fileconvert
                     UserDt = null;
                                       
                     UserDt = csvop.OpenCSV(DialogExcelDataLoad.FileName);
-                   
+
                     if (UserDt != null && UserDt.Columns.Count > 3)
+                    {
                         dgv.DataSource = UserDt;
+                        showColName();
+                    }
                     else
                     {
                         MessageBox.Show("加载文件错误！");
@@ -483,10 +518,13 @@ namespace fileconvert
                     UserDt = null;
                   
                     UserDt = csvop.OpenCSV0(DialogExcelDataLoad.FileName);
-                                                       
+
 
                     if (UserDt != null && UserDt.Columns.Count > 3)
+                    {
                         dgv.DataSource = UserDt;
+                        showColName();
+                    }
                     else
                     {
                         MessageBox.Show("加载文件错误！");
@@ -505,6 +543,14 @@ namespace fileconvert
             stopConfig();
             SaveFileDemo();
         }
+        void InitSaveConfig()
+        {
+            listBox2.Items.Clear();
+            listBox1.Visible = true;
+            listBox2.Visible = true;
+
+            button1.Visible = true;
+        }
 
         private void 设置导出模板ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -513,6 +559,9 @@ namespace fileconvert
             ConstantMethod.ShowInfo(rtbResult, "双击任意一个单元指定每一列的数据内容，请按照尺寸，设定数量，条码，参数1..参数2..方式进行选取！");
 
             this.Focus();
+
+     
+
 
             while (IsSaveConfig)
             {
@@ -554,7 +603,10 @@ namespace fileconvert
                 {
                     UserDt = exop.ImportExcel(DialogExcelDataLoad.FileName);
                     if (UserDt != null && UserDt.Columns.Count > 3)
+                    {
                         dgv.DataSource = UserDt;
+                        showColName();
+                    }
                     else
                     {
                         MessageBox.Show("加载文件错误！");
@@ -670,6 +722,17 @@ namespace fileconvert
                     barCodeButton.Enabled = false;
                     MessageBox.Show("条码文件不存在！");
                 }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (valueCol.Count > 0 && IsSaveConfig)
+            {
+           
+                ConstantMethod.ShowInfo(rtbResult,"删除"+UserDt.Columns[valueCol[valueCol.Count - 1]].ColumnName);
+                valueCol.RemoveAt(valueCol.Count - 1);
+                listBox2.Items.RemoveAt(listBox2.Items.Count-1);
             }
         }
     }

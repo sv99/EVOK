@@ -81,7 +81,7 @@ namespace xjplc
             }
         }
         //数据一般是要缩小下的
-        double ration = 1;
+        double ration = 0;
         public double Ration
         {
             get { return ration; }
@@ -98,11 +98,12 @@ namespace xjplc
             }
 
         }
-
+        //201904082331 更改
+        //这个值需要存储的情况是 showvalue 小于raion时 为0的值
+        double showValueDouble = 0;
         int showValue=0;
         public int ShowValue //从表格读取数据回来
-        {
-          
+        {       
             get
             {
                 if (this == null) return 0;
@@ -114,8 +115,8 @@ namespace xjplc
                     {
                         showValue =pInfo.PlcValue;
 
-                        if (ration > 0) showValue = (int)((double)showValue / ration);
-                    
+                        if (ration > 0 && showValue>=ration) showValue = (int)((double)showValue / ration);
+                       
                         if (!IsInEdit)
                         {
                           
@@ -155,9 +156,25 @@ namespace xjplc
                                 {
                                     if (IsParam)
                                     { //为了兼容前面的产品 当设置了 数据比例的时候 Constant.dataMultiple 就无效了
-                                        if (Ration > 1)
+                                        if (Ration >= 1)
                                         {
-                                            ConstantMethod.SetText(showControl, showValue.ToString());
+                                            if (Ration > 1)
+                                            if (pInfo.PlcValue < ration && pInfo.PlcValue != 0)
+                                            {
+                                                //这里注意了 数据如果小于
+                                                showValueDouble=(double)showValue/ration;
+                                                ConstantMethod.SetText(showControl, showValueDouble.ToString());
+                                            }
+                                            else
+                                            {
+                                                string str = String.Format("{0:F}", showValue);
+                                                ConstantMethod.SetText(showControl, str);
+                                            }
+
+                                            if (Ration == 1)
+                                            {
+                                                ConstantMethod.SetText(showControl, showValue.ToString());
+                                            }
                                         }
                                         else
                                         {

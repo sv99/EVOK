@@ -137,7 +137,7 @@
             this.statusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
             this.infoLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
-            this.report1 = new FastReport.Report();
+           
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -178,7 +178,6 @@
             this.tabPage9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO2)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.report1)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -1294,10 +1293,7 @@
             // 
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
-            // report1
-            // 
-            this.report1.ReportResourceString = resources.GetString("report1.ReportResourceString");
-            // 
+           
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -1439,7 +1435,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO2)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.report1)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -1494,7 +1489,6 @@
         private System.Windows.Forms.ToolStripStatusLabel statusLabel3;
         private System.Windows.Forms.Timer UpdateTimer;
         private System.Windows.Forms.RichTextBox rtbResult;
-        private FastReport.Report report1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

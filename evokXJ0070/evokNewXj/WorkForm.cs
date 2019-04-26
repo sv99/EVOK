@@ -187,7 +187,7 @@ namespace evokNew0070
              evokWork.SetOptSize( optSize);
              evokWork.SetRtbWork( rtbWork);
              evokWork.SetRtbResult( rtbResult);
-             evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              UpdateTimer.Enabled = true;
@@ -222,7 +222,7 @@ namespace evokNew0070
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(evokWork.lcTxt_KeyPress(sender,e))
+            if(evokWork.AutoParamTxt_KeyPress(sender,e))
             resetBtn.Focus();
         }
 

@@ -17,8 +17,6 @@ namespace xjplc.ky
         Device dev3;
         Device dev4;
         Device dev5;
-
-
         
         System.Timers.Timer deviceMointor;
 
@@ -39,14 +37,14 @@ namespace xjplc.ky
             deviceMointor.Elapsed += new System.Timers.ElapsedEventHandler(deviceMointorEvent);
 
             DevLst = new List<Device>();
-          
+            
             if (File.Exists(Constant.ConfigDevice1))
             {
                 dev1 = new Device(Constant.ConfigDevice1, Constant.ConfigServerPortFilePath1, Constant.deltaPlc);
                 dev1.DeviceName = "双头合页机";
             }
 
-
+            /***
             if (File.Exists(Constant.ConfigDevice2))
             {
                 dev2 = new Device(Constant.ConfigDevice2, Constant.ConfigServerPortFilePath2, Constant.deltaPlc);
@@ -58,20 +56,27 @@ namespace xjplc.ky
                dev3 = new Device(Constant.ConfigDevice3, Constant.ConfigServerPortFilePath3, Constant.deltaPlc);
                dev3.DeviceName = "锁槽机";
             }
-
-          /****
+          
            if (File.Exists(Constant.ConfigDevice4))
            {
-               dev4 = new Device(Constant.ConfigDevice4, Constant.ConfigServerPortFilePath4, Constant.deltaPlc);
-           }        
-          ***/
+               dev4 = new Device(Constant.ConfigDevice4, Constant.ConfigServerPortFilePath4, Constant.schneiderPlc);
+               dev4.DeviceName = "四边锯";
+            }
+           ***/
+            if (dev1!=null)
+            DevLst.Add(dev1);
+            if (dev2 != null)
+                DevLst.Add(dev2);
 
-           DevLst.Add(dev1);
-           DevLst.Add(dev2);
-           DevLst.Add(dev3);
-           deviceMointor.Enabled = true;
+            if (dev3 != null)
+                DevLst.Add(dev3);
+
+            if (dev4 != null)
+                 DevLst.Add(dev4);
+                deviceMointor.Enabled = true;
 
            MessageBox.Show("设备连接成功！");
+
 
         }
         public Device getDeviceByName(string name)
@@ -231,16 +236,7 @@ namespace xjplc.ky
 
         #endregion
         #region 双头合页机
-
-        public void CloseCodeScanMode(string str )
-        {
-            Device dev = getDeviceByName(str);
-            if (dev == null) return;
-
-            List<ushort> SMCFLst = new List<ushort>();
-            SMCFLst.Add(0);
-            dev.setValueFormDLst("扫码触发读写", SMCFLst.ToArray());
-        }
+      
         public void setSTHYDATACode()
         {
 
@@ -260,15 +256,13 @@ namespace xjplc.ky
                 mh = ConstantMethod.getDataMultipleZero(mh);
 
             }
-            else return;
-           
+            else return;          
 
             byte[] mcBytes = ConstantMethod.convertSingleToBytesFromString(mc);
             byte[] mkBytes = ConstantMethod.convertSingleToBytesFromString(mk);
             byte[] mhBytes = ConstantMethod.convertSingleToBytesFromString(mh);
             byte[] jdfBytes = ConstantMethod.convertSingleToBytesFromString(jdf);
-            byte[] pfBytes = ConstantMethod.convertSingleToBytesFromString(peifang);
-           
+            byte[] pfBytes = ConstantMethod.convertSingleToBytesFromString(peifang);          
 
             dev.
             setValueFormDLst("门长读写", ConstantMethod.convert4BytesTo2Bytes(mcBytes));
@@ -282,7 +276,7 @@ namespace xjplc.ky
             dev.
             setValueFormDLst("角度阀读写", ConstantMethod.convert4BytesTo2Bytes(jdfBytes));
             dev.
-             setValueFormDLst("配方读写", ConstantMethod.convert4BytesTo2Bytes(pfBytes));
+            setValueFormDLst("配方读写", ConstantMethod.convert4BytesTo2Bytes(pfBytes));
 
 
 
@@ -308,38 +302,57 @@ namespace xjplc.ky
 
         #endregion
         #region 四边锯
-        public string ylc()
+        public void setSBJData()
         {
-            return getDeviceByName(Constant.devSBJ).getValueFormDLst("原料长读写");
-        }
-        public void setylc(int value)
-        {
-            
-            //getDeviceByName(Constant.devSBJ).setValueFormDLst("原料长读写",(ushort)value);
+            Device dev = getDeviceByName(Constant.devSBJ);
+            string ylc = "0"; string ylk = "0"; string jgc = "0"; string jgk = "0";string mh = "0";
 
-        }
-        public void setsbjDATA(string ylc,string ylk,string jgc,string jgk)
-        {
-            ushort ylcU = 0;
-            ushort ylkU = 0;
-            ushort jgcU = 0;
-            ushort jgkU = 0;
-            if(
-                ushort.TryParse(ylc, out ylcU)
-                && ushort.TryParse(ylk, out ylkU)
-                && ushort.TryParse(jgc, out jgcU)
-                && ushort.TryParse(jgk, out jgkU)
-                )
+            if (dev.DtData.Rows.Count > 0)
             {
-                //getDeviceByName(Constant.devSBJ).setValueFormDLst("原料长读写", (ushort)ylcU);
-               /// getDeviceByName(Constant.devSBJ).setValueFormDLst("原料宽读写", (ushort)ylkU);
-               /// getDeviceByName(Constant.devSBJ).setValueFormDLst("加工长读写", (ushort)jgcU);
-               /// getDeviceByName(Constant.devSBJ).setValueFormDLst("加工宽读写", (ushort)jgkU);
-               // getDeviceByName(Constant.devSBJ).setValueFormDLst("扫码触发读写",0);
+                ylc = dev.DtData.Rows[0][0].ToString();
+                ylk = dev.DtData.Rows[0][1].ToString();
+                jgc = dev.DtData.Rows[0][2].ToString();
+                jgk = dev.DtData.Rows[0][3].ToString();
+                mh = dev.DtData.Rows[0][4].ToString();
+
+
+                ylc = ConstantMethod.getDataMultipleZero(ylc, 100);
+                ylk = ConstantMethod.getDataMultipleZero(ylk, 100);
+                jgc = ConstantMethod.getDataMultipleZero(jgc, 100);
+                jgk = ConstantMethod.getDataMultipleZero(jgk, 100);
+                mh = ConstantMethod.getDataMultipleZero(mh, 100);
             }
+            else return;
+
+                byte[] ylcBytes = BitConverter.GetBytes(int.Parse(ylc)); 
+                byte[] ylkBytes = BitConverter.GetBytes(int.Parse(ylk));
+                byte[] jgcBytes = BitConverter.GetBytes(int.Parse(jgc));
+                byte[] jgkBytes = BitConverter.GetBytes(int.Parse(jgk));
+                byte[] mhBytes = BitConverter.GetBytes(int.Parse(mh));
+
+            
+
+            dev.
+            setValueFormDLst("原料长度读写", ConstantMethod.convert4BytesTo2Bytes(ylcBytes));
+
+            dev.
+            setValueFormDLst("原料宽度读写", ConstantMethod.convert4BytesTo2Bytes(ylkBytes));
+
+            dev.
+           setValueFormDLst("加工宽度读写", ConstantMethod.convert4BytesTo2Bytes(jgkBytes));
+
+            dev.
+           setValueFormDLst("加工长度读写", ConstantMethod.convert4BytesTo2Bytes(jgcBytes));
+
+           dev.
+           setValueFormDLst("门厚读写", ConstantMethod.convert4BytesTo2Bytes(mhBytes));
+
+            dev.DtData.Rows.RemoveAt(0);
+
 
         }
-        public void checkSbjGotoSetData(Device devSbj,string ylc, string ylk, string jgc, string jgk)
+
+        public void checkSBJGotoSetData()
         {
             string sbjCodeDownLoad = getDeviceByName(Constant.devSBJ).getValueFormDLst("扫码触发读写");
             int value = 0;
@@ -347,15 +360,9 @@ namespace xjplc.ky
             {
                 if (value > 0)
                 {
-                    setsbjDATA(ylc, ylk, jgc, jgk);
+                    setSBJData();
                 }
-            }                      
-        }
-        public void setljtest(int value)
-        {
-
-            //getDeviceByName(Constant.devSBJ).setValueFormDLst("逻辑测试1读写", value);
-
+            }
         }
 
         #endregion
@@ -378,13 +385,14 @@ namespace xjplc.ky
         public string DeviceName
         {
             get { return deviceName; }
-            set {
+            set
+            {
 
                 deviceName = value;
                 if (deviceName.Equals(Constant.devSTHY))
                 {
                     DtData = ConstantMethod.getDataTableByString(Constant.sthyDataCol);
-                    DtData.Rows.Add("2000","60","500","1","1");
+                    DtData.Rows.Add("2000", "60", "500", "1", "1");
                     DtData.Rows.Add("2020", "60", "500", "1", "2");
                     DtData.Rows.Add("2030", "60", "500", "0", "3");
                     DtData.Rows.Add("2040", "60", "500", "0", "4");
@@ -416,7 +424,7 @@ namespace xjplc.ky
 
                 if (deviceName.Equals(Constant.devSCLS))
                 {
-                   // DtData = ConstantMethod.getDataTableByString(Constant.sclsDataCol);
+                    // DtData = ConstantMethod.getDataTableByString(Constant.sclsDataCol);
                     DtData = ConstantMethod.getDataTableByString(Constant.sclsDataCol);
                     DtData.Rows.Add("2000", "60", "500", "1", "1");
                     DtData.Rows.Add("2020", "60", "500", "2", "2");
@@ -484,6 +492,13 @@ namespace xjplc.ky
                     DtData.Rows.Add("2020", "60", "500", "2");
                     DtData.Rows.Add("2030", "60", "500", "3");
                     DtData.Rows.Add("2040", "60", "500", "4");
+                }
+
+                if (deviceName.Equals(Constant.devSBJ))
+                {
+                    DtData = ConstantMethod.getDataTableByString(Constant.sbjDataCol);
+                    DtData.Rows.Add("2040", "1000", "2020", "980","45");
+
                 }
             }
         }
@@ -560,7 +575,6 @@ namespace xjplc.ky
                 }
             }
         }
-
 
         DataTransform dtTool;
         List<PlcSimple> plcLstD;
@@ -706,6 +720,20 @@ namespace xjplc.ky
         public void SetParam(string[] paraLst)
         {
             param.AddRange(paraLst);
+            
+            if (!(int.TryParse(paraLst[3], out maxValue)))
+            {             
+
+            }
+            if (!(int.TryParse(paraLst[4], out minValue)))
+            {
+
+            }
+            if (!(double.TryParse(paraLst[5], out ration)))
+            {
+
+            }
+
         }
         public void SetPlcAddressOffset(int id )
         {

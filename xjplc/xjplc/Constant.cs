@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -129,15 +131,226 @@ namespace xjplc
     public delegate void ydtdWorkChanged(object s, YBDTWork ybtdWork0);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     public class Constant
     {
+        #region 中英文切换信息
+
+        public static string xmlStringInfo = ConstantMethod.GetAppPath() + "config\\CHInfo.xml";
+        public static string xmlFormInfo = ConstantMethod.GetAppPath()+@"\config\CH.xml";
+
+        public static string xmlEHStringInfo = ConstantMethod.GetAppPath() + @"config\EHInfo.xml";
+        public static string xmlCHStringInfo = ConstantMethod.GetAppPath() + @"config\CHInfo.xml";
+        public static string xmlEHControl = ConstantMethod.GetAppPath() + @"config\EH.xml";
+        public static string xmlCHControl = ConstantMethod.GetAppPath() + @"config\CH.xml";
+        public static string xmlNodeName = "ControlInfo";
+
+        public const int idChinese = 0;
+        public const int idEnglish = 1;
+
+        //所有字符信息都存在hashstring 里
+        public static Hashtable hashString = null;
+      
+
+    //重新初始化各个常量 根据ID 来选择加载哪个文件 
+     public static bool InitStr(Form frm)
+    {
+        if(!File.Exists(xmlStringInfo)) return false;
+
+        if(!File.Exists(xmlFormInfo)) return false;
+
+        int id = MultiLanguage.getLangId();
+        switch (id)
+        {
+            case Constant.idChinese:
+                {
+                    xmlStringInfo = xmlCHStringInfo;
+                    xmlFormInfo = xmlCHControl;
+                   break;
+                }
+            case Constant.idEnglish:
+                {
+
+                    xmlStringInfo = xmlEHStringInfo;
+                    xmlFormInfo = xmlEHControl;
+                    break;
+                }
+
+            default:
+                {
+                    xmlStringInfo = xmlCHStringInfo;
+                    break;
+                }
+        }
+
+      
+        hashString = null;
+        BindingFlags flag = BindingFlags.Static | BindingFlags.Public;
+        try
+            {
+                //控件 先更换
+                MultiLanguage.LoadLanguage(frm, xmlFormInfo);
+                hashString = MultiLanguage.ReadXMLText(xmlNodeName, xmlStringInfo);
+
+                if (hashString.Count > 0)
+                {
+                    foreach (string key in hashString.Keys)
+                    {
+                        FieldInfo f_key = typeof(Constant).GetField(key, flag);
+                        if (f_key != null)
+                            typeof(Constant).GetField(key, flag).SetValue(new Constant(), hashString[key]);
+                    }
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
+        #endregion
+        #region 信息提醒
+        public static string cutMode = "结疤尺寸分离/结疤尺寸不分离/去除结疤";
+        public static string printMode = "无条码/手动打印条码/自动打印条码";
+        public static string barCodeError = "条码文件不存在";
+        public static string barCodeError1 = "多个条码文件，请点击条码查看选择";
+        public static string resultTip0 = "料长:";
+        public static string resultTip1 = "料头补偿:";
+        public static string resultTip2 = "刀补偿:";
+        public static string resultTip3 = "安全距离:";
+        public static string resultTip4 = " 尾料:";
+        public static string resultTip5 = "  第 :";
+        public static string resultTip6 = "根:";
+        public static string resultTip7 = "刀尺寸";
+        public static string resultTip8 = "料长:";
+        public static  string ConnectMachineSuccess = "设备连接成功！";
+        public static  string ConnectMachineFail = "设备连接失败,请检查设备端口！";
+        public static  string ReadPlcInfoFail = "读取设备数据文件失败，软件即将关闭！";
+        public static  string MachineWorking = "设备运行中！";
+        public static  string SetDataFail = "数据设置失败！";
+        public static  string FileIsInUse = "文件使用中！";
+        public static  string GetScarWrongScarStr = "结疤数据错误！";
+        public static  string GetScarScarNoEvenStr = "结疤数据不是偶数！";
+        public static  string Alarm = "报警";
+        public static  string GetScarScarNoAscendStr = "结疤数据排序错误！";
+        public static  string GetScarScarValueErrorStr = "结疤数据错误值,请检查结疤数据和料长数据！";
+        public static  string ScarName = " 结疤 ";
+        public static  string GetScarError = "获取结疤数据错误！";
+        public static  string ErrorMValue = "位值只能为1或者0！";
+        public static  string ErrorSerialportConfigFile = "端口配置文件不存在，请检查config文件夹，软件即将关闭！";
+        public static  string ErrorPwdConfigFile = "密钥文件不存在，请检查config文件夹，软件即将关闭！";
+        public static  string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
+        public static string ErrorParamAlarm1 = "最小贴码尺寸错误！";
+
+        public static  string ErrorPlcFile = "设备数据文件不存在，请检查plc data文件夹，软件即将关闭！";
+        public static  string NoSerialPort = "端口错误或者不存在！";
+        public static  string emgStopTip = "急停或紧急退出中，请复位！";
+        public static  string alreadyStart = "设备生产中!";
+        public static  string noData = "无数据！";
+        public static  string measureOutOfTime = "测量超时！";
+        public static  string IsWorking = "设备生产中！";
+        public static  string CutEnd = "生产结束！";
+        public static  string Start = "软件启动！";
+        public static  string Quit = "软件退出！";
+        public static  string MachineAlarm = "设备报警！";
+        public static  string CommManageError = "接收数据超时，重新连接！";
+        public static  string DeviceConnectionError = "通讯超时，重置连接！";
+        public static  string DeviceStartCut = "设备启动！";
+        public static  string DevicePause = "设备暂停！";
+        public static  string DeviceStop = "设备停止！";
+        public static  string DeviceEmgStop = "设备急停！";
+        public static  string DeviceStartFailed = "设备启动失败，请检查设备情况！";
+        public static  string DeviceReset = "设备复位！";
+        public static  string DeviceNoPrinter = "无打印机！";
+        public static  string DeviceNoLogFile = "无日志文件！";
+        public static  string PlcReadDataError = "设备读取数据超时！";
+        public static  string LoadFileSt = "加载文件开始！";
+        public static  string LoadFileEd = "加载文件结束！";
+        public static  string MeasureSt = "开始测量！";
+        public static  string MeasureEd = "结束测量！";
+        public static  string DataDownLoad = "数据下发！";
+        public static  string DataDownLoadSuccess = "数据下发成功！";
+        public static  string DataDownLoadFail = "数据下发失败！";
+        public static  string AutoMeasureMode = "自动测长模式！";
+        public static  string NormalMode = "正常优化模式！";
+        public static  string ShuChiMode = "梳齿无限料长模式！";
+        public static  string DoorShell = "门皮模式！";
+        public static string   CutMeasureTips0 = "请选择模式或者导入数据";
+        public static string IsAlreadyRunning = "软件已启动！";
+
+        public static string showOutOfError = "总料数超出最大显示数值！";
+        public static string resultTip9 = "需要料数:";
+        public static string resultTip10 = "材料利用率：";
+
+
+        public static string InOPT = "优化中,请稍等。。。。。。。。";
+        public static string optSuccess = "优化结束！";
+        public static string NextOpt = "下一根料准备！";
+        public static string ErrorMeasure = "测量错误！";
+        //优化错误返回值
+        public static string prodLstNoData = "数据收集错误！";
+        public static string optFail = "优化结果错误！";
+        public static string optResultNoData = "优化结果无数据！";
+        public static string dataOutOfRange = "数据超范围！";
+        public static string pwdWrong = "密码错误！";
+        public static string pwdOk = "密码正确！";
+        public static string prodResult = "生产结果";
+        public static string barCodestr = "条码:";
+        public static string size = "尺寸:";
+        public static string wrongScar0 = " 结疤在料头内或者结疤在安全距离内！";
+        public static string wrongScar1 = "  结疤为料头！";
+        public static string wrongScar2 = "  结疤在尾部，且大于安全距离！";
+
+        public static string startTips0 = "数据加载优化，准备启动";
+        public static string startTips1 = "启动成功，进入实时监控!";
+        public static string startTips2 = "准备数据下发！";
+        public static string startTips3 = "发送启动命令！";
+        public static string startTips4 = "根木料开始切割";
+        public static string startTips5 = "----完成";
+        public static string startTips6 = "-参数1:";
+        public static string startTips7 = "选择错误，请重新选择！";
+        public static string startTips8 = "条码错误:";
+
+
+        public static string stopOk = "停止成功！";
+        public static string stopWrong = "停止失败！";
+
+        public static string emgstopOk = "停止成功！";
+        public static string emgstopWrong = "停止失败！";
+
+        public static string pauseOk = "暂停成功！";
+        public static string pauseWrong = "暂停失败！";
+
+        public static string contiOk = "继续成功！";
+        public static string contiWrong = "继续失败！";
+
+        public static string resetOk = "复位成功！";
+        public static string resetWrong = "复位失败！";
+             
+
+
+        public static  string scLight = "锁槽工位指示";
+
+        public static  string scData = "锁槽工位数据";
+
+        public static  string hyLight = "合页工位指示";
+
+        public static  string hyData = "合页工位数据";
+
+        public static  string dataConvertError = "数据转换错误！";
+
+
+
+
+
+        #endregion
 
         public static readonly string CsvSplitComma = ",";
         public static readonly string CsvSplitSemiColon = ";";
-        public static readonly char CsvSplitCommaChar = ',';
+        public static readonly char   CsvSplitCommaChar = ',';
         public static readonly string CsvSplitDoubleQuaotaion = "\"";
-        public static readonly char CsvSplitSemiColonChar = ';';
-        public static readonly string ConnectMachineSuccess = "设备连接成功！";
-        public static readonly string ConnectMachineFail = "设备连接失败,请检查设备端口！";
-        public static readonly string ReadPlcInfoFail = "读取设备数据文件失败，软件即将关闭！";
+        public static readonly char   CsvSplitSemiColonChar = ';';
+       
         public static readonly string CSVFileEX = ".csv";
         public static readonly string ExcelFileEX0 = ".xlsx";
         public static readonly string ExcelFileEX1 = ".xls";
@@ -145,12 +358,9 @@ namespace xjplc
         public static readonly string SaveFileDemoConfigPath = ConstantMethod.GetAppPath() + "config\\filedemo.csv";
         public static readonly string SingleMode = "单字";
         public static readonly string DoubleMode = "双字";
-        public static readonly string BitMode = "位";
-        public static readonly string MachineWorking = "设备运行中！";
-        public static readonly string SetDataFail = "数据设置失败！";
-        public static readonly string FileIsInUse = "文件使用中！";
+        public static readonly string BitMode    = "位";
+       
         public static readonly int ExcelFile = 1;
-
         public const int evokGetDefaultMode = 0;
         public const int evokGetAutoMode = 1;
         public const int optNormal = 0;
@@ -169,26 +379,21 @@ namespace xjplc
         public const int Param1Page = 4;
         public static readonly int AutoPageID = 2;
         public static readonly int HandPageID = 3;
-        public static readonly string Alarm = "报警";
-        public static readonly int DataRowWatchMax = 50; //监控太多不行 还是少监控一点吧
+        public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
         public static readonly string[] plcDataFile = { "addr", "mode", "bin", "count", "value", "param1", "param2", "param3", "param4", "param5", "param6" };
         public static readonly string sqlChar10 = "char(10)";
         public static readonly string sqlChar20 = "char(20)";
 
         public const int GetScarSuccess = 0;
         public const int GetScarWrongScar = 1;
-        public static readonly string GetScarWrongScarStr = "结疤数据错误！";
+        
         public const int GetScarScarNoEven = 2;
-        public static readonly string GetScarScarNoEvenStr = "结疤数据不是偶数！";
         public const int GetScarScarNoAscend = 4;
-        public static readonly string GetScarScarNoAscendStr = "结疤数据排序错误！";
+        
         public const int GetScarScarValueError = 5;
-        public static readonly string GetScarScarValueErrorStr = "结疤数据错误值,请检查结疤数据和料长数据！";
         public static readonly int MaxScarCount = 40;
         public static readonly int ScarStartAddress = 6000;
-        public static readonly int ScarPage = 4;
-        public static readonly string ScarName = "结疤";
-        public static readonly string GetScarError = "获取结疤数据错误！";
+        public static readonly int ScarPage = 4;     
 
         public const int LTBCdefault = 700;
         public const int LTBCMax = 23000;
@@ -197,6 +402,8 @@ namespace xjplc
         public const int SizeScarNoSplit = 1;
         public const int ScarSplit = 2;
         public const int doorId = 10;
+
+
         //线圈值常量
         public static readonly int M_ON = 1;
         public static readonly int M_OFF = 0;
@@ -223,7 +430,7 @@ namespace xjplc
         public static readonly string PlcDataFilePath3 = ConstantMethod.GetAppPath() + "Plc Data\\plc_data3.csv";
         public static readonly string PlcDataFilePathScar = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_scar.csv";
 
-        public static readonly string ErrorMValue = "位值只能为1或者0！";
+       
 
         //public static readonly string ConstantMethod.GetAppPath() = ConstantMethod.GetAppPath();// System.AppDomain.CurrentDomain.BaseDirectory; //Application.StartupPath + "\\";// Path.GetDirectoryName(Application.ExecutablePath)+"\\";//System.AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ConfigSerialportFilePath = ConstantMethod.GetAppPath() + "config\\configSerialport.xml";
@@ -240,10 +447,7 @@ namespace xjplc
         public static readonly string ConfigParamFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configParam_bak.xml";
         public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
         public static readonly string ConfigPassWdFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configPwd__Bak.xml";
-        public static readonly string ErrorSerialportConfigFile = "端口配置文件不存在，请检查config文件夹，软件即将关闭！";
-        public static readonly string ErrorPwdConfigFile = "密钥文件不存在，请检查config文件夹，软件即将关闭！";
-        public static readonly string ErrorParamConfigFile = "参数配置文件不存在，请检查config文件夹，软件即将关闭！";
-        public static readonly string ErrorPlcFile = "设备数据文件不存在，请检查plc data文件夹，软件即将关闭！";
+     
         public static readonly string strValue = "value";
         public static readonly string strParam = "param";
         public static readonly string strParam1 = "param1";
@@ -252,22 +456,26 @@ namespace xjplc
         public static readonly string strParam4 = "param4";
         public static readonly string strParam5 = "param5";
         public static readonly string strParam6 = "param6";
-  
+        public static readonly string strParam10 = "param10";
 
         public static readonly string passwdTime = "passwdTime";
         public static readonly string passwd = "passwd";
-        public static readonly string NoSerialPort = "端口错误或者不存在！";
+   
         public static readonly string passwdCount = "passwdCount";
         public static readonly string PortName = "PortName";
         public static readonly string Bin = "bin";
         public static readonly string Read = "读";
         public static readonly string Write = "写";
         public static readonly string printBarcodeMode = "printBarcodeMode";
+        public static readonly string minPrintSize = "minPrintSize";
+        public static readonly string minPrinterName = "minPrinterName";
+
+        
         public static readonly string optParam1 = "optParam1";
         public static readonly string IsSaveProdLog = "IsSaveProdLog";
         public static readonly int NoPrintBarCode = 0;
-        public static readonly int AutoBarCode = 1;
-        public static readonly int HandBarCode = 2;
+        public static readonly int AutoBarCode = 2;//20190404更改
+        public static readonly int HandBarCode = 1;
         public const int doorSizeId = 0;
         public const int doorBanId = 1;  
         public const int doorShellId = 2;           //0       1          2        3        4         5        6           7
@@ -287,29 +495,25 @@ namespace xjplc
 
         public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1", "param2", "param3", "param4", "param5", "param6", "param7", "param8", "param9", "param10", "param11", "param12", "param13" };
         public static readonly string[] strformatZh = { "尺寸", "设定数量", "已切数量", "条码", "参数1" ,
-            "参数2" , "参数3" , "参数4","参数5" , "参数6" , "参数7", "参数8" , "参数9" , "参数10" ,"参数11", "参数12" , "参数13" , "参数14" };
-        public static readonly string pwdWrong = "密码错误！";
-        public static readonly string pwdOk = "密码正确！";
+            "参数2" , "参数3" , "参数4","参数5" , "参数6" , "参数7", "参数8" , "参数9" , "参数10" ,"参数11", "参数12" , "参数13" , "参数14", "参数15" , "参数16" , "参数17" , "参数18" , "参数19" , "参数20" , "参数21" , "参数22" 
+                , "参数23" , "参数24"
+        , "参数25"
+        , "参数26"
+        , "参数27"};
+  
         public static readonly int pwdCountMax = 6;
         public static readonly int PwdOffSet = 1000;
-        public static readonly string prodResult = "生产结果";
+
         public static readonly int dataMultiple = 100;
         public static readonly int MaxShowCount = 2000;
         public static readonly string ScarId = "-1";
         public static readonly string barCodeDemo = ConstantMethod.GetAppPath() + "零部件打印.frx";
         public static readonly string SplitTypeFile = ConstantMethod.GetAppPath() + "config\\SplitType.xls";
         #region  优化数据
-        //优化错误返回值
-        public static readonly string prodLstNoData = "数据收集错误！";
-        public static readonly string  optFail = "优化结果错误！";
-        public static readonly string optResultNoData = "优化结果无数据！";
-        public static readonly string optSuccess = "优化结束！";
-        public static readonly string NextOpt = "下一根料准备！";
-        public static readonly string ErrorMeasure = "测量错误！";
-        public static readonly string InOPT = "优化中,请稍等。。。。。。。。";
+       
         public static readonly int MeaSureMaxTime = 120000;
 
-        public static readonly int StartWaitMaxTime = 100000;
+        public static readonly int StartWaitMaxTime = 10000;
         #endregion
         #region 开阳
         public static readonly string devSTHY = "双头合页机";
@@ -319,43 +523,14 @@ namespace xjplc
         public static readonly string[] sthyDataCol = { "门长", "门厚", "门宽", "角度阀", "配方" };
         public static readonly string[] sclsDataCol = { "门长", "门厚", "门宽", "配方1" ,"配方2" };
         public static readonly string[] scDataCol = { "门长", "门厚", "门宽", "配方" };
+        public static readonly string[] sbjDataCol = { "原料长", "原料宽", "加工长", "加工宽","门厚" };
         #endregion
         #region 运行数据
         public const  int devicePropertyA = 0;//设备类别 分为两种 一种是一维 
         public const  int devicePropertyB = 1;//门皮 一种是二维
 
         public const int devicePropertyC = 2;//门板 一种是二维
-        public static readonly string emgStopTip = "急停或紧急退出中，请复位！";
-        public static readonly string alreadyStart = "设备生产中!";
-        public static readonly string noData = "无数据！";
-        public static readonly string measureOutOfTime = "测量超时！";
-        public static readonly string IsWorking = "设备生产中！";
-        public static readonly string CutEnd = "生产结束！";
-        public static readonly string Start = "软件启动！";
-        public static readonly string Quit = "软件退出！";
-        public static readonly string MachineAlarm = "设备报警！";
-        public static readonly string CommManageError = "接收数据超时，重新连接！";
-        public static readonly string DeviceConnectionError = "通讯超时，重置连接！";
-        public static readonly string DeviceStartCut = "设备启动！";
-        public static readonly string DevicePause = "设备暂停！";
-        public static readonly string DeviceStop = "设备停止！";
-        public static readonly string DeviceEmgStop = "设备急停！";
-        public static readonly string DeviceStartFailed = "设备启动失败，请检查设备情况！";
-        public static readonly string DeviceReset = "设备复位！";
-        public static readonly string DeviceNoPrinter = "无打印机！";
-        public static readonly string DeviceNoLogFile = "无日志文件！";
-        public static readonly string PlcReadDataError= "设备读取数据超时！";
-        public static readonly string LoadFileSt = "加载文件开始！";
-        public static readonly string LoadFileEd = "加载文件结束！";
-        public static readonly string MeasureSt = "开始测量！";
-        public static readonly string MeasureEd = "结束测量！";
-        public static readonly string DataDownLoad = "数据下发！";
-        public static readonly string DataDownLoadSuccess = "数据下发成功！";
-        public static readonly string DataDownLoadFail = "数据下发失败！";
-        public static readonly string AutoMeasureMode = "自动测长模式！";
-        public static readonly string NormalMode = "正常优化模式！";
-        public static readonly string ShuChiMode = "梳齿无限料长模式！";
-        public static readonly string DoorShell = "门皮模式！";
+       
         public const  int CutMeasureRotateWithHoleMode = 2;
         public const   int CutNormalMode = 0;
         public const  int CutMeasureMode = 1;
@@ -364,7 +539,7 @@ namespace xjplc
         public const int CutNormalDoorShellMode = 5;
         public const int CutNormalWithShuChiMode = 6;
         public const int CutNormalDoorBanMode = 7;
-        public const string CutMeasureTips0 = "请选择模式或者导入数据";
+     
         #endregion
         #region 梳齿机
            public static readonly int scjDeivceId = 3;
@@ -381,9 +556,12 @@ namespace xjplc
            public static readonly int xinjiePlc = 1;
            public static readonly int deltaPlc = 2;
            public static readonly int mitsubishiPlc = 3;
-           public static readonly int[] PlcDAddressOffset = { 040000, 0, 0, 0 };
-        public static readonly int[] PlcMAddressOffset = { 040000, 0, 0, 0x2000 };
+        public static readonly int[] PlcDAddressOffset = { 0, 0, 0, 0 };
+        public static readonly int[] PlcMAddressOffset = { 0, 0, 0, 0x2000 };
 
+        #endregion
+        #region 双端锯 AS系列PLC 专用ID
+        public static readonly int xzjDeivceId = 15;
         #endregion
         #region 台达PLC专用
         public static readonly string ConfigSource = ConstantMethod.GetAppPath() + "source\\";
@@ -470,9 +648,6 @@ namespace xjplc
                                                                 "下开口合页槽",
                                                                 "左底边圆孔",
                                                                 "右底边圆孔"
-
-
-
         };
         
         public static readonly string errClrValue = "8";
@@ -490,12 +665,12 @@ namespace xjplc
         public static readonly string ServerIpPort = "Port";
         public const  int floatShow = 0;
         public const int intShow = 1;
-        public static readonly string dataOutOfRange = "数据超范围！";
-        public static readonly string scLight = "锁槽工位指示";
-        public static readonly string scData = "锁槽工位数据";
-        public static readonly string hyLight = "合页工位指示";
-        public static readonly string hyData = "合页工位数据";
-        public static readonly string dataConvertError = "数据转换错误！";
+
+  
+
+        public static readonly string[] asPlcTcpType = { "单字", "双字", "浮点","位"};
+        public static readonly int[] asPlcTcpTypeByteCount = { 1, 2, 2,1};
+    
         public static readonly string[] tcpType = { "BOOL", "SINT", "USINT",
                                                         "INT", "UINT",
                                                         "DINT",  "UDINT",
@@ -555,10 +730,9 @@ namespace xjplc
 
         public static readonly int[] dataTypeAddr = { 0X01C01800, 0X01C01C00, 0X01C02000,
                                                       0X00380300, 0X00380380, 0X00380400,
-                                                      0X00380400, 0X00380300 , 0X00380380,
-                0X00380400,0X00380400,0X00380300,0X00380300,0X00380380,0X00380380
-
-
+                                                      0X00380400, 0X00380300, 0X00380380,
+                                                      0X00380400, 0X00380400, 0X00380300,
+                                                      0X00380300, 0X00380380, 0X00380380
         };
 
         public static readonly int[] dataTypeAreaInt = {0,1,2,5,3,4 ,6,7,14,12,13,8,9,10,11};
@@ -592,6 +766,12 @@ namespace xjplc
 
         public static readonly byte[] DTTcpFunctionWriteBitCmd = { 0x43, 0x03 };
         public static readonly byte[] DTTcpFunctionWriteByteCmd = { 0x43, 0x04 };
+
+        public static readonly byte[] DTAsPlcTcpFunctionReadBitCmd = { 0x42, 0x01 };
+        public static readonly byte[] DTAsPlcTcpFunctionReadByteCmd = { 0x42, 0x02 };
+
+        public static readonly byte[] DTAsPlcTcpFunctionWriteBitCmd = { 0x42, 0x03 };
+        public static readonly byte[] DTAsPlcTcpFunctionWriteByteCmd = { 0x42, 0x04 };
         public static readonly int IXMODBUSAddr = 0X6000;
         public static readonly int QXMODBUSAddr = 0XA000;
         public static readonly int IWMODBUSAddr = 0X8000;
@@ -618,8 +798,13 @@ namespace xjplc
 
         public static byte[] IsDtTcpExitOut = { 0x06, 0x66, 0x00, 0x00, 0x00, 0x07, 0x01, 0x43, 0x01, 0x00, 0x00, 0x5D, 0x84 };
 
-         public static byte[] IsDtTcpExitIn = { 0x06, 0x66, 0x00, 0x00, 0x00, 0x05, 0x01, 0x43, 0x01, 0x00, 0x00 };
-                        
+        public static byte[] IsDtTcpExitIn = { 0x06, 0x66, 0x00, 0x00, 0x00, 0x05, 0x01, 0x43, 0x01, 0x00, 0x00 };
+
+        public static byte[] IsDtAsPlcTcpExitOut = { 0x0d, 0xe9, 0x00, 0x00, 0x00, 0x05, 0x00, 0x42, 0x29, 0x00, 0x00 };
+
+        public static byte[] IsDtAsPlcTcpExitIn = { 0x0d, 0xe9, 0x00, 0x00, 0x00, 0x93, 0x00, 0x42, 0x29, 0x00, 0x8e };
+
+
         public static readonly byte[] DTModbusTcpHeader = { 0x00, 0x00, 0x00, 0x00 };
         public static readonly byte[] DTModbusTcpHeaderFake = { 0x00, 0x00, 0x00, 0x00,0x00 };
 
@@ -652,6 +837,7 @@ namespace xjplc
 
         public static readonly byte WriteMultipleDCmdFunctionCode = 0X10;
         public static readonly byte[] DTDeviceId = { 0X01 };
+        public static readonly byte[] DTAsPlcDeviceId = { 0X00 };
         public static readonly int TaiDaConnectMode485 = 1;
         public static readonly int TaiDaConnectMode232 = 0;
         public static readonly byte[] DTCmdSetReadDDataOut232 = { 0x40, 0xdc };
@@ -720,6 +906,11 @@ namespace xjplc
         public static readonly int HSD_addr = 0xB880;
         public static readonly int HM_addr = 0xC100;
 
+        //台达AS plc
+        public static readonly int DeltaAs_D_addr = 0;
+        public static readonly int DeltaAs_X_addr = 0x6000;
+        public static readonly int DeltaAs_Y_addr = 0xA000;
+        public static readonly int DeltaAs_M_addr = 0;
         //地址偏移常量
         public static readonly int Delta_D_addr = 0x1000;
         public static readonly int Delta_X_addr = 0x0400;
@@ -757,8 +948,9 @@ namespace xjplc
         public const int PLCXY = 7;
         //D区数据太多 要分开显示 那滚动条结束后 才能显示 不然会出错
         public const int ScrollTimerValue = 200;
-
-
+        #region 三门数据
+        public static readonly string cfgPrjFile = ConstantMethod.GetAppPath() + "config\\configPrj.xml";
+        #endregion
         #region 远邦台技数据
         public static readonly string[] strformatYB = { "日计划单号", "日期", "车间", "图号", "名称", "工序", "工艺特性", "姓名", "人员特性", "设备大类", "设备编号", "设备地址", "设备特性", "图纸链接", "调度说明", "排产量", "节拍", "机数", "工模具" };
         public static readonly string[] strformatYBSave = { "计划单号", "日期", "车间", "图号", "名称", "工序", "姓名",  "设备编号", "实产量", "开始时间", "实际结束时间", "停机时间", "不正常原因"};
@@ -780,6 +972,7 @@ namespace xjplc
         public const  int sqlWrite = 1;
         public const  int sqlRead  = 0;
         #endregion
+
     }
 
 }

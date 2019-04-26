@@ -20,8 +20,7 @@ namespace evokNew0066
         private WatchForm wForm;
 
         public WorkForm()
-        {
-           
+        {          
           //  ConstantMethod.InitPassWd();
             InitializeComponent();
         }
@@ -137,15 +136,36 @@ namespace evokNew0066
         private void dgvParam_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
         }
-      
 
+        public void InitLang()
+        {                          
+               
+         //设置提醒字符串
+          Constant.InitStr(this);
+            //一些控件的库需要更换
+          string[] s = Constant.cutMode.Split('/');
+          comboBox1.Items.Clear();
+          comboBox1.Items.AddRange(s);
+          comboBox1.SelectedIndex = 2;
+          s = Constant.printMode.Split('/');
+          printcb.Items.Clear();
+          printcb.Items.AddRange(s);
+          printcb.SelectedIndex = evokWork.PrintBarCodeMode;
+
+           
+
+
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.Visible = false;               
+            this.Visible = false;
+                         
             InitParam();
             InitControl();
-            InitView0();            
+            InitView0();
+            InitLang();
             Application.DoEvents();
+            evokWork.ListSmallSizePrinter(comboBox3);
             this.Visible = true;
         }
 
@@ -185,8 +205,8 @@ namespace evokNew0066
         {
             //datasource 改变会出发 selectindex 改变事件  这样就会打条码导致 模式被自动修改
             //所以早点设置好 然后在 那个selectindexchanged事件里增加 通讯正常判断
-            printcb.DataSource = Constant.printBarcodeModeStr;
-
+            // printcb.DataSource = Constant.printBarcodeModeStr;
+            printcb.Items.AddRange(Constant.printBarcodeModeStr);
             LogManager.WriteProgramLog(Constant.ConnectMachineSuccess);
             evokWork = new EvokXJWork();
             evokWork.SetUserDataGridView(UserData);
@@ -332,6 +352,7 @@ namespace evokNew0066
         private void resetBtn_Click(object sender, EventArgs e)
         {
              evokWork.reset();
+             stopBtnShow();
         }
 
         /// <summary>
@@ -392,7 +413,7 @@ namespace evokNew0066
              ccBtn.Enabled = false;
              UserData.ReadOnly = true;
              printcb.Enabled = false;
-            设备ToolStripMenuItem.Enabled = false;
+            deviceMenuItem.Enabled = false;
         }
         private void startOptShow()
         {
@@ -411,7 +432,7 @@ namespace evokNew0066
             if (rtbResult != null) rtbResult.Clear();
             ConstantMethod.ShowInfo(rtbResult, Constant.InOPT);
 
-            设备ToolStripMenuItem.Enabled = false;
+            deviceMenuItem.Enabled = false;
 
         }
         private void stopOptShow()
@@ -427,10 +448,10 @@ namespace evokNew0066
             pauseBtn.Enabled = true;
             resetBtn.Enabled = true;
             printcb.Enabled = true;
-            设备ToolStripMenuItem.Enabled = true;
+            deviceMenuItem.Enabled = true;
 
         }
-
+       
         private void stbtn_Click(object sender, EventArgs e)
         {
                      
@@ -507,7 +528,7 @@ namespace evokNew0066
              ccBtn.Enabled = true;
              UserData.ReadOnly = false;
              printcb.Enabled = true;
-            设备ToolStripMenuItem.Enabled = true;
+            deviceMenuItem.Enabled = true;
 
         }
 
@@ -536,6 +557,7 @@ namespace evokNew0066
 
         private void FileSave_Tick(object sender, EventArgs e)
         {
+            if(evokWork !=null)
              evokWork.SaveFile();
         }
 
@@ -788,6 +810,32 @@ namespace evokNew0066
         private void button1_Click(object sender, EventArgs e)
         {
             evokWork.emgStop();
+            stopBtnShow();
+        }
+
+        private void 语言切换CHToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuItemChinese_Click(object sender, EventArgs e)
+        {
+            MultiLanguage.setLangId(Constant.idChinese);
+            evokWork.ShiftDgvParamLang(dgvParam, Constant.idChinese);
+            InitLang();
+        }
+
+        private void menuItemEnglish_Click(object sender, EventArgs e)
+        {
+            MultiLanguage.setLangId(Constant.idEnglish);
+            evokWork.ShiftDgvParamLang(dgvParam, Constant.idEnglish);
+            InitLang();
+        }
+
+        private void comboBox3_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if(tc1.SelectedIndex ==2)
+            evokWork.SetSmallSizePrinter(comboBox3.SelectedItem.ToString());
         }
     }
 }

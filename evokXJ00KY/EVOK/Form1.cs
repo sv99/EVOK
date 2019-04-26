@@ -34,16 +34,19 @@ namespace EVOK
             if (devMan.getDeviceByName(Constant.devSC) != null)
             devMan.getDeviceByName(Constant.devSC).SetShowDtData(scDgv);
 
-            groupBox1.Visible= true;
+            if (devMan.getDeviceByName(Constant.devSBJ) != null)
+                devMan.getDeviceByName(Constant.devSBJ).SetShowDtData(sbjDgv);
+
+
+            groupBox1.Visible = true;
             groupBox5.Visible = true;
             groupBox3.Visible = true;
             groupBox4.Visible = true;
-
+            groupBox2.Visible = true;
+            label6   .Visible = true;
+            textBox1 .Visible = true;
         }
-        private void button1_Click(object sender, EventArgs e)
-        {
-            Init();
-        }
+        
 
         public new void Dispose()
         {
@@ -64,19 +67,7 @@ namespace EVOK
             // }
             if (devMan.getDeviceByName(Constant.devSTHY) != null)
             {
-                sthyLbl.Text = Constant.constantStatusStr[devMan.getDeviceByName(Constant.devSTHY).Status];
-
-                /***
-                Device dev = devMan.getDeviceByName(Constant.devSTHY);
-
-                sthyLbl.Text = Constant.constantStatusStr[devMan.getDeviceByName(Constant.devSTHY).Status];
-
-                sthyMCTxt.Text = dev.DtData.Rows[0][0].ToString();
-                sthyMKTxt.Text = dev.DtData.Rows[0][1].ToString();
-                sthyMHTxt.Text = dev.DtData.Rows[0][2].ToString();
-                sthyJDFTxt.Text = dev.DtData.Rows[0][3].ToString();
-                sthyPFTxt.Text = dev.DtData.Rows[0][4].ToString();
-               ***/
+                sthyLbl.Text = Constant.constantStatusStr[devMan.getDeviceByName(Constant.devSTHY).Status];           
                 devMan.checkSTHYGotoSetData();
 
             }
@@ -91,64 +82,28 @@ namespace EVOK
                 scLbl.Text = Constant.constantStatusStr[devMan.getDeviceByName(Constant.devSC).Status];
                 devMan.checkSCGotoSetData();
             }
-                
-        }
 
-        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            int v = -1;// int.
-            if (e.KeyChar == '\r')              
+            if (devMan.getDeviceByName(Constant.devSBJ) != null)
             {
-                if (int.TryParse(ylcTxt.Text, out v))
-                {
-                    devMan.setylc((ushort)v);
-                   
-                }
-                groupBox1.Focus();
-            }         
+                sbjLbl.Text = Constant.constantStatusStr[devMan.getDeviceByName(Constant.devSBJ).Status];
+                devMan.checkSBJGotoSetData(); ;
 
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            devMan.setljtest(0);
-        }
-
-        private void button9_Click(object sender, EventArgs e)
-        {
-            /***
-            if (!button10.Text.Equals("扫码开"))
-                devMan.setsbjDATA(ylcTxt.Text, ylkTxt.Text, jgcTxt.Text, jgkTxt.Text);
-            else
-            {
-                MessageBox.Show("扫码模式，无法手动发送！");
             }
-            ***/
+
+
+
         }
 
-        private void button10_Click(object sender, EventArgs e)
-        {
-            /***
-            if (button10.Text.Equals("扫码开"))
-            {
-                button10.Text = "扫码关";
-            }
-            else
-            {
-                button10.Text = "扫码开";
-            }
-            ***/
-        }
+       
 
+       
+       
         private void connectMachine_Click(object sender, EventArgs e)
         {
             Init();
         }
 
-        private void sclsLbl_Click(object sender, EventArgs e)
-        {
-
-        }
+    
 
         private void button1_Click_1(object sender, EventArgs e)
         {
@@ -180,6 +135,37 @@ namespace EVOK
             devMan.getDeviceByName(Constant.devSC).DtData.Rows.Add("2030", "60", "502", "3");
             devMan.getDeviceByName(Constant.devSC).DtData.Rows.Add("2040", "60", "503", "4");
 
+        }
+
+        private void label11_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label54_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (devMan.getDeviceByName(Constant.devSBJ) == null) return;
+
+            devMan.getDeviceByName(Constant.devSBJ).DtData.Rows.Add("2000", "800", "1980", "780", "45");
+            devMan.getDeviceByName(Constant.devSBJ).DtData.Rows.Add("2020", "900", "2000", "880", "40");
+            devMan.getDeviceByName(Constant.devSBJ).DtData.Rows.Add("2030", "920", "1990", "900", "45");
+            devMan.getDeviceByName(Constant.devSBJ).DtData.Rows.Add("2050", "790", "1960", "760", "45");
+            devMan.getDeviceByName(Constant.devSBJ).DtData.Rows.Add("2040", "800", "1990", "770", "45");
         }
     }
 }

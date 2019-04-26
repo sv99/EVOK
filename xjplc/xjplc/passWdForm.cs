@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
@@ -18,10 +19,12 @@ namespace xjplc
         public string userInput;
 
         public bool IsStart;
+
+        public bool IsUserClose;
         public passWdForm()
         {
             InitializeComponent();
-            userInput = "0";
+            userInput = "";
             PwdCount = 0;
             Pwd = "0";
             IsStart = false;
@@ -30,16 +33,17 @@ namespace xjplc
         private void button1_Click(object sender, EventArgs e)
         {
             userInput = pwdTxt.Text;
-
+            
             if (!IsStart)
             {
                 this.Hide();
                 return;
             }
-
+                    
             ConfigFileManager passWdFile = new ConfigFileManager();
-
-            passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
+            if (File.Exists(Constant.ConfigPassWdFilePath))
+                passWdFile.LoadFile(Constant.ConfigPassWdFilePath);
+            else return;
 
             string pwdTime = "0";
 
@@ -94,6 +98,11 @@ namespace xjplc
             {
                 button1_Click(sender,e);
             }
+        }
+
+        private void passWdForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            IsUserClose = true;
         }
     }
 }

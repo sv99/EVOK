@@ -12,11 +12,21 @@ namespace xjplc.delta.TCP
     public class DTTcpClientManager
     {
        Socket socketDt;
+        int deviceId=0;
+        public int DeviceId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
+        }
+
        ServerInfo serverParam;
+
        public byte[] CmdOut = Constant.IsDtTcpExitOut;
        public byte[] CmdIn = Constant.IsDtTcpExitIn;
+
        List<List<byte>> CmdOutLst;
        List<List<byte>> CmdInLst;
+
        public List<byte>  ReadDCmdOut ;
        public List<byte>  ReadDCmdIn  ;
 
@@ -82,9 +92,7 @@ namespace xjplc.delta.TCP
         {
             get { return isDeviceReady; }
             set { isDeviceReady = value; }
-        }
-
-        
+        }    
 
         Thread recThread;
         public DTTcpClientManager(ServerInfo serverParam0)
@@ -103,7 +111,6 @@ namespace xjplc.delta.TCP
             ErrorConnCount = 0;
 
             DataProcessEventArgs = new SocEventArgs();
-
 
             serverParam = serverParam0;
 
@@ -124,36 +131,15 @@ namespace xjplc.delta.TCP
 
 
         }
-        void SetRead()
+        public void SetDeviceId(int id)
         {
-            if (ConstantMethod.IsReadByte(CmdOut) && ReadMCmdOut != null && ReadMCmdOut.Count > 0)
+            DeviceId = id;
+            if (DeviceId == Constant.xzjDeivceId)
             {
-                CmdOut = ReadMCmdOut.ToArray();
-                CmdIn =  ReadMCmdIn.ToArray();
+                CmdOut = Constant.IsDtAsPlcTcpExitOut;
+                CmdIn = Constant.IsDtAsPlcTcpExitIn;
             }
-            else
-            {
 
-                if (ReadDCmdOut.Count > 0)
-                {
-                    CmdOut = ReadDCmdOut.ToArray();
-                    CmdIn = ReadDCmdIn.ToArray();
-                }
-                else
-                {
-                    if (ReadMCmdOut.Count > 0)
-                    {
-                        CmdOut = ReadMCmdOut.ToArray();
-                        CmdIn = ReadMCmdIn.ToArray();
-                    }
-                    else
-                    {
-                        CmdOut = Constant.IsDtTcpExitOut;
-                        CmdIn = Constant.IsDtTcpExitIn;
-                    }
-                }
-                
-            }
         }
         
         /// <summary>
@@ -175,16 +161,21 @@ namespace xjplc.delta.TCP
             status = true;
             ClearBufferCmdOut();
             if (ReadMCmdIn.Count > 0)
-                {
-                    CmdOut = ReadMCmdOut.ToArray();
-                    CmdIn = ReadMCmdIn.ToArray();
-                }
-                else
-                {
-                    CmdOut = ReadDCmdOut.ToArray();
-                    CmdIn = ReadDCmdIn.ToArray();
-                }
-                GetData();
+            {
+                CmdOut = ReadMCmdOut.ToArray();
+                CmdIn = ReadMCmdIn.ToArray();
+            }
+            else
+            {
+                CmdOut = ReadDCmdOut.ToArray(); 
+                CmdIn = ReadDCmdIn.ToArray();
+            }
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                CmdOut = Constant.IsDtAsPlcTcpExitOut;
+                CmdIn = Constant.IsDtAsPlcTcpExitIn;
+            }
+            GetData();
 
 
         }
@@ -280,8 +271,16 @@ namespace xjplc.delta.TCP
             if (ReadDCmdOut.Count == 0 && ReadMCmdOut.Count == 0)
             {
                 ClearBufferCmdOut();
-                CmdOutLst.Add(Constant.IsDtTcpExitOut.ToList<byte>());
-                CmdInLst.Add(Constant.IsDtTcpExitIn.ToList<byte>());
+                if (DeviceId == Constant.xzjDeivceId)
+                {
+                    CmdOutLst.Add(Constant.IsDtAsPlcTcpExitOut.ToList<byte>());
+                    CmdInLst.Add(Constant.IsDtAsPlcTcpExitIn.ToList<byte>());
+                }
+                else
+                {
+                    CmdOutLst.Add(Constant.IsDtTcpExitOut.ToList<byte>());
+                    CmdInLst.Add(Constant.IsDtTcpExitIn.ToList<byte>());
+                }
             }
             else
             {
@@ -325,7 +324,7 @@ namespace xjplc.delta.TCP
                             if (IsRepackDone)
                             {
                                 SetReadCmd();
-                                // if (ConstantMethod.compareByte(array_buffer, SetDMCmdIn.ToArray())))
+                                //if(ConstantMethod.compareByte(array_buffer, SetDMCmdIn.ToArray())))
                                 isRePackCmdReadDMDataOut = false;
                             }
                         }
@@ -346,7 +345,13 @@ namespace xjplc.delta.TCP
                         else
                         {
                             if ((EventDataProcess != null))
-                            {                             
+                            {
+
+                                if (ConstantMethod.compareByte(array_buffer, Constant.IsDtAsPlcTcpExitIn))
+                                {
+                                    SetReadCmd();
+                                } 
+                                else                  
                                 //判断数据是否正确                             
                                 if (array_buffer.Count() == CmdIn.Count())
                                 {
@@ -406,7 +411,6 @@ namespace xjplc.delta.TCP
             get { return isReadingM; }
             set { isReadingM = value; }
         }
-
         public void Reset()
         {
             status = false;
@@ -451,20 +455,42 @@ namespace xjplc.delta.TCP
                 List<int> addressid = new List<int>();
                 List<int> count0 = new List<int>();
                 int addrid = DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(Area);
-                for (int i = 0; i < count; i++)
+                if (DeviceId == Constant.xzjDeivceId)
                 {
+                    addrid = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(Area);
+                    for (int i = 0; i < count; i++)
+                    {
+                        if(value.Count>0)
+                        addr.Add(Addr + i*(value[0].Count()/2));
+                        addressid.Add(addrid);
+                        count0.Add(1);
+                    }
+                }
+                else                          
+                for (int i = 0; i < count; i++)
+                {                    
                     addr.Add(Addr+i);
-                    addressid.Add(DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(Area));
+                    addressid.Add(addrid);
                     count0.Add(1);
                 }
 
                 SetDMCmdOut.Clear();
                 SetDMCmdIn.Clear();
-                if(addrid>Constant.MXAddrId)
-                    SetDMCmdOut.AddRange(DTTcpCmdPackAndDataUnpack.PackWriteByteCmd(addr.ToArray(), addressid.ToArray(), count0.ToArray(), value, SetDMCmdIn));
-                else
-                    SetDMCmdOut.AddRange(DTTcpCmdPackAndDataUnpack.PackWriteBitCmd(addr.ToArray(), addressid.ToArray(), count0.ToArray(), value, SetDMCmdIn));
+                if (DeviceId == Constant.xzjDeivceId)
+                {
+                    if (addrid < Constant.HSD_ID)
+                        SetDMCmdOut.AddRange(DTTcpCmdPackAndDataUnpack.AsPlcPackWriteByteCmd(addr.ToArray(), addressid.ToArray(), count0.ToArray(), value, SetDMCmdIn));
+                    else
+                        SetDMCmdOut.AddRange(DTTcpCmdPackAndDataUnpack.AsPlcPackWriteBitCmd(addr.ToArray(), addressid.ToArray(), count0.ToArray(), value, SetDMCmdIn));
 
+                }
+                else
+                {
+                    if (addrid > Constant.MXAddrId)
+                        SetDMCmdOut.AddRange(DTTcpCmdPackAndDataUnpack.PackWriteByteCmd(addr.ToArray(), addressid.ToArray(), count0.ToArray(), value, SetDMCmdIn));
+                    else
+                        SetDMCmdOut.AddRange(DTTcpCmdPackAndDataUnpack.PackWriteBitCmd(addr.ToArray(), addressid.ToArray(), count0.ToArray(), value, SetDMCmdIn));
+                }
                 ConstantMethod.Delay(200); //延时一下 防止数据发太快 监控上看不到
                 //防止前面在写数据 
                 while (isWriteCmd)
@@ -482,6 +508,8 @@ namespace xjplc.delta.TCP
 
         }
         
+
+
         #endregion
 
     }

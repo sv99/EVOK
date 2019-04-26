@@ -49,13 +49,19 @@ namespace xjplc.delta.TCP
             set { status = value; }
         }
 
+        int deviceId = -1;
+        public int DeviceId
+        {
+            get { return deviceId; }
+            set { deviceId = value; }
+        }
         ServerInfo serverParam;
 
-        public DTTcpDevice(List<string> filepath)
+        public DTTcpDevice(List<string> filepath,int id)
         {
-
+            DeviceId = id;
             Init(filepath);
-        }
+        }    
 
         //切换监控的数据表格
         bool isShiftDataForm = false;    //对于流程：重新打包命令 comm发送 接收修改好 数据返回处理 修改好
@@ -65,7 +71,6 @@ namespace xjplc.delta.TCP
             get { return isShiftDataForm; }
             set { isShiftDataForm = value; }
         }
-
         bool isStopConnection;
         public bool IsStopConnection
         {
@@ -76,7 +81,6 @@ namespace xjplc.delta.TCP
                // comManager.IsNoConnection = value;
             }
         }
-
         void Init(List<string> filestr)
         {
 
@@ -89,6 +93,7 @@ namespace xjplc.delta.TCP
 
             MPlcInfo = new List<DTTcpPlcInfo>();
             DPlcInfo = new List<DTTcpPlcInfo>();
+
 
             serverParam = ConstantMethod.LoadServerParam(Constant.ConfigServerPortFilePath);
 
@@ -108,7 +113,6 @@ namespace xjplc.delta.TCP
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
 
         }
-
        
         #region 通讯错误
         //通讯错误引发的事件
@@ -196,7 +200,7 @@ namespace xjplc.delta.TCP
                         if (dt.Rows.Count == Constant.DataRowWatchMax) break;
                     }
                     //屏幕分割
-                    //splitDataForm(dt, dataFormLst[formid]);
+                   // splitDataForm(dt, dataFormLst[formid]);
                 }
                 else
                 if (dataForm != null && dataForm.Rows.Count > 0)
@@ -272,36 +276,29 @@ namespace xjplc.delta.TCP
                 tcpClientManager = null;
             }
 
-
-
             tcpClientManager = new DTTcpClientManager(portParam0);
+            tcpClientManager.SetDeviceId(DeviceId);
             //设置数据处理委托事件
+            if(DeviceId==Constant.xzjDeivceId)
+            {
+                tcpClientManager.EventDataProcess += new xjplc.socDataProcess(AsPlcDataprocess);
+            }
+            else
             tcpClientManager.EventDataProcess += new xjplc.socDataProcess(Dataprocess);
-
-            //命令打包类重新确认
-           // comManager.SetDTPLCcmd(DTPLCcmd);
-
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+          
         }
         public void SetPlcReadDMData(DataTable dt)
         {
 
             //确认表格 //这个要隔离出来 方便以后可以单独调用 针对用户更改读取内容
-
             if (dt != null && dt.Rows.Count > 0)
             {
                 dataForm = dt;
-                //dgShow = dg;
+        
                 PackCmdReadDMDataOut(dataForm);
-                //在建立连接的时候 切换表格数据源
-                //if (dgShow != null)
-                // dgShow.DataSource = dataForm;
-
 
             }
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
+
         }
         /// <summary>
         /// 如果用户需要重新制定读取一些D区 M区的话可以先设置保存读取PLC 内容的文件
@@ -380,9 +377,7 @@ namespace xjplc.delta.TCP
         {
             get { return dataForm; }
             set { dataForm = value; }
-        }
-
-       
+        }       
       
         /// <summary>
         /// 本函数的思路：
@@ -409,10 +404,8 @@ namespace xjplc.delta.TCP
 
                 if(!getAddrAndArea(row,ref mAddr, ref mArea, ref DSmode,ref strSplit2, ref count)) continue;
                 //这里数组进行统计                 
-                //传入数据起始地址 个数 区域 模式
-                
-                DTTcpPlcInfo[] tmpInfoLst = DTTcpCmdPackAndDataUnpack.GetPlcInfo(mAddr, count, strSplit2, DSmode);
-
+                //传入数据起始地址 个数 区域 模式               
+                DTTcpPlcInfo[] tmpInfoLst = DTTcpCmdPackAndDataUnpack.GetPlcInfo(mAddr, count, strSplit2, DSmode,DeviceId);
 
                 if (tmpInfoLst.Count() > 0)
                 {                  
@@ -427,26 +420,44 @@ namespace xjplc.delta.TCP
             plcInfoLst = plcInfoLst.Distinct(new ModelComparerDTTcpInfo()).ToList();
 
             //分离D 区 M区
-            DPlcInfo = plcInfoLst.FindAll(t => t.IntArea > (Constant.MXAddrId));
-            MPlcInfo = plcInfoLst.FindAll(t => t.IntArea < (Constant.QWAddrId));
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                DPlcInfo = plcInfoLst.FindAll(t => t.IntArea < (Constant.HSD_ID));
+                MPlcInfo = plcInfoLst.FindAll(t => t.IntArea > (Constant.HSD_ID));
+            }
+            else
+            {
+                DPlcInfo = plcInfoLst.FindAll(t => t.IntArea > (Constant.MXAddrId));
+                MPlcInfo = plcInfoLst.FindAll(t => t.IntArea < (Constant.QWAddrId));
+            }
 
             #endregion
             #region  根据断点 建立命令的表格缓冲lst 然后创建读取DM区域的命令 
 
            tcpClientManager.ClearCmd();
-            
-           DTTcpCmdPackAndDataUnpack. 
-           PackReadDCmd(DPlcInfo.ToArray(), tcpClientManager.ReadDCmdOut,  tcpClientManager.ReadDCmdIn);
 
-      
-           DTTcpCmdPackAndDataUnpack.
-           PackReadMCmd(MPlcInfo.ToArray(), tcpClientManager.ReadMCmdOut, tcpClientManager.ReadMCmdIn);
+           if (DeviceId == Constant.xzjDeivceId)
+            {
+                DTTcpCmdPackAndDataUnpack.ASPLCPackReadDCmd
+                (DPlcInfo.ToArray(), tcpClientManager.ReadDCmdOut, tcpClientManager.ReadDCmdIn);
 
-            //dataform表格里面地址对应dplcinfo和mplcinfo的数据对应起来
-           FindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfo);
+                DTTcpCmdPackAndDataUnpack.ASPLCPackReadMCmd
+                (MPlcInfo.ToArray(), tcpClientManager.ReadMCmdOut, tcpClientManager.ReadMCmdIn);
+                //dataform表格里面地址对应dplcinfo和mplcinfo的数据对应起来
+                AsPlcFindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfo);
+            }
+            else
+            {
+                DTTcpCmdPackAndDataUnpack.
+                PackReadDCmd(DPlcInfo.ToArray(), tcpClientManager.ReadDCmdOut, tcpClientManager.ReadDCmdIn);
 
-          
 
+                DTTcpCmdPackAndDataUnpack.
+                PackReadMCmd(MPlcInfo.ToArray(), tcpClientManager.ReadMCmdOut, tcpClientManager.ReadMCmdIn);
+
+                //dataform表格里面地址对应dplcinfo和mplcinfo的数据对应起来
+                FindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfo);
+            }              
         }
         
         //根据字符 获取地址和区域
@@ -473,20 +484,33 @@ namespace xjplc.delta.TCP
 
             DSmode = row["mode"].ToString().Trim();
          
-            string area="";///地址区域          
+            string area="";//地址区域          
             string valueStr = row["addr"].ToString().Trim();
 
+            //区分asPlc和DVP plc  
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                ConstantMethod.getAddrAndAreaByStrUseAsPlc(valueStr, ref mAddr, ref area);
+            }
+            else
             ConstantMethod.getAddrAndAreaByStr(valueStr, ref mAddr, ref area);
 
             //地址超了 无效 暂且定XDM 最大69999
             if ((mAddr < 0) || (mAddr > Constant.DTTCPMAXAddr))
             {
                 return false;
-            }               
+            }
+                           
             if (!int.TryParse(row["count"].ToString().Trim(), out count))
             {
                 return false;
             }
+            //台达AS 与DVP 15mc
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                mArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area);
+            }
+            else
             mArea = DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(area);
 
             mAreaStr = area;
@@ -501,6 +525,9 @@ namespace xjplc.delta.TCP
             string area = "";///地址区域          
             string valueStr = row["addr"].ToString().Trim();
             int count = 0;
+            if(DeviceId==Constant.xzjDeivceId)
+                ConstantMethod.getAddrAndAreaByStrUseAsPlc(valueStr, ref mAddr, ref area);
+            else
             ConstantMethod.getAddrAndAreaByStr(valueStr, ref mAddr, ref area);
 
             //地址超了 无效 暂且定XDM 最大69999
@@ -512,10 +539,17 @@ namespace xjplc.delta.TCP
             {
                 return false;
             }
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                mArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area);
+                mAddr = XJPLCPackCmdAndDataUnpack.RelAbsGet(mAddr, mArea,DeviceId);
+            }
+            else
+            {
+                mArea = DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(area);
 
-            mArea = DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(area);
-
-            mAddr = DTTcpCmdPackAndDataUnpack.GetAbsAddrFromStr(mAddr, area);
+                mAddr = DTTcpCmdPackAndDataUnpack.GetAbsAddrFromStr(mAddr, area);
+            }
 
             return true;
         }      
@@ -570,6 +604,91 @@ namespace xjplc.delta.TCP
         /// <param name="area"></param>
         /// <param name="DSmode"></param>
         /// <returns></returns>
+
+        private bool AsPlcFindIndexInPlcInfo(DataTable datafm, List<DTTcpPlcInfo> dAll, List<DTTcpPlcInfo> mAll)
+        {
+            foreach (DataRow row in datafm.Rows)
+            {
+                if (row == null) continue;
+
+                int mAddr = -1;
+                int mArea = -1;
+                string DSmode = "";
+                if (!getAddrAndArea(row, ref mAddr, ref mArea, ref DSmode)) continue;
+                if (mArea < 0) continue;
+                if (row["param1"] != null && row["param2"] != null)
+                {
+                    int[] s = AsPlcFindValueIndexFromDPlcInfo(mAddr, mArea, DSmode);
+
+                    row["param1"] = s[0].ToString();
+                    row["param2"] = s[1].ToString();
+                    //让集合 把dataform 也保存下 方便更新数据
+                    if (mArea < Constant.HSD_ID)
+                    {
+                        if (!(s[0] > -1)) continue;
+                        dAll[s[0]].BelongToDT = datafm;
+                        dAll[s[0]].Row = datafm.Rows.IndexOf(row);
+                    }
+                    else
+                    {
+
+                        if (!(s[0] > -1)) continue;
+                        mAll[s[0]].BelongToDT = datafm;
+                        mAll[s[0]].Row = datafm.Rows.IndexOf(row);
+                    }
+                }
+
+            }
+            return true;
+        }
+
+        public int[] AsPlcFindValueIndexFromDPlcInfo(int addr, int area, string DSmode)
+        {
+
+            int[] result = new int[2];
+            result[0] = -1;
+
+            result[1] = -1;
+            //寻找地址和字母都对的
+            List<DTTcpPlcInfo> dpResultLow = null;
+
+            if (area < Constant.HSD_ID)
+            {
+                dpResultLow = DPlcInfo.FindAll(
+                delegate (DTTcpPlcInfo pf)
+                {
+                    return (pf.AbsAddr == addr) && (pf.IntArea.Equals(area));
+                });
+                if (dpResultLow.Count > 0)
+                    //单字的话就是D区和M区的情况了
+                result[0] = DPlcInfo.IndexOf(dpResultLow[0]);
+
+            }
+            else
+            {
+
+                dpResultLow = MPlcInfo.FindAll(
+                delegate (DTTcpPlcInfo pf)
+                {
+                    return (pf.AbsAddr == addr) && (pf.IntArea.Equals(area));
+                });
+
+                //找到M了 
+
+                if (dpResultLow.Count > 0)
+                {
+                    result[0] = MPlcInfo.IndexOf(dpResultLow[0]);
+                }
+
+
+            }
+
+
+            return result;
+
+        }
+
+
         public int[] FindValueIndexFromDPlcInfo(int addr, int area, string DSmode)
         {
 
@@ -638,6 +757,112 @@ namespace xjplc.delta.TCP
         #endregion PLC数据需要采集的准备
 
         #region 处理数据 及更新表格      
+        void AsPlcDataprocess(object sender, SocEventArgs e)
+        {
+
+            if (isShiftDataForm)
+            {
+                isShiftDataForm = false;
+                return;
+            }
+            if (e.Byte_buffer.Count() < 12) return;
+
+            List<byte> data = new List<byte>();
+            List<byte[]> value = new List<byte[]>();
+
+            data.AddRange(e.Byte_buffer);
+
+            byte[] s = data.Skip(7).Take(2).ToArray();
+            if ((!ConstantMethod.compareByteStrictly(s, Constant.DTAsPlcTcpFunctionReadBitCmd))
+                && (!(ConstantMethod.compareByteStrictly(s, Constant.DTAsPlcTcpFunctionReadByteCmd)))) return;
+
+            byte[] s1 = data.Skip(9).Take(2).ToArray();
+            Array.Reverse(s1);
+            int ss = BitConverter.ToInt16(s1, 0);
+            if (ss < 1) return;
+            if (data.Count > 11)
+                data.RemoveRange(0, 11);
+            //这里执行一种数据获取当时直到数据数量取完
+            
+            if (ConstantMethod.compareByteStrictly(s, Constant.DTAsPlcTcpFunctionReadBitCmd))
+            {
+                while (data.Count > 0)
+                {
+                    Application.DoEvents();
+                    if (data.Count > 1)
+                    {
+                        byte[] dataArray = data.Skip(0).Take(2).ToArray();
+                        Array.Reverse(dataArray);
+                        int m = BitConverter.ToInt16(dataArray, 0);
+                        data.RemoveRange(0, 2);
+
+                        if (data.Count() > (m - 1))
+                        {
+                            byte[] dataArray0 = data.Skip(0).Take(m).ToArray();
+
+                            value.Add(dataArray0);
+                            data.RemoveRange(0, m);
+                        }
+                    }
+                }
+                //m
+                if (MPlcInfo.Count() == value.Count())
+                {
+                    for (int i = 0; i < MPlcInfo.Count(); i++)
+                    { 
+                       MPlcInfo[i].ByteValue = value[i];
+                    }
+                }
+            }
+            else    
+            {
+                if (ConstantMethod.compareByteStrictly(s, Constant.DTAsPlcTcpFunctionReadByteCmd))
+                {
+                    while (data.Count > 0)
+                    {
+                        if (data.Count > 1)
+                        {
+                            byte[] dataArray = data.Skip(0).Take(2).ToArray();
+                            Array.Reverse(dataArray);
+                            int m = BitConverter.ToInt16(dataArray, 0);
+                            data.RemoveRange(0, 2);
+                            List<byte> tempLst = new List<byte>();
+                            for (int i = 0; i < m; i++)
+                            {
+                                byte[] dataArray0 = data.Skip(0).Take(2).ToArray();
+                                Array.Reverse(dataArray0);
+                                tempLst.AddRange(dataArray0);
+                                if (data.Count() > 1)
+                                {
+                                    data.RemoveRange(0, 2);
+                                }
+                            }
+
+                            value.Add(tempLst.ToArray());
+                        }
+                    }
+
+
+                    //D 
+                    if (DPlcInfo.Count() == value.Count())
+                    {
+                        for (int i = 0; i < DPlcInfo.Count(); i++)
+                        {
+                                                      
+                            DPlcInfo[i].ByteValue = value[i];                            
+                        }
+                    }
+
+                }
+            }
+            //update form
+            updateData();
+            //数据处理 以及更新 datagridview
+            // DTPLCcmd.UnPackCmdReadDMDataIn(dataForm,e.Byte_buffer, DPlcInfo, MPlcInfoAll);            
+            Application.DoEvents();
+            e.Byte_buffer = null;
+
+        }
 
         void Dataprocess(object sender, SocEventArgs e)
         {
@@ -829,7 +1054,7 @@ namespace xjplc.delta.TCP
         public void SetMValueON2OFF(DTPlcInfoSimple p)
         {
             SetMValueON(p);
-           // ConstantMethod.Delay(500);
+           //ConstantMethod.Delay(500);
             SetMValueOFF(p);
         }
         public void SetMValueOFF2ON(DTPlcInfoSimple p)
@@ -861,8 +1086,63 @@ namespace xjplc.delta.TCP
             List<byte> valueByte = new List<byte>();
             Dictionary<string, int> modeByteCount = new Dictionary<string, int>();
 
-            ConstantMethod.ArrayToDictionary(modeByteCount,Constant.tcpType,Constant.tcpTypeByteCount);
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                ConstantMethod.ArrayToDictionary(modeByteCount, Constant.asPlcTcpType, Constant.asPlcTcpTypeByteCount);
 
+                switch (modeByteCount[Mode])
+                {
+
+                    case 1:
+                        {
+
+                            int data1Byte = 0;
+
+                           //D区单字节 和位 区分开
+
+                            if (int.TryParse(value, out data1Byte))
+                            {
+                                if (Mode.Equals(Constant.BitMode))
+                                {
+                                    valueByte.Add((byte)data1Byte);
+                                }
+                                else
+                                {
+                                    valueByte.AddRange(ConstantMethod.getDataHighLowByte(data1Byte));
+
+                                }
+                            }
+
+                            break;
+                        }
+                    case 2:
+                        {
+                            int data1Byte = 0;
+                            if (int.TryParse(value, out data1Byte))
+                            {
+
+                                valueByte.AddRange(BitConverter.GetBytes(data1Byte));
+                            }
+                            byte temp = 0;
+                           
+                            temp = valueByte[0];
+                            valueByte[0] = valueByte[1];
+                            valueByte[1] = temp;
+                            temp = valueByte[2];
+                            valueByte[2] = valueByte[3];
+                            valueByte[3] = temp;
+                          
+                            break;
+                        }
+
+                }
+
+                return valueByte.ToArray();
+                }
+            else
+            {
+                ConstantMethod.ArrayToDictionary(modeByteCount, Constant.tcpType, Constant.tcpTypeByteCount);
+            }
             //1字节 2 字节 4字节 8字节
 
             switch (modeByteCount[Mode])
@@ -949,7 +1229,7 @@ namespace xjplc.delta.TCP
             {
                 dvalueLst.Add(getByteFromMode(value[i], mode));
             }
-            //这里传入的数据 应该是  
+            //这里传入的数据应该是  
             return tcpClientManager.SetMultipleDMArea(relAddr, value.Count(), dvalueLst, area);   
         }
         #endregion

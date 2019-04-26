@@ -33,17 +33,20 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开数据文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectMachine = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openfileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deviceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectMachineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCurrentDataForm = new System.Windows.Forms.ToolStripMenuItem();
-            this.查看日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.加载历史日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.使用说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于程序版本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wathCurrentLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.watchHistoryLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.langShiftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemChinese = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemEnglish = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutVersionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutEvokMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button11 = new System.Windows.Forms.Button();
@@ -115,6 +118,8 @@
             this.lblY16 = new System.Windows.Forms.Button();
             this.BtnM101 = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.dgvParam = new System.Windows.Forms.DataGridView();
             this.bin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.value = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -148,97 +153,122 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
-            this.设备ToolStripMenuItem,
-            this.帮助ToolStripMenuItem});
+            this.fileMenuItem,
+            this.deviceMenuItem,
+            this.helpMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1789, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1789, 35);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 文件ToolStripMenuItem
+            // fileMenuItem
             // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开数据文件ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.文件ToolStripMenuItem.Text = "文件";
+            this.fileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openfileMenuItem});
+            this.fileMenuItem.Name = "fileMenuItem";
+            this.fileMenuItem.Size = new System.Drawing.Size(64, 31);
+            this.fileMenuItem.Text = "文件";
             // 
-            // 打开数据文件ToolStripMenuItem
+            // openfileMenuItem
             // 
-            this.打开数据文件ToolStripMenuItem.Name = "打开数据文件ToolStripMenuItem";
-            this.打开数据文件ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
-            this.打开数据文件ToolStripMenuItem.Text = "打开数据文件";
+            this.openfileMenuItem.Name = "openfileMenuItem";
+            this.openfileMenuItem.Size = new System.Drawing.Size(210, 32);
+            this.openfileMenuItem.Text = "打开数据文件";
             // 
-            // 设备ToolStripMenuItem
+            // deviceMenuItem
             // 
-            this.设备ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectMachine,
+            this.deviceMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectMachineMenuItem,
             this.showCurrentDataForm,
-            this.查看日志文件ToolStripMenuItem,
-            this.加载历史日志文件ToolStripMenuItem});
-            this.设备ToolStripMenuItem.Name = "设备ToolStripMenuItem";
-            this.设备ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.设备ToolStripMenuItem.Text = "设备";
-            this.设备ToolStripMenuItem.Click += new System.EventHandler(this.设备ToolStripMenuItem_Click);
+            this.wathCurrentLogMenuItem,
+            this.watchHistoryLogMenuItem});
+            this.deviceMenuItem.Name = "deviceMenuItem";
+            this.deviceMenuItem.Size = new System.Drawing.Size(64, 31);
+            this.deviceMenuItem.Text = "设备";
+            this.deviceMenuItem.Click += new System.EventHandler(this.设备ToolStripMenuItem_Click);
             // 
-            // connectMachine
+            // connectMachineMenuItem
             // 
-            this.connectMachine.Name = "connectMachine";
-            this.connectMachine.Size = new System.Drawing.Size(204, 26);
-            this.connectMachine.Text = "连接设备";
-            this.connectMachine.Click += new System.EventHandler(this.connectMachine_Click);
+            this.connectMachineMenuItem.Name = "connectMachineMenuItem";
+            this.connectMachineMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.connectMachineMenuItem.Text = "连接设备";
+            this.connectMachineMenuItem.Click += new System.EventHandler(this.connectMachine_Click);
             // 
             // showCurrentDataForm
             // 
             this.showCurrentDataForm.Name = "showCurrentDataForm";
-            this.showCurrentDataForm.Size = new System.Drawing.Size(204, 26);
+            this.showCurrentDataForm.Size = new System.Drawing.Size(250, 32);
             this.showCurrentDataForm.Text = "监控当前页面数据";
             this.showCurrentDataForm.Click += new System.EventHandler(this.监控当前页面数据ToolStripMenuItem_Click);
             // 
-            // 查看日志文件ToolStripMenuItem
+            // wathCurrentLogMenuItem
             // 
-            this.查看日志文件ToolStripMenuItem.Name = "查看日志文件ToolStripMenuItem";
-            this.查看日志文件ToolStripMenuItem.Size = new System.Drawing.Size(204, 26);
-            this.查看日志文件ToolStripMenuItem.Text = "查看当前日志文件";
-            this.查看日志文件ToolStripMenuItem.Click += new System.EventHandler(this.查看日志文件ToolStripMenuItem_Click);
+            this.wathCurrentLogMenuItem.Name = "wathCurrentLogMenuItem";
+            this.wathCurrentLogMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.wathCurrentLogMenuItem.Text = "查看当前日志文件";
+            this.wathCurrentLogMenuItem.Click += new System.EventHandler(this.查看日志文件ToolStripMenuItem_Click);
             // 
-            // 加载历史日志文件ToolStripMenuItem
+            // watchHistoryLogMenuItem
             // 
-            this.加载历史日志文件ToolStripMenuItem.Name = "加载历史日志文件ToolStripMenuItem";
-            this.加载历史日志文件ToolStripMenuItem.Size = new System.Drawing.Size(204, 26);
-            this.加载历史日志文件ToolStripMenuItem.Text = "查看历史日志文件";
-            this.加载历史日志文件ToolStripMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
+            this.watchHistoryLogMenuItem.Name = "watchHistoryLogMenuItem";
+            this.watchHistoryLogMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.watchHistoryLogMenuItem.Text = "查看历史日志文件";
+            this.watchHistoryLogMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
             // 
-            // 帮助ToolStripMenuItem
+            // helpMenuItem
             // 
-            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.使用说明ToolStripMenuItem,
-            this.关于程序版本ToolStripMenuItem,
-            this.关于意利欧机械有限公司ToolStripMenuItem});
-            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(51, 24);
-            this.帮助ToolStripMenuItem.Text = "帮助";
+            this.helpMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.useMenuItem,
+            this.langShiftMenuItem,
+            this.aboutVersionMenuItem,
+            this.aboutEvokMenuItem});
+            this.helpMenuItem.Name = "helpMenuItem";
+            this.helpMenuItem.Size = new System.Drawing.Size(64, 31);
+            this.helpMenuItem.Text = "帮助";
             // 
-            // 使用说明ToolStripMenuItem
+            // useMenuItem
             // 
-            this.使用说明ToolStripMenuItem.Name = "使用说明ToolStripMenuItem";
-            this.使用说明ToolStripMenuItem.Size = new System.Drawing.Size(249, 26);
-            this.使用说明ToolStripMenuItem.Text = "使用说明";
+            this.useMenuItem.Name = "useMenuItem";
+            this.useMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.useMenuItem.Text = "使用说明";
             // 
-            // 关于程序版本ToolStripMenuItem
+            // langShiftMenuItem
             // 
-            this.关于程序版本ToolStripMenuItem.Name = "关于程序版本ToolStripMenuItem";
-            this.关于程序版本ToolStripMenuItem.Size = new System.Drawing.Size(249, 26);
-            this.关于程序版本ToolStripMenuItem.Text = "关于程序版本";
+            this.langShiftMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemChinese,
+            this.menuItemEnglish});
+            this.langShiftMenuItem.Name = "langShiftMenuItem";
+            this.langShiftMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.langShiftMenuItem.Text = "语言切换";
+            this.langShiftMenuItem.Click += new System.EventHandler(this.语言切换CHToolStripMenuItem_Click);
             // 
-            // 关于意利欧机械有限公司ToolStripMenuItem
+            // menuItemChinese
             // 
-            this.关于意利欧机械有限公司ToolStripMenuItem.Name = "关于意利欧机械有限公司ToolStripMenuItem";
-            this.关于意利欧机械有限公司ToolStripMenuItem.Size = new System.Drawing.Size(249, 26);
-            this.关于意利欧机械有限公司ToolStripMenuItem.Text = "关于意利欧机械有限公司";
+            this.menuItemChinese.Name = "menuItemChinese";
+            this.menuItemChinese.Size = new System.Drawing.Size(130, 32);
+            this.menuItemChinese.Text = "中文";
+            this.menuItemChinese.Click += new System.EventHandler(this.menuItemChinese_Click);
+            // 
+            // menuItemEnglish
+            // 
+            this.menuItemEnglish.Name = "menuItemEnglish";
+            this.menuItemEnglish.Size = new System.Drawing.Size(130, 32);
+            this.menuItemEnglish.Text = "英文";
+            this.menuItemEnglish.Click += new System.EventHandler(this.menuItemEnglish_Click);
+            // 
+            // aboutVersionMenuItem
+            // 
+            this.aboutVersionMenuItem.Name = "aboutVersionMenuItem";
+            this.aboutVersionMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.aboutVersionMenuItem.Text = "关于程序版本";
+            // 
+            // aboutEvokMenuItem
+            // 
+            this.aboutEvokMenuItem.Name = "aboutEvokMenuItem";
+            this.aboutEvokMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.aboutEvokMenuItem.Text = "关于意利欧机械有限公司";
             // 
             // tc1
             // 
@@ -362,7 +392,7 @@
             // qClr
             // 
             this.qClr.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.qClr.Location = new System.Drawing.Point(36, 175);
+            this.qClr.Location = new System.Drawing.Point(40, 178);
             this.qClr.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.qClr.Name = "qClr";
             this.qClr.Size = new System.Drawing.Size(164, 52);
@@ -436,7 +466,7 @@
             "12",
             "13",
             "14"});
-            this.comboBox2.Location = new System.Drawing.Point(440, 65);
+            this.comboBox2.Location = new System.Drawing.Point(535, 65);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(137, 31);
@@ -460,7 +490,7 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(1053, 18);
+            this.textBox1.Location = new System.Drawing.Point(1213, 18);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(112, 38);
@@ -474,7 +504,7 @@
             // lcTxt
             // 
             this.lcTxt.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lcTxt.Location = new System.Drawing.Point(759, 19);
+            this.lcTxt.Location = new System.Drawing.Point(899, 18);
             this.lcTxt.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lcTxt.Name = "lcTxt";
             this.lcTxt.Size = new System.Drawing.Size(112, 38);
@@ -489,7 +519,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(923, 22);
+            this.label2.Location = new System.Drawing.Point(1038, 23);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(152, 28);
@@ -500,7 +530,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(675, 21);
+            this.label10.Location = new System.Drawing.Point(675, 23);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(96, 28);
@@ -511,7 +541,7 @@
             // 
             this.slLbl.AutoSize = true;
             this.slLbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.slLbl.Location = new System.Drawing.Point(539, 21);
+            this.slLbl.Location = new System.Drawing.Point(575, 23);
             this.slLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.slLbl.Name = "slLbl";
             this.slLbl.Size = new System.Drawing.Size(68, 28);
@@ -523,7 +553,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(435, 21);
+            this.label3.Location = new System.Drawing.Point(471, 23);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 28);
@@ -534,7 +564,7 @@
             // 
             this.clLbl.AutoSize = true;
             this.clLbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.clLbl.Location = new System.Drawing.Point(301, 22);
+            this.clLbl.Location = new System.Drawing.Point(384, 23);
             this.clLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.clLbl.Name = "clLbl";
             this.clLbl.Size = new System.Drawing.Size(68, 28);
@@ -546,7 +576,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(301, 68);
+            this.label5.Location = new System.Drawing.Point(353, 65);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(152, 28);
@@ -557,7 +587,7 @@
             // 
             this.clLbl1.AutoSize = true;
             this.clLbl1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.clLbl1.Location = new System.Drawing.Point(216, 21);
+            this.clLbl1.Location = new System.Drawing.Point(206, 23);
             this.clLbl1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.clLbl1.Name = "clLbl1";
             this.clLbl1.Size = new System.Drawing.Size(96, 28);
@@ -568,7 +598,7 @@
             // 
             this.prodlbl.AutoSize = true;
             this.prodlbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.prodlbl.Location = new System.Drawing.Point(124, 21);
+            this.prodlbl.Location = new System.Drawing.Point(130, 23);
             this.prodlbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.prodlbl.Name = "prodlbl";
             this.prodlbl.Size = new System.Drawing.Size(68, 28);
@@ -580,7 +610,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(17, 21);
+            this.label1.Location = new System.Drawing.Point(17, 23);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(124, 28);
@@ -603,7 +633,7 @@
             // loadDataBtn
             // 
             this.loadDataBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.loadDataBtn.Location = new System.Drawing.Point(36, 119);
+            this.loadDataBtn.Location = new System.Drawing.Point(40, 119);
             this.loadDataBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadDataBtn.Name = "loadDataBtn";
             this.loadDataBtn.Size = new System.Drawing.Size(164, 52);
@@ -616,7 +646,7 @@
             // autoSLBtn
             // 
             this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(237, 175);
+            this.autoSLBtn.Location = new System.Drawing.Point(237, 180);
             this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.autoSLBtn.Name = "autoSLBtn";
             this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
@@ -624,7 +654,6 @@
             this.autoSLBtn.Tag = "结疤测量";
             this.autoSLBtn.Text = "结疤测量";
             this.autoSLBtn.UseVisualStyleBackColor = true;
-            this.autoSLBtn.Visible = false;
             this.autoSLBtn.Click += new System.EventHandler(this.autoSLBtn_Click);
             // 
             // resetBtn
@@ -849,7 +878,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label4.Location = new System.Drawing.Point(1217, 198);
+            this.label4.Location = new System.Drawing.Point(1207, 206);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(97, 40);
@@ -860,7 +889,7 @@
             // 
             this.label125.AutoSize = true;
             this.label125.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label125.Location = new System.Drawing.Point(1217, 24);
+            this.label125.Location = new System.Drawing.Point(1207, 24);
             this.label125.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label125.Name = "label125";
             this.label125.Size = new System.Drawing.Size(97, 40);
@@ -1205,6 +1234,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.comboBox3);
+            this.tabPage3.Controls.Add(this.label6);
             this.tabPage3.Controls.Add(this.dgvParam);
             this.tabPage3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.tabPage3.Location = new System.Drawing.Point(4, 33);
@@ -1216,6 +1247,25 @@
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
             this.tabPage3.Enter += new System.EventHandler(this.tabPage3_Enter);
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Location = new System.Drawing.Point(1309, 38);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(217, 28);
+            this.comboBox3.TabIndex = 5;
+            this.comboBox3.SelectedValueChanged += new System.EventHandler(this.comboBox3_SelectedValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label6.Location = new System.Drawing.Point(1053, 38);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(250, 28);
+            this.label6.TabIndex = 4;
+            this.label6.Text = "小尺寸打印机设置:";
             // 
             // dgvParam
             // 
@@ -1350,7 +1400,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "WorkForm";
-            this.Text = "EVOK-0066";
+            this.Text = "EVOK-V0066";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -1365,6 +1415,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParam)).EndInit();
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO)).EndInit();
@@ -1378,14 +1429,14 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 打开数据文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 使用说明ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于程序版本ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于意利欧机械有限公司ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 设备ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem connectMachine;
+        private System.Windows.Forms.ToolStripMenuItem fileMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openfileMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutVersionMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutEvokMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deviceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectMachineMenuItem;
         private System.Windows.Forms.TabControl tc1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -1460,8 +1511,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn value0;
         private System.Windows.Forms.ComboBox printcb;
         private System.Windows.Forms.ToolStripStatusLabel infoLbl;
-        private System.Windows.Forms.ToolStripMenuItem 查看日志文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 加载历史日志文件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wathCurrentLogMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem watchHistoryLogMenuItem;
         private System.Windows.Forms.OpenFileDialog logOPF;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
@@ -1476,6 +1527,11 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.ToolStripMenuItem langShiftMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuItemChinese;
+        private System.Windows.Forms.ToolStripMenuItem menuItemEnglish;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label6;
     }
 }
 

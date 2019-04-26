@@ -18,7 +18,7 @@ namespace xjplc
     /// </summary>
     public class XJDevice 
     {
-        string deviceId="无设备id";
+        string deviceId=" null id";
         public string DeviceId
         {
             get { return deviceId; }
@@ -193,7 +193,7 @@ namespace xjplc
                 else
                 {
                    
-                    MessageBox.Show("设备连接失败！");
+                    MessageBox.Show(Constant.ConnectMachineFail);
                     return;
                 }
                

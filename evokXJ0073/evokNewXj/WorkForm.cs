@@ -196,7 +196,7 @@ namespace evokNew0073
              evokWork.SetUserDataGridView(UserData);
              evokWork.SetRtbWork(rtbWork);
              evokWork.SetRtbResult(rtbResult);
-             evokWork.SetPrintReport(report1);
+             evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
              evokWork.SetOptParamShowCombox(comboBox2);
@@ -254,7 +254,7 @@ namespace evokNew0073
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(evokWork.lcTxt_KeyPress(sender,e))
+            if(evokWork.AutoParamTxt_KeyPress(sender,e))
             resetBtn.Focus();
         }
 
@@ -794,8 +794,8 @@ namespace evokNew0073
 
         private void button10_Click(object sender, EventArgs e)
         {
-            if (UserData.CurrentRow.Index > -1)
-                evokWork.ShowBarCode(report1, UserData.CurrentRow.Index);
+           // if (UserData.CurrentRow.Index > -1)
+               // evokWork.ShowBarCode(report1, UserData.CurrentRow.Index);
         }
 
         private void 查看日志文件ToolStripMenuItem_Click(object sender, EventArgs e)

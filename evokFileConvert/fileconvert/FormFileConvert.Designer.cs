@@ -47,6 +47,9 @@
             this.pBar1 = new System.Windows.Forms.ProgressBar();
             this.demoLoadDialog = new System.Windows.Forms.OpenFileDialog();
             this.printReport = new FastReport.Report();
+            this.button1 = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.printReport)).BeginInit();
@@ -58,7 +61,7 @@
             this.dgv.Location = new System.Drawing.Point(12, 31);
             this.dgv.Name = "dgv";
             this.dgv.RowTemplate.Height = 27;
-            this.dgv.Size = new System.Drawing.Size(909, 447);
+            this.dgv.Size = new System.Drawing.Size(731, 447);
             this.dgv.TabIndex = 0;
             this.dgv.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgv_CellDoubleClick);
             // 
@@ -66,7 +69,7 @@
             // 
             this.button3.Location = new System.Drawing.Point(12, 484);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(909, 61);
+            this.button3.Size = new System.Drawing.Size(731, 61);
             this.button3.TabIndex = 1;
             this.button3.Text = "导出机器文件";
             this.button3.UseVisualStyleBackColor = true;
@@ -74,7 +77,7 @@
             // 
             // rtbResult
             // 
-            this.rtbResult.Location = new System.Drawing.Point(927, 31);
+            this.rtbResult.Location = new System.Drawing.Point(749, 31);
             this.rtbResult.Name = "rtbResult";
             this.rtbResult.Size = new System.Drawing.Size(300, 507);
             this.rtbResult.TabIndex = 4;
@@ -88,7 +91,7 @@
             this.设置ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1242, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1481, 35);
             this.menuStrip1.TabIndex = 5;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -99,27 +102,27 @@
             this.导入CSV文件ToolStripMenuItem,
             this.导入CSVToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 导入excel文件ToolStripMenuItem
             // 
             this.导入excel文件ToolStripMenuItem.Name = "导入excel文件ToolStripMenuItem";
-            this.导入excel文件ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.导入excel文件ToolStripMenuItem.Size = new System.Drawing.Size(217, 32);
             this.导入excel文件ToolStripMenuItem.Text = "导入excel文件";
             this.导入excel文件ToolStripMenuItem.Click += new System.EventHandler(this.导入excel文件ToolStripMenuItem_Click);
             // 
             // 导入CSV文件ToolStripMenuItem
             // 
             this.导入CSV文件ToolStripMenuItem.Name = "导入CSV文件ToolStripMenuItem";
-            this.导入CSV文件ToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.导入CSV文件ToolStripMenuItem.Size = new System.Drawing.Size(217, 32);
             this.导入CSV文件ToolStripMenuItem.Text = "导入CSV(,)";
             this.导入CSV文件ToolStripMenuItem.Click += new System.EventHandler(this.导入CSV文件ToolStripMenuItem_Click);
             // 
             // 导入CSVToolStripMenuItem
             // 
             this.导入CSVToolStripMenuItem.Name = "导入CSVToolStripMenuItem";
-            this.导入CSVToolStripMenuItem.Size = new System.Drawing.Size(174, 26);
+            this.导入CSVToolStripMenuItem.Size = new System.Drawing.Size(217, 32);
             this.导入CSVToolStripMenuItem.Text = "导入CSV(;)";
             this.导入CSVToolStripMenuItem.Click += new System.EventHandler(this.导入CSVToolStripMenuItem_Click);
             // 
@@ -132,41 +135,41 @@
             this.barCodeButton,
             this.加载条码ToolStripMenuItem});
             this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
+            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
             this.设置ToolStripMenuItem.Text = "设置";
             // 
             // 设置导出模板ToolStripMenuItem
             // 
             this.设置导出模板ToolStripMenuItem.Name = "设置导出模板ToolStripMenuItem";
-            this.设置导出模板ToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.设置导出模板ToolStripMenuItem.Size = new System.Drawing.Size(210, 32);
             this.设置导出模板ToolStripMenuItem.Text = "设置导出模板";
             this.设置导出模板ToolStripMenuItem.Click += new System.EventHandler(this.设置导出模板ToolStripMenuItem_Click);
             // 
             // 保存配置文件ToolStripMenuItem
             // 
             this.保存配置文件ToolStripMenuItem.Name = "保存配置文件ToolStripMenuItem";
-            this.保存配置文件ToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.保存配置文件ToolStripMenuItem.Size = new System.Drawing.Size(210, 32);
             this.保存配置文件ToolStripMenuItem.Text = "保存配置模板";
             this.保存配置文件ToolStripMenuItem.Click += new System.EventHandler(this.保存配置文件ToolStripMenuItem_Click);
             // 
             // 加载文件模板ToolStripMenuItem
             // 
             this.加载文件模板ToolStripMenuItem.Name = "加载文件模板ToolStripMenuItem";
-            this.加载文件模板ToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.加载文件模板ToolStripMenuItem.Size = new System.Drawing.Size(210, 32);
             this.加载文件模板ToolStripMenuItem.Text = "加载文件模板";
             this.加载文件模板ToolStripMenuItem.Click += new System.EventHandler(this.加载文件模板ToolStripMenuItem_Click);
             // 
             // barCodeButton
             // 
             this.barCodeButton.Name = "barCodeButton";
-            this.barCodeButton.Size = new System.Drawing.Size(168, 26);
+            this.barCodeButton.Size = new System.Drawing.Size(210, 32);
             this.barCodeButton.Text = "查看条码模板";
             this.barCodeButton.Click += new System.EventHandler(this.查看条码模板ToolStripMenuItem_Click);
             // 
             // 加载条码ToolStripMenuItem
             // 
             this.加载条码ToolStripMenuItem.Name = "加载条码ToolStripMenuItem";
-            this.加载条码ToolStripMenuItem.Size = new System.Drawing.Size(168, 26);
+            this.加载条码ToolStripMenuItem.Size = new System.Drawing.Size(210, 32);
             this.加载条码ToolStripMenuItem.Text = "加载条码模板";
             this.加载条码ToolStripMenuItem.Click += new System.EventHandler(this.加载条码ToolStripMenuItem_Click);
             // 
@@ -185,11 +188,80 @@
             // 
             this.printReport.ReportResourceString = resources.GetString("printReport.ReportResourceString");
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(1055, 31);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(98, 54);
+            this.button1.TabIndex = 7;
+            this.button1.Text = "撤销";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 15;
+            this.listBox1.Items.AddRange(new object[] {
+            "尺寸",
+            "设定数量",
+            "条码",
+            "参数1",
+            "参数2",
+            "参数3",
+            "参数4",
+            "参数5",
+            "参数6",
+            "参数7",
+            "参数8",
+            "参数9",
+            "参数10",
+            "参数11",
+            "参数12",
+            "参数13",
+            "参数14",
+            "参数15",
+            "参数16",
+            "参数17",
+            "参数18",
+            "参数19",
+            "参数20",
+            "参数21",
+            "参数22",
+            "参数23",
+            "参数24",
+            "参数25",
+            "参数26",
+            "参数27",
+            "参数28",
+            "参数29",
+            "参数30",
+            "参数31",
+            "参数32",
+            "参数33",
+            "参数34"});
+            this.listBox1.Location = new System.Drawing.Point(1159, 31);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(133, 514);
+            this.listBox1.TabIndex = 8;
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 15;
+            this.listBox2.Location = new System.Drawing.Point(1298, 31);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(144, 514);
+            this.listBox2.TabIndex = 8;
+            // 
             // FormFileConvert
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1242, 586);
+            this.ClientSize = new System.Drawing.Size(1481, 586);
+            this.Controls.Add(this.listBox2);
+            this.Controls.Add(this.listBox1);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.pBar1);
             this.Controls.Add(this.rtbResult);
             this.Controls.Add(this.button3);
@@ -230,6 +302,9 @@
         private FastReport.Report printReport;
         private System.Windows.Forms.ToolStripMenuItem barCodeButton;
         private System.Windows.Forms.ToolStripMenuItem 加载条码ToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listBox2;
     }
 }
 

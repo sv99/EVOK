@@ -223,7 +223,7 @@ namespace evokNew0068
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(evokWork.lcTxt_KeyPress(sender,e))
+            if(evokWork.AutoParamTxt_KeyPress(sender,e))
             resetBtn.Focus();
         }
 

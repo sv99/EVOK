@@ -120,7 +120,6 @@
             this.infoLbl = new System.Windows.Forms.ToolStripStatusLabel();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.DialogExcelDataLoad = new System.Windows.Forms.OpenFileDialog();
-            this.report1 = new FastReport.Report();
             this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
             this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.logOPF = new System.Windows.Forms.OpenFileDialog();
@@ -136,7 +135,6 @@
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.report1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -1195,11 +1193,7 @@
             // UpdateTimer
             // 
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
-            // 
-            // report1
-            // 
-            this.report1.ReportResourceString = resources.GetString("report1.ReportResourceString");
-            // 
+            
             // FileSaveTimer
             // 
             this.FileSaveTimer.Enabled = true;
@@ -1246,7 +1240,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.report1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1294,7 +1287,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn value;
         private System.Windows.Forms.RichTextBox rtbResult;
         private System.Windows.Forms.RichTextBox rtbWork;
-        private FastReport.Report report1;
         private System.Windows.Forms.ToolStripMenuItem showCurrentDataForm;
         private System.Windows.Forms.Timer FileSaveTimer;
         private System.Windows.Forms.Button qClr;

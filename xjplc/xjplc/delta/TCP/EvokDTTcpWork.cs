@@ -281,6 +281,7 @@ namespace xjplc
                         
         }
 
+
         int deviceId;
         public int DeviceId
         {
@@ -360,22 +361,25 @@ namespace xjplc
         public List<DTPlcInfoSimple> scLightInLst = new List<DTPlcInfoSimple>();
         public List<DTPlcInfoSimple> scDataInLst = new List<DTPlcInfoSimple>();
         public List<DTPlcInfoSimple> hyLightInLst = new List<DTPlcInfoSimple>();
-       
+
 
 
 
 
         #endregion
-        public DTPlcInfoSimple handModeOutInPs = new DTPlcInfoSimple("手动模式读写");
-        public DTPlcInfoSimple autoModeOutInPs = new DTPlcInfoSimple("自动模式读写");
-       
 
+        #region 门套机
+
+        public DTPlcInfoSimple hyViewOutInPs = new DTPlcInfoSimple("合页显示画面读写");
+        public DTPlcInfoSimple hyCountViewOutInPs = new DTPlcInfoSimple("三合页读写");
+        public DTPlcInfoSimple kaoshanViewOutInPs = new DTPlcInfoSimple("左靠山读写");
+       
+        #endregion
+        public DTPlcInfoSimple handModeOutInPs = new DTPlcInfoSimple("手动模式读写");
+        public DTPlcInfoSimple autoModeOutInPs = new DTPlcInfoSimple("自动模式读写");      
         public DTPlcInfoSimple errorResetOutInPs = new DTPlcInfoSimple("报警清除读写");
         public DTPlcInfoSimple angleModeOutInPs = new DTPlcInfoSimple("角度模式选择读写");
-
-
         public DTPlcInfoSimple autoModeLightInPs = new DTPlcInfoSimple("自动运行读");
-
 
         public DTPlcInfoSimple alarm1InPs = new DTPlcInfoSimple("报警1");
         public DTPlcInfoSimple alarm2InPs = new DTPlcInfoSimple("报警2");
@@ -553,8 +557,7 @@ namespace xjplc
                     }
                 }
             }
-        }
-        
+        }        
         public void InitUsual()
         {
 
@@ -582,8 +585,6 @@ namespace xjplc
             #endregion
             //参数页面
             SetPage(Constant.ParamPage);
-
-
 
             #region 设备处理
             #region 门锁机
@@ -638,7 +639,7 @@ namespace xjplc
                 resetOutPs = ConstantMethod.getDtPlcSimple(resetOutPs.Name, psLstAuto);
 
                 angleModeOutInPs = ConstantMethod.getDtPlcSimple(angleModeOutInPs.Name, psLstAuto);
-                 YLCOutInPs = ConstantMethod.getDtPlcSimple(YLCOutInPs.Name, psLstAuto);
+                YLCOutInPs = ConstantMethod.getDtPlcSimple(YLCOutInPs.Name, psLstAuto);
                 YLKOutInPs = ConstantMethod.getDtPlcSimple(YLKOutInPs.Name, psLstAuto);
                 sizeLengthOutInPs = ConstantMethod.getDtPlcSimple(sizeLengthOutInPs.Name, psLstAuto);
                 sizeWidthOutInPs = ConstantMethod.getDtPlcSimple(sizeWidthOutInPs.Name, psLstAuto);
@@ -648,42 +649,42 @@ namespace xjplc
                 cutSizeRangeKuanOutInPs = ConstantMethod.getDtPlcSimple(cutSizeRangeKuanOutInPs.Name, psLstAuto);
             }
             #endregion
-            #endregion
-            UserDataTable = new DataTable();
-         
 
-            paramFile = new ConfigFileManager();
 
-            if (File.Exists(Constant.ConfigParamFilePath))
+            #region 双端锯
+            if (deviceId == Constant.xzjDeivceId)
             {
-                paramFile.LoadFile(Constant.ConfigParamFilePath);
+                sizeLengthOutInPs = ConstantMethod.getDtPlcSimple(sizeLengthOutInPs.Name, psLstAuto);
+                handModeOutInPs = ConstantMethod.getDtPlcSimple(handModeOutInPs.Name, psLstAuto);
+                autoModeOutInPs = ConstantMethod.getDtPlcSimple(autoModeOutInPs.Name, psLstAuto);
+                hyViewOutInPs = ConstantMethod.getDtPlcSimple(hyViewOutInPs.Name, psLstAuto);
+                hyCountViewOutInPs = ConstantMethod.getDtPlcSimple(hyCountViewOutInPs.Name, psLstAuto);
+                kaoshanViewOutInPs = ConstantMethod.getDtPlcSimple(kaoshanViewOutInPs.Name, psLstAuto);
+                     
+           }
+            #endregion
+            UserDataTable = new DataTable();        
 
-                if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
-                {
-                    MessageBox.Show(Constant.ErrorParamConfigFile);
+            paramFile = ConstantMethod.configFileBak(Constant.ConfigParamFilePath);
 
-                    Application.Exit();
 
-                    System.Environment.Exit(0);
-                }
-            }
-            else
+
+            if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
             {
                 MessageBox.Show(Constant.ErrorParamConfigFile);
+
                 Application.Exit();
+
                 System.Environment.Exit(0);
             }
 
+
             LogManager.WriteProgramLog(Constant.Start);
-
-            //InitControl();
-
+       
             buildCmd(Constant.AutoPage);
 
-            if (!evokDevice.getDeviceData())
-            {
-
-                
+            if (!evokDevice.getDeviceData()) 
+            {             
                 MessageBox.Show(DeviceId + Constant.ConnectMachineFail);
                 Environment.Exit(0);
             }
@@ -696,8 +697,43 @@ namespace xjplc
             optSize = new OptSize();
 
             ConstantMethod.Delay(200);
+
             openProgram(selectProgramInPs.ShowValue);
+
         }
+
+        #region 双端锯
+
+        #region 门套机
+        public  int GetScView()
+        {
+            if (kaoshanViewOutInPs != null)
+                return kaoshanViewOutInPs.ShowValue;
+            else return 0;
+        }
+        public int  GetHyCountView()
+        {
+            if (hyCountViewOutInPs != null)
+                return hyCountViewOutInPs.ShowValue;
+            else return 0;
+        }
+
+        public  int GetHyView
+        {
+
+            get{
+                if (hyViewOutInPs != null) return hyViewOutInPs.ShowValue;
+                else return 0;
+            }
+        }
+        #endregion
+        public void SetJgCd(string  c)
+        {
+            double temp = 0;
+            if(double.TryParse(c,out temp))
+            SetDValue(sizeLengthOutInPs,c);
+        }
+        #endregion
         public bool checkCutChang(double c)
         {
             if (DeviceId == Constant.sbjDeivceId)
@@ -773,14 +809,18 @@ namespace xjplc
             {
                 if (!File.Exists(strDataFormPath[i]))
                 {
+
                     strDataFormPath.RemoveAt(i);
                     MessageBox.Show(strDataFormPath[i] + Constant.ErrorPlcFile);
                     Environment.Exit(0);
                 }
             }
-            evokDevice = new DTTcpDevice(strDataFormPath);
 
-            deviceId = id;
+            DeviceId = id;
+
+            evokDevice = new DTTcpDevice(strDataFormPath,DeviceId);
+           
+           
             InitUsual();          
 
         }
@@ -797,7 +837,20 @@ namespace xjplc
         {
             return KeyPress_Page(sender, e, Constant.AutoPage);
         }
-        
+        //201901172122测试类似于信捷这种的数据测试 一个起始地址 然后单双字 地址 加上去 可以批量写数据 便于以后可以发送批量加工数据
+        public bool SetMultiPleTest()//--通过
+        {
+            
+            List<string> value = new List<string>();
+            value.Add("200");
+            value.Add("200");
+            value.Add("200");
+            value.Add("200");
+            SetDValue("门宽",Constant.Write, AllPlcSimpleLst[0],value.ToArray());
+
+            return true;
+        }
+
         public bool KeyPress_Page(object sender, KeyPressEventArgs e,int id)
         {
             if (e.KeyChar == '\r')
@@ -1121,7 +1174,7 @@ namespace xjplc
         #endregion
         public void SaveFile()
         {
-            
+            if(this !=null && optSize !=null)
             optSize.SaveCsv();
             optSize.SaveExcel();
         }
@@ -2062,7 +2115,7 @@ namespace xjplc
                 valueStr.Add(valueShift.ToString());
             }
             if (p != null)
-            {
+            {               
                 evokDevice.SetDValue(p, valueStr.ToArray());
             }
             else
@@ -2085,7 +2138,7 @@ namespace xjplc
             }
         }
         #endregion
-
+        #endregion
         #region 关于参数设置表格的设定
         public void DgvValueEdit(int rowIndex,int num3)
         {
@@ -2152,6 +2205,22 @@ namespace xjplc
             int addr = 0;
             ConstantMethod.getAddrAndAreaByStr(userdata,ref addr,ref area);          
             int result = 0;
+
+            if (DeviceId == Constant.xzjDeivceId)
+            {
+                if (int.TryParse(s, out result))
+                {
+                    if (DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(area) < Constant.HSD_ID)
+                    {
+                        evokDevice.DPlcInfo[result].IsInEdit = editEnable;
+                    }
+                    else
+                    {
+                        evokDevice.MPlcInfo[result].IsInEdit = editEnable;
+                    }
+                }
+            }
+            else 
             if (int.TryParse(s, out result))
             {
                 if (DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(area)>Constant.MXAddrId)

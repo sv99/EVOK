@@ -380,7 +380,7 @@ namespace xjplc
                 if (!getSizeDataTable(door)) return false;
 
             }     
- 
+
             return true;                                               
         }
         public int GetFormulaResult(string formulaStr, doorTypeInfo door)
@@ -402,12 +402,15 @@ namespace xjplc
         //获取门皮 门板 码头等尺寸 门型 还他妈的有字母和文字
         public bool getSizeDataTable(doorTypeInfo door)
         {
-            string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
-
+            //志邦的 20190418
+            //string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
+            string doorType = door.Name;
             foreach (sizeLstByDoorType split in UserSplitType)
             {
+                //志邦的 20190418
                 //匹配成功 找到公式  找到尺寸
-                if (split.Name.Contains(doorType))
+                //if (split.Name.Contains(doorType)) 
+                if (split.Name.Equals(doorType))
                 {                                       
                     foreach (singleSize size in split.Size)
                     {                      
@@ -461,8 +464,26 @@ namespace xjplc
                                 dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
                                 dr[Constant.strformatZh[2]] = "0";
                                 dr[Constant.strformatZh[5]] = door.Xuhao;
-                                dr[Constant.strformatZh[13]] = doorType+ door.GwId;
-                                dr[Constant.strformatZh[15]] = door.GwId;
+                                 dr[Constant.strformatZh[13]] = doorType+ door.GwId;
+                                // dr[Constant.strformatZh[15]] = door.GwId;
+
+                                if (door.BarCodeStr.Count > 13)
+                                {
+                                    dr[Constant.strformatZh[3]] = door.BarCodeStr[0];
+                                    dr[Constant.strformatZh[4]] = door.BarCodeStr[1];
+                                    dr[Constant.strformatZh[6]] = door.BarCodeStr[2];
+                                    dr[Constant.strformatZh[7]] = door.BarCodeStr[3];
+                                    dr[Constant.strformatZh[8]] = door.BarCodeStr[4];
+                                    dr[Constant.strformatZh[9]] = door.BarCodeStr[5];
+                                    dr[Constant.strformatZh[10]] = door.BarCodeStr[6];
+                                    dr[Constant.strformatZh[11]] = door.BarCodeStr[7];
+                                    dr[Constant.strformatZh[12]] = door.BarCodeStr[8];
+                                    //dr[Constant.strformatZh[13]] = door.BarCodeStr[9];
+                                    dr[Constant.strformatZh[14]] = door.BarCodeStr[9];
+                                    dr[Constant.strformatZh[15]] = door.BarCodeStr[11];
+                                    dr[Constant.strformatZh[16]] = door.BarCodeStr[12];
+                                    dr[Constant.strformatZh[17]] = door.BarCodeStr[13];
+                                }
                                 door.Door_Size.Rows.Add(dr);
                             }
                         }                                                                    

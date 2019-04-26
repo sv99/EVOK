@@ -88,6 +88,7 @@ namespace xjplc
         {
             get
             {
+            
                 if (mode.Contains(Constant.REAL))
                 {
                    
@@ -96,6 +97,7 @@ namespace xjplc
                 }
                 else
                 {
+                    
                     if ((ConstantMethod.getModeCount(mode)) < 5 )
                     {
 
@@ -142,7 +144,14 @@ namespace xjplc
                         case Constant.intShow:
                             {
                                 if (IsValueNormal)
-                                    showControl.Text = showValue.ToString();
+                                {
+                                    if (ration > 99)
+                                    {
+                                        showControl.Text = showValueFloat.ToString("0.00");
+                                    }
+                                    else
+                                        showControl.Text = showValue.ToString();
+                                }
                                 else
                                     showControl.Text = Constant.dataOutOfRange;
                                 break;
@@ -259,7 +268,12 @@ namespace xjplc
 
                         if (int.TryParse(pTcpInfo.PlcValue, out showValue))
                         {
-                            if (ration > 0) showValue = (int)((double)showValue / ration);
+                            if (ration > 0) {
+
+                                showValueFloat = (double)showValue / ration;
+                                showValue = (int)((double)showValue / ration);
+                                
+                            }
                             controlValueShow(1);
                         }                       
                     }
@@ -524,7 +538,12 @@ namespace xjplc
     public class DTTcpPlcInfo 
     {   
         
-
+        int plcId =-1;
+        public int PlcId
+        {
+            get { return plcId; }
+            set { plcId = value; }
+        }
         public DTTcpPlcInfo(int addr, string areaIn,string Mode)
         {
             this.relativeaddr = addr;
@@ -535,6 +554,27 @@ namespace xjplc
             intArea = DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(StrArea);
             ValueMode = Mode;
 
+
+        }
+        public DTTcpPlcInfo(int addr, string areaIn, string Mode,int plcId)
+        {
+            this.relativeaddr = addr;
+
+            this.StrArea = areaIn;
+            //区分 dvp15mc 和 As PLC
+            if (plcId == Constant.xzjDeivceId)
+            {
+                intArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(areaIn);
+                absAddr = XJPLCPackCmdAndDataUnpack.RelAbsGet(addr, intArea,0);               
+
+            }
+            else
+            {
+                absAddr = DTTcpCmdPackAndDataUnpack.GetAbsAddrFromStr(relativeaddr, StrArea);
+                intArea = DTTcpCmdPackAndDataUnpack.GetIntAreaFromStr(StrArea);
+            }
+
+            ValueMode = Mode;
 
 
         }
@@ -688,7 +728,7 @@ namespace xjplc
                 if (ByteValue != null&& ByteValue.Count()>0)
                 {
 
-                   
+                        
                         plcValue =
                         ConstantMethod.getValueFromByte(valueMode, ByteValue);                                                         
                 }                  

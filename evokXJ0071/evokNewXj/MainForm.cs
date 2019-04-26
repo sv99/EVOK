@@ -199,7 +199,7 @@ namespace evokNew0071
                 evokWork0.SetRtbWork(richTextBox1);
                 evokWork0.SetLblStatus(label8);
                 evokWork0.SetOptSize(op0);
-                evokWork0.SetPrintReport(report1);
+                evokWork0.SetPrintReport();
             }
             if (propertyB)
             {
@@ -572,7 +572,7 @@ namespace evokNew0071
         #endregion
         public void writeData(object sender, KeyPressEventArgs e,EvokXJWork evokWork)
         {
-            if (evokWork.lcTxt_KeyPress(sender, e))
+            if (evokWork.AutoParamTxt_KeyPress(sender, e))
                 resetBtn.Focus();
         }
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)

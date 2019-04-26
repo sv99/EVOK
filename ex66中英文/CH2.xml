@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Softimite Language="简体中文">
+  <Form> 
+    <Name>WorkForm</Name>
+    <Controls> 
+	<Control name="WorkForm" Text="EVOK-V0066" />
+     <!--自动界面-->
+	<Control name="label1" text="总产量:"/>
+	<Control name="clLbl1" text="出料:"/>
+	<Control name="label3" text="送料:"/>
+	<Control name="label10"   text="料长："/>
+	<Control name="label2" text="料头补偿："/>
+	<Control name="label5" text="优化系数："/>
+	<Control name="loadDataBtn" text="加载数据"/>
+	<Control name="optBtn" text="优化排版"/>
+
+<Control name="stbtn" text="启动"/>
+<Control name="button1" text="急停"/>
+<Control name="pauseBtn" text="暂停"/>
+<Control name="resetBtn" text="复位"/>
+<Control name="button10" text="条码预览"/>
+<Control name="qClr" text="产量清零"/>
+<Control name="autoSLBtn" text="结疤测量"/>
+<Control name="ccBtn" text="测长"/>
+
+<Control name="button5" text="拉料"/>
+<Control name="button11" text="压料"/>
+<Control name="stopBtn" text="停止"/>
+<Control name="statusLabel" text="设备无通信"/>
+<Control name="ccBtn" text="测长"/>
+<Control name="tabPage1" text="自动操作"/>
+
+  	<!--手动界面-->
+	<Control name="tabPage2" text="手动操作"/>
+	<Control name="label18" text="送料"/>
+	<Control name="label17" text="出料"/>
+	<Control name="button2" text="切刀电机"/>
+	<Control name="lblY13" text="切料气缸"/>
+	<Control name="lblY7" text="右侧压"/>
+	<Control name="lblM160" text="锯片上升"/>
+	<Control name="lblY14" text="切料压料"/>
+	<Control name="lblY12" text="切料侧压左"/>
+	<Control name="lblY22" text="切料侧压右"/>
+	<Control name="button4" text="上料架检测吹尘"/>
+	<Control name="button13" text="上料架升降"/>
+	<Control name="lblY16" text="上料电机"/>	
+	<Control name="button7" text="上料靠栅"/>
+	<Control name="lblY17" text="伺服上料位"/>
+	<Control name="lblY24" text="条码真空吸附阀"/>
+	<Control name="button3" text="条码吹尘阀"/>
+	<Control name="lblY26" text="条码水平进出气缸"/>
+	<Control name="lblY25" text="条码下压气缸"/>
+	<Control name="lblY4" text="送料侧压"/>
+	<Control name="button14" text="送料上压"/>
+	<Control name="button6" text="条码吹气阀"/>
+	<Control name="lblY5" text="出料夹料"/>
+	<Control name="button19" text="出料电机"/>
+
+
+        <!--监控界面-->
+	<Control name="tabPage3" text="参数设置"/>
+	
+	<!--参数界面-->
+         <Control name="tabPage4" text="tabPage4"/>
+        
+    </Controls>
+  </Form>
+</Softimite>

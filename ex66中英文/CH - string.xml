@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Softimite Language="简体中文">
+  <Form> 
+    <Name>ControlInfo</Name>
+    <Controls> 
+	<Control name=	"ErrorParamConfigFile"	Text="参数配置文件不存在，请检查config文件夹，软件即将关闭！"	 />
+	<Control name=	"ErrorPlcFile"	Text="设备数据文件不存在，请检查plc data文件夹，软件即将关闭！"	 />
+	<Control name=	"NoSerialPort"	Text="端口错误或者不存在！"	 />
+	<Control name=	"emgStopTip"	Text="急停或紧急退出中，请复位！"	 />
+	<Control name=	"alreadyStart"	Text="设备生产中!"	 />
+	<Control name=	"noData"	Text="无数据！"	 />
+	<Control name=	"measureOutOfTime"	Text="测量超时！"	 />
+	<Control name=	"IsWorking"	Text="设备生产中！"	 />
+	<Control name=	"CutEnd"	Text="生产结束！"	 />
+	<Control name=	"Start"	Text="软件启动！"	 />
+	<Control name=	"Quit"	Text="软件退出！"	 />
+	<Control name=	"MachineAlarm"	Text="设备报警！"	 />
+	<Control name=	"CommManageError"	Text="接收数据超时，重新连接！"	 />
+	<Control name=	"DeviceConnectionError"	Text="通讯超时，重置连接！"	 />
+	<Control name=	"DeviceStartCut"	Text="设备启动！"	 />
+	<Control name=	"DevicePause"	Text="设备暂停！"	 />
+	<Control name=	"DeviceStop"	Text="设备停止！"	 />
+	<Control name=	"DeviceEmgStop"	Text="设备急停！"	 />
+	<Control name=	"DeviceStartFailed"	Text="设备启动失败，请检查设备情况！"	 />
+	<Control name=	"DeviceReset"	Text="设备复位！"	 />
+	<Control name=	"DeviceNoPrinter"	Text="无打印机！"	 />
+	<Control name=	"DeviceNoLogFile"	Text="无日志文件！"	 />
+	<Control name=	"PlcReadDataError"	Text="设备读取数据超时！"	 />
+	<Control name=	"LoadFileSt"	Text="加载文件开始！"	 />
+	<Control name=	"LoadFileEd"	Text="加载文件结束！"	 />
+	<Control name=	"MeasureSt"	Text="开始测量！"	 />
+	<Control name=	"MeasureEd"	Text="结束测量！"	 />
+	<Control name=	"DataDownLoad"	Text="数据下发！"	 />
+	<Control name=	"DataDownLoadSuccess"	Text="数据下发成功！"	 />
+	<Control name=	"DataDownLoadFail"	Text="数据下发失败！"	 />
+	<Control name=	"AutoMeasureMode"	Text="自动测长模式！"	 />
+	<Control name=	"NormalMode"	Text="正常优化模式！"	 />
+	<Control name=	"ShuChiMode"	Text="梳齿无限料长模式！"	 />
+	<Control name=	"DoorShell"	Text="门皮模式！"	 />
+	<Control name=	"publicconstControlCutMeasureTips0"	Text="请选择模式或者导入数据"	 />
+	<Control name=	"prodLstNoData"	Text="数据收集错误！"	 />
+	<Control name=	"optFail"	Text="优化结果错误！"	 />
+	<Control name=	"optResultNoData"	Text="优化结果无数据！"	 />
+	<Control name=	"optSuccess"	Text="优化结束！"	 />
+	<Control name=	"NextOpt"	Text="下一根料准备！"	 />
+	<Control name=	"ErrorMeasure"	Text="测量错误！"	 />
+	<Control name=	"InOPT"	Text="优化中,请稍等。。。。。。。。"	 />
+	<Control name=	"dataOutOfRange"	Text="数据超范围！"	 />
+	<Control name=	"scLight"	Text="锁槽工位指示"	 />
+	<Control name=	"scData"	Text="锁槽工位数据"	 />
+	<Control name=	"hyLight"	Text="合页工位指示"	 />
+	<Control name=	"hyData"	Text="合页工位数据"	 />
+	<Control name=	"dataConvertError"	Text="数据转换错误！"	 />
+	<Control name=	"prodResult"	Text="生产结果"	 />
+	<Control name=	"pwdWrong"	Text="密码错误！"	 />
+	<Control name=	"pwdOk"	Text="密码正确！"	 />
+
+
+
+    </Controls>
+  </Form>
+</Softimite>

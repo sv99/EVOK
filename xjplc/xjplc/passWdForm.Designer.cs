@@ -65,6 +65,7 @@
             this.Name = "passWdForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "密码输入";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.passWdForm_FormClosing);
             this.Load += new System.EventHandler(this.passWdForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -9,6 +9,169 @@ namespace xjplc.delta
     public class DTTcpCmdPackAndDataUnpack
     {
 
+        #region 针对AS系列PLC
+        public static void ASPLCPackReadDCmd(DTTcpPlcInfo[] plcInfoLst, List<byte> cmdOut, List<byte> cmdIn0)
+        {
+            if (plcInfoLst == null || plcInfoLst.Count() < 1) return;
+            List<int> addrLst = new List<int>();//连续地址的起始地址
+            List<int> idLst = new List<int>();  //地址是D xy HSD
+            List<int> addrcount = new List<int>(); //起始地址开始 读取几个寄存器
+
+            Dictionary<string, int> addrCountByte = new Dictionary<string, int>();
+            //读取数量的偏移int 2个字节  dint4个字节
+            ConstantMethod.ArrayToDictionary(addrCountByte, Constant.asPlcTcpType, Constant.asPlcTcpTypeByteCount);           
+            
+            foreach (DTTcpPlcInfo d in plcInfoLst)
+            {
+                addrLst.Add(d.RelAddr);
+                idLst.Add(d.IntArea);
+                addrcount.Add(1 * addrCountByte[d.ValueMode]);
+            }
+            cmdOut.Clear();
+            cmdIn0.Clear();
+            cmdOut.AddRange(ASPLCPackReadByteCmd(addrLst.ToArray(), idLst.ToArray(), addrcount.ToArray(), cmdIn0));
+
+        }
+        static byte[] ASPLCPackReadByteCmd(int[] addr, int[] addressid, int[] count, List<byte> cmdInLst)
+        {
+            if (addressid.Count() != addr.Count() || count.Count() != addr.Count())
+            {
+                return null;
+            }
+            //协议号+后面的字节数+站号+功能码+后面字节数+地址加读取字节数+...+
+            List<byte> cmdOutLst = new List<byte>();
+
+            //地址变换
+            for (int i = 0; i < addr.Count(); i++)
+            {
+                cmdOutLst.AddRange(AsPlcGetAbsAddr(addr[i], addressid[i], 4));
+                cmdOutLst.AddRange(ConstantMethod.getDataHighLowByte(count[i]));
+            }
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcTcpFunctionReadByteCmd);
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, Constant.DTTcpHeader);
+
+            /***
+             * 输入数据
+           
+            ****/
+
+            for (int i = 0; i < count.Count(); i++)
+            {
+                cmdInLst.AddRange(ConstantMethod.getDataHighLowByte(count[i]));
+                for (int j = 0; j < count[i]; j++)
+                {
+                    //一个单元 两个8位
+                    cmdInLst.Add(0x00);
+                    cmdInLst.Add(0x00);
+                }
+
+            }
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdInLst, 0);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcTcpFunctionReadByteCmd);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdInLst, 0);
+
+            cmdInLst.InsertRange(0, Constant.DTTcpHeader);
+
+
+            return cmdOutLst.ToArray();
+
+
+        }
+
+        public static void ASPLCPackReadMCmd(DTTcpPlcInfo[] plcInfoLst, List<byte> cmdOut, List<byte> cmdIn0)
+        {
+            List<int> addrLst = new List<int>();//连续地址的起始地址
+            List<int> idLst = new List<int>();  //地址是D xy HSD
+            List<int> addrcount = new List<int>(); //起始地址开始 读取几个寄存器
+
+            foreach (DTTcpPlcInfo d in plcInfoLst)
+            {
+                addrLst.Add(d.RelAddr);
+                idLst.Add(d.IntArea);
+                addrcount.Add(1);
+            }
+            cmdOut.Clear();
+            cmdIn0.Clear();
+            cmdOut.AddRange(asPLCPackReadBitCmd(addrLst.ToArray(), idLst.ToArray(), addrcount.ToArray(), cmdIn0));
+
+        }
+
+        static byte[] asPLCPackReadBitCmd(int[] addr, int[] addressid, int[] count, List<byte> cmdInLst)
+        {
+            if (addressid.Count() != addr.Count() || count.Count() != addr.Count())
+            {
+                return null;
+            }
+
+            //协议号+后面的字节数+站号+功能码+后面字节数+地址加读取字节数+...
+            List<byte> cmdOutLst = new List<byte>();
+
+            //地址变换
+            for (int i = 0; i < addr.Count(); i++)
+            {
+                cmdOutLst.AddRange(AsPlcGetAbsAddr(addr[i], addressid[i], 4));
+                cmdOutLst.AddRange(ConstantMethod.getDataHighLowByte(count[i]));
+            }
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcTcpFunctionReadBitCmd);
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcDeviceId);          
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, Constant.DTTcpHeader);
+
+
+            /***
+             * 输入数据
+           
+            ****/
+
+            for (int i = 0; i < count.Count(); i++)
+            {
+                int cnt = (int)Math.Ceiling((double)count[i] / 8);
+                cmdInLst.AddRange(ConstantMethod.getDataHighLowByte(cnt));
+                for (int j = 0; j < cnt; j++)
+                {
+                    cmdInLst.Add(0x00);
+                }
+
+            }
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdInLst, 0);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcTcpFunctionReadBitCmd);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdInLst, 0);
+
+            cmdInLst.InsertRange(0, Constant.DTTcpHeader);
+
+            return cmdOutLst.ToArray();
+        }
+
+
+        #endregion
+
+        public static DTTcpPlcInfo[] GetPlcInfo(int addr, int count, string area, string mode,int plcId)
+        {
+            area = area.ToUpper();
+            mode = mode.ToUpper();
+            List<DTTcpPlcInfo> dtPlcInfoLst = new List<DTTcpPlcInfo>();         
+
+            for (int i = 0; i < count; i++)
+            {
+                DTTcpPlcInfo dtInfo = new DTTcpPlcInfo(addr+i, area, mode,plcId);
+                dtPlcInfoLst.Add(dtInfo);
+            }
+            return dtPlcInfoLst.ToArray();
+        }
 
         /// <summary>
         /// 获取相应的单元体数据
@@ -49,10 +212,7 @@ namespace xjplc.delta
             Dictionary<string, int> addrCountByte = new Dictionary<string, int>();
             //读取数量的偏移int 2个字节  dint4个字节
             ConstantMethod.ArrayToDictionary(addrCountByte,Constant.tcpType,Constant.tcpTypeByteCount);
-            ////ML MB  MW 这种针对的偏移都不同 相对地址不同
-            //Dictionary<string, int> addrShift = new Dictionary<string, int>();
-            ////读取数量的偏移int 2个字节  dint4个字节
-            //ConstantMethod.ArrayToDictionary(addrShift, Constant.dataType, Constant.dataTypeAddrOffset);
+            
             foreach (DTTcpPlcInfo d in plcInfoLst)
             {
                 addrLst.Add(d.RelAddr);
@@ -65,7 +225,7 @@ namespace xjplc.delta
             cmdOut.AddRange(PackReadByteCmd(addrLst.ToArray(), idLst.ToArray(), addrcount.ToArray(), cmdIn0));
 
         }
-       
+        
         public static void PackReadMCmd(DTTcpPlcInfo[] plcInfoLst, List<byte> cmdOut, List<byte> cmdIn0)
         {
             List<int> addrLst = new List<int>();//连续地址的起始地址
@@ -141,14 +301,8 @@ namespace xjplc.delta
             }
             return addr;
         }
-        public static byte[] GetAbsAddr(int maddr, string XYM, int addrbytecount)
-        {
-            List<byte> cmdLst = new List<byte>();          
-            cmdLst.AddRange(BitConverter.GetBytes(GetAbsAddrFromStr(maddr, XYM)));
-            cmdLst.Reverse();
-            return cmdLst.ToArray();
+       
 
-        }
         //bytecount 代表返回几个字节的地址
         public static byte[] GetAbsAddr(int addr, int addressid,int addrbytecount)
         {
@@ -156,6 +310,17 @@ namespace xjplc.delta
             
             List<byte> cmdLst = new List<byte>();
             cmdLst.AddRange(BitConverter.GetBytes(GetAbsAddrFromInt(addr, addressid)));
+            cmdLst.Reverse();
+
+            return cmdLst.ToArray();
+
+        }
+        public static byte[] AsPlcGetAbsAddr(int addr, int addressid, int addrbytecount)
+        {
+
+
+            List<byte> cmdLst = new List<byte>();
+            cmdLst.AddRange(BitConverter.GetBytes(XJPLCPackCmdAndDataUnpack.RelAbsGet(addr, addressid,0)));
             cmdLst.Reverse();
 
             return cmdLst.ToArray();
@@ -415,7 +580,61 @@ namespace xjplc.delta
             return cmdOutLst.ToArray();
 
         }
-      
+        public static byte[] AsPlcPackWriteByteCmd(int[] addr, int[] addressid, int[] count, List<byte[]> value, List<byte> cmdInLst)
+        {
+
+
+            if (addressid.Count() != addr.Count() || count.Count() != addr.Count() || value.Count() != addr.Count())
+            {
+                return null;
+            }
+
+            //协议号+后面的字节数+站号+功能码+后面字节数+地址加设置字节数+...+CRC校验
+            List<byte> cmdOutLst = new List<byte>();
+            byte[] byteHeader = getRandom4Byte();
+
+            //地址变换
+            for (int i = 0; i < addr.Count(); i++)
+            {
+                cmdOutLst.AddRange(AsPlcGetAbsAddr(addr[i], addressid[i], 4));
+
+                if (value[i].Count() > 1 && value[i].Count() % 2 ==0)
+                {
+                    cmdOutLst.AddRange(ConstantMethod.getDataHighLowByte(value[i].Count() / 2));
+                    cmdOutLst.AddRange(ConstantMethod.getDataHighLowByte(value[i].Count() / 2));
+                }  
+                            
+                cmdOutLst.AddRange(value[i]);
+
+            }
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcTcpFunctionWriteByteCmd);
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+           
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+
+
+            cmdOutLst.InsertRange(0, byteHeader);
+            //返回数据打包 
+
+     
+            cmdInLst.Add(0x00);
+            cmdInLst.Add(0x00);
+    
+            cmdInLst.InsertRange(0, Constant.DTAsPlcTcpFunctionWriteByteCmd);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdInLst, 0);
+
+            cmdInLst.InsertRange(0, byteHeader);
+
+            return cmdOutLst.ToArray();
+
+        }
+
         /// <summary>
         /// 报文结构：    
         /// </summary>
@@ -470,6 +689,50 @@ namespace xjplc.delta
 
         }
 
+        public static byte[] AsPlcPackWriteBitCmd(int[] addr, int[] addressid, int[] count, List<byte[]> value, List<byte> cmdInLst)
+        {
+            if (addressid.Count() != addr.Count() || count.Count() != addr.Count() || value.Count() != addr.Count())
+            {
+                return null;
+            }
+
+            //协议号+后面的字节数+站号+功能码+后面字节数+地址加设置字节数+...+CRC校验
+            List<byte> cmdOutLst = new List<byte>();
+            byte[] byteHeader = getRandom4Byte();
+
+            //地址变换  位的话 个数 和 字节数 不一定相等 8个位才算一个字节
+            for (int i = 0; i < addr.Count(); i++)
+            {
+                cmdOutLst.AddRange(AsPlcGetAbsAddr(addr[i], addressid[i], 4));
+                cmdOutLst.AddRange(ConstantMethod.getDataHighLowByte(count[i]));  //设置多少个位        
+                cmdOutLst.AddRange(ConstantMethod.getDataHighLowByte(value[i].Count()));  //后面有几个字节
+                cmdOutLst.AddRange(value[i]);
+
+            }
+
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcTcpFunctionWriteBitCmd);
+            cmdOutLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+
+           
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdOutLst, 0);
+
+            cmdOutLst.InsertRange(0, byteHeader);
+
+            //返回的数据
+            cmdInLst.Add(0x00);
+            cmdInLst.Add(0x00);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcTcpFunctionWriteBitCmd);
+            cmdInLst.InsertRange(0, Constant.DTAsPlcDeviceId);
+            DTTcpCmdPackAndDataUnpack.InserCount(cmdInLst, 0);
+
+            cmdInLst.InsertRange(0, byteHeader);
+
+            return cmdOutLst.ToArray();
+
+
+        }
     }
     public class DTModbusTcpCmdPackAndDataUnpack
     {
