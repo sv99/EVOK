@@ -12,31 +12,52 @@ namespace xjplc.TcpDevice
 
         #region 卷线盘property
         double encoderData = 0;
-
-        bool resetOk = false;
-
-        bool tyreSb  = false;
-
-        int tyreSize = 0;
-
-        int dir = 0;
-       
-        public double  EncoderData
+        public double EncoderData
         {
-            get { return encoderData;  }
+            get { return encoderData; }
             set { encoderData = value; }
         }
+
+
+        //复位
+        bool resetOk = false;
+        public bool ResetOk
+        {
+            get { return resetOk; }
+            set { resetOk = value; }
+        }
+
+        //轮径识别
+        bool tyreCheck  = false;
+        public bool TyreCheck
+        {
+            get { return tyreCheck; }
+            set { tyreCheck = value; }
+        }
+
+        //轮径
+        int tyreSize = 0;
+
+
+        //方向
+        int dir = 0;
+        public int Dir
+        {
+            get { return dir; }
+            set { dir = value; }
+        }
+
         #endregion
         public JxpDevice(ServerInfo p0) : base(p0)
         {
 
             EventDataProcess += new xjplc.socDataProcess(JxpDataProcess);
             CmdOut= cmdJXPUsualOut;
-            CmdOutDefault = cmdJXPUsualOut;
-            CmdInDefault = cmdJXPUsualOut;                      
+            CmdOutReadyGo = cmdJXPUsualOut;
+            CmdInReadyCome = cmdJXPUsualOut;                      
                                                           
         }
-
+        #region 动作操作
         public void SetLineGetLevel(int level)
         {
             byte val = (byte)(level<<2);
@@ -47,38 +68,58 @@ namespace xjplc.TcpDevice
             CmdOutLst.Add(cmdOutTemp.ToList<byte>());
             CmdInLst.Add(cmdOutTemp.ToList<byte>());
         }
-       
+
+        //清除计数器     
         public void ClrMeter()
         {
-            byte[] cmdOutTemp = cmdJXPUsualOut.ToArray();
+            if (!Status) return;
+            byte[] cmdOutTemp = CmdOutReadyGo.ToArray();
 
             cmdOutTemp[1] = 0x82;
 
             CmdOutLst.Add(cmdOutTemp.ToList<byte>());
             CmdInLst.Add(cmdOutTemp.ToList<byte>());
 
+            CmdOutReadyGo = cmdOutTemp;
+
+            ConstantMethod.Delay(200);
+
+            CmdOutReadyGo = cmdJXPUsualOut;
+
         }
-        bool getLine = false;
-        public void StartGetLine()
+        //收线
+        public void JxpGetLine()
         {
-            getLine = true;
-            byte[] cmdOutTemp = cmdJXPUsualOut.ToArray();
-            cmdOutTemp[1] = 0x42;
-            while (getLine)
+            if (IsGetingLine)
             {
-                CmdOutLst.Add(cmdOutTemp.ToList<byte>());
-                CmdInLst.Add(cmdOutTemp.ToList<byte>());
-                ConstantMethod.Delay(10);
-            }           
-           
+                PackStopGetLineCmd();
+            }
+            else
+            {
+                PackGetLineCmd();
+            }
         }
-        public void StopGetLine()
+
+
+        public bool IsGetingLine = false;
+        public void PackGetLineCmd()
         {
-            getLine = false;
+            IsGetingLine = true;
+            byte[] cmdOutTemp = CmdOutReadyGo.ToArray();
+            cmdOutTemp[1] = 0x42;
+            CmdOutReadyGo = cmdOutTemp;                     
+        }
+
+        public void PackStopGetLineCmd()
+        {
+            IsGetingLine = false;
             CmdOutLst.Clear();
             CmdInLst.Clear();
+            CmdOutReadyGo = cmdJXPUsualOut;
+
         }
-      
+
+        #endregion
         void JxpDataProcess(object sender, SocEventArgs e)
         {
             if (DeviceId == Constant.devicePropertyA)
@@ -89,7 +130,7 @@ namespace xjplc.TcpDevice
                 if (e.Byte_buffer.Length == 8 && e.Byte_buffer[0]==0xa0 && e.Byte_buffer[7]==0x0a)
                 {
                     //符号 字节
-                    dir = e.Byte_buffer[1];
+                    Dir = e.Byte_buffer[1];
 
                     //编码器数据
                     byte[] codeHbyte = {  e.Byte_buffer[3],e.Byte_buffer[2] };
@@ -101,7 +142,7 @@ namespace xjplc.TcpDevice
                     codeL = BitConverter.ToInt16(codeLbyte, 0);
 
                     string dirStr = "";
-                    if (dir > 0) dirStr = "-";
+                    if (Dir > 0) dirStr = "-";
                     string sCode = dirStr+codeH.ToString() + "." + codeL.ToString();
                     double enc = 0;
                     if (double.TryParse(sCode, out enc))
@@ -110,13 +151,11 @@ namespace xjplc.TcpDevice
                     }
 
                     //第7字节
-                    resetOk = ConstantMethod.getBitValueInByte(8, e.Byte_buffer[6])==1?true:false;
+                    ResetOk = ConstantMethod.getBitValueInByte(8, e.Byte_buffer[6])==1?true:false;
 
-                    tyreSb = ConstantMethod.getBitValueInByte(7, e.Byte_buffer[6]) == 1 ? true : false;
-
+                    TyreCheck = ConstantMethod.getBitValueInByte(7, e.Byte_buffer[6]) == 1 ? true : false;
 
                     tyreSize = (e.Byte_buffer[6] & 0x38);
-
 
 
                 }

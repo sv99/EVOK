@@ -71,7 +71,9 @@
             this.L3Lbl = new System.Windows.Forms.Label();
             this.L2Txt = new System.Windows.Forms.TextBox();
             this.L2Lbl = new System.Windows.Forms.Label();
+            this.textBox78 = new System.Windows.Forms.TextBox();
             this.L1Txt = new System.Windows.Forms.TextBox();
+            this.label61 = new System.Windows.Forms.Label();
             this.L1Lbl = new System.Windows.Forms.Label();
             this.textBox59 = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
@@ -95,7 +97,9 @@
             this.label37 = new System.Windows.Forms.Label();
             this.textBox54 = new System.Windows.Forms.TextBox();
             this.label36 = new System.Windows.Forms.Label();
+            this.textBox77 = new System.Windows.Forms.TextBox();
             this.textBox53 = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
             this.label35 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.textBox31 = new System.Windows.Forms.TextBox();
@@ -434,6 +438,7 @@
             this.tc1.Size = new System.Drawing.Size(1798, 796);
             this.tc1.TabIndex = 1;
             this.tc1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc1_Selecting);
+            this.tc1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tc1_Selected);
             // 
             // tabPage1
             // 
@@ -473,7 +478,9 @@
             this.groupBox1.Controls.Add(this.L3Lbl);
             this.groupBox1.Controls.Add(this.L2Txt);
             this.groupBox1.Controls.Add(this.L2Lbl);
+            this.groupBox1.Controls.Add(this.textBox78);
             this.groupBox1.Controls.Add(this.L1Txt);
+            this.groupBox1.Controls.Add(this.label61);
             this.groupBox1.Controls.Add(this.L1Lbl);
             this.groupBox1.Controls.Add(this.textBox59);
             this.groupBox1.Controls.Add(this.label41);
@@ -497,7 +504,9 @@
             this.groupBox1.Controls.Add(this.label37);
             this.groupBox1.Controls.Add(this.textBox54);
             this.groupBox1.Controls.Add(this.label36);
+            this.groupBox1.Controls.Add(this.textBox77);
             this.groupBox1.Controls.Add(this.textBox53);
+            this.groupBox1.Controls.Add(this.label60);
             this.groupBox1.Controls.Add(this.label35);
             this.groupBox1.Controls.Add(this.label34);
             this.groupBox1.Controls.Add(this.textBox31);
@@ -564,6 +573,7 @@
             // scPic
             // 
             this.scPic.Image = ((System.Drawing.Image)(resources.GetObject("scPic.Image")));
+            this.scPic.InitialImage = ((System.Drawing.Image)(resources.GetObject("scPic.InitialImage")));
             this.scPic.Location = new System.Drawing.Point(1091, 361);
             this.scPic.Name = "scPic";
             this.scPic.Size = new System.Drawing.Size(660, 330);
@@ -615,7 +625,7 @@
             this.button41.Location = new System.Drawing.Point(1563, 17);
             this.button41.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button41.Name = "button41";
-            this.button41.Size = new System.Drawing.Size(164, 52);
+            this.button41.Size = new System.Drawing.Size(195, 52);
             this.button41.TabIndex = 248;
             this.button41.Tag = "锁槽防刮边";
             this.button41.Text = "锁槽防刮边";
@@ -628,7 +638,7 @@
             this.button40.Location = new System.Drawing.Point(818, 293);
             this.button40.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button40.Name = "button40";
-            this.button40.Size = new System.Drawing.Size(164, 52);
+            this.button40.Size = new System.Drawing.Size(208, 52);
             this.button40.TabIndex = 248;
             this.button40.Tag = "合页防崩边";
             this.button40.Text = "合页防崩边";
@@ -802,6 +812,17 @@
             this.L2Lbl.TabIndex = 238;
             this.L2Lbl.Text = "L2:";
             // 
+            // textBox78
+            // 
+            this.textBox78.Location = new System.Drawing.Point(569, 30);
+            this.textBox78.Name = "textBox78";
+            this.textBox78.Size = new System.Drawing.Size(134, 34);
+            this.textBox78.TabIndex = 237;
+            this.textBox78.Tag = "缺口深度";
+            this.textBox78.Enter += new System.EventHandler(this.textBox15_Enter);
+            this.textBox78.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox15_KeyPress);
+            this.textBox78.Leave += new System.EventHandler(this.textBox15_Leave);
+            // 
             // L1Txt
             // 
             this.L1Txt.Location = new System.Drawing.Point(498, 88);
@@ -812,6 +833,17 @@
             this.L1Txt.Enter += new System.EventHandler(this.textBox15_Enter);
             this.L1Txt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox15_KeyPress);
             this.L1Txt.Leave += new System.EventHandler(this.textBox15_Leave);
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label61.Location = new System.Drawing.Point(437, 30);
+            this.label61.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(138, 28);
+            this.label61.TabIndex = 236;
+            this.label61.Text = "缺口深度:";
             // 
             // L1Lbl
             // 
@@ -1066,6 +1098,17 @@
             this.label36.TabIndex = 190;
             this.label36.Text = "外槽宽B:";
             // 
+            // textBox77
+            // 
+            this.textBox77.Location = new System.Drawing.Point(1411, 30);
+            this.textBox77.Name = "textBox77";
+            this.textBox77.Size = new System.Drawing.Size(134, 34);
+            this.textBox77.TabIndex = 189;
+            this.textBox77.Tag = "外槽开口F";
+            this.textBox77.Enter += new System.EventHandler(this.textBox15_Enter);
+            this.textBox77.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox15_KeyPress);
+            this.textBox77.Leave += new System.EventHandler(this.textBox15_Leave);
+            // 
             // textBox53
             // 
             this.textBox53.Location = new System.Drawing.Point(1277, 80);
@@ -1076,6 +1119,17 @@
             this.textBox53.Enter += new System.EventHandler(this.textBox15_Enter);
             this.textBox53.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox15_KeyPress);
             this.textBox53.Leave += new System.EventHandler(this.textBox15_Leave);
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label60.Location = new System.Drawing.Point(1252, 30);
+            this.label60.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(152, 28);
+            this.label60.TabIndex = 188;
+            this.label60.Text = "外槽开口F:";
             // 
             // label35
             // 
@@ -1092,7 +1146,7 @@
             // 
             this.label34.AutoSize = true;
             this.label34.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label34.Location = new System.Drawing.Point(1122, 30);
+            this.label34.Location = new System.Drawing.Point(1097, 30);
             this.label34.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label34.Name = "label34";
             this.label34.Size = new System.Drawing.Size(124, 28);
@@ -1271,7 +1325,7 @@
             // 
             this.label77.AutoSize = true;
             this.label77.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label77.Location = new System.Drawing.Point(643, 30);
+            this.label77.Location = new System.Drawing.Point(843, 30);
             this.label77.Name = "label77";
             this.label77.Size = new System.Drawing.Size(124, 28);
             this.label77.TabIndex = 165;
@@ -3631,8 +3685,8 @@
             // 
             this.scImgLst.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("scImgLst.ImageStream")));
             this.scImgLst.TransparentColor = System.Drawing.Color.Transparent;
-            this.scImgLst.Images.SetKeyName(0, "A.jpg");
-            this.scImgLst.Images.SetKeyName(1, "B.jpg");
+            this.scImgLst.Images.SetKeyName(0, "left.png");
+            this.scImgLst.Images.SetKeyName(1, "right.png");
             // 
             // WorkForm
             // 
@@ -3948,6 +4002,10 @@
         private System.Windows.Forms.ImageList scImgLst;
         private System.Windows.Forms.Button button43;
         private System.Windows.Forms.Button button42;
+        private System.Windows.Forms.TextBox textBox77;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.TextBox textBox78;
+        private System.Windows.Forms.Label label61;
     }
 }
 

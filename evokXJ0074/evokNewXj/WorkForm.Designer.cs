@@ -84,14 +84,13 @@
             this.button99 = new System.Windows.Forms.Button();
             this.button168 = new System.Windows.Forms.Button();
             this.button12 = new System.Windows.Forms.Button();
-            this.textBox18 = new System.Windows.Forms.TextBox();
             this.button9 = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.g2Param = new System.Windows.Forms.GroupBox();
             this.textBox15 = new System.Windows.Forms.TextBox();
             this.textBox8 = new System.Windows.Forms.TextBox();
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.textBox9 = new System.Windows.Forms.TextBox();
-            this.textBox17 = new System.Windows.Forms.TextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox12 = new System.Windows.Forms.TextBox();
@@ -102,15 +101,31 @@
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.button98 = new System.Windows.Forms.Button();
             this.label21 = new System.Windows.Forms.Label();
-            this.button97 = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
+            this.textBox17 = new System.Windows.Forms.TextBox();
+            this.button98 = new System.Windows.Forms.Button();
+            this.button97 = new System.Windows.Forms.Button();
             this.button96 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.g1Param = new System.Windows.Forms.GroupBox();
+            this.textBox18 = new System.Windows.Forms.TextBox();
+            this.label30 = new System.Windows.Forms.Label();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.textBox16 = new System.Windows.Forms.TextBox();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -118,7 +133,6 @@
             this.button94 = new System.Windows.Forms.Button();
             this.button87 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.label30 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.label73 = new System.Windows.Forms.Label();
@@ -145,175 +159,227 @@
             this.button26 = new System.Windows.Forms.Button();
             this.button34 = new System.Windows.Forms.Button();
             this.button31 = new System.Windows.Forms.Button();
-            this.textBox47 = new System.Windows.Forms.TextBox();
-            this.textBox43 = new System.Windows.Forms.TextBox();
-            this.textBox46 = new System.Windows.Forms.TextBox();
-            this.textBox42 = new System.Windows.Forms.TextBox();
-            this.textBox45 = new System.Windows.Forms.TextBox();
-            this.textBox41 = new System.Windows.Forms.TextBox();
-            this.textBox53 = new System.Windows.Forms.TextBox();
-            this.textBox51 = new System.Windows.Forms.TextBox();
-            this.textBox49 = new System.Windows.Forms.TextBox();
-            this.textBox56 = new System.Windows.Forms.TextBox();
-            this.textBox55 = new System.Windows.Forms.TextBox();
-            this.textBox54 = new System.Windows.Forms.TextBox();
-            this.textBox52 = new System.Windows.Forms.TextBox();
-            this.textBox50 = new System.Windows.Forms.TextBox();
-            this.textBox48 = new System.Windows.Forms.TextBox();
-            this.textBox44 = new System.Windows.Forms.TextBox();
-            this.textBox40 = new System.Windows.Forms.TextBox();
             this.button28 = new System.Windows.Forms.Button();
             this.button25 = new System.Windows.Forms.Button();
             this.button33 = new System.Windows.Forms.Button();
             this.button30 = new System.Windows.Forms.Button();
             this.button27 = new System.Windows.Forms.Button();
             this.button24 = new System.Windows.Forms.Button();
-            this.label79 = new System.Windows.Forms.Label();
-            this.label78 = new System.Windows.Forms.Label();
-            this.label77 = new System.Windows.Forms.Label();
-            this.label76 = new System.Windows.Forms.Label();
-            this.label86 = new System.Windows.Forms.Label();
-            this.label84 = new System.Windows.Forms.Label();
-            this.label82 = new System.Windows.Forms.Label();
-            this.label89 = new System.Windows.Forms.Label();
-            this.label88 = new System.Windows.Forms.Label();
-            this.label87 = new System.Windows.Forms.Label();
-            this.label85 = new System.Windows.Forms.Label();
-            this.label83 = new System.Windows.Forms.Label();
-            this.label81 = new System.Windows.Forms.Label();
-            this.label80 = new System.Windows.Forms.Label();
-            this.label75 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.button116 = new System.Windows.Forms.Button();
-            this.textBox35 = new System.Windows.Forms.TextBox();
-            this.textBox36 = new System.Windows.Forms.TextBox();
-            this.textBox37 = new System.Windows.Forms.TextBox();
-            this.textBox34 = new System.Windows.Forms.TextBox();
-            this.button115 = new System.Windows.Forms.Button();
-            this.textBox38 = new System.Windows.Forms.TextBox();
-            this.textBox33 = new System.Windows.Forms.TextBox();
-            this.textBox39 = new System.Windows.Forms.TextBox();
-            this.label53 = new System.Windows.Forms.Label();
-            this.button114 = new System.Windows.Forms.Button();
-            this.label54 = new System.Windows.Forms.Label();
-            this.label52 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
+            this.g5Param = new System.Windows.Forms.GroupBox();
             this.label56 = new System.Windows.Forms.Label();
+            this.textBox35 = new System.Windows.Forms.TextBox();
+            this.label55 = new System.Windows.Forms.Label();
+            this.textBox34 = new System.Windows.Forms.TextBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.textBox36 = new System.Windows.Forms.TextBox();
+            this.textBox39 = new System.Windows.Forms.TextBox();
+            this.label52 = new System.Windows.Forms.Label();
+            this.textBox33 = new System.Windows.Forms.TextBox();
+            this.textBox38 = new System.Windows.Forms.TextBox();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
+            this.button116 = new System.Windows.Forms.Button();
+            this.textBox37 = new System.Windows.Forms.TextBox();
+            this.button115 = new System.Windows.Forms.Button();
+            this.button114 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
             this.button22 = new System.Windows.Forms.Button();
             this.button19 = new System.Windows.Forms.Button();
             this.button20 = new System.Windows.Forms.Button();
             this.button21 = new System.Windows.Forms.Button();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.button110 = new System.Windows.Forms.Button();
+            this.g4Param = new System.Windows.Forms.GroupBox();
+            this.label47 = new System.Windows.Forms.Label();
+            this.label45 = new System.Windows.Forms.Label();
             this.textBox27 = new System.Windows.Forms.TextBox();
-            this.button106 = new System.Windows.Forms.Button();
+            this.label43 = new System.Windows.Forms.Label();
+            this.textBox32 = new System.Windows.Forms.TextBox();
             this.textBox29 = new System.Windows.Forms.TextBox();
+            this.button110 = new System.Windows.Forms.Button();
+            this.button106 = new System.Windows.Forms.Button();
             this.button103 = new System.Windows.Forms.Button();
             this.textBox30 = new System.Windows.Forms.TextBox();
-            this.textBox32 = new System.Windows.Forms.TextBox();
-            this.label43 = new System.Windows.Forms.Label();
-            this.label45 = new System.Windows.Forms.Label();
-            this.label47 = new System.Windows.Forms.Label();
             this.button16 = new System.Windows.Forms.Button();
             this.button17 = new System.Windows.Forms.Button();
             this.button18 = new System.Windows.Forms.Button();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.button113 = new System.Windows.Forms.Button();
+            this.g3Param = new System.Windows.Forms.GroupBox();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
             this.textBox20 = new System.Windows.Forms.TextBox();
-            this.button112 = new System.Windows.Forms.Button();
+            this.label34 = new System.Windows.Forms.Label();
+            this.textBox25 = new System.Windows.Forms.TextBox();
             this.textBox22 = new System.Windows.Forms.TextBox();
+            this.button113 = new System.Windows.Forms.Button();
+            this.button112 = new System.Windows.Forms.Button();
             this.textBox23 = new System.Windows.Forms.TextBox();
             this.button111 = new System.Windows.Forms.Button();
-            this.textBox25 = new System.Windows.Forms.TextBox();
-            this.label34 = new System.Windows.Forms.Label();
-            this.label36 = new System.Windows.Forms.Label();
-            this.label38 = new System.Windows.Forms.Label();
             this.button170 = new System.Windows.Forms.Button();
             this.button13 = new System.Windows.Forms.Button();
             this.button169 = new System.Windows.Forms.Button();
             this.button14 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
+            this.g6Param = new System.Windows.Forms.GroupBox();
+            this.label80 = new System.Windows.Forms.Label();
+            this.label75 = new System.Windows.Forms.Label();
+            this.textBox44 = new System.Windows.Forms.TextBox();
+            this.textBox40 = new System.Windows.Forms.TextBox();
+            this.label88 = new System.Windows.Forms.Label();
+            this.textBox46 = new System.Windows.Forms.TextBox();
+            this.textBox54 = new System.Windows.Forms.TextBox();
+            this.textBox45 = new System.Windows.Forms.TextBox();
+            this.textBox55 = new System.Windows.Forms.TextBox();
+            this.textBox47 = new System.Windows.Forms.TextBox();
+            this.label85 = new System.Windows.Forms.Label();
+            this.label76 = new System.Windows.Forms.Label();
+            this.label87 = new System.Windows.Forms.Label();
+            this.label77 = new System.Windows.Forms.Label();
+            this.label83 = new System.Windows.Forms.Label();
+            this.textBox41 = new System.Windows.Forms.TextBox();
+            this.textBox52 = new System.Windows.Forms.TextBox();
+            this.label78 = new System.Windows.Forms.Label();
+            this.label81 = new System.Windows.Forms.Label();
+            this.label79 = new System.Windows.Forms.Label();
+            this.textBox50 = new System.Windows.Forms.TextBox();
+            this.textBox42 = new System.Windows.Forms.TextBox();
+            this.textBox43 = new System.Windows.Forms.TextBox();
+            this.label86 = new System.Windows.Forms.Label();
+            this.textBox48 = new System.Windows.Forms.TextBox();
+            this.label84 = new System.Windows.Forms.Label();
+            this.textBox56 = new System.Windows.Forms.TextBox();
+            this.textBox51 = new System.Windows.Forms.TextBox();
+            this.textBox49 = new System.Windows.Forms.TextBox();
+            this.label82 = new System.Windows.Forms.Label();
+            this.label89 = new System.Windows.Forms.Label();
+            this.textBox53 = new System.Windows.Forms.TextBox();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.button44 = new System.Windows.Forms.Button();
-            this.textBox88 = new System.Windows.Forms.TextBox();
-            this.textBox81 = new System.Windows.Forms.TextBox();
-            this.textBox24 = new System.Windows.Forms.TextBox();
-            this.textBox87 = new System.Windows.Forms.TextBox();
-            this.textBox19 = new System.Windows.Forms.TextBox();
-            this.textBox28 = new System.Windows.Forms.TextBox();
-            this.textBox21 = new System.Windows.Forms.TextBox();
-            this.textBox85 = new System.Windows.Forms.TextBox();
-            this.textBox26 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.button43 = new System.Windows.Forms.Button();
             this.button42 = new System.Windows.Forms.Button();
             this.button138 = new System.Windows.Forms.Button();
             this.button174 = new System.Windows.Forms.Button();
             this.button173 = new System.Windows.Forms.Button();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.button172 = new System.Windows.Forms.Button();
             this.button171 = new System.Windows.Forms.Button();
             this.button137 = new System.Windows.Forms.Button();
             this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.button134 = new System.Windows.Forms.Button();
+            this.g7Param = new System.Windows.Forms.GroupBox();
+            this.label101 = new System.Windows.Forms.Label();
+            this.label100 = new System.Windows.Forms.Label();
             this.textBox57 = new System.Windows.Forms.TextBox();
+            this.label99 = new System.Windows.Forms.Label();
             this.textBox59 = new System.Windows.Forms.TextBox();
+            this.textBox64 = new System.Windows.Forms.TextBox();
+            this.button134 = new System.Windows.Forms.Button();
             this.button133 = new System.Windows.Forms.Button();
             this.textBox62 = new System.Windows.Forms.TextBox();
-            this.textBox64 = new System.Windows.Forms.TextBox();
-            this.label99 = new System.Windows.Forms.Label();
-            this.label100 = new System.Windows.Forms.Label();
-            this.label101 = new System.Windows.Forms.Label();
             this.button39 = new System.Windows.Forms.Button();
             this.button40 = new System.Windows.Forms.Button();
             this.button41 = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
-            this.button136 = new System.Windows.Forms.Button();
+            this.g8Param = new System.Windows.Forms.GroupBox();
+            this.label97 = new System.Windows.Forms.Label();
+            this.label95 = new System.Windows.Forms.Label();
             this.textBox58 = new System.Windows.Forms.TextBox();
+            this.label93 = new System.Windows.Forms.Label();
             this.textBox60 = new System.Windows.Forms.TextBox();
+            this.textBox63 = new System.Windows.Forms.TextBox();
+            this.button136 = new System.Windows.Forms.Button();
             this.textBox61 = new System.Windows.Forms.TextBox();
             this.button135 = new System.Windows.Forms.Button();
-            this.textBox63 = new System.Windows.Forms.TextBox();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label95 = new System.Windows.Forms.Label();
-            this.label97 = new System.Windows.Forms.Label();
             this.button36 = new System.Windows.Forms.Button();
             this.button37 = new System.Windows.Forms.Button();
             this.button38 = new System.Windows.Forms.Button();
+            this.g9Param = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox88 = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.textBox81 = new System.Windows.Forms.TextBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.textBox24 = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
+            this.textBox87 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textBox19 = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textBox28 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textBox21 = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox85 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.textBox26 = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
             this.button142 = new System.Windows.Forms.Button();
+            this.g11Param = new System.Windows.Forms.GroupBox();
+            this.label31 = new System.Windows.Forms.Label();
+            this.textBox89 = new System.Windows.Forms.TextBox();
+            this.label110 = new System.Windows.Forms.Label();
             this.textBox65 = new System.Windows.Forms.TextBox();
-            this.button141 = new System.Windows.Forms.Button();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label29 = new System.Windows.Forms.Label();
             this.textBox66 = new System.Windows.Forms.TextBox();
+            this.label109 = new System.Windows.Forms.Label();
+            this.label108 = new System.Windows.Forms.Label();
+            this.textBox68 = new System.Windows.Forms.TextBox();
+            this.textBox31 = new System.Windows.Forms.TextBox();
+            this.textBox86 = new System.Windows.Forms.TextBox();
+            this.button141 = new System.Windows.Forms.Button();
             this.button140 = new System.Windows.Forms.Button();
             this.textBox67 = new System.Windows.Forms.TextBox();
             this.button139 = new System.Windows.Forms.Button();
-            this.textBox86 = new System.Windows.Forms.TextBox();
-            this.textBox31 = new System.Windows.Forms.TextBox();
-            this.textBox68 = new System.Windows.Forms.TextBox();
-            this.label108 = new System.Windows.Forms.Label();
-            this.label109 = new System.Windows.Forms.Label();
-            this.label29 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label110 = new System.Windows.Forms.Label();
             this.button45 = new System.Windows.Forms.Button();
             this.button46 = new System.Windows.Forms.Button();
             this.button48 = new System.Windows.Forms.Button();
             this.button47 = new System.Windows.Forms.Button();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.g18Param = new System.Windows.Forms.GroupBox();
+            this.label126 = new System.Windows.Forms.Label();
+            this.label127 = new System.Windows.Forms.Label();
+            this.textBox141 = new System.Windows.Forms.TextBox();
+            this.textBox142 = new System.Windows.Forms.TextBox();
+            this.textBox144 = new System.Windows.Forms.TextBox();
+            this.textBox146 = new System.Windows.Forms.TextBox();
+            this.textBox147 = new System.Windows.Forms.TextBox();
+            this.textBox148 = new System.Windows.Forms.TextBox();
+            this.textBox149 = new System.Windows.Forms.TextBox();
+            this.textBox150 = new System.Windows.Forms.TextBox();
+            this.label128 = new System.Windows.Forms.Label();
+            this.label129 = new System.Windows.Forms.Label();
+            this.label133 = new System.Windows.Forms.Label();
+            this.label134 = new System.Windows.Forms.Label();
+            this.label135 = new System.Windows.Forms.Label();
+            this.label136 = new System.Windows.Forms.Label();
+            this.button180 = new System.Windows.Forms.Button();
+            this.button181 = new System.Windows.Forms.Button();
+            this.textBox140 = new System.Windows.Forms.TextBox();
+            this.button182 = new System.Windows.Forms.Button();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.button178 = new System.Windows.Forms.Button();
+            this.g12Param = new System.Windows.Forms.GroupBox();
+            this.label120 = new System.Windows.Forms.Label();
+            this.label119 = new System.Windows.Forms.Label();
+            this.label115 = new System.Windows.Forms.Label();
+            this.label114 = new System.Windows.Forms.Label();
+            this.textBox72 = new System.Windows.Forms.TextBox();
+            this.textBox70 = new System.Windows.Forms.TextBox();
+            this.textBox139 = new System.Windows.Forms.TextBox();
+            this.textBox69 = new System.Windows.Forms.TextBox();
+            this.textBox138 = new System.Windows.Forms.TextBox();
+            this.textBox137 = new System.Windows.Forms.TextBox();
+            this.textBox90 = new System.Windows.Forms.TextBox();
+            this.textBox136 = new System.Windows.Forms.TextBox();
+            this.textBox91 = new System.Windows.Forms.TextBox();
+            this.label118 = new System.Windows.Forms.Label();
+            this.label117 = new System.Windows.Forms.Label();
+            this.label116 = new System.Windows.Forms.Label();
+            this.label32 = new System.Windows.Forms.Label();
+            this.label33 = new System.Windows.Forms.Label();
             this.button143 = new System.Windows.Forms.Button();
             this.button175 = new System.Windows.Forms.Button();
             this.button176 = new System.Windows.Forms.Button();
@@ -327,19 +393,7 @@
             this.button148 = new System.Windows.Forms.Button();
             this.button147 = new System.Windows.Forms.Button();
             this.button146 = new System.Windows.Forms.Button();
-            this.textBox91 = new System.Windows.Forms.TextBox();
-            this.textBox90 = new System.Windows.Forms.TextBox();
-            this.textBox89 = new System.Windows.Forms.TextBox();
-            this.textBox69 = new System.Windows.Forms.TextBox();
-            this.textBox70 = new System.Windows.Forms.TextBox();
             this.textBox71 = new System.Windows.Forms.TextBox();
-            this.textBox72 = new System.Windows.Forms.TextBox();
-            this.label33 = new System.Windows.Forms.Label();
-            this.label32 = new System.Windows.Forms.Label();
-            this.label31 = new System.Windows.Forms.Label();
-            this.label116 = new System.Windows.Forms.Label();
-            this.label117 = new System.Windows.Forms.Label();
-            this.label118 = new System.Windows.Forms.Label();
             this.button57 = new System.Windows.Forms.Button();
             this.button56 = new System.Windows.Forms.Button();
             this.button55 = new System.Windows.Forms.Button();
@@ -355,37 +409,43 @@
             this.button52 = new System.Windows.Forms.Button();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.groupBox18 = new System.Windows.Forms.GroupBox();
+            this.g14Param = new System.Windows.Forms.GroupBox();
             this.textBox132 = new System.Windows.Forms.TextBox();
+            this.label105 = new System.Windows.Forms.Label();
             this.textBox133 = new System.Windows.Forms.TextBox();
+            this.label104 = new System.Windows.Forms.Label();
             this.textBox134 = new System.Windows.Forms.TextBox();
+            this.label103 = new System.Windows.Forms.Label();
             this.label107 = new System.Windows.Forms.Label();
+            this.label102 = new System.Windows.Forms.Label();
             this.label111 = new System.Windows.Forms.Label();
+            this.textBox130 = new System.Windows.Forms.TextBox();
             this.label112 = new System.Windows.Forms.Label();
+            this.textBox128 = new System.Windows.Forms.TextBox();
             this.textBox123 = new System.Windows.Forms.TextBox();
             this.textBox127 = new System.Windows.Forms.TextBox();
-            this.textBox128 = new System.Windows.Forms.TextBox();
             this.textBox129 = new System.Windows.Forms.TextBox();
-            this.textBox130 = new System.Windows.Forms.TextBox();
-            this.label102 = new System.Windows.Forms.Label();
-            this.label103 = new System.Windows.Forms.Label();
-            this.label104 = new System.Windows.Forms.Label();
-            this.label105 = new System.Windows.Forms.Label();
             this.button193 = new System.Windows.Forms.Button();
             this.button194 = new System.Windows.Forms.Button();
             this.button195 = new System.Windows.Forms.Button();
             this.groupBox13 = new System.Windows.Forms.GroupBox();
+            this.g13Param = new System.Windows.Forms.GroupBox();
+            this.label125 = new System.Windows.Forms.Label();
+            this.label124 = new System.Windows.Forms.Label();
+            this.label123 = new System.Windows.Forms.Label();
+            this.label113 = new System.Windows.Forms.Label();
+            this.textBox135 = new System.Windows.Forms.TextBox();
+            this.label106 = new System.Windows.Forms.Label();
+            this.textBox131 = new System.Windows.Forms.TextBox();
+            this.label35 = new System.Windows.Forms.Label();
+            this.textBox92 = new System.Windows.Forms.TextBox();
+            this.textBox76 = new System.Windows.Forms.TextBox();
+            this.textBox73 = new System.Windows.Forms.TextBox();
+            this.textBox74 = new System.Windows.Forms.TextBox();
             this.button153 = new System.Windows.Forms.Button();
             this.button154 = new System.Windows.Forms.Button();
             this.button155 = new System.Windows.Forms.Button();
-            this.textBox92 = new System.Windows.Forms.TextBox();
-            this.textBox73 = new System.Windows.Forms.TextBox();
-            this.textBox74 = new System.Windows.Forms.TextBox();
             this.textBox75 = new System.Windows.Forms.TextBox();
-            this.textBox76 = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.label123 = new System.Windows.Forms.Label();
-            this.label124 = new System.Windows.Forms.Label();
-            this.label125 = new System.Windows.Forms.Label();
             this.button62 = new System.Windows.Forms.Button();
             this.button63 = new System.Windows.Forms.Button();
             this.button64 = new System.Windows.Forms.Button();
@@ -398,40 +458,42 @@
             this.button75 = new System.Windows.Forms.Button();
             this.button67 = new System.Windows.Forms.Button();
             this.button70 = new System.Windows.Forms.Button();
+            this.button179 = new System.Windows.Forms.Button();
             this.button71 = new System.Windows.Forms.Button();
             this.button72 = new System.Windows.Forms.Button();
             this.button74 = new System.Windows.Forms.Button();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.groupBox14 = new System.Windows.Forms.GroupBox();
+            this.g15Param = new System.Windows.Forms.GroupBox();
+            this.label132 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label71 = new System.Windows.Forms.Label();
+            this.label42 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.textBox77 = new System.Windows.Forms.TextBox();
+            this.label46 = new System.Windows.Forms.Label();
+            this.textBox78 = new System.Windows.Forms.TextBox();
+            this.label48 = new System.Windows.Forms.Label();
+            this.label44 = new System.Windows.Forms.Label();
+            this.textBox117 = new System.Windows.Forms.TextBox();
+            this.label131 = new System.Windows.Forms.Label();
+            this.textBox100 = new System.Windows.Forms.TextBox();
+            this.label130 = new System.Windows.Forms.Label();
+            this.textBox99 = new System.Windows.Forms.TextBox();
+            this.textBox80 = new System.Windows.Forms.TextBox();
+            this.textBox98 = new System.Windows.Forms.TextBox();
+            this.textBox93 = new System.Windows.Forms.TextBox();
+            this.textBox95 = new System.Windows.Forms.TextBox();
+            this.textBox94 = new System.Windows.Forms.TextBox();
+            this.textBox97 = new System.Windows.Forms.TextBox();
             this.button73 = new System.Windows.Forms.Button();
             this.button156 = new System.Windows.Forms.Button();
             this.button85 = new System.Windows.Forms.Button();
             this.button84 = new System.Windows.Forms.Button();
             this.button82 = new System.Windows.Forms.Button();
             this.button83 = new System.Windows.Forms.Button();
-            this.textBox77 = new System.Windows.Forms.TextBox();
-            this.textBox78 = new System.Windows.Forms.TextBox();
             this.textBox79 = new System.Windows.Forms.TextBox();
-            this.textBox117 = new System.Windows.Forms.TextBox();
-            this.textBox100 = new System.Windows.Forms.TextBox();
-            this.textBox99 = new System.Windows.Forms.TextBox();
-            this.textBox98 = new System.Windows.Forms.TextBox();
-            this.textBox95 = new System.Windows.Forms.TextBox();
-            this.textBox97 = new System.Windows.Forms.TextBox();
-            this.textBox94 = new System.Windows.Forms.TextBox();
-            this.textBox93 = new System.Windows.Forms.TextBox();
-            this.textBox80 = new System.Windows.Forms.TextBox();
-            this.label130 = new System.Windows.Forms.Label();
-            this.label131 = new System.Windows.Forms.Label();
-            this.label44 = new System.Windows.Forms.Label();
-            this.label48 = new System.Windows.Forms.Label();
-            this.label46 = new System.Windows.Forms.Label();
-            this.label41 = new System.Windows.Forms.Label();
-            this.label42 = new System.Windows.Forms.Label();
-            this.label71 = new System.Windows.Forms.Label();
-            this.label39 = new System.Windows.Forms.Label();
-            this.label37 = new System.Windows.Forms.Label();
-            this.label132 = new System.Windows.Forms.Label();
             this.button78 = new System.Windows.Forms.Button();
             this.button79 = new System.Windows.Forms.Button();
             this.button80 = new System.Windows.Forms.Button();
@@ -443,7 +505,7 @@
             this.button91 = new System.Windows.Forms.Button();
             this.button93 = new System.Windows.Forms.Button();
             this.tabPage12 = new System.Windows.Forms.TabPage();
-            this.groupBox17 = new System.Windows.Forms.GroupBox();
+            this.g17Param = new System.Windows.Forms.GroupBox();
             this.textBox126 = new System.Windows.Forms.TextBox();
             this.textBox121 = new System.Windows.Forms.TextBox();
             this.textBox125 = new System.Windows.Forms.TextBox();
@@ -461,6 +523,11 @@
             this.label90 = new System.Windows.Forms.Label();
             this.label74 = new System.Windows.Forms.Label();
             this.groupBox15 = new System.Windows.Forms.GroupBox();
+            this.g16Param = new System.Windows.Forms.GroupBox();
+            this.label139 = new System.Windows.Forms.Label();
+            this.label138 = new System.Windows.Forms.Label();
+            this.textBox84 = new System.Windows.Forms.TextBox();
+            this.textBox82 = new System.Windows.Forms.TextBox();
             this.button166 = new System.Windows.Forms.Button();
             this.button161 = new System.Windows.Forms.Button();
             this.button165 = new System.Windows.Forms.Button();
@@ -472,11 +539,7 @@
             this.button167 = new System.Windows.Forms.Button();
             this.button162 = new System.Windows.Forms.Button();
             this.button92 = new System.Windows.Forms.Button();
-            this.textBox82 = new System.Windows.Forms.TextBox();
             this.textBox83 = new System.Windows.Forms.TextBox();
-            this.textBox84 = new System.Windows.Forms.TextBox();
-            this.label138 = new System.Windows.Forms.Label();
-            this.label139 = new System.Windows.Forms.Label();
             this.button109 = new System.Windows.Forms.Button();
             this.button108 = new System.Windows.Forms.Button();
             this.button104 = new System.Windows.Forms.Button();
@@ -535,19 +598,6 @@
             this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.logOPF = new System.Windows.Forms.OpenFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.g1Param = new System.Windows.Forms.GroupBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -558,35 +608,51 @@
             this.handTc.SuspendLayout();
             this.tabPage5.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.g2Param.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.g1Param.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.groupBox6.SuspendLayout();
+            this.g5Param.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.g4Param.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.g3Param.SuspendLayout();
+            this.g6Param.SuspendLayout();
             this.tabPage7.SuspendLayout();
             this.groupBox10.SuspendLayout();
+            this.g7Param.SuspendLayout();
             this.groupBox9.SuspendLayout();
+            this.g8Param.SuspendLayout();
+            this.g9Param.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.groupBox11.SuspendLayout();
+            this.g11Param.SuspendLayout();
             this.tabPage9.SuspendLayout();
+            this.groupBox17.SuspendLayout();
+            this.g18Param.SuspendLayout();
             this.groupBox12.SuspendLayout();
+            this.g12Param.SuspendLayout();
             this.tabPage10.SuspendLayout();
             this.groupBox18.SuspendLayout();
+            this.g14Param.SuspendLayout();
             this.groupBox13.SuspendLayout();
+            this.g13Param.SuspendLayout();
             this.tabPage11.SuspendLayout();
             this.groupBox14.SuspendLayout();
+            this.g15Param.SuspendLayout();
             this.tabPage12.SuspendLayout();
-            this.groupBox17.SuspendLayout();
+            this.g17Param.SuspendLayout();
             this.groupBox15.SuspendLayout();
+            this.g16Param.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.groupBox16.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvParam)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO)).BeginInit();
             this.statusStrip1.SuspendLayout();
-            this.g1Param.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -598,8 +664,7 @@
             this.帮助ToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(1815, 35);
+            this.menuStrip1.Size = new System.Drawing.Size(2062, 32);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -608,13 +673,13 @@
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.打开数据文件ToolStripMenuItem});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
+            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(58, 28);
             this.文件ToolStripMenuItem.Text = "文件";
             // 
             // 打开数据文件ToolStripMenuItem
             // 
             this.打开数据文件ToolStripMenuItem.Name = "打开数据文件ToolStripMenuItem";
-            this.打开数据文件ToolStripMenuItem.Size = new System.Drawing.Size(210, 32);
+            this.打开数据文件ToolStripMenuItem.Size = new System.Drawing.Size(200, 30);
             this.打开数据文件ToolStripMenuItem.Text = "打开数据文件";
             // 
             // 设备ToolStripMenuItem
@@ -627,49 +692,49 @@
             this.加载历史日志文件ToolStripMenuItem,
             this.手动页面参数设置ToolStripMenuItem});
             this.设备ToolStripMenuItem.Name = "设备ToolStripMenuItem";
-            this.设备ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
+            this.设备ToolStripMenuItem.Size = new System.Drawing.Size(58, 28);
             this.设备ToolStripMenuItem.Text = "设备";
             this.设备ToolStripMenuItem.Click += new System.EventHandler(this.设备ToolStripMenuItem_Click);
             // 
             // connectMachine
             // 
             this.connectMachine.Name = "connectMachine";
-            this.connectMachine.Size = new System.Drawing.Size(250, 32);
+            this.connectMachine.Size = new System.Drawing.Size(236, 30);
             this.connectMachine.Text = "连接设备";
             this.connectMachine.Click += new System.EventHandler(this.connectMachine_Click);
             // 
             // 查看报警信息ToolStripMenuItem
             // 
             this.查看报警信息ToolStripMenuItem.Name = "查看报警信息ToolStripMenuItem";
-            this.查看报警信息ToolStripMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.查看报警信息ToolStripMenuItem.Size = new System.Drawing.Size(236, 30);
             this.查看报警信息ToolStripMenuItem.Text = "查看报警信息";
             this.查看报警信息ToolStripMenuItem.Click += new System.EventHandler(this.查看报警信息ToolStripMenuItem_Click);
             // 
             // showCurrentDataForm
             // 
             this.showCurrentDataForm.Name = "showCurrentDataForm";
-            this.showCurrentDataForm.Size = new System.Drawing.Size(250, 32);
+            this.showCurrentDataForm.Size = new System.Drawing.Size(236, 30);
             this.showCurrentDataForm.Text = "监控当前页面数据";
             this.showCurrentDataForm.Click += new System.EventHandler(this.监控当前页面数据ToolStripMenuItem_Click);
             // 
             // 查看日志文件ToolStripMenuItem
             // 
             this.查看日志文件ToolStripMenuItem.Name = "查看日志文件ToolStripMenuItem";
-            this.查看日志文件ToolStripMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.查看日志文件ToolStripMenuItem.Size = new System.Drawing.Size(236, 30);
             this.查看日志文件ToolStripMenuItem.Text = "查看当前日志文件";
             this.查看日志文件ToolStripMenuItem.Click += new System.EventHandler(this.查看日志文件ToolStripMenuItem_Click);
             // 
             // 加载历史日志文件ToolStripMenuItem
             // 
             this.加载历史日志文件ToolStripMenuItem.Name = "加载历史日志文件ToolStripMenuItem";
-            this.加载历史日志文件ToolStripMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.加载历史日志文件ToolStripMenuItem.Size = new System.Drawing.Size(236, 30);
             this.加载历史日志文件ToolStripMenuItem.Text = "查看历史日志文件";
             this.加载历史日志文件ToolStripMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
             // 
             // 手动页面参数设置ToolStripMenuItem
             // 
             this.手动页面参数设置ToolStripMenuItem.Name = "手动页面参数设置ToolStripMenuItem";
-            this.手动页面参数设置ToolStripMenuItem.Size = new System.Drawing.Size(250, 32);
+            this.手动页面参数设置ToolStripMenuItem.Size = new System.Drawing.Size(236, 30);
             this.手动页面参数设置ToolStripMenuItem.Text = "手动页面参数设置";
             this.手动页面参数设置ToolStripMenuItem.Click += new System.EventHandler(this.手动页面参数设置ToolStripMenuItem_Click);
             // 
@@ -680,25 +745,25 @@
             this.关于程序版本ToolStripMenuItem,
             this.关于意利欧机械有限公司ToolStripMenuItem});
             this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
+            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(58, 28);
             this.帮助ToolStripMenuItem.Text = "帮助";
             // 
             // 使用说明ToolStripMenuItem
             // 
             this.使用说明ToolStripMenuItem.Name = "使用说明ToolStripMenuItem";
-            this.使用说明ToolStripMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.使用说明ToolStripMenuItem.Size = new System.Drawing.Size(290, 30);
             this.使用说明ToolStripMenuItem.Text = "使用说明";
             // 
             // 关于程序版本ToolStripMenuItem
             // 
             this.关于程序版本ToolStripMenuItem.Name = "关于程序版本ToolStripMenuItem";
-            this.关于程序版本ToolStripMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.关于程序版本ToolStripMenuItem.Size = new System.Drawing.Size(290, 30);
             this.关于程序版本ToolStripMenuItem.Text = "关于程序版本";
             // 
             // 关于意利欧机械有限公司ToolStripMenuItem
             // 
             this.关于意利欧机械有限公司ToolStripMenuItem.Name = "关于意利欧机械有限公司ToolStripMenuItem";
-            this.关于意利欧机械有限公司ToolStripMenuItem.Size = new System.Drawing.Size(310, 32);
+            this.关于意利欧机械有限公司ToolStripMenuItem.Size = new System.Drawing.Size(290, 30);
             this.关于意利欧机械有限公司ToolStripMenuItem.Text = "关于意利欧机械有限公司";
             // 
             // tc1
@@ -708,11 +773,11 @@
             this.tc1.Controls.Add(this.tabPage3);
             this.tc1.Controls.Add(this.tabPage4);
             this.tc1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tc1.Location = new System.Drawing.Point(12, 31);
+            this.tc1.Location = new System.Drawing.Point(14, 37);
             this.tc1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tc1.Name = "tc1";
             this.tc1.SelectedIndex = 0;
-            this.tc1.Size = new System.Drawing.Size(1791, 796);
+            this.tc1.Size = new System.Drawing.Size(2015, 955);
             this.tc1.TabIndex = 1;
             this.tc1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc1_Selecting);
             // 
@@ -737,11 +802,11 @@
             this.tabPage1.Controls.Add(this.ccBtn);
             this.tabPage1.Controls.Add(this.stbtn);
             this.tabPage1.Controls.Add(this.optBtn);
-            this.tabPage1.Location = new System.Drawing.Point(4, 33);
+            this.tabPage1.Location = new System.Drawing.Point(4, 38);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(1783, 759);
+            this.tabPage1.Size = new System.Drawing.Size(2007, 913);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -749,10 +814,10 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button11.Location = new System.Drawing.Point(1016, 180);
+            this.button11.Location = new System.Drawing.Point(1143, 216);
             this.button11.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(164, 52);
+            this.button11.Size = new System.Drawing.Size(184, 62);
             this.button11.TabIndex = 124;
             this.button11.Tag = "压料";
             this.button11.Text = "压料";
@@ -763,10 +828,10 @@
             // stopBtn
             // 
             this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stopBtn.Location = new System.Drawing.Point(1204, 180);
+            this.stopBtn.Location = new System.Drawing.Point(1354, 216);
             this.stopBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.stopBtn.Name = "stopBtn";
-            this.stopBtn.Size = new System.Drawing.Size(164, 52);
+            this.stopBtn.Size = new System.Drawing.Size(184, 62);
             this.stopBtn.TabIndex = 111;
             this.stopBtn.Tag = "停止";
             this.stopBtn.Text = "停止";
@@ -777,10 +842,10 @@
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button5.Location = new System.Drawing.Point(819, 178);
+            this.button5.Location = new System.Drawing.Point(921, 214);
             this.button5.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(164, 52);
+            this.button5.Size = new System.Drawing.Size(184, 62);
             this.button5.TabIndex = 123;
             this.button5.Tag = "拉料开关";
             this.button5.Text = "拉料";
@@ -792,31 +857,30 @@
             // 
             this.printcb.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.printcb.FormattingEnabled = true;
-            this.printcb.Location = new System.Drawing.Point(620, 188);
+            this.printcb.Location = new System.Drawing.Point(698, 226);
             this.printcb.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.printcb.Name = "printcb";
-            this.printcb.Size = new System.Drawing.Size(164, 35);
+            this.printcb.Size = new System.Drawing.Size(184, 41);
             this.printcb.TabIndex = 122;
-            this.printcb.Visible = false;
             this.printcb.SelectedIndexChanged += new System.EventHandler(this.printcb_SelectedIndexChanged);
             // 
             // rtbWork
             // 
-            this.rtbWork.Location = new System.Drawing.Point(1379, 24);
+            this.rtbWork.Location = new System.Drawing.Point(1551, 29);
             this.rtbWork.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbWork.Name = "rtbWork";
             this.rtbWork.ReadOnly = true;
-            this.rtbWork.Size = new System.Drawing.Size(360, 726);
+            this.rtbWork.Size = new System.Drawing.Size(404, 870);
             this.rtbWork.TabIndex = 5;
             this.rtbWork.Text = "";
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(620, 119);
+            this.button1.Location = new System.Drawing.Point(698, 143);
             this.button1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(164, 52);
+            this.button1.Size = new System.Drawing.Size(184, 62);
             this.button1.TabIndex = 121;
             this.button1.Tag = "急停";
             this.button1.Text = "急停";
@@ -826,10 +890,10 @@
             // qClr
             // 
             this.qClr.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.qClr.Location = new System.Drawing.Point(36, 175);
+            this.qClr.Location = new System.Drawing.Point(40, 210);
             this.qClr.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.qClr.Name = "qClr";
-            this.qClr.Size = new System.Drawing.Size(164, 52);
+            this.qClr.Size = new System.Drawing.Size(184, 62);
             this.qClr.TabIndex = 119;
             this.qClr.Tag = "产量清零";
             this.qClr.Text = "产量清零";
@@ -843,19 +907,19 @@
             this.panel1.AutoScrollMinSize = new System.Drawing.Size(10, 10);
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Controls.Add(this.rtbResult);
-            this.panel1.Location = new System.Drawing.Point(699, 245);
+            this.panel1.Location = new System.Drawing.Point(786, 294);
             this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(674, 507);
+            this.panel1.Size = new System.Drawing.Size(758, 608);
             this.panel1.TabIndex = 118;
             // 
             // rtbResult
             // 
-            this.rtbResult.Location = new System.Drawing.Point(20, 12);
+            this.rtbResult.Location = new System.Drawing.Point(22, 14);
             this.rtbResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.rtbResult.Name = "rtbResult";
             this.rtbResult.ReadOnly = true;
-            this.rtbResult.Size = new System.Drawing.Size(632, 460);
+            this.rtbResult.Size = new System.Drawing.Size(710, 551);
             this.rtbResult.TabIndex = 5;
             this.rtbResult.Text = "";
             // 
@@ -869,21 +933,21 @@
             this.groupBox1.Controls.Add(this.clLbl1);
             this.groupBox1.Controls.Add(this.prodlbl);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(40, 6);
+            this.groupBox1.Location = new System.Drawing.Point(45, 7);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(1332, 86);
+            this.groupBox1.Size = new System.Drawing.Size(1498, 104);
             this.groupBox1.TabIndex = 117;
             this.groupBox1.TabStop = false;
             // 
             // lcTxt
             // 
             this.lcTxt.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lcTxt.Location = new System.Drawing.Point(750, 19);
+            this.lcTxt.Location = new System.Drawing.Point(844, 23);
             this.lcTxt.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.lcTxt.Name = "lcTxt";
-            this.lcTxt.Size = new System.Drawing.Size(212, 38);
+            this.lcTxt.Size = new System.Drawing.Size(238, 44);
             this.lcTxt.TabIndex = 113;
             this.lcTxt.Tag = "料长";
             this.lcTxt.Text = "100";
@@ -895,10 +959,10 @@
             // 
             this.label10.AutoSize = true;
             this.label10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label10.Location = new System.Drawing.Point(666, 21);
+            this.label10.Location = new System.Drawing.Point(749, 25);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(96, 28);
+            this.label10.Size = new System.Drawing.Size(114, 33);
             this.label10.TabIndex = 112;
             this.label10.Text = "料长：";
             // 
@@ -906,10 +970,10 @@
             // 
             this.slLbl.AutoSize = true;
             this.slLbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.slLbl.Location = new System.Drawing.Point(539, 21);
+            this.slLbl.Location = new System.Drawing.Point(606, 25);
             this.slLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.slLbl.Name = "slLbl";
-            this.slLbl.Size = new System.Drawing.Size(68, 28);
+            this.slLbl.Size = new System.Drawing.Size(83, 33);
             this.slLbl.TabIndex = 106;
             this.slLbl.Tag = "送料";
             this.slLbl.Text = "HSD0";
@@ -918,10 +982,10 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label3.Location = new System.Drawing.Point(435, 21);
+            this.label3.Location = new System.Drawing.Point(489, 25);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(96, 28);
+            this.label3.Size = new System.Drawing.Size(114, 33);
             this.label3.TabIndex = 107;
             this.label3.Text = "送料：";
             // 
@@ -929,10 +993,10 @@
             // 
             this.clLbl.AutoSize = true;
             this.clLbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.clLbl.Location = new System.Drawing.Point(301, 22);
+            this.clLbl.Location = new System.Drawing.Point(339, 26);
             this.clLbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.clLbl.Name = "clLbl";
-            this.clLbl.Size = new System.Drawing.Size(68, 28);
+            this.clLbl.Size = new System.Drawing.Size(83, 33);
             this.clLbl.TabIndex = 108;
             this.clLbl.Tag = "出料";
             this.clLbl.Text = "HSD4";
@@ -941,10 +1005,10 @@
             // 
             this.clLbl1.AutoSize = true;
             this.clLbl1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.clLbl1.Location = new System.Drawing.Point(216, 21);
+            this.clLbl1.Location = new System.Drawing.Point(243, 25);
             this.clLbl1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.clLbl1.Name = "clLbl1";
-            this.clLbl1.Size = new System.Drawing.Size(96, 28);
+            this.clLbl1.Size = new System.Drawing.Size(114, 33);
             this.clLbl1.TabIndex = 109;
             this.clLbl1.Text = "出料：";
             // 
@@ -952,10 +1016,10 @@
             // 
             this.prodlbl.AutoSize = true;
             this.prodlbl.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.prodlbl.Location = new System.Drawing.Point(124, 21);
+            this.prodlbl.Location = new System.Drawing.Point(140, 25);
             this.prodlbl.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.prodlbl.Name = "prodlbl";
-            this.prodlbl.Size = new System.Drawing.Size(68, 28);
+            this.prodlbl.Size = new System.Drawing.Size(83, 33);
             this.prodlbl.TabIndex = 104;
             this.prodlbl.Tag = "总产量";
             this.prodlbl.Text = "HD16";
@@ -964,21 +1028,21 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(17, 21);
+            this.label1.Location = new System.Drawing.Point(19, 25);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(124, 28);
+            this.label1.Size = new System.Drawing.Size(147, 33);
             this.label1.TabIndex = 105;
             this.label1.Text = "总产量：";
             // 
             // UserData
             // 
             this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UserData.Location = new System.Drawing.Point(31, 245);
+            this.UserData.Location = new System.Drawing.Point(35, 294);
             this.UserData.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.UserData.Name = "UserData";
             this.UserData.RowTemplate.Height = 23;
-            this.UserData.Size = new System.Drawing.Size(651, 508);
+            this.UserData.Size = new System.Drawing.Size(732, 610);
             this.UserData.TabIndex = 116;
             this.UserData.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserData_CellEndEdit);
             this.UserData.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserData_CellLeave);
@@ -987,10 +1051,10 @@
             // loadDataBtn
             // 
             this.loadDataBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.loadDataBtn.Location = new System.Drawing.Point(36, 119);
+            this.loadDataBtn.Location = new System.Drawing.Point(40, 143);
             this.loadDataBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadDataBtn.Name = "loadDataBtn";
-            this.loadDataBtn.Size = new System.Drawing.Size(164, 52);
+            this.loadDataBtn.Size = new System.Drawing.Size(184, 62);
             this.loadDataBtn.TabIndex = 115;
             this.loadDataBtn.Tag = "加载数据";
             this.loadDataBtn.Text = "加载数据";
@@ -1000,10 +1064,10 @@
             // autoSLBtn
             // 
             this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(237, 175);
+            this.autoSLBtn.Location = new System.Drawing.Point(267, 210);
             this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.autoSLBtn.Name = "autoSLBtn";
-            this.autoSLBtn.Size = new System.Drawing.Size(164, 52);
+            this.autoSLBtn.Size = new System.Drawing.Size(184, 62);
             this.autoSLBtn.TabIndex = 111;
             this.autoSLBtn.Tag = "结疤测量";
             this.autoSLBtn.Text = "结疤测量";
@@ -1014,10 +1078,10 @@
             // resetBtn
             // 
             this.resetBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.resetBtn.Location = new System.Drawing.Point(1016, 119);
+            this.resetBtn.Location = new System.Drawing.Point(1143, 143);
             this.resetBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.resetBtn.Name = "resetBtn";
-            this.resetBtn.Size = new System.Drawing.Size(164, 52);
+            this.resetBtn.Size = new System.Drawing.Size(184, 62);
             this.resetBtn.TabIndex = 110;
             this.resetBtn.Tag = "复位";
             this.resetBtn.Text = "复位";
@@ -1027,10 +1091,10 @@
             // pauseBtn
             // 
             this.pauseBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.pauseBtn.Location = new System.Drawing.Point(819, 119);
+            this.pauseBtn.Location = new System.Drawing.Point(921, 143);
             this.pauseBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.pauseBtn.Name = "pauseBtn";
-            this.pauseBtn.Size = new System.Drawing.Size(164, 52);
+            this.pauseBtn.Size = new System.Drawing.Size(184, 62);
             this.pauseBtn.TabIndex = 112;
             this.pauseBtn.Tag = "暂停";
             this.pauseBtn.Text = "暂停";
@@ -1040,10 +1104,10 @@
             // button10
             // 
             this.button10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button10.Location = new System.Drawing.Point(1204, 119);
+            this.button10.Location = new System.Drawing.Point(1354, 143);
             this.button10.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(164, 52);
+            this.button10.Size = new System.Drawing.Size(184, 62);
             this.button10.TabIndex = 113;
             this.button10.Tag = "条码预览";
             this.button10.Text = "条码预览";
@@ -1053,10 +1117,10 @@
             // ccBtn
             // 
             this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ccBtn.Location = new System.Drawing.Point(429, 180);
+            this.ccBtn.Location = new System.Drawing.Point(483, 216);
             this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ccBtn.Name = "ccBtn";
-            this.ccBtn.Size = new System.Drawing.Size(164, 52);
+            this.ccBtn.Size = new System.Drawing.Size(184, 62);
             this.ccBtn.TabIndex = 109;
             this.ccBtn.Tag = "自动测长标志";
             this.ccBtn.Text = "测长";
@@ -1067,10 +1131,10 @@
             // stbtn
             // 
             this.stbtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stbtn.Location = new System.Drawing.Point(429, 119);
+            this.stbtn.Location = new System.Drawing.Point(483, 143);
             this.stbtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.stbtn.Name = "stbtn";
-            this.stbtn.Size = new System.Drawing.Size(164, 52);
+            this.stbtn.Size = new System.Drawing.Size(184, 62);
             this.stbtn.TabIndex = 114;
             this.stbtn.Tag = "启动";
             this.stbtn.Text = "启动";
@@ -1080,10 +1144,10 @@
             // optBtn
             // 
             this.optBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.optBtn.Location = new System.Drawing.Point(237, 119);
+            this.optBtn.Location = new System.Drawing.Point(267, 143);
             this.optBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.optBtn.Name = "optBtn";
-            this.optBtn.Size = new System.Drawing.Size(164, 52);
+            this.optBtn.Size = new System.Drawing.Size(184, 62);
             this.optBtn.TabIndex = 109;
             this.optBtn.Tag = "优化排版";
             this.optBtn.Text = "优化排版";
@@ -1094,13 +1158,15 @@
             // 
             this.tabPage2.BackColor = System.Drawing.Color.White;
             this.tabPage2.Controls.Add(this.handTc);
-            this.tabPage2.Location = new System.Drawing.Point(4, 33);
+            this.tabPage2.Location = new System.Drawing.Point(4, 38);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(1783, 759);
+            this.tabPage2.Size = new System.Drawing.Size(2007, 913);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
+            this.tabPage2.Enter += new System.EventHandler(this.tabPage2_Enter);
+            this.tabPage2.Leave += new System.EventHandler(this.tabPage2_Leave);
             // 
             // handTc
             // 
@@ -1112,10 +1178,11 @@
             this.handTc.Controls.Add(this.tabPage10);
             this.handTc.Controls.Add(this.tabPage11);
             this.handTc.Controls.Add(this.tabPage12);
-            this.handTc.Location = new System.Drawing.Point(6, 5);
+            this.handTc.Location = new System.Drawing.Point(7, 6);
+            this.handTc.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.handTc.Name = "handTc";
             this.handTc.SelectedIndex = 0;
-            this.handTc.Size = new System.Drawing.Size(1762, 724);
+            this.handTc.Size = new System.Drawing.Size(1982, 869);
             this.handTc.TabIndex = 0;
             this.handTc.Tag = "handTab";
             this.handTc.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.handTc_Selecting);
@@ -1128,15 +1195,14 @@
             this.tabPage5.Controls.Add(this.button99);
             this.tabPage5.Controls.Add(this.button168);
             this.tabPage5.Controls.Add(this.button12);
-            this.tabPage5.Controls.Add(this.textBox18);
             this.tabPage5.Controls.Add(this.button9);
             this.tabPage5.Controls.Add(this.groupBox3);
             this.tabPage5.Controls.Add(this.groupBox2);
-            this.tabPage5.Controls.Add(this.label30);
-            this.tabPage5.Location = new System.Drawing.Point(4, 33);
+            this.tabPage5.Location = new System.Drawing.Point(4, 38);
+            this.tabPage5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage5.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage5.Size = new System.Drawing.Size(1974, 827);
             this.tabPage5.TabIndex = 0;
             this.tabPage5.Text = "机械手";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -1145,9 +1211,10 @@
             // button102
             // 
             this.button102.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button102.Location = new System.Drawing.Point(538, 492);
+            this.button102.Location = new System.Drawing.Point(605, 590);
+            this.button102.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button102.Name = "button102";
-            this.button102.Size = new System.Drawing.Size(181, 50);
+            this.button102.Size = new System.Drawing.Size(204, 60);
             this.button102.TabIndex = 3;
             this.button102.Tag = "机械手按钮";
             this.button102.Text = "机械手按钮";
@@ -1156,9 +1223,10 @@
             // button101
             // 
             this.button101.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button101.Location = new System.Drawing.Point(362, 492);
+            this.button101.Location = new System.Drawing.Point(407, 590);
+            this.button101.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button101.Name = "button101";
-            this.button101.Size = new System.Drawing.Size(156, 50);
+            this.button101.Size = new System.Drawing.Size(176, 60);
             this.button101.TabIndex = 3;
             this.button101.Tag = "料架检料";
             this.button101.Text = "料架检料";
@@ -1167,9 +1235,10 @@
             // button100
             // 
             this.button100.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button100.Location = new System.Drawing.Point(191, 492);
+            this.button100.Location = new System.Drawing.Point(215, 590);
+            this.button100.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button100.Name = "button100";
-            this.button100.Size = new System.Drawing.Size(156, 50);
+            this.button100.Size = new System.Drawing.Size(176, 60);
             this.button100.TabIndex = 3;
             this.button100.Tag = "料检测2";
             this.button100.Text = "料检测2";
@@ -1178,9 +1247,10 @@
             // button99
             // 
             this.button99.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button99.Location = new System.Drawing.Point(16, 492);
+            this.button99.Location = new System.Drawing.Point(18, 590);
+            this.button99.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button99.Name = "button99";
-            this.button99.Size = new System.Drawing.Size(156, 50);
+            this.button99.Size = new System.Drawing.Size(176, 60);
             this.button99.TabIndex = 3;
             this.button99.Tag = "料检测1";
             this.button99.Text = "料检测1";
@@ -1188,9 +1258,10 @@
             // 
             // button168
             // 
-            this.button168.Location = new System.Drawing.Point(404, 422);
+            this.button168.Location = new System.Drawing.Point(454, 506);
+            this.button168.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button168.Name = "button168";
-            this.button168.Size = new System.Drawing.Size(178, 50);
+            this.button168.Size = new System.Drawing.Size(200, 60);
             this.button168.TabIndex = 1;
             this.button168.Tag = "机械手联动";
             this.button168.Text = "机械手联动";
@@ -1199,31 +1270,22 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(210, 422);
+            this.button12.Location = new System.Drawing.Point(236, 506);
+            this.button12.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(178, 50);
+            this.button12.Size = new System.Drawing.Size(200, 60);
             this.button12.TabIndex = 1;
             this.button12.Tag = "联动急停";
             this.button12.Text = "联动急停";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
-            // textBox18
-            // 
-            this.textBox18.Location = new System.Drawing.Point(199, 563);
-            this.textBox18.Name = "textBox18";
-            this.textBox18.Size = new System.Drawing.Size(100, 34);
-            this.textBox18.TabIndex = 2;
-            this.textBox18.Tag = "机械手夹料时间";
-            this.textBox18.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox18.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(16, 422);
+            this.button9.Location = new System.Drawing.Point(18, 506);
+            this.button9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(178, 50);
+            this.button9.Size = new System.Drawing.Size(200, 60);
             this.button9.TabIndex = 1;
             this.button9.Tag = "机械手夹料";
             this.button9.Text = "机械手夹料";
@@ -1232,42 +1294,58 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.textBox15);
-            this.groupBox3.Controls.Add(this.textBox8);
-            this.groupBox3.Controls.Add(this.textBox14);
-            this.groupBox3.Controls.Add(this.textBox9);
+            this.groupBox3.Controls.Add(this.g2Param);
             this.groupBox3.Controls.Add(this.textBox17);
-            this.groupBox3.Controls.Add(this.textBox10);
-            this.groupBox3.Controls.Add(this.textBox11);
-            this.groupBox3.Controls.Add(this.textBox12);
-            this.groupBox3.Controls.Add(this.textBox13);
-            this.groupBox3.Controls.Add(this.label25);
-            this.groupBox3.Controls.Add(this.label17);
-            this.groupBox3.Controls.Add(this.label24);
-            this.groupBox3.Controls.Add(this.label18);
-            this.groupBox3.Controls.Add(this.label19);
-            this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this.button98);
-            this.groupBox3.Controls.Add(this.label21);
             this.groupBox3.Controls.Add(this.button97);
-            this.groupBox3.Controls.Add(this.label22);
             this.groupBox3.Controls.Add(this.button96);
             this.groupBox3.Controls.Add(this.button6);
             this.groupBox3.Controls.Add(this.button7);
             this.groupBox3.Controls.Add(this.button8);
-            this.groupBox3.Location = new System.Drawing.Point(726, 22);
+            this.groupBox3.Location = new System.Drawing.Point(817, 26);
+            this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(691, 394);
+            this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox3.Size = new System.Drawing.Size(777, 473);
             this.groupBox3.TabIndex = 0;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "机械手Z";
             // 
+            // g2Param
+            // 
+            this.g2Param.Controls.Add(this.textBox15);
+            this.g2Param.Controls.Add(this.textBox8);
+            this.g2Param.Controls.Add(this.textBox14);
+            this.g2Param.Controls.Add(this.textBox9);
+            this.g2Param.Controls.Add(this.textBox10);
+            this.g2Param.Controls.Add(this.textBox11);
+            this.g2Param.Controls.Add(this.textBox12);
+            this.g2Param.Controls.Add(this.textBox13);
+            this.g2Param.Controls.Add(this.label25);
+            this.g2Param.Controls.Add(this.label17);
+            this.g2Param.Controls.Add(this.label24);
+            this.g2Param.Controls.Add(this.label18);
+            this.g2Param.Controls.Add(this.label19);
+            this.g2Param.Controls.Add(this.label20);
+            this.g2Param.Controls.Add(this.label21);
+            this.g2Param.Controls.Add(this.label22);
+            this.g2Param.Location = new System.Drawing.Point(17, 112);
+            this.g2Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g2Param.Name = "g2Param";
+            this.g2Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g2Param.Size = new System.Drawing.Size(721, 241);
+            this.g2Param.TabIndex = 3;
+            this.g2Param.TabStop = false;
+            this.g2Param.Text = "参数";
+            this.g2Param.Visible = false;
+            // 
             // textBox15
             // 
-            this.textBox15.Location = new System.Drawing.Point(415, 235);
+            this.textBox15.Location = new System.Drawing.Point(555, 181);
+            this.textBox15.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox15.Name = "textBox15";
-            this.textBox15.Size = new System.Drawing.Size(100, 34);
-            this.textBox15.TabIndex = 2;
+            this.textBox15.Size = new System.Drawing.Size(112, 39);
+            this.textBox15.TabIndex = 11;
             this.textBox15.Tag = "机械手Z抓料极限位";
             this.textBox15.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox15.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1275,10 +1353,11 @@
             // 
             // textBox8
             // 
-            this.textBox8.Location = new System.Drawing.Point(415, 192);
+            this.textBox8.Location = new System.Drawing.Point(555, 130);
+            this.textBox8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox8.Name = "textBox8";
-            this.textBox8.Size = new System.Drawing.Size(100, 34);
-            this.textBox8.TabIndex = 2;
+            this.textBox8.Size = new System.Drawing.Size(112, 39);
+            this.textBox8.TabIndex = 12;
             this.textBox8.Tag = "机械手Z放料位置";
             this.textBox8.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox8.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1286,10 +1365,11 @@
             // 
             // textBox14
             // 
-            this.textBox14.Location = new System.Drawing.Point(133, 232);
+            this.textBox14.Location = new System.Drawing.Point(237, 178);
+            this.textBox14.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(100, 34);
-            this.textBox14.TabIndex = 2;
+            this.textBox14.Size = new System.Drawing.Size(112, 39);
+            this.textBox14.TabIndex = 13;
             this.textBox14.Tag = "机械手Z慢速";
             this.textBox14.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox14.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1297,31 +1377,23 @@
             // 
             // textBox9
             // 
-            this.textBox9.Location = new System.Drawing.Point(133, 192);
+            this.textBox9.Location = new System.Drawing.Point(237, 130);
+            this.textBox9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox9.Name = "textBox9";
-            this.textBox9.Size = new System.Drawing.Size(100, 34);
-            this.textBox9.TabIndex = 2;
+            this.textBox9.Size = new System.Drawing.Size(112, 39);
+            this.textBox9.TabIndex = 14;
             this.textBox9.Tag = "机械手Z复位速度";
             this.textBox9.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox9.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox9.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // textBox17
-            // 
-            this.textBox17.Location = new System.Drawing.Point(177, 39);
-            this.textBox17.Name = "textBox17";
-            this.textBox17.ReadOnly = true;
-            this.textBox17.Size = new System.Drawing.Size(151, 34);
-            this.textBox17.TabIndex = 2;
-            this.textBox17.Tag = "机械手Z位置";
-            this.textBox17.TextChanged += new System.EventHandler(this.textBox16_TextChanged);
-            // 
             // textBox10
             // 
-            this.textBox10.Location = new System.Drawing.Point(415, 147);
+            this.textBox10.Location = new System.Drawing.Point(555, 76);
+            this.textBox10.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox10.Name = "textBox10";
-            this.textBox10.Size = new System.Drawing.Size(100, 34);
-            this.textBox10.TabIndex = 2;
+            this.textBox10.Size = new System.Drawing.Size(112, 39);
+            this.textBox10.TabIndex = 15;
             this.textBox10.Tag = "机械手Z抓料位置";
             this.textBox10.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox10.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1329,10 +1401,11 @@
             // 
             // textBox11
             // 
-            this.textBox11.Location = new System.Drawing.Point(133, 147);
+            this.textBox11.Location = new System.Drawing.Point(237, 76);
+            this.textBox11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox11.Name = "textBox11";
-            this.textBox11.Size = new System.Drawing.Size(100, 34);
-            this.textBox11.TabIndex = 2;
+            this.textBox11.Size = new System.Drawing.Size(112, 39);
+            this.textBox11.TabIndex = 16;
             this.textBox11.Tag = "机械手Z手动单量";
             this.textBox11.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox11.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1340,10 +1413,11 @@
             // 
             // textBox12
             // 
-            this.textBox12.Location = new System.Drawing.Point(415, 100);
+            this.textBox12.Location = new System.Drawing.Point(555, 19);
+            this.textBox12.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox12.Name = "textBox12";
-            this.textBox12.Size = new System.Drawing.Size(100, 34);
-            this.textBox12.TabIndex = 2;
+            this.textBox12.Size = new System.Drawing.Size(112, 39);
+            this.textBox12.TabIndex = 17;
             this.textBox12.Tag = "机械手Z自动速度";
             this.textBox12.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox12.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1351,10 +1425,11 @@
             // 
             // textBox13
             // 
-            this.textBox13.Location = new System.Drawing.Point(133, 100);
+            this.textBox13.Location = new System.Drawing.Point(237, 19);
+            this.textBox13.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox13.Name = "textBox13";
-            this.textBox13.Size = new System.Drawing.Size(100, 34);
-            this.textBox13.TabIndex = 2;
+            this.textBox13.Size = new System.Drawing.Size(112, 39);
+            this.textBox13.TabIndex = 18;
             this.textBox13.Tag = "机械手Z手动速度";
             this.textBox13.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox13.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
@@ -1363,103 +1438,117 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(257, 235);
+            this.label25.Location = new System.Drawing.Point(377, 181);
             this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(154, 24);
-            this.label25.TabIndex = 1;
+            this.label25.Size = new System.Drawing.Size(180, 28);
+            this.label25.TabIndex = 3;
             this.label25.Text = "抓料极限位置";
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(257, 192);
+            this.label17.Location = new System.Drawing.Point(377, 130);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(106, 24);
-            this.label17.TabIndex = 1;
+            this.label17.Size = new System.Drawing.Size(124, 28);
+            this.label17.TabIndex = 4;
             this.label17.Text = "放料位置";
             // 
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(68, 235);
+            this.label24.Location = new System.Drawing.Point(164, 181);
             this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(58, 24);
-            this.label24.TabIndex = 1;
+            this.label24.Size = new System.Drawing.Size(68, 28);
+            this.label24.TabIndex = 5;
             this.label24.Text = "慢速";
             // 
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(20, 192);
+            this.label18.Location = new System.Drawing.Point(110, 130);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(106, 24);
-            this.label18.TabIndex = 1;
+            this.label18.Size = new System.Drawing.Size(124, 28);
+            this.label18.TabIndex = 6;
             this.label18.Text = "复位速度";
             // 
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(257, 147);
+            this.label19.Location = new System.Drawing.Point(377, 76);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(106, 24);
-            this.label19.TabIndex = 1;
+            this.label19.Size = new System.Drawing.Size(124, 28);
+            this.label19.TabIndex = 7;
             this.label19.Text = "抓料位置";
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(20, 147);
+            this.label20.Location = new System.Drawing.Point(110, 76);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(106, 24);
-            this.label20.TabIndex = 1;
+            this.label20.Size = new System.Drawing.Size(124, 28);
+            this.label20.TabIndex = 8;
             this.label20.Text = "手动单量";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(377, 19);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(124, 28);
+            this.label21.TabIndex = 9;
+            this.label21.Text = "自动速度";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(110, 19);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(124, 28);
+            this.label22.TabIndex = 10;
+            this.label22.Text = "手动速度";
+            // 
+            // textBox17
+            // 
+            this.textBox17.Location = new System.Drawing.Point(199, 47);
+            this.textBox17.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox17.Name = "textBox17";
+            this.textBox17.ReadOnly = true;
+            this.textBox17.Size = new System.Drawing.Size(169, 39);
+            this.textBox17.TabIndex = 2;
+            this.textBox17.Tag = "机械手Z位置";
+            this.textBox17.TextChanged += new System.EventHandler(this.textBox16_TextChanged);
             // 
             // button98
             // 
             this.button98.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button98.Location = new System.Drawing.Point(291, 283);
+            this.button98.Location = new System.Drawing.Point(317, 392);
+            this.button98.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button98.Name = "button98";
-            this.button98.Size = new System.Drawing.Size(121, 50);
+            this.button98.Size = new System.Drawing.Size(136, 60);
             this.button98.TabIndex = 0;
             this.button98.Tag = "机械手Z负限";
             this.button98.Text = "负限";
             this.button98.UseVisualStyleBackColor = true;
             // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(257, 100);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(106, 24);
-            this.label21.TabIndex = 1;
-            this.label21.Text = "自动速度";
-            // 
             // button97
             // 
             this.button97.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button97.Location = new System.Drawing.Point(159, 283);
+            this.button97.Location = new System.Drawing.Point(169, 392);
+            this.button97.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button97.Name = "button97";
-            this.button97.Size = new System.Drawing.Size(121, 50);
+            this.button97.Size = new System.Drawing.Size(136, 60);
             this.button97.TabIndex = 0;
             this.button97.Tag = "机械手Z正限";
             this.button97.Text = "正限";
             this.button97.UseVisualStyleBackColor = true;
             // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(20, 100);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(106, 24);
-            this.label22.TabIndex = 1;
-            this.label22.Text = "手动速度";
-            // 
             // button96
             // 
             this.button96.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button96.Location = new System.Drawing.Point(24, 283);
+            this.button96.Location = new System.Drawing.Point(17, 392);
+            this.button96.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button96.Name = "button96";
-            this.button96.Size = new System.Drawing.Size(121, 50);
+            this.button96.Size = new System.Drawing.Size(136, 60);
             this.button96.TabIndex = 0;
             this.button96.Tag = "机械手Z原点";
             this.button96.Text = "原点";
@@ -1467,9 +1556,10 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(529, 33);
+            this.button6.Location = new System.Drawing.Point(595, 40);
+            this.button6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(156, 50);
+            this.button6.Size = new System.Drawing.Size(176, 60);
             this.button6.TabIndex = 0;
             this.button6.Tag = "机械手Z复位";
             this.button6.Text = "复位";
@@ -1478,9 +1568,10 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(339, 33);
+            this.button7.Location = new System.Drawing.Point(381, 40);
+            this.button7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(156, 50);
+            this.button7.Size = new System.Drawing.Size(176, 60);
             this.button7.TabIndex = 0;
             this.button7.Tag = "机械手Z-";
             this.button7.Text = "负";
@@ -1490,9 +1581,10 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(15, 33);
+            this.button8.Location = new System.Drawing.Point(17, 40);
+            this.button8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(156, 50);
+            this.button8.Size = new System.Drawing.Size(176, 60);
             this.button8.TabIndex = 0;
             this.button8.Tag = "机械手Z+";
             this.button8.Text = "正";
@@ -1510,28 +1602,205 @@
             this.groupBox2.Controls.Add(this.button94);
             this.groupBox2.Controls.Add(this.button87);
             this.groupBox2.Controls.Add(this.button2);
-            this.groupBox2.Location = new System.Drawing.Point(6, 22);
+            this.groupBox2.Location = new System.Drawing.Point(7, 26);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(714, 394);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox2.Size = new System.Drawing.Size(803, 473);
             this.groupBox2.TabIndex = 0;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "机械手X";
             // 
+            // g1Param
+            // 
+            this.g1Param.Controls.Add(this.textBox18);
+            this.g1Param.Controls.Add(this.label30);
+            this.g1Param.Controls.Add(this.textBox7);
+            this.g1Param.Controls.Add(this.textBox4);
+            this.g1Param.Controls.Add(this.textBox6);
+            this.g1Param.Controls.Add(this.textBox3);
+            this.g1Param.Controls.Add(this.textBox5);
+            this.g1Param.Controls.Add(this.textBox2);
+            this.g1Param.Controls.Add(this.label14);
+            this.g1Param.Controls.Add(this.label11);
+            this.g1Param.Controls.Add(this.label13);
+            this.g1Param.Controls.Add(this.label9);
+            this.g1Param.Controls.Add(this.label12);
+            this.g1Param.Controls.Add(this.label8);
+            this.g1Param.Location = new System.Drawing.Point(11, 112);
+            this.g1Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g1Param.Name = "g1Param";
+            this.g1Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g1Param.Size = new System.Drawing.Size(592, 270);
+            this.g1Param.TabIndex = 3;
+            this.g1Param.TabStop = false;
+            this.g1Param.Text = "参数测试";
+            this.g1Param.Visible = false;
+            // 
+            // textBox18
+            // 
+            this.textBox18.Location = new System.Drawing.Point(436, 217);
+            this.textBox18.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox18.Name = "textBox18";
+            this.textBox18.Size = new System.Drawing.Size(112, 39);
+            this.textBox18.TabIndex = 1001;
+            this.textBox18.Tag = "机械手夹料时间";
+            this.textBox18.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox18.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox18.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label30
+            // 
+            this.label30.AutoSize = true;
+            this.label30.Location = new System.Drawing.Point(230, 221);
+            this.label30.Name = "label30";
+            this.label30.Size = new System.Drawing.Size(208, 28);
+            this.label30.TabIndex = 1000;
+            this.label30.Text = "机械手夹料时间";
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(436, 169);
+            this.textBox7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(112, 39);
+            this.textBox7.TabIndex = 999;
+            this.textBox7.Tag = "机械手X放料位置";
+            this.textBox7.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox7.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox7.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(170, 169);
+            this.textBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(112, 39);
+            this.textBox4.TabIndex = 10;
+            this.textBox4.Tag = "机械手X复位速度";
+            this.textBox4.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox4.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox4.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(436, 115);
+            this.textBox6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(112, 39);
+            this.textBox6.TabIndex = 11;
+            this.textBox6.Tag = "机械手X抓料位置";
+            this.textBox6.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox6.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox6.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(170, 115);
+            this.textBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(112, 39);
+            this.textBox3.TabIndex = 12;
+            this.textBox3.Tag = "机械手X手动单量";
+            this.textBox3.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox3.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox3.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(436, 59);
+            this.textBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(112, 39);
+            this.textBox5.TabIndex = 13;
+            this.textBox5.Tag = "机械手X自动速度";
+            this.textBox5.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox5.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox5.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(170, 59);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(112, 39);
+            this.textBox2.TabIndex = 14;
+            this.textBox2.Tag = "机械手X手动速度";
+            this.textBox2.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox2.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(309, 169);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(124, 28);
+            this.label14.TabIndex = 3;
+            this.label14.Text = "放料位置";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(43, 169);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(124, 28);
+            this.label11.TabIndex = 4;
+            this.label11.Text = "复位速度";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(309, 115);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(124, 28);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "抓料位置";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(43, 115);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(124, 28);
+            this.label9.TabIndex = 6;
+            this.label9.Text = "手动单量";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(309, 59);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(124, 28);
+            this.label12.TabIndex = 7;
+            this.label12.Text = "自动速度";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(43, 59);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(124, 28);
+            this.label8.TabIndex = 8;
+            this.label8.Text = "手动速度";
+            // 
             // textBox16
             // 
-            this.textBox16.Location = new System.Drawing.Point(175, 48);
+            this.textBox16.Location = new System.Drawing.Point(197, 58);
+            this.textBox16.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox16.Name = "textBox16";
             this.textBox16.ReadOnly = true;
-            this.textBox16.Size = new System.Drawing.Size(151, 34);
+            this.textBox16.Size = new System.Drawing.Size(169, 39);
             this.textBox16.TabIndex = 2;
             this.textBox16.Tag = "机械手X位置";
             this.textBox16.TextChanged += new System.EventHandler(this.textBox16_TextChanged);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(532, 37);
+            this.button4.Location = new System.Drawing.Point(598, 44);
+            this.button4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(156, 50);
+            this.button4.Size = new System.Drawing.Size(176, 60);
             this.button4.TabIndex = 0;
             this.button4.Tag = "机械手X复位";
             this.button4.Text = "复位";
@@ -1540,9 +1809,10 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(345, 37);
+            this.button3.Location = new System.Drawing.Point(388, 44);
+            this.button3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(156, 50);
+            this.button3.Size = new System.Drawing.Size(176, 60);
             this.button3.TabIndex = 0;
             this.button3.Tag = "机械手X-";
             this.button3.Text = "负";
@@ -1553,9 +1823,10 @@
             // button95
             // 
             this.button95.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button95.Location = new System.Drawing.Point(273, 327);
+            this.button95.Location = new System.Drawing.Point(307, 392);
+            this.button95.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button95.Name = "button95";
-            this.button95.Size = new System.Drawing.Size(121, 50);
+            this.button95.Size = new System.Drawing.Size(136, 60);
             this.button95.TabIndex = 0;
             this.button95.Tag = "机械手X负限";
             this.button95.Text = "负限";
@@ -1564,9 +1835,10 @@
             // button94
             // 
             this.button94.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button94.Location = new System.Drawing.Point(141, 327);
+            this.button94.Location = new System.Drawing.Point(159, 392);
+            this.button94.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button94.Name = "button94";
-            this.button94.Size = new System.Drawing.Size(121, 50);
+            this.button94.Size = new System.Drawing.Size(136, 60);
             this.button94.TabIndex = 0;
             this.button94.Tag = "机械手X正限";
             this.button94.Text = "正限";
@@ -1575,9 +1847,10 @@
             // button87
             // 
             this.button87.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button87.Location = new System.Drawing.Point(6, 327);
+            this.button87.Location = new System.Drawing.Point(7, 392);
+            this.button87.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button87.Name = "button87";
-            this.button87.Size = new System.Drawing.Size(121, 50);
+            this.button87.Size = new System.Drawing.Size(136, 60);
             this.button87.TabIndex = 0;
             this.button87.Tag = "机械手X原点";
             this.button87.Text = "原点";
@@ -1585,24 +1858,16 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(6, 37);
+            this.button2.Location = new System.Drawing.Point(7, 44);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(156, 50);
+            this.button2.Size = new System.Drawing.Size(176, 60);
             this.button2.TabIndex = 0;
             this.button2.Tag = "机械手X+";
             this.button2.Text = "正";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
             this.button2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(12, 566);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(178, 24);
-            this.label30.TabIndex = 1;
-            this.label30.Text = "机械手夹料时间";
             // 
             // tabPage6
             // 
@@ -1611,10 +1876,12 @@
             this.tabPage6.Controls.Add(this.groupBox6);
             this.tabPage6.Controls.Add(this.groupBox5);
             this.tabPage6.Controls.Add(this.groupBox4);
-            this.tabPage6.Location = new System.Drawing.Point(4, 33);
+            this.tabPage6.Controls.Add(this.g6Param);
+            this.tabPage6.Location = new System.Drawing.Point(4, 38);
+            this.tabPage6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage6.Size = new System.Drawing.Size(1974, 827);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "铣槽";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -1638,9 +1905,11 @@
             this.groupBox7.Controls.Add(this.button118);
             this.groupBox7.Controls.Add(this.button125);
             this.groupBox7.Controls.Add(this.button117);
-            this.groupBox7.Location = new System.Drawing.Point(1220, 6);
+            this.groupBox7.Location = new System.Drawing.Point(1372, 7);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(528, 326);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox7.Size = new System.Drawing.Size(594, 392);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "监控";
@@ -1648,9 +1917,9 @@
             // label73
             // 
             this.label73.AutoSize = true;
-            this.label73.Location = new System.Drawing.Point(42, 651);
+            this.label73.Location = new System.Drawing.Point(47, 781);
             this.label73.Name = "label73";
-            this.label73.Size = new System.Drawing.Size(178, 24);
+            this.label73.Size = new System.Drawing.Size(208, 28);
             this.label73.TabIndex = 1;
             this.label73.Text = "左铣刀推出原位";
             // 
@@ -1658,9 +1927,10 @@
             // 
             this.button132.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button132.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button132.Location = new System.Drawing.Point(238, 285);
+            this.button132.Location = new System.Drawing.Point(268, 342);
+            this.button132.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button132.Name = "button132";
-            this.button132.Size = new System.Drawing.Size(210, 36);
+            this.button132.Size = new System.Drawing.Size(236, 43);
             this.button132.TabIndex = 5;
             this.button132.Tag = "右铣夹紧靠栅原位";
             this.button132.Text = "右铣夹紧靠栅原位";
@@ -1670,9 +1940,10 @@
             // 
             this.button124.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button124.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button124.Location = new System.Drawing.Point(20, 285);
+            this.button124.Location = new System.Drawing.Point(22, 342);
+            this.button124.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button124.Name = "button124";
-            this.button124.Size = new System.Drawing.Size(210, 36);
+            this.button124.Size = new System.Drawing.Size(236, 43);
             this.button124.TabIndex = 5;
             this.button124.Tag = "左铣夹紧靠栅原位";
             this.button124.Text = "左铣夹紧靠栅原位";
@@ -1682,9 +1953,10 @@
             // 
             this.button131.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button131.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button131.Location = new System.Drawing.Point(238, 249);
+            this.button131.Location = new System.Drawing.Point(268, 299);
+            this.button131.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button131.Name = "button131";
-            this.button131.Size = new System.Drawing.Size(210, 36);
+            this.button131.Size = new System.Drawing.Size(236, 43);
             this.button131.TabIndex = 5;
             this.button131.Tag = "右铣夹紧原位";
             this.button131.Text = "右铣夹紧原位";
@@ -1694,9 +1966,10 @@
             // 
             this.button123.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button123.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button123.Location = new System.Drawing.Point(20, 249);
+            this.button123.Location = new System.Drawing.Point(22, 299);
+            this.button123.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button123.Name = "button123";
-            this.button123.Size = new System.Drawing.Size(210, 36);
+            this.button123.Size = new System.Drawing.Size(236, 43);
             this.button123.TabIndex = 5;
             this.button123.Tag = "左铣夹紧原位";
             this.button123.Text = "左铣夹紧原位";
@@ -1706,9 +1979,10 @@
             // 
             this.button130.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button130.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button130.Location = new System.Drawing.Point(238, 213);
+            this.button130.Location = new System.Drawing.Point(268, 256);
+            this.button130.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button130.Name = "button130";
-            this.button130.Size = new System.Drawing.Size(210, 36);
+            this.button130.Size = new System.Drawing.Size(236, 43);
             this.button130.TabIndex = 5;
             this.button130.Tag = "右压料推出到位";
             this.button130.Text = "右压料推出到位";
@@ -1718,9 +1992,10 @@
             // 
             this.button122.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button122.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button122.Location = new System.Drawing.Point(20, 213);
+            this.button122.Location = new System.Drawing.Point(22, 256);
+            this.button122.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button122.Name = "button122";
-            this.button122.Size = new System.Drawing.Size(210, 36);
+            this.button122.Size = new System.Drawing.Size(236, 43);
             this.button122.TabIndex = 5;
             this.button122.Tag = "左压料推出到位";
             this.button122.Text = "左压料推出到位";
@@ -1730,9 +2005,10 @@
             // 
             this.button129.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button129.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button129.Location = new System.Drawing.Point(238, 177);
+            this.button129.Location = new System.Drawing.Point(268, 212);
+            this.button129.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button129.Name = "button129";
-            this.button129.Size = new System.Drawing.Size(210, 36);
+            this.button129.Size = new System.Drawing.Size(236, 43);
             this.button129.TabIndex = 5;
             this.button129.Tag = "右压料推出原位";
             this.button129.Text = "右压料推出原位";
@@ -1742,9 +2018,10 @@
             // 
             this.button121.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button121.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button121.Location = new System.Drawing.Point(20, 177);
+            this.button121.Location = new System.Drawing.Point(22, 212);
+            this.button121.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button121.Name = "button121";
-            this.button121.Size = new System.Drawing.Size(210, 36);
+            this.button121.Size = new System.Drawing.Size(236, 43);
             this.button121.TabIndex = 5;
             this.button121.Tag = "左压料推出原位";
             this.button121.Text = "左压料推出原位";
@@ -1754,9 +2031,10 @@
             // 
             this.button128.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button128.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button128.Location = new System.Drawing.Point(238, 141);
+            this.button128.Location = new System.Drawing.Point(268, 169);
+            this.button128.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button128.Name = "button128";
-            this.button128.Size = new System.Drawing.Size(210, 36);
+            this.button128.Size = new System.Drawing.Size(236, 43);
             this.button128.TabIndex = 5;
             this.button128.Tag = "右打齐升降原位";
             this.button128.Text = "右打齐升降原位";
@@ -1766,9 +2044,10 @@
             // 
             this.button120.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button120.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button120.Location = new System.Drawing.Point(20, 141);
+            this.button120.Location = new System.Drawing.Point(22, 169);
+            this.button120.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button120.Name = "button120";
-            this.button120.Size = new System.Drawing.Size(210, 36);
+            this.button120.Size = new System.Drawing.Size(236, 43);
             this.button120.TabIndex = 5;
             this.button120.Tag = "左打齐升降原位";
             this.button120.Text = "左打齐升降原位";
@@ -1778,9 +2057,10 @@
             // 
             this.button127.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button127.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button127.Location = new System.Drawing.Point(238, 105);
+            this.button127.Location = new System.Drawing.Point(268, 126);
+            this.button127.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button127.Name = "button127";
-            this.button127.Size = new System.Drawing.Size(210, 36);
+            this.button127.Size = new System.Drawing.Size(236, 43);
             this.button127.TabIndex = 5;
             this.button127.Tag = "右压料原位";
             this.button127.Text = "右压料原位";
@@ -1790,9 +2070,10 @@
             // 
             this.button119.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button119.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button119.Location = new System.Drawing.Point(20, 105);
+            this.button119.Location = new System.Drawing.Point(22, 126);
+            this.button119.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button119.Name = "button119";
-            this.button119.Size = new System.Drawing.Size(210, 36);
+            this.button119.Size = new System.Drawing.Size(236, 43);
             this.button119.TabIndex = 5;
             this.button119.Tag = "左压料原位";
             this.button119.Text = "左压料原位";
@@ -1802,9 +2083,10 @@
             // 
             this.button126.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button126.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button126.Location = new System.Drawing.Point(238, 69);
+            this.button126.Location = new System.Drawing.Point(268, 83);
+            this.button126.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button126.Name = "button126";
-            this.button126.Size = new System.Drawing.Size(210, 36);
+            this.button126.Size = new System.Drawing.Size(236, 43);
             this.button126.TabIndex = 5;
             this.button126.Tag = "右铣刀推出原位";
             this.button126.Text = "右铣刀推出原位";
@@ -1814,9 +2096,10 @@
             // 
             this.button118.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button118.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button118.Location = new System.Drawing.Point(20, 69);
+            this.button118.Location = new System.Drawing.Point(22, 83);
+            this.button118.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button118.Name = "button118";
-            this.button118.Size = new System.Drawing.Size(210, 36);
+            this.button118.Size = new System.Drawing.Size(236, 43);
             this.button118.TabIndex = 5;
             this.button118.Tag = "左铣刀推出原位";
             this.button118.Text = "左铣刀推出原位";
@@ -1826,9 +2109,10 @@
             // 
             this.button125.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button125.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button125.Location = new System.Drawing.Point(238, 33);
+            this.button125.Location = new System.Drawing.Point(268, 40);
+            this.button125.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button125.Name = "button125";
-            this.button125.Size = new System.Drawing.Size(210, 36);
+            this.button125.Size = new System.Drawing.Size(236, 43);
             this.button125.TabIndex = 5;
             this.button125.Tag = "右打齐推出原位";
             this.button125.Text = "右打齐推出原位";
@@ -1838,9 +2122,10 @@
             // 
             this.button117.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button117.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button117.Location = new System.Drawing.Point(20, 33);
+            this.button117.Location = new System.Drawing.Point(22, 40);
+            this.button117.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button117.Name = "button117";
-            this.button117.Size = new System.Drawing.Size(210, 36);
+            this.button117.Size = new System.Drawing.Size(236, 43);
             this.button117.TabIndex = 5;
             this.button117.Tag = "铣刀电机报警";
             this.button117.Text = "铣刀电机报警";
@@ -1854,47 +2139,17 @@
             this.groupBox8.Controls.Add(this.button26);
             this.groupBox8.Controls.Add(this.button34);
             this.groupBox8.Controls.Add(this.button31);
-            this.groupBox8.Controls.Add(this.textBox47);
-            this.groupBox8.Controls.Add(this.textBox43);
-            this.groupBox8.Controls.Add(this.textBox46);
-            this.groupBox8.Controls.Add(this.textBox42);
-            this.groupBox8.Controls.Add(this.textBox45);
-            this.groupBox8.Controls.Add(this.textBox41);
-            this.groupBox8.Controls.Add(this.textBox53);
-            this.groupBox8.Controls.Add(this.textBox51);
-            this.groupBox8.Controls.Add(this.textBox49);
-            this.groupBox8.Controls.Add(this.textBox56);
-            this.groupBox8.Controls.Add(this.textBox55);
-            this.groupBox8.Controls.Add(this.textBox54);
-            this.groupBox8.Controls.Add(this.textBox52);
-            this.groupBox8.Controls.Add(this.textBox50);
-            this.groupBox8.Controls.Add(this.textBox48);
-            this.groupBox8.Controls.Add(this.textBox44);
-            this.groupBox8.Controls.Add(this.textBox40);
             this.groupBox8.Controls.Add(this.button28);
             this.groupBox8.Controls.Add(this.button25);
             this.groupBox8.Controls.Add(this.button33);
             this.groupBox8.Controls.Add(this.button30);
             this.groupBox8.Controls.Add(this.button27);
             this.groupBox8.Controls.Add(this.button24);
-            this.groupBox8.Controls.Add(this.label79);
-            this.groupBox8.Controls.Add(this.label78);
-            this.groupBox8.Controls.Add(this.label77);
-            this.groupBox8.Controls.Add(this.label76);
-            this.groupBox8.Controls.Add(this.label86);
-            this.groupBox8.Controls.Add(this.label84);
-            this.groupBox8.Controls.Add(this.label82);
-            this.groupBox8.Controls.Add(this.label89);
-            this.groupBox8.Controls.Add(this.label88);
-            this.groupBox8.Controls.Add(this.label87);
-            this.groupBox8.Controls.Add(this.label85);
-            this.groupBox8.Controls.Add(this.label83);
-            this.groupBox8.Controls.Add(this.label81);
-            this.groupBox8.Controls.Add(this.label80);
-            this.groupBox8.Controls.Add(this.label75);
-            this.groupBox8.Location = new System.Drawing.Point(623, 338);
+            this.groupBox8.Location = new System.Drawing.Point(701, 406);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(1125, 329);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox8.Size = new System.Drawing.Size(588, 412);
             this.groupBox8.TabIndex = 2;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "其他";
@@ -1902,9 +2157,10 @@
             // button35
             // 
             this.button35.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button35.Location = new System.Drawing.Point(363, 209);
+            this.button35.Location = new System.Drawing.Point(394, 251);
+            this.button35.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button35.Name = "button35";
-            this.button35.Size = new System.Drawing.Size(159, 50);
+            this.button35.Size = new System.Drawing.Size(179, 60);
             this.button35.TabIndex = 1;
             this.button35.Tag = "铣面夹紧靠栅";
             this.button35.Text = "铣面夹紧靠栅";
@@ -1913,9 +2169,10 @@
             // 
             // button32
             // 
-            this.button32.Location = new System.Drawing.Point(363, 151);
+            this.button32.Location = new System.Drawing.Point(394, 181);
+            this.button32.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button32.Name = "button32";
-            this.button32.Size = new System.Drawing.Size(159, 50);
+            this.button32.Size = new System.Drawing.Size(179, 60);
             this.button32.TabIndex = 2;
             this.button32.Tag = "铣面夹紧";
             this.button32.Text = "铣面夹紧";
@@ -1924,9 +2181,10 @@
             // 
             // button29
             // 
-            this.button29.Location = new System.Drawing.Point(363, 92);
+            this.button29.Location = new System.Drawing.Point(394, 110);
+            this.button29.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button29.Name = "button29";
-            this.button29.Size = new System.Drawing.Size(159, 50);
+            this.button29.Size = new System.Drawing.Size(179, 60);
             this.button29.TabIndex = 3;
             this.button29.Tag = "右打齐推出";
             this.button29.Text = "右打齐推出";
@@ -1935,9 +2193,10 @@
             // 
             // button26
             // 
-            this.button26.Location = new System.Drawing.Point(363, 32);
+            this.button26.Location = new System.Drawing.Point(394, 38);
+            this.button26.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button26.Name = "button26";
-            this.button26.Size = new System.Drawing.Size(159, 50);
+            this.button26.Size = new System.Drawing.Size(179, 60);
             this.button26.TabIndex = 4;
             this.button26.Tag = "压料气缸";
             this.button26.Text = "压料气缸";
@@ -1946,9 +2205,10 @@
             // 
             // button34
             // 
-            this.button34.Location = new System.Drawing.Point(198, 209);
+            this.button34.Location = new System.Drawing.Point(208, 251);
+            this.button34.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button34.Name = "button34";
-            this.button34.Size = new System.Drawing.Size(159, 50);
+            this.button34.Size = new System.Drawing.Size(179, 60);
             this.button34.TabIndex = 5;
             this.button34.Tag = "右压料推出";
             this.button34.Text = "右压料推出";
@@ -1957,208 +2217,22 @@
             // 
             // button31
             // 
-            this.button31.Location = new System.Drawing.Point(198, 151);
+            this.button31.Location = new System.Drawing.Point(208, 181);
+            this.button31.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button31.Name = "button31";
-            this.button31.Size = new System.Drawing.Size(159, 50);
+            this.button31.Size = new System.Drawing.Size(179, 60);
             this.button31.TabIndex = 6;
             this.button31.Tag = "右打齐下降";
             this.button31.Text = "右打齐下降";
             this.button31.UseVisualStyleBackColor = true;
             this.button31.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
-            // textBox47
-            // 
-            this.textBox47.Location = new System.Drawing.Point(1006, 100);
-            this.textBox47.Name = "textBox47";
-            this.textBox47.Size = new System.Drawing.Size(100, 34);
-            this.textBox47.TabIndex = 2;
-            this.textBox47.Tag = "右铣刀自动速度";
-            this.textBox47.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox47.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox47.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox43
-            // 
-            this.textBox43.Location = new System.Drawing.Point(1006, 55);
-            this.textBox43.Name = "textBox43";
-            this.textBox43.Size = new System.Drawing.Size(100, 34);
-            this.textBox43.TabIndex = 2;
-            this.textBox43.Tag = "左铣刀自动速度";
-            this.textBox43.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox43.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox43.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox46
-            // 
-            this.textBox46.Location = new System.Drawing.Point(886, 100);
-            this.textBox46.Name = "textBox46";
-            this.textBox46.Size = new System.Drawing.Size(100, 34);
-            this.textBox46.TabIndex = 2;
-            this.textBox46.Tag = "右铣刀铣料速度";
-            this.textBox46.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox46.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox46.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox42
-            // 
-            this.textBox42.Location = new System.Drawing.Point(886, 55);
-            this.textBox42.Name = "textBox42";
-            this.textBox42.Size = new System.Drawing.Size(100, 34);
-            this.textBox42.TabIndex = 2;
-            this.textBox42.Tag = "左铣刀铣料速度";
-            this.textBox42.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox42.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox42.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox45
-            // 
-            this.textBox45.Location = new System.Drawing.Point(766, 100);
-            this.textBox45.Name = "textBox45";
-            this.textBox45.Size = new System.Drawing.Size(100, 34);
-            this.textBox45.TabIndex = 2;
-            this.textBox45.Tag = "右铣刀结束位置";
-            this.textBox45.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox45.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox45.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox41
-            // 
-            this.textBox41.Location = new System.Drawing.Point(766, 55);
-            this.textBox41.Name = "textBox41";
-            this.textBox41.Size = new System.Drawing.Size(100, 34);
-            this.textBox41.TabIndex = 2;
-            this.textBox41.Tag = "左铣刀结束位置";
-            this.textBox41.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox41.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox41.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox53
-            // 
-            this.textBox53.Location = new System.Drawing.Point(1018, 235);
-            this.textBox53.Name = "textBox53";
-            this.textBox53.Size = new System.Drawing.Size(100, 34);
-            this.textBox53.TabIndex = 2;
-            this.textBox53.Tag = "右打齐下降时间";
-            this.textBox53.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox53.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox53.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox51
-            // 
-            this.textBox51.Location = new System.Drawing.Point(1018, 195);
-            this.textBox51.Name = "textBox51";
-            this.textBox51.Size = new System.Drawing.Size(100, 34);
-            this.textBox51.TabIndex = 2;
-            this.textBox51.Tag = "左打齐下降时间";
-            this.textBox51.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox51.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox51.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox49
-            // 
-            this.textBox49.Location = new System.Drawing.Point(1018, 158);
-            this.textBox49.Name = "textBox49";
-            this.textBox49.Size = new System.Drawing.Size(100, 34);
-            this.textBox49.TabIndex = 2;
-            this.textBox49.Tag = "压料压紧时间";
-            this.textBox49.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox49.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox49.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox56
-            // 
-            this.textBox56.Location = new System.Drawing.Point(1018, 273);
-            this.textBox56.Name = "textBox56";
-            this.textBox56.Size = new System.Drawing.Size(100, 34);
-            this.textBox56.TabIndex = 2;
-            this.textBox56.Tag = "铣面靠栅上升时间";
-            this.textBox56.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox56.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox56.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox55
-            // 
-            this.textBox55.Location = new System.Drawing.Point(712, 273);
-            this.textBox55.Name = "textBox55";
-            this.textBox55.Size = new System.Drawing.Size(100, 34);
-            this.textBox55.TabIndex = 2;
-            this.textBox55.Tag = "铣面夹紧时间";
-            this.textBox55.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox55.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox55.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox54
-            // 
-            this.textBox54.Location = new System.Drawing.Point(382, 273);
-            this.textBox54.Name = "textBox54";
-            this.textBox54.Size = new System.Drawing.Size(100, 34);
-            this.textBox54.TabIndex = 2;
-            this.textBox54.Tag = "右打齐推出时间";
-            this.textBox54.Text = "1";
-            this.textBox54.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox54.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox54.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox52
-            // 
-            this.textBox52.Location = new System.Drawing.Point(712, 235);
-            this.textBox52.Name = "textBox52";
-            this.textBox52.Size = new System.Drawing.Size(100, 34);
-            this.textBox52.TabIndex = 2;
-            this.textBox52.Tag = "右铣刀推出时间";
-            this.textBox52.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox52.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox52.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox50
-            // 
-            this.textBox50.Location = new System.Drawing.Point(712, 195);
-            this.textBox50.Name = "textBox50";
-            this.textBox50.Size = new System.Drawing.Size(100, 34);
-            this.textBox50.TabIndex = 2;
-            this.textBox50.Tag = "左铣刀推出时间";
-            this.textBox50.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox50.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox50.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox48
-            // 
-            this.textBox48.Location = new System.Drawing.Point(712, 158);
-            this.textBox48.Name = "textBox48";
-            this.textBox48.Size = new System.Drawing.Size(100, 34);
-            this.textBox48.TabIndex = 2;
-            this.textBox48.Tag = "铣刀启动时间";
-            this.textBox48.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox48.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox48.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox44
-            // 
-            this.textBox44.Location = new System.Drawing.Point(646, 100);
-            this.textBox44.Name = "textBox44";
-            this.textBox44.Size = new System.Drawing.Size(100, 34);
-            this.textBox44.TabIndex = 2;
-            this.textBox44.Tag = "右铣刀开始位置";
-            this.textBox44.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox44.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox44.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox40
-            // 
-            this.textBox40.Location = new System.Drawing.Point(646, 55);
-            this.textBox40.Name = "textBox40";
-            this.textBox40.Size = new System.Drawing.Size(100, 34);
-            this.textBox40.TabIndex = 2;
-            this.textBox40.Tag = "左铣刀开始位置";
-            this.textBox40.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox40.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox40.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // button28
             // 
-            this.button28.Location = new System.Drawing.Point(198, 92);
+            this.button28.Location = new System.Drawing.Point(208, 110);
+            this.button28.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button28.Name = "button28";
-            this.button28.Size = new System.Drawing.Size(159, 50);
+            this.button28.Size = new System.Drawing.Size(179, 60);
             this.button28.TabIndex = 7;
             this.button28.Tag = "右铣刀推出";
             this.button28.Text = "右铣刀推出";
@@ -2167,9 +2241,10 @@
             // 
             // button25
             // 
-            this.button25.Location = new System.Drawing.Point(198, 32);
+            this.button25.Location = new System.Drawing.Point(208, 38);
+            this.button25.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button25.Name = "button25";
-            this.button25.Size = new System.Drawing.Size(159, 50);
+            this.button25.Size = new System.Drawing.Size(179, 60);
             this.button25.TabIndex = 8;
             this.button25.Tag = "右铣刀电机";
             this.button25.Text = "右铣刀电机";
@@ -2178,9 +2253,10 @@
             // 
             // button33
             // 
-            this.button33.Location = new System.Drawing.Point(19, 209);
+            this.button33.Location = new System.Drawing.Point(7, 251);
+            this.button33.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button33.Name = "button33";
-            this.button33.Size = new System.Drawing.Size(173, 50);
+            this.button33.Size = new System.Drawing.Size(195, 60);
             this.button33.TabIndex = 9;
             this.button33.Tag = "左压料推出";
             this.button33.Text = "左压料推出";
@@ -2189,9 +2265,10 @@
             // 
             // button30
             // 
-            this.button30.Location = new System.Drawing.Point(19, 151);
+            this.button30.Location = new System.Drawing.Point(7, 181);
+            this.button30.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button30.Name = "button30";
-            this.button30.Size = new System.Drawing.Size(173, 50);
+            this.button30.Size = new System.Drawing.Size(195, 60);
             this.button30.TabIndex = 10;
             this.button30.Tag = "左打齐下降";
             this.button30.Text = "左打齐下降";
@@ -2200,9 +2277,10 @@
             // 
             // button27
             // 
-            this.button27.Location = new System.Drawing.Point(19, 92);
+            this.button27.Location = new System.Drawing.Point(7, 110);
+            this.button27.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button27.Name = "button27";
-            this.button27.Size = new System.Drawing.Size(173, 50);
+            this.button27.Size = new System.Drawing.Size(195, 60);
             this.button27.TabIndex = 11;
             this.button27.Tag = "左铣刀推出";
             this.button27.Text = "左铣刀推出";
@@ -2211,347 +2289,239 @@
             // 
             // button24
             // 
-            this.button24.Location = new System.Drawing.Point(19, 32);
+            this.button24.Location = new System.Drawing.Point(7, 38);
+            this.button24.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button24.Name = "button24";
-            this.button24.Size = new System.Drawing.Size(173, 50);
+            this.button24.Size = new System.Drawing.Size(195, 60);
             this.button24.TabIndex = 12;
             this.button24.Tag = "左铣刀电机";
             this.button24.Text = "左铣刀电机";
             this.button24.UseVisualStyleBackColor = true;
             this.button24.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
-            // label79
-            // 
-            this.label79.AutoSize = true;
-            this.label79.Location = new System.Drawing.Point(1002, 25);
-            this.label79.Name = "label79";
-            this.label79.Size = new System.Drawing.Size(106, 24);
-            this.label79.TabIndex = 1;
-            this.label79.Text = "自动速度";
-            // 
-            // label78
-            // 
-            this.label78.AutoSize = true;
-            this.label78.Location = new System.Drawing.Point(882, 25);
-            this.label78.Name = "label78";
-            this.label78.Size = new System.Drawing.Size(106, 24);
-            this.label78.TabIndex = 1;
-            this.label78.Text = "铣料速度";
-            // 
-            // label77
-            // 
-            this.label77.AutoSize = true;
-            this.label77.Location = new System.Drawing.Point(767, 25);
-            this.label77.Name = "label77";
-            this.label77.Size = new System.Drawing.Size(106, 24);
-            this.label77.TabIndex = 1;
-            this.label77.Text = "结束位置";
-            // 
-            // label76
-            // 
-            this.label76.AutoSize = true;
-            this.label76.Location = new System.Drawing.Point(643, 25);
-            this.label76.Name = "label76";
-            this.label76.Size = new System.Drawing.Size(106, 24);
-            this.label76.TabIndex = 1;
-            this.label76.Text = "开始位置";
-            // 
-            // label86
-            // 
-            this.label86.AutoSize = true;
-            this.label86.Location = new System.Drawing.Point(818, 238);
-            this.label86.Name = "label86";
-            this.label86.Size = new System.Drawing.Size(178, 24);
-            this.label86.TabIndex = 1;
-            this.label86.Text = "右打齐下降时间";
-            // 
-            // label84
-            // 
-            this.label84.AutoSize = true;
-            this.label84.Location = new System.Drawing.Point(815, 198);
-            this.label84.Name = "label84";
-            this.label84.Size = new System.Drawing.Size(178, 24);
-            this.label84.TabIndex = 1;
-            this.label84.Text = "左打齐下降时间";
-            // 
-            // label82
-            // 
-            this.label82.AutoSize = true;
-            this.label82.Location = new System.Drawing.Point(818, 161);
-            this.label82.Name = "label82";
-            this.label82.Size = new System.Drawing.Size(154, 24);
-            this.label82.TabIndex = 1;
-            this.label82.Text = "压料压紧时间";
-            // 
-            // label89
-            // 
-            this.label89.AutoSize = true;
-            this.label89.Location = new System.Drawing.Point(818, 276);
-            this.label89.Name = "label89";
-            this.label89.Size = new System.Drawing.Size(202, 24);
-            this.label89.TabIndex = 1;
-            this.label89.Text = "铣面靠栅上升时间";
-            // 
-            // label88
-            // 
-            this.label88.AutoSize = true;
-            this.label88.Location = new System.Drawing.Point(533, 276);
-            this.label88.Name = "label88";
-            this.label88.Size = new System.Drawing.Size(154, 24);
-            this.label88.TabIndex = 1;
-            this.label88.Text = "铣面夹紧时间";
-            // 
-            // label87
-            // 
-            this.label87.AutoSize = true;
-            this.label87.Location = new System.Drawing.Point(169, 277);
-            this.label87.Name = "label87";
-            this.label87.Size = new System.Drawing.Size(178, 24);
-            this.label87.TabIndex = 1;
-            this.label87.Text = "右打齐推出时间";
-            // 
-            // label85
-            // 
-            this.label85.AutoSize = true;
-            this.label85.Location = new System.Drawing.Point(533, 238);
-            this.label85.Name = "label85";
-            this.label85.Size = new System.Drawing.Size(178, 24);
-            this.label85.TabIndex = 1;
-            this.label85.Text = "右铣刀推出时间";
-            // 
-            // label83
-            // 
-            this.label83.AutoSize = true;
-            this.label83.Location = new System.Drawing.Point(533, 201);
-            this.label83.Name = "label83";
-            this.label83.Size = new System.Drawing.Size(178, 24);
-            this.label83.TabIndex = 1;
-            this.label83.Text = "左铣刀推出时间";
-            // 
-            // label81
-            // 
-            this.label81.AutoSize = true;
-            this.label81.Location = new System.Drawing.Point(533, 161);
-            this.label81.Name = "label81";
-            this.label81.Size = new System.Drawing.Size(154, 24);
-            this.label81.TabIndex = 1;
-            this.label81.Text = "铣刀启动时间";
-            // 
-            // label80
-            // 
-            this.label80.AutoSize = true;
-            this.label80.Location = new System.Drawing.Point(558, 108);
-            this.label80.Name = "label80";
-            this.label80.Size = new System.Drawing.Size(82, 24);
-            this.label80.TabIndex = 1;
-            this.label80.Text = "右铣刀";
-            // 
-            // label75
-            // 
-            this.label75.AutoSize = true;
-            this.label75.Location = new System.Drawing.Point(558, 58);
-            this.label75.Name = "label75";
-            this.label75.Size = new System.Drawing.Size(82, 24);
-            this.label75.TabIndex = 1;
-            this.label75.Text = "左铣刀";
-            // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.g5Param);
             this.groupBox6.Controls.Add(this.button116);
-            this.groupBox6.Controls.Add(this.textBox35);
-            this.groupBox6.Controls.Add(this.textBox36);
             this.groupBox6.Controls.Add(this.textBox37);
-            this.groupBox6.Controls.Add(this.textBox34);
             this.groupBox6.Controls.Add(this.button115);
-            this.groupBox6.Controls.Add(this.textBox38);
-            this.groupBox6.Controls.Add(this.textBox33);
-            this.groupBox6.Controls.Add(this.textBox39);
-            this.groupBox6.Controls.Add(this.label53);
             this.groupBox6.Controls.Add(this.button114);
-            this.groupBox6.Controls.Add(this.label54);
-            this.groupBox6.Controls.Add(this.label52);
-            this.groupBox6.Controls.Add(this.label55);
-            this.groupBox6.Controls.Add(this.label51);
-            this.groupBox6.Controls.Add(this.label56);
             this.groupBox6.Controls.Add(this.button23);
             this.groupBox6.Controls.Add(this.button22);
             this.groupBox6.Controls.Add(this.button19);
             this.groupBox6.Controls.Add(this.button20);
             this.groupBox6.Controls.Add(this.button21);
-            this.groupBox6.Location = new System.Drawing.Point(21, 338);
+            this.groupBox6.Location = new System.Drawing.Point(24, 406);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(570, 343);
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox6.Size = new System.Drawing.Size(641, 412);
             this.groupBox6.TabIndex = 1;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "调整轴";
             // 
-            // button116
+            // g5Param
             // 
-            this.button116.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button116.Location = new System.Drawing.Point(277, 283);
-            this.button116.Name = "button116";
-            this.button116.Size = new System.Drawing.Size(121, 50);
-            this.button116.TabIndex = 3;
-            this.button116.Tag = "调整轴负限";
-            this.button116.Text = "负限";
-            this.button116.UseVisualStyleBackColor = true;
+            this.g5Param.Controls.Add(this.label56);
+            this.g5Param.Controls.Add(this.textBox35);
+            this.g5Param.Controls.Add(this.label55);
+            this.g5Param.Controls.Add(this.textBox34);
+            this.g5Param.Controls.Add(this.label54);
+            this.g5Param.Controls.Add(this.textBox36);
+            this.g5Param.Controls.Add(this.textBox39);
+            this.g5Param.Controls.Add(this.label52);
+            this.g5Param.Controls.Add(this.textBox33);
+            this.g5Param.Controls.Add(this.textBox38);
+            this.g5Param.Controls.Add(this.label53);
+            this.g5Param.Controls.Add(this.label51);
+            this.g5Param.Location = new System.Drawing.Point(11, 156);
+            this.g5Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g5Param.Name = "g5Param";
+            this.g5Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g5Param.Size = new System.Drawing.Size(538, 176);
+            this.g5Param.TabIndex = 6;
+            this.g5Param.TabStop = false;
+            this.g5Param.Text = "参数";
+            this.g5Param.Visible = false;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(17, 36);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(124, 28);
+            this.label56.TabIndex = 1;
+            this.label56.Text = "手动速度";
             // 
             // textBox35
             // 
-            this.textBox35.Location = new System.Drawing.Point(356, 199);
+            this.textBox35.Location = new System.Drawing.Point(396, 80);
+            this.textBox35.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox35.Name = "textBox35";
-            this.textBox35.Size = new System.Drawing.Size(100, 34);
+            this.textBox35.Size = new System.Drawing.Size(112, 39);
             this.textBox35.TabIndex = 2;
             this.textBox35.Tag = "调整轴设定料长";
             this.textBox35.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox35.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox35.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // textBox36
+            // label55
             // 
-            this.textBox36.Location = new System.Drawing.Point(119, 199);
-            this.textBox36.Name = "textBox36";
-            this.textBox36.Size = new System.Drawing.Size(100, 34);
-            this.textBox36.TabIndex = 2;
-            this.textBox36.Tag = "调整轴手动单量";
-            this.textBox36.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox36.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox36.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox37
-            // 
-            this.textBox37.Location = new System.Drawing.Point(142, 48);
-            this.textBox37.Name = "textBox37";
-            this.textBox37.ReadOnly = true;
-            this.textBox37.Size = new System.Drawing.Size(151, 34);
-            this.textBox37.TabIndex = 2;
-            this.textBox37.Tag = "调整轴位置";
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(18, 128);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(124, 28);
+            this.label55.TabIndex = 1;
+            this.label55.Text = "复位速度";
             // 
             // textBox34
             // 
-            this.textBox34.Location = new System.Drawing.Point(356, 243);
+            this.textBox34.Location = new System.Drawing.Point(397, 125);
+            this.textBox34.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox34.Name = "textBox34";
-            this.textBox34.Size = new System.Drawing.Size(100, 34);
+            this.textBox34.Size = new System.Drawing.Size(112, 39);
             this.textBox34.TabIndex = 2;
             this.textBox34.Tag = "调整轴调整速度";
             this.textBox34.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox34.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox34.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // button115
+            // label54
             // 
-            this.button115.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button115.Location = new System.Drawing.Point(145, 283);
-            this.button115.Name = "button115";
-            this.button115.Size = new System.Drawing.Size(121, 50);
-            this.button115.TabIndex = 4;
-            this.button115.Tag = "调整轴正限";
-            this.button115.Text = "正限";
-            this.button115.UseVisualStyleBackColor = true;
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(18, 84);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(124, 28);
+            this.label54.TabIndex = 1;
+            this.label54.Text = "手动单量";
             // 
-            // textBox38
+            // textBox36
             // 
-            this.textBox38.Location = new System.Drawing.Point(119, 243);
-            this.textBox38.Name = "textBox38";
-            this.textBox38.Size = new System.Drawing.Size(100, 34);
-            this.textBox38.TabIndex = 2;
-            this.textBox38.Tag = "调整轴复位速度";
-            this.textBox38.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox38.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox38.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox33
-            // 
-            this.textBox33.Location = new System.Drawing.Point(356, 152);
-            this.textBox33.Name = "textBox33";
-            this.textBox33.Size = new System.Drawing.Size(100, 34);
-            this.textBox33.TabIndex = 2;
-            this.textBox33.Tag = "调整轴初始料长";
-            this.textBox33.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox33.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox33.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            this.textBox36.Location = new System.Drawing.Point(144, 80);
+            this.textBox36.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox36.Name = "textBox36";
+            this.textBox36.Size = new System.Drawing.Size(112, 39);
+            this.textBox36.TabIndex = 2;
+            this.textBox36.Tag = "调整轴手动单量";
+            this.textBox36.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox36.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox36.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
             // textBox39
             // 
-            this.textBox39.Location = new System.Drawing.Point(119, 152);
+            this.textBox39.Location = new System.Drawing.Point(144, 36);
+            this.textBox39.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox39.Name = "textBox39";
-            this.textBox39.Size = new System.Drawing.Size(100, 34);
+            this.textBox39.Size = new System.Drawing.Size(112, 39);
             this.textBox39.TabIndex = 2;
             this.textBox39.Tag = "调整轴手动速度";
             this.textBox39.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox39.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox39.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(270, 128);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(124, 28);
+            this.label52.TabIndex = 1;
+            this.label52.Text = "调整速度";
+            // 
+            // textBox33
+            // 
+            this.textBox33.Location = new System.Drawing.Point(397, 37);
+            this.textBox33.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox33.Name = "textBox33";
+            this.textBox33.Size = new System.Drawing.Size(112, 39);
+            this.textBox33.TabIndex = 2;
+            this.textBox33.Tag = "调整轴初始料长";
+            this.textBox33.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox33.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox33.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox38
+            // 
+            this.textBox38.Location = new System.Drawing.Point(143, 125);
+            this.textBox38.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox38.Name = "textBox38";
+            this.textBox38.Size = new System.Drawing.Size(112, 39);
+            this.textBox38.TabIndex = 2;
+            this.textBox38.Tag = "调整轴复位速度";
+            this.textBox38.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox38.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox38.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // label53
             // 
             this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(243, 199);
+            this.label53.Location = new System.Drawing.Point(270, 84);
             this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(106, 24);
+            this.label53.Size = new System.Drawing.Size(124, 28);
             this.label53.TabIndex = 1;
             this.label53.Text = "设定料长";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(270, 37);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(124, 28);
+            this.label51.TabIndex = 1;
+            this.label51.Text = "初始料长";
+            // 
+            // button116
+            // 
+            this.button116.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button116.Location = new System.Drawing.Point(312, 340);
+            this.button116.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button116.Name = "button116";
+            this.button116.Size = new System.Drawing.Size(136, 60);
+            this.button116.TabIndex = 3;
+            this.button116.Tag = "调整轴负限";
+            this.button116.Text = "负限";
+            this.button116.UseVisualStyleBackColor = true;
+            // 
+            // textBox37
+            // 
+            this.textBox37.Location = new System.Drawing.Point(160, 58);
+            this.textBox37.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox37.Name = "textBox37";
+            this.textBox37.ReadOnly = true;
+            this.textBox37.Size = new System.Drawing.Size(169, 39);
+            this.textBox37.TabIndex = 2;
+            this.textBox37.Tag = "调整轴位置";
+            // 
+            // button115
+            // 
+            this.button115.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button115.Location = new System.Drawing.Point(163, 340);
+            this.button115.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button115.Name = "button115";
+            this.button115.Size = new System.Drawing.Size(136, 60);
+            this.button115.TabIndex = 4;
+            this.button115.Tag = "调整轴正限";
+            this.button115.Text = "正限";
+            this.button115.UseVisualStyleBackColor = true;
             // 
             // button114
             // 
             this.button114.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button114.Location = new System.Drawing.Point(10, 283);
+            this.button114.Location = new System.Drawing.Point(11, 340);
+            this.button114.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button114.Name = "button114";
-            this.button114.Size = new System.Drawing.Size(121, 50);
+            this.button114.Size = new System.Drawing.Size(136, 60);
             this.button114.TabIndex = 5;
             this.button114.Tag = "调整轴原点";
             this.button114.Text = "原点";
             this.button114.UseVisualStyleBackColor = true;
             // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(6, 199);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(106, 24);
-            this.label54.TabIndex = 1;
-            this.label54.Text = "手动单量";
-            // 
-            // label52
-            // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(243, 243);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(106, 24);
-            this.label52.TabIndex = 1;
-            this.label52.Text = "调整速度";
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(6, 243);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(106, 24);
-            this.label55.TabIndex = 1;
-            this.label55.Text = "复位速度";
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(243, 152);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(106, 24);
-            this.label51.TabIndex = 1;
-            this.label51.Text = "初始料长";
-            // 
-            // label56
-            // 
-            this.label56.AutoSize = true;
-            this.label56.Location = new System.Drawing.Point(6, 152);
-            this.label56.Name = "label56";
-            this.label56.Size = new System.Drawing.Size(106, 24);
-            this.label56.TabIndex = 1;
-            this.label56.Text = "手动速度";
-            // 
             // button23
             // 
-            this.button23.Location = new System.Drawing.Point(173, 96);
+            this.button23.Location = new System.Drawing.Point(479, 106);
+            this.button23.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button23.Name = "button23";
-            this.button23.Size = new System.Drawing.Size(138, 50);
+            this.button23.Size = new System.Drawing.Size(155, 44);
             this.button23.TabIndex = 0;
             this.button23.Tag = "调整轴使能";
             this.button23.Text = "调整使能";
@@ -2560,9 +2530,10 @@
             // 
             // button22
             // 
-            this.button22.Location = new System.Drawing.Point(6, 95);
+            this.button22.Location = new System.Drawing.Point(306, 106);
+            this.button22.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button22.Name = "button22";
-            this.button22.Size = new System.Drawing.Size(148, 50);
+            this.button22.Size = new System.Drawing.Size(166, 43);
             this.button22.TabIndex = 0;
             this.button22.Tag = "调整位置";
             this.button22.Text = "调整位置";
@@ -2571,9 +2542,10 @@
             // 
             // button19
             // 
-            this.button19.Location = new System.Drawing.Point(440, 37);
+            this.button19.Location = new System.Drawing.Point(495, 44);
+            this.button19.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button19.Name = "button19";
-            this.button19.Size = new System.Drawing.Size(121, 50);
+            this.button19.Size = new System.Drawing.Size(136, 60);
             this.button19.TabIndex = 0;
             this.button19.Tag = "调整轴复位";
             this.button19.Text = "复位";
@@ -2582,9 +2554,10 @@
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(312, 37);
+            this.button20.Location = new System.Drawing.Point(351, 44);
+            this.button20.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button20.Name = "button20";
-            this.button20.Size = new System.Drawing.Size(121, 50);
+            this.button20.Size = new System.Drawing.Size(136, 60);
             this.button20.TabIndex = 0;
             this.button20.Tag = "调整轴-";
             this.button20.Text = "负";
@@ -2594,9 +2567,10 @@
             // 
             // button21
             // 
-            this.button21.Location = new System.Drawing.Point(6, 37);
+            this.button21.Location = new System.Drawing.Point(7, 44);
+            this.button21.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button21.Name = "button21";
-            this.button21.Size = new System.Drawing.Size(121, 50);
+            this.button21.Size = new System.Drawing.Size(136, 60);
             this.button21.TabIndex = 0;
             this.button21.Tag = "调整轴+";
             this.button21.Text = "正";
@@ -2606,76 +2580,135 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.g4Param);
             this.groupBox5.Controls.Add(this.button110);
-            this.groupBox5.Controls.Add(this.textBox27);
             this.groupBox5.Controls.Add(this.button106);
-            this.groupBox5.Controls.Add(this.textBox29);
             this.groupBox5.Controls.Add(this.button103);
             this.groupBox5.Controls.Add(this.textBox30);
-            this.groupBox5.Controls.Add(this.textBox32);
-            this.groupBox5.Controls.Add(this.label43);
-            this.groupBox5.Controls.Add(this.label45);
-            this.groupBox5.Controls.Add(this.label47);
             this.groupBox5.Controls.Add(this.button16);
             this.groupBox5.Controls.Add(this.button17);
             this.groupBox5.Controls.Add(this.button18);
-            this.groupBox5.Location = new System.Drawing.Point(623, 6);
+            this.groupBox5.Location = new System.Drawing.Point(701, 7);
+            this.groupBox5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(570, 326);
+            this.groupBox5.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox5.Size = new System.Drawing.Size(641, 392);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "右铣槽";
             // 
-            // button110
+            // g4Param
             // 
-            this.button110.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button110.Location = new System.Drawing.Point(277, 240);
-            this.button110.Name = "button110";
-            this.button110.Size = new System.Drawing.Size(121, 50);
-            this.button110.TabIndex = 3;
-            this.button110.Tag = "右铣槽负限";
-            this.button110.Text = "负限";
-            this.button110.UseVisualStyleBackColor = true;
+            this.g4Param.Controls.Add(this.label47);
+            this.g4Param.Controls.Add(this.label45);
+            this.g4Param.Controls.Add(this.textBox27);
+            this.g4Param.Controls.Add(this.label43);
+            this.g4Param.Controls.Add(this.textBox32);
+            this.g4Param.Controls.Add(this.textBox29);
+            this.g4Param.Location = new System.Drawing.Point(17, 112);
+            this.g4Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g4Param.Name = "g4Param";
+            this.g4Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g4Param.Size = new System.Drawing.Size(313, 196);
+            this.g4Param.TabIndex = 6;
+            this.g4Param.TabStop = false;
+            this.g4Param.Text = "参数";
+            this.g4Param.Visible = false;
+            // 
+            // label47
+            // 
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(8, 35);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(124, 28);
+            this.label47.TabIndex = 1;
+            this.label47.Text = "手动速度";
+            // 
+            // label45
+            // 
+            this.label45.AutoSize = true;
+            this.label45.Location = new System.Drawing.Point(8, 91);
+            this.label45.Name = "label45";
+            this.label45.Size = new System.Drawing.Size(124, 28);
+            this.label45.TabIndex = 1;
+            this.label45.Text = "手动单量";
             // 
             // textBox27
             // 
-            this.textBox27.Location = new System.Drawing.Point(119, 195);
+            this.textBox27.Location = new System.Drawing.Point(135, 145);
+            this.textBox27.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox27.Name = "textBox27";
-            this.textBox27.Size = new System.Drawing.Size(100, 34);
+            this.textBox27.Size = new System.Drawing.Size(112, 39);
             this.textBox27.TabIndex = 2;
             this.textBox27.Tag = "右铣轴复位速度";
             this.textBox27.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox27.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox27.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // button106
+            // label43
             // 
-            this.button106.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button106.Location = new System.Drawing.Point(145, 240);
-            this.button106.Name = "button106";
-            this.button106.Size = new System.Drawing.Size(121, 50);
-            this.button106.TabIndex = 4;
-            this.button106.Tag = "右铣槽正限";
-            this.button106.Text = "正限";
-            this.button106.UseVisualStyleBackColor = true;
+            this.label43.AutoSize = true;
+            this.label43.Location = new System.Drawing.Point(8, 145);
+            this.label43.Name = "label43";
+            this.label43.Size = new System.Drawing.Size(124, 28);
+            this.label43.TabIndex = 1;
+            this.label43.Text = "复位速度";
+            // 
+            // textBox32
+            // 
+            this.textBox32.Location = new System.Drawing.Point(135, 35);
+            this.textBox32.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox32.Name = "textBox32";
+            this.textBox32.Size = new System.Drawing.Size(112, 39);
+            this.textBox32.TabIndex = 2;
+            this.textBox32.Tag = "右铣轴手动速度";
+            this.textBox32.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox32.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox32.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
             // textBox29
             // 
-            this.textBox29.Location = new System.Drawing.Point(119, 150);
+            this.textBox29.Location = new System.Drawing.Point(135, 91);
+            this.textBox29.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox29.Name = "textBox29";
-            this.textBox29.Size = new System.Drawing.Size(100, 34);
+            this.textBox29.Size = new System.Drawing.Size(112, 39);
             this.textBox29.TabIndex = 2;
             this.textBox29.Tag = "右铣轴手动单量";
             this.textBox29.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox29.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox29.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // button110
+            // 
+            this.button110.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button110.Location = new System.Drawing.Point(312, 324);
+            this.button110.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button110.Name = "button110";
+            this.button110.Size = new System.Drawing.Size(136, 60);
+            this.button110.TabIndex = 3;
+            this.button110.Tag = "右铣槽负限";
+            this.button110.Text = "负限";
+            this.button110.UseVisualStyleBackColor = true;
+            // 
+            // button106
+            // 
+            this.button106.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button106.Location = new System.Drawing.Point(163, 324);
+            this.button106.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button106.Name = "button106";
+            this.button106.Size = new System.Drawing.Size(136, 60);
+            this.button106.TabIndex = 4;
+            this.button106.Tag = "右铣槽正限";
+            this.button106.Text = "正限";
+            this.button106.UseVisualStyleBackColor = true;
+            // 
             // button103
             // 
             this.button103.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button103.Location = new System.Drawing.Point(10, 240);
+            this.button103.Location = new System.Drawing.Point(11, 324);
+            this.button103.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button103.Name = "button103";
-            this.button103.Size = new System.Drawing.Size(121, 50);
+            this.button103.Size = new System.Drawing.Size(136, 60);
             this.button103.TabIndex = 5;
             this.button103.Tag = "右铣槽原点";
             this.button103.Text = "原点";
@@ -2683,56 +2716,20 @@
             // 
             // textBox30
             // 
-            this.textBox30.Location = new System.Drawing.Point(142, 48);
+            this.textBox30.Location = new System.Drawing.Point(160, 58);
+            this.textBox30.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox30.Name = "textBox30";
             this.textBox30.ReadOnly = true;
-            this.textBox30.Size = new System.Drawing.Size(151, 34);
+            this.textBox30.Size = new System.Drawing.Size(169, 39);
             this.textBox30.TabIndex = 2;
             this.textBox30.Tag = "右铣轴位置";
             // 
-            // textBox32
-            // 
-            this.textBox32.Location = new System.Drawing.Point(119, 103);
-            this.textBox32.Name = "textBox32";
-            this.textBox32.Size = new System.Drawing.Size(100, 34);
-            this.textBox32.TabIndex = 2;
-            this.textBox32.Tag = "右铣轴手动速度";
-            this.textBox32.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox32.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox32.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label43
-            // 
-            this.label43.AutoSize = true;
-            this.label43.Location = new System.Drawing.Point(6, 195);
-            this.label43.Name = "label43";
-            this.label43.Size = new System.Drawing.Size(106, 24);
-            this.label43.TabIndex = 1;
-            this.label43.Text = "复位速度";
-            // 
-            // label45
-            // 
-            this.label45.AutoSize = true;
-            this.label45.Location = new System.Drawing.Point(6, 150);
-            this.label45.Name = "label45";
-            this.label45.Size = new System.Drawing.Size(106, 24);
-            this.label45.TabIndex = 1;
-            this.label45.Text = "手动单量";
-            // 
-            // label47
-            // 
-            this.label47.AutoSize = true;
-            this.label47.Location = new System.Drawing.Point(6, 103);
-            this.label47.Name = "label47";
-            this.label47.Size = new System.Drawing.Size(106, 24);
-            this.label47.TabIndex = 1;
-            this.label47.Text = "手动速度";
-            // 
             // button16
             // 
-            this.button16.Location = new System.Drawing.Point(439, 37);
+            this.button16.Location = new System.Drawing.Point(494, 44);
+            this.button16.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(121, 50);
+            this.button16.Size = new System.Drawing.Size(136, 60);
             this.button16.TabIndex = 0;
             this.button16.Tag = "右铣槽复位";
             this.button16.Text = "复位";
@@ -2741,9 +2738,10 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(312, 37);
+            this.button17.Location = new System.Drawing.Point(351, 44);
+            this.button17.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(121, 50);
+            this.button17.Size = new System.Drawing.Size(136, 60);
             this.button17.TabIndex = 0;
             this.button17.Tag = "右铣槽-";
             this.button17.Text = "负";
@@ -2753,9 +2751,10 @@
             // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(6, 37);
+            this.button18.Location = new System.Drawing.Point(7, 44);
+            this.button18.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button18.Name = "button18";
-            this.button18.Size = new System.Drawing.Size(121, 50);
+            this.button18.Size = new System.Drawing.Size(136, 60);
             this.button18.TabIndex = 0;
             this.button18.Tag = "右铣槽+";
             this.button18.Text = "正";
@@ -2765,135 +2764,158 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.g3Param);
             this.groupBox4.Controls.Add(this.button113);
-            this.groupBox4.Controls.Add(this.textBox20);
             this.groupBox4.Controls.Add(this.button112);
-            this.groupBox4.Controls.Add(this.textBox22);
             this.groupBox4.Controls.Add(this.textBox23);
             this.groupBox4.Controls.Add(this.button111);
-            this.groupBox4.Controls.Add(this.textBox25);
-            this.groupBox4.Controls.Add(this.label34);
-            this.groupBox4.Controls.Add(this.label36);
-            this.groupBox4.Controls.Add(this.label38);
             this.groupBox4.Controls.Add(this.button170);
             this.groupBox4.Controls.Add(this.button13);
             this.groupBox4.Controls.Add(this.button169);
             this.groupBox4.Controls.Add(this.button14);
             this.groupBox4.Controls.Add(this.button15);
-            this.groupBox4.Location = new System.Drawing.Point(21, 6);
+            this.groupBox4.Location = new System.Drawing.Point(24, 7);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(570, 326);
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox4.Size = new System.Drawing.Size(641, 392);
             this.groupBox4.TabIndex = 1;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "左铣槽";
             // 
-            // button113
+            // g3Param
             // 
-            this.button113.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button113.Location = new System.Drawing.Point(273, 240);
-            this.button113.Name = "button113";
-            this.button113.Size = new System.Drawing.Size(121, 50);
-            this.button113.TabIndex = 3;
-            this.button113.Tag = "左铣轴负限";
-            this.button113.Text = "负限";
-            this.button113.UseVisualStyleBackColor = true;
+            this.g3Param.Controls.Add(this.label38);
+            this.g3Param.Controls.Add(this.label36);
+            this.g3Param.Controls.Add(this.textBox20);
+            this.g3Param.Controls.Add(this.label34);
+            this.g3Param.Controls.Add(this.textBox25);
+            this.g3Param.Controls.Add(this.textBox22);
+            this.g3Param.Location = new System.Drawing.Point(11, 112);
+            this.g3Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g3Param.Name = "g3Param";
+            this.g3Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g3Param.Size = new System.Drawing.Size(269, 205);
+            this.g3Param.TabIndex = 6;
+            this.g3Param.TabStop = false;
+            this.g3Param.Text = "参数";
+            this.g3Param.Visible = false;
+            // 
+            // label38
+            // 
+            this.label38.AutoSize = true;
+            this.label38.Location = new System.Drawing.Point(22, 44);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(124, 28);
+            this.label38.TabIndex = 1;
+            this.label38.Text = "手动速度";
+            // 
+            // label36
+            // 
+            this.label36.AutoSize = true;
+            this.label36.Location = new System.Drawing.Point(22, 101);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(124, 28);
+            this.label36.TabIndex = 1;
+            this.label36.Text = "手动单量";
             // 
             // textBox20
             // 
-            this.textBox20.Location = new System.Drawing.Point(115, 192);
+            this.textBox20.Location = new System.Drawing.Point(150, 155);
+            this.textBox20.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox20.Name = "textBox20";
-            this.textBox20.Size = new System.Drawing.Size(100, 34);
+            this.textBox20.Size = new System.Drawing.Size(112, 39);
             this.textBox20.TabIndex = 2;
             this.textBox20.Tag = "左铣轴复位速度";
             this.textBox20.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox20.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox20.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // button112
+            // label34
             // 
-            this.button112.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button112.Location = new System.Drawing.Point(141, 240);
-            this.button112.Name = "button112";
-            this.button112.Size = new System.Drawing.Size(121, 50);
-            this.button112.TabIndex = 4;
-            this.button112.Tag = "左铣轴正限";
-            this.button112.Text = "正限";
-            this.button112.UseVisualStyleBackColor = true;
-            // 
-            // textBox22
-            // 
-            this.textBox22.Location = new System.Drawing.Point(115, 147);
-            this.textBox22.Name = "textBox22";
-            this.textBox22.Size = new System.Drawing.Size(100, 34);
-            this.textBox22.TabIndex = 2;
-            this.textBox22.Tag = "左铣轴手动单量";
-            this.textBox22.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox22.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox23
-            // 
-            this.textBox23.Location = new System.Drawing.Point(142, 48);
-            this.textBox23.Name = "textBox23";
-            this.textBox23.ReadOnly = true;
-            this.textBox23.Size = new System.Drawing.Size(151, 34);
-            this.textBox23.TabIndex = 2;
-            this.textBox23.Tag = "左铣轴位置";
-            // 
-            // button111
-            // 
-            this.button111.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button111.Location = new System.Drawing.Point(6, 240);
-            this.button111.Name = "button111";
-            this.button111.Size = new System.Drawing.Size(121, 50);
-            this.button111.TabIndex = 5;
-            this.button111.Tag = "左铣轴原点";
-            this.button111.Text = "原点";
-            this.button111.UseVisualStyleBackColor = true;
+            this.label34.AutoSize = true;
+            this.label34.Location = new System.Drawing.Point(22, 155);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(124, 28);
+            this.label34.TabIndex = 1;
+            this.label34.Text = "复位速度";
             // 
             // textBox25
             // 
-            this.textBox25.Location = new System.Drawing.Point(115, 100);
+            this.textBox25.Location = new System.Drawing.Point(150, 44);
+            this.textBox25.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox25.Name = "textBox25";
-            this.textBox25.Size = new System.Drawing.Size(100, 34);
+            this.textBox25.Size = new System.Drawing.Size(112, 39);
             this.textBox25.TabIndex = 2;
             this.textBox25.Tag = "左铣轴手动速度";
             this.textBox25.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox25.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox25.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // label34
+            // textBox22
             // 
-            this.label34.AutoSize = true;
-            this.label34.Location = new System.Drawing.Point(2, 192);
-            this.label34.Name = "label34";
-            this.label34.Size = new System.Drawing.Size(106, 24);
-            this.label34.TabIndex = 1;
-            this.label34.Text = "复位速度";
+            this.textBox22.Location = new System.Drawing.Point(150, 101);
+            this.textBox22.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox22.Name = "textBox22";
+            this.textBox22.Size = new System.Drawing.Size(112, 39);
+            this.textBox22.TabIndex = 2;
+            this.textBox22.Tag = "左铣轴手动单量";
+            this.textBox22.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox22.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox22.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // label36
+            // button113
             // 
-            this.label36.AutoSize = true;
-            this.label36.Location = new System.Drawing.Point(2, 147);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(106, 24);
-            this.label36.TabIndex = 1;
-            this.label36.Text = "手动单量";
+            this.button113.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button113.Location = new System.Drawing.Point(312, 324);
+            this.button113.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button113.Name = "button113";
+            this.button113.Size = new System.Drawing.Size(136, 60);
+            this.button113.TabIndex = 3;
+            this.button113.Tag = "左铣轴负限";
+            this.button113.Text = "负限";
+            this.button113.UseVisualStyleBackColor = true;
             // 
-            // label38
+            // button112
             // 
-            this.label38.AutoSize = true;
-            this.label38.Location = new System.Drawing.Point(2, 100);
-            this.label38.Name = "label38";
-            this.label38.Size = new System.Drawing.Size(106, 24);
-            this.label38.TabIndex = 1;
-            this.label38.Text = "手动速度";
+            this.button112.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button112.Location = new System.Drawing.Point(163, 324);
+            this.button112.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button112.Name = "button112";
+            this.button112.Size = new System.Drawing.Size(136, 60);
+            this.button112.TabIndex = 4;
+            this.button112.Tag = "左铣轴正限";
+            this.button112.Text = "正限";
+            this.button112.UseVisualStyleBackColor = true;
+            // 
+            // textBox23
+            // 
+            this.textBox23.Location = new System.Drawing.Point(160, 58);
+            this.textBox23.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox23.Name = "textBox23";
+            this.textBox23.ReadOnly = true;
+            this.textBox23.Size = new System.Drawing.Size(169, 39);
+            this.textBox23.TabIndex = 2;
+            this.textBox23.Tag = "左铣轴位置";
+            // 
+            // button111
+            // 
+            this.button111.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button111.Location = new System.Drawing.Point(11, 324);
+            this.button111.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button111.Name = "button111";
+            this.button111.Size = new System.Drawing.Size(136, 60);
+            this.button111.TabIndex = 5;
+            this.button111.Tag = "左铣轴原点";
+            this.button111.Text = "原点";
+            this.button111.UseVisualStyleBackColor = true;
             // 
             // button170
             // 
-            this.button170.Location = new System.Drawing.Point(404, 96);
+            this.button170.Location = new System.Drawing.Point(318, 124);
+            this.button170.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button170.Name = "button170";
-            this.button170.Size = new System.Drawing.Size(157, 50);
+            this.button170.Size = new System.Drawing.Size(177, 60);
             this.button170.TabIndex = 0;
             this.button170.Tag = "铣槽联动急停";
             this.button170.Text = "联动急停";
@@ -2902,9 +2924,10 @@
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(443, 37);
+            this.button13.Location = new System.Drawing.Point(498, 44);
+            this.button13.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(121, 50);
+            this.button13.Size = new System.Drawing.Size(136, 60);
             this.button13.TabIndex = 0;
             this.button13.Tag = "左铣槽复位";
             this.button13.Text = "复位";
@@ -2913,9 +2936,10 @@
             // 
             // button169
             // 
-            this.button169.Location = new System.Drawing.Point(238, 96);
+            this.button169.Location = new System.Drawing.Point(318, 196);
+            this.button169.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button169.Name = "button169";
-            this.button169.Size = new System.Drawing.Size(160, 50);
+            this.button169.Size = new System.Drawing.Size(180, 60);
             this.button169.TabIndex = 0;
             this.button169.Tag = "铣槽联动";
             this.button169.Text = "铣槽联动";
@@ -2924,9 +2948,10 @@
             // 
             // button14
             // 
-            this.button14.Location = new System.Drawing.Point(312, 37);
+            this.button14.Location = new System.Drawing.Point(351, 44);
+            this.button14.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button14.Name = "button14";
-            this.button14.Size = new System.Drawing.Size(121, 50);
+            this.button14.Size = new System.Drawing.Size(136, 60);
             this.button14.TabIndex = 0;
             this.button14.Tag = "左铣槽-";
             this.button14.Text = "负";
@@ -2936,9 +2961,10 @@
             // 
             // button15
             // 
-            this.button15.Location = new System.Drawing.Point(6, 37);
+            this.button15.Location = new System.Drawing.Point(7, 44);
+            this.button15.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button15.Name = "button15";
-            this.button15.Size = new System.Drawing.Size(121, 50);
+            this.button15.Size = new System.Drawing.Size(136, 60);
             this.button15.TabIndex = 0;
             this.button15.Tag = "左铣槽+";
             this.button15.Text = "正";
@@ -2946,173 +2972,431 @@
             this.button15.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
             this.button15.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
+            // g6Param
+            // 
+            this.g6Param.Controls.Add(this.label80);
+            this.g6Param.Controls.Add(this.label75);
+            this.g6Param.Controls.Add(this.textBox44);
+            this.g6Param.Controls.Add(this.textBox40);
+            this.g6Param.Controls.Add(this.label88);
+            this.g6Param.Controls.Add(this.textBox46);
+            this.g6Param.Controls.Add(this.textBox54);
+            this.g6Param.Controls.Add(this.textBox45);
+            this.g6Param.Controls.Add(this.textBox55);
+            this.g6Param.Controls.Add(this.textBox47);
+            this.g6Param.Controls.Add(this.label85);
+            this.g6Param.Controls.Add(this.label76);
+            this.g6Param.Controls.Add(this.label87);
+            this.g6Param.Controls.Add(this.label77);
+            this.g6Param.Controls.Add(this.label83);
+            this.g6Param.Controls.Add(this.textBox41);
+            this.g6Param.Controls.Add(this.textBox52);
+            this.g6Param.Controls.Add(this.label78);
+            this.g6Param.Controls.Add(this.label81);
+            this.g6Param.Controls.Add(this.label79);
+            this.g6Param.Controls.Add(this.textBox50);
+            this.g6Param.Controls.Add(this.textBox42);
+            this.g6Param.Controls.Add(this.textBox43);
+            this.g6Param.Controls.Add(this.label86);
+            this.g6Param.Controls.Add(this.textBox48);
+            this.g6Param.Controls.Add(this.label84);
+            this.g6Param.Controls.Add(this.textBox56);
+            this.g6Param.Controls.Add(this.textBox51);
+            this.g6Param.Controls.Add(this.textBox49);
+            this.g6Param.Controls.Add(this.label82);
+            this.g6Param.Controls.Add(this.label89);
+            this.g6Param.Controls.Add(this.textBox53);
+            this.g6Param.Location = new System.Drawing.Point(1296, 410);
+            this.g6Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g6Param.Name = "g6Param";
+            this.g6Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g6Param.Size = new System.Drawing.Size(670, 407);
+            this.g6Param.TabIndex = 4;
+            this.g6Param.TabStop = false;
+            this.g6Param.Text = "参数";
+            this.g6Param.Visible = false;
+            // 
+            // label80
+            // 
+            this.label80.AutoSize = true;
+            this.label80.Location = new System.Drawing.Point(17, 107);
+            this.label80.Name = "label80";
+            this.label80.Size = new System.Drawing.Size(96, 28);
+            this.label80.TabIndex = 1;
+            this.label80.Text = "右铣刀";
+            // 
+            // label75
+            // 
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(17, 61);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(96, 28);
+            this.label75.TabIndex = 1;
+            this.label75.Text = "左铣刀";
+            // 
+            // textBox44
+            // 
+            this.textBox44.Location = new System.Drawing.Point(130, 102);
+            this.textBox44.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox44.Name = "textBox44";
+            this.textBox44.Size = new System.Drawing.Size(112, 39);
+            this.textBox44.TabIndex = 2;
+            this.textBox44.Tag = "右铣刀开始位置";
+            this.textBox44.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox44.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox44.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox40
+            // 
+            this.textBox40.Location = new System.Drawing.Point(130, 55);
+            this.textBox40.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox40.Name = "textBox40";
+            this.textBox40.Size = new System.Drawing.Size(112, 39);
+            this.textBox40.TabIndex = 2;
+            this.textBox40.Tag = "左铣刀开始位置";
+            this.textBox40.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox40.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox40.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label88
+            // 
+            this.label88.AutoSize = true;
+            this.label88.Location = new System.Drawing.Point(7, 307);
+            this.label88.Name = "label88";
+            this.label88.Size = new System.Drawing.Size(180, 28);
+            this.label88.TabIndex = 1;
+            this.label88.Text = "铣面夹紧时间";
+            // 
+            // textBox46
+            // 
+            this.textBox46.Location = new System.Drawing.Point(399, 104);
+            this.textBox46.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox46.Name = "textBox46";
+            this.textBox46.Size = new System.Drawing.Size(112, 39);
+            this.textBox46.TabIndex = 2;
+            this.textBox46.Tag = "右铣刀铣料速度";
+            this.textBox46.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox46.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox46.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox54
+            // 
+            this.textBox54.Location = new System.Drawing.Point(556, 352);
+            this.textBox54.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox54.Name = "textBox54";
+            this.textBox54.Size = new System.Drawing.Size(108, 39);
+            this.textBox54.TabIndex = 2;
+            this.textBox54.Tag = "右打齐推出时间";
+            this.textBox54.Text = "1";
+            this.textBox54.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox54.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox54.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox45
+            // 
+            this.textBox45.Location = new System.Drawing.Point(268, 104);
+            this.textBox45.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox45.Name = "textBox45";
+            this.textBox45.Size = new System.Drawing.Size(112, 39);
+            this.textBox45.TabIndex = 2;
+            this.textBox45.Tag = "右铣刀结束位置";
+            this.textBox45.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox45.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox45.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox55
+            // 
+            this.textBox55.Location = new System.Drawing.Point(213, 302);
+            this.textBox55.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox55.Name = "textBox55";
+            this.textBox55.Size = new System.Drawing.Size(112, 39);
+            this.textBox55.TabIndex = 2;
+            this.textBox55.Tag = "铣面夹紧时间";
+            this.textBox55.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox55.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox55.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox47
+            // 
+            this.textBox47.Location = new System.Drawing.Point(537, 104);
+            this.textBox47.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox47.Name = "textBox47";
+            this.textBox47.Size = new System.Drawing.Size(112, 39);
+            this.textBox47.TabIndex = 2;
+            this.textBox47.Tag = "右铣刀自动速度";
+            this.textBox47.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox47.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox47.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label85
+            // 
+            this.label85.AutoSize = true;
+            this.label85.Location = new System.Drawing.Point(7, 262);
+            this.label85.Name = "label85";
+            this.label85.Size = new System.Drawing.Size(208, 28);
+            this.label85.TabIndex = 1;
+            this.label85.Text = "右铣刀推出时间";
+            // 
+            // label76
+            // 
+            this.label76.AutoSize = true;
+            this.label76.Location = new System.Drawing.Point(124, 23);
+            this.label76.Name = "label76";
+            this.label76.Size = new System.Drawing.Size(124, 28);
+            this.label76.TabIndex = 1;
+            this.label76.Text = "开始位置";
+            // 
+            // label87
+            // 
+            this.label87.AutoSize = true;
+            this.label87.Location = new System.Drawing.Point(331, 352);
+            this.label87.Name = "label87";
+            this.label87.Size = new System.Drawing.Size(208, 28);
+            this.label87.TabIndex = 1;
+            this.label87.Text = "右打齐推出时间";
+            // 
+            // label77
+            // 
+            this.label77.AutoSize = true;
+            this.label77.Location = new System.Drawing.Point(263, 22);
+            this.label77.Name = "label77";
+            this.label77.Size = new System.Drawing.Size(124, 28);
+            this.label77.TabIndex = 1;
+            this.label77.Text = "结束位置";
+            // 
+            // label83
+            // 
+            this.label83.AutoSize = true;
+            this.label83.Location = new System.Drawing.Point(7, 217);
+            this.label83.Name = "label83";
+            this.label83.Size = new System.Drawing.Size(208, 28);
+            this.label83.TabIndex = 1;
+            this.label83.Text = "左铣刀推出时间";
+            // 
+            // textBox41
+            // 
+            this.textBox41.Location = new System.Drawing.Point(268, 58);
+            this.textBox41.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox41.Name = "textBox41";
+            this.textBox41.Size = new System.Drawing.Size(112, 39);
+            this.textBox41.TabIndex = 2;
+            this.textBox41.Tag = "左铣刀结束位置";
+            this.textBox41.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox41.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox41.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox52
+            // 
+            this.textBox52.Location = new System.Drawing.Point(213, 256);
+            this.textBox52.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox52.Name = "textBox52";
+            this.textBox52.Size = new System.Drawing.Size(112, 39);
+            this.textBox52.TabIndex = 2;
+            this.textBox52.Tag = "右铣刀推出时间";
+            this.textBox52.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox52.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox52.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label78
+            // 
+            this.label78.AutoSize = true;
+            this.label78.Location = new System.Drawing.Point(395, 22);
+            this.label78.Name = "label78";
+            this.label78.Size = new System.Drawing.Size(124, 28);
+            this.label78.TabIndex = 1;
+            this.label78.Text = "铣料速度";
+            // 
+            // label81
+            // 
+            this.label81.AutoSize = true;
+            this.label81.Location = new System.Drawing.Point(7, 169);
+            this.label81.Name = "label81";
+            this.label81.Size = new System.Drawing.Size(180, 28);
+            this.label81.TabIndex = 1;
+            this.label81.Text = "铣刀启动时间";
+            // 
+            // label79
+            // 
+            this.label79.AutoSize = true;
+            this.label79.Location = new System.Drawing.Point(532, 22);
+            this.label79.Name = "label79";
+            this.label79.Size = new System.Drawing.Size(124, 28);
+            this.label79.TabIndex = 1;
+            this.label79.Text = "自动速度";
+            // 
+            // textBox50
+            // 
+            this.textBox50.Location = new System.Drawing.Point(213, 208);
+            this.textBox50.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox50.Name = "textBox50";
+            this.textBox50.Size = new System.Drawing.Size(112, 39);
+            this.textBox50.TabIndex = 2;
+            this.textBox50.Tag = "左铣刀推出时间";
+            this.textBox50.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox50.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox50.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox42
+            // 
+            this.textBox42.Location = new System.Drawing.Point(399, 58);
+            this.textBox42.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox42.Name = "textBox42";
+            this.textBox42.Size = new System.Drawing.Size(112, 39);
+            this.textBox42.TabIndex = 2;
+            this.textBox42.Tag = "左铣刀铣料速度";
+            this.textBox42.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox42.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox42.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox43
+            // 
+            this.textBox43.Location = new System.Drawing.Point(537, 58);
+            this.textBox43.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox43.Name = "textBox43";
+            this.textBox43.Size = new System.Drawing.Size(112, 39);
+            this.textBox43.TabIndex = 2;
+            this.textBox43.Tag = "左铣刀自动速度";
+            this.textBox43.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox43.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox43.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label86
+            // 
+            this.label86.AutoSize = true;
+            this.label86.Location = new System.Drawing.Point(328, 262);
+            this.label86.Name = "label86";
+            this.label86.Size = new System.Drawing.Size(208, 28);
+            this.label86.TabIndex = 1;
+            this.label86.Text = "右打齐下降时间";
+            // 
+            // textBox48
+            // 
+            this.textBox48.Location = new System.Drawing.Point(213, 163);
+            this.textBox48.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox48.Name = "textBox48";
+            this.textBox48.Size = new System.Drawing.Size(112, 39);
+            this.textBox48.TabIndex = 2;
+            this.textBox48.Tag = "铣刀启动时间";
+            this.textBox48.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox48.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox48.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label84
+            // 
+            this.label84.AutoSize = true;
+            this.label84.Location = new System.Drawing.Point(325, 214);
+            this.label84.Name = "label84";
+            this.label84.Size = new System.Drawing.Size(208, 28);
+            this.label84.TabIndex = 1;
+            this.label84.Text = "左打齐下降时间";
+            // 
+            // textBox56
+            // 
+            this.textBox56.Location = new System.Drawing.Point(556, 304);
+            this.textBox56.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox56.Name = "textBox56";
+            this.textBox56.Size = new System.Drawing.Size(108, 39);
+            this.textBox56.TabIndex = 2;
+            this.textBox56.Tag = "铣面靠栅上升时间";
+            this.textBox56.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox56.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox56.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox51
+            // 
+            this.textBox51.Location = new System.Drawing.Point(556, 210);
+            this.textBox51.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox51.Name = "textBox51";
+            this.textBox51.Size = new System.Drawing.Size(108, 39);
+            this.textBox51.TabIndex = 2;
+            this.textBox51.Tag = "左打齐下降时间";
+            this.textBox51.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox51.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox51.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox49
+            // 
+            this.textBox49.Location = new System.Drawing.Point(556, 166);
+            this.textBox49.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox49.Name = "textBox49";
+            this.textBox49.Size = new System.Drawing.Size(108, 39);
+            this.textBox49.TabIndex = 2;
+            this.textBox49.Tag = "压料压紧时间";
+            this.textBox49.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox49.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox49.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label82
+            // 
+            this.label82.AutoSize = true;
+            this.label82.Location = new System.Drawing.Point(328, 169);
+            this.label82.Name = "label82";
+            this.label82.Size = new System.Drawing.Size(180, 28);
+            this.label82.TabIndex = 1;
+            this.label82.Text = "压料压紧时间";
+            // 
+            // label89
+            // 
+            this.label89.AutoSize = true;
+            this.label89.Location = new System.Drawing.Point(328, 307);
+            this.label89.Name = "label89";
+            this.label89.Size = new System.Drawing.Size(236, 28);
+            this.label89.TabIndex = 1;
+            this.label89.Text = "铣面靠栅上升时间";
+            // 
+            // textBox53
+            // 
+            this.textBox53.Location = new System.Drawing.Point(556, 258);
+            this.textBox53.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox53.Name = "textBox53";
+            this.textBox53.Size = new System.Drawing.Size(108, 39);
+            this.textBox53.TabIndex = 2;
+            this.textBox53.Tag = "右打齐下降时间";
+            this.textBox53.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox53.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox53.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // tabPage7
             // 
             this.tabPage7.Controls.Add(this.button44);
-            this.tabPage7.Controls.Add(this.textBox88);
-            this.tabPage7.Controls.Add(this.textBox81);
-            this.tabPage7.Controls.Add(this.textBox24);
-            this.tabPage7.Controls.Add(this.textBox87);
-            this.tabPage7.Controls.Add(this.textBox19);
-            this.tabPage7.Controls.Add(this.textBox28);
-            this.tabPage7.Controls.Add(this.textBox21);
-            this.tabPage7.Controls.Add(this.textBox85);
-            this.tabPage7.Controls.Add(this.textBox26);
-            this.tabPage7.Controls.Add(this.textBox1);
             this.tabPage7.Controls.Add(this.button43);
             this.tabPage7.Controls.Add(this.button42);
             this.tabPage7.Controls.Add(this.button138);
             this.tabPage7.Controls.Add(this.button174);
             this.tabPage7.Controls.Add(this.button173);
-            this.tabPage7.Controls.Add(this.label16);
-            this.tabPage7.Controls.Add(this.label15);
-            this.tabPage7.Controls.Add(this.label7);
-            this.tabPage7.Controls.Add(this.label6);
-            this.tabPage7.Controls.Add(this.label5);
-            this.tabPage7.Controls.Add(this.label4);
-            this.tabPage7.Controls.Add(this.label27);
-            this.tabPage7.Controls.Add(this.label26);
-            this.tabPage7.Controls.Add(this.label23);
-            this.tabPage7.Controls.Add(this.label2);
             this.tabPage7.Controls.Add(this.button172);
             this.tabPage7.Controls.Add(this.button171);
             this.tabPage7.Controls.Add(this.button137);
             this.tabPage7.Controls.Add(this.groupBox10);
             this.tabPage7.Controls.Add(this.groupBox9);
-            this.tabPage7.Location = new System.Drawing.Point(4, 33);
+            this.tabPage7.Controls.Add(this.g9Param);
+            this.tabPage7.Location = new System.Drawing.Point(4, 38);
+            this.tabPage7.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage7.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage7.Size = new System.Drawing.Size(1974, 827);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "推料";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
             // button44
             // 
-            this.button44.Location = new System.Drawing.Point(385, 381);
+            this.button44.Location = new System.Drawing.Point(433, 457);
+            this.button44.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button44.Name = "button44";
-            this.button44.Size = new System.Drawing.Size(203, 62);
+            this.button44.Size = new System.Drawing.Size(228, 74);
             this.button44.TabIndex = 3;
             this.button44.Tag = "推料靠栅";
             this.button44.Text = "推料靠栅";
             this.button44.UseVisualStyleBackColor = true;
             this.button44.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
-            // textBox88
-            // 
-            this.textBox88.Location = new System.Drawing.Point(1457, 445);
-            this.textBox88.Name = "textBox88";
-            this.textBox88.Size = new System.Drawing.Size(221, 34);
-            this.textBox88.TabIndex = 2;
-            this.textBox88.Tag = "靠山气缸时间";
-            this.textBox88.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox88.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox88.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox81
-            // 
-            this.textBox81.Location = new System.Drawing.Point(1457, 313);
-            this.textBox81.Name = "textBox81";
-            this.textBox81.Size = new System.Drawing.Size(221, 34);
-            this.textBox81.TabIndex = 2;
-            this.textBox81.Tag = "推料微退距离";
-            this.textBox81.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox81.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox81.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox24
-            // 
-            this.textBox24.Location = new System.Drawing.Point(1457, 181);
-            this.textBox24.Name = "textBox24";
-            this.textBox24.Size = new System.Drawing.Size(221, 34);
-            this.textBox24.TabIndex = 2;
-            this.textBox24.Tag = "推料扭力";
-            this.textBox24.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox24.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox24.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox87
-            // 
-            this.textBox87.Location = new System.Drawing.Point(1457, 401);
-            this.textBox87.Name = "textBox87";
-            this.textBox87.Size = new System.Drawing.Size(221, 34);
-            this.textBox87.TabIndex = 2;
-            this.textBox87.Tag = "推料2气缸时间";
-            this.textBox87.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox87.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox87.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox19
-            // 
-            this.textBox19.Location = new System.Drawing.Point(1457, 93);
-            this.textBox19.Name = "textBox19";
-            this.textBox19.Size = new System.Drawing.Size(221, 34);
-            this.textBox19.TabIndex = 2;
-            this.textBox19.Tag = "推料极限位置";
-            this.textBox19.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox19.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox28
-            // 
-            this.textBox28.Location = new System.Drawing.Point(1457, 269);
-            this.textBox28.Name = "textBox28";
-            this.textBox28.Size = new System.Drawing.Size(221, 34);
-            this.textBox28.TabIndex = 2;
-            this.textBox28.Tag = "推料回快速";
-            this.textBox28.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox28.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox28.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox21
-            // 
-            this.textBox21.Location = new System.Drawing.Point(1457, 137);
-            this.textBox21.Name = "textBox21";
-            this.textBox21.Size = new System.Drawing.Size(221, 34);
-            this.textBox21.TabIndex = 2;
-            this.textBox21.Tag = "推料单次料宽";
-            this.textBox21.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox21.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox21.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox85
-            // 
-            this.textBox85.Location = new System.Drawing.Point(1457, 357);
-            this.textBox85.Name = "textBox85";
-            this.textBox85.Size = new System.Drawing.Size(221, 34);
-            this.textBox85.TabIndex = 2;
-            this.textBox85.Tag = "推料1气缸时间";
-            this.textBox85.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox85.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox85.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox26
-            // 
-            this.textBox26.Location = new System.Drawing.Point(1457, 225);
-            this.textBox26.Name = "textBox26";
-            this.textBox26.Size = new System.Drawing.Size(221, 34);
-            this.textBox26.TabIndex = 2;
-            this.textBox26.Tag = "推料速度";
-            this.textBox26.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox26.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox26.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(1457, 49);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(221, 34);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Tag = "推料气缸1-2间距";
-            this.textBox1.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox1.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // button43
             // 
-            this.button43.Location = new System.Drawing.Point(224, 381);
+            this.button43.Location = new System.Drawing.Point(252, 457);
+            this.button43.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button43.Name = "button43";
-            this.button43.Size = new System.Drawing.Size(155, 62);
+            this.button43.Size = new System.Drawing.Size(174, 74);
             this.button43.TabIndex = 3;
             this.button43.Tag = "上推料2";
             this.button43.Text = "上推料2";
@@ -3121,9 +3405,10 @@
             // 
             // button42
             // 
-            this.button42.Location = new System.Drawing.Point(67, 381);
+            this.button42.Location = new System.Drawing.Point(75, 457);
+            this.button42.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button42.Name = "button42";
-            this.button42.Size = new System.Drawing.Size(151, 62);
+            this.button42.Size = new System.Drawing.Size(170, 74);
             this.button42.TabIndex = 3;
             this.button42.Tag = "上推料1";
             this.button42.Text = "上推料1";
@@ -3133,9 +3418,10 @@
             // button138
             // 
             this.button138.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button138.Location = new System.Drawing.Point(975, 378);
+            this.button138.Location = new System.Drawing.Point(1097, 454);
+            this.button138.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button138.Name = "button138";
-            this.button138.Size = new System.Drawing.Size(235, 50);
+            this.button138.Size = new System.Drawing.Size(264, 60);
             this.button138.TabIndex = 6;
             this.button138.Tag = "机械手放料到位";
             this.button138.Text = "机械手放料到位";
@@ -3144,9 +3430,10 @@
             // button174
             // 
             this.button174.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button174.Location = new System.Drawing.Point(330, 505);
+            this.button174.Location = new System.Drawing.Point(371, 606);
+            this.button174.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button174.Name = "button174";
-            this.button174.Size = new System.Drawing.Size(236, 50);
+            this.button174.Size = new System.Drawing.Size(266, 60);
             this.button174.TabIndex = 6;
             this.button174.Tag = "右上推料2原位";
             this.button174.Text = "右上推料2原位";
@@ -3155,110 +3442,22 @@
             // button173
             // 
             this.button173.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button173.Location = new System.Drawing.Point(71, 505);
+            this.button173.Location = new System.Drawing.Point(80, 606);
+            this.button173.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button173.Name = "button173";
-            this.button173.Size = new System.Drawing.Size(236, 50);
+            this.button173.Size = new System.Drawing.Size(266, 60);
             this.button173.TabIndex = 6;
             this.button173.Tag = "左上推料2原位";
             this.button173.Text = "左上推料2原位";
             this.button173.UseVisualStyleBackColor = true;
             // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(1230, 316);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(154, 24);
-            this.label16.TabIndex = 1;
-            this.label16.Text = "推料微退距离";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(1230, 272);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(130, 24);
-            this.label15.TabIndex = 1;
-            this.label15.Text = "推料回快速";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1230, 228);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(106, 24);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "推料速度";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(1230, 184);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(106, 24);
-            this.label6.TabIndex = 1;
-            this.label6.Text = "推料扭力";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(1230, 140);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(154, 24);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "推料单次料宽";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1230, 96);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(154, 24);
-            this.label4.TabIndex = 1;
-            this.label4.Text = "推料极限位置";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(1230, 448);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(154, 24);
-            this.label27.TabIndex = 1;
-            this.label27.Text = "靠山气缸时间";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(1230, 404);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(166, 24);
-            this.label26.TabIndex = 1;
-            this.label26.Text = "推料2气缸时间";
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(1230, 360);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(166, 24);
-            this.label23.TabIndex = 1;
-            this.label23.Text = "推料1气缸时间";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1230, 52);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(190, 24);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "推料气缸1-2间距";
-            // 
             // button172
             // 
             this.button172.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button172.Location = new System.Drawing.Point(330, 449);
+            this.button172.Location = new System.Drawing.Point(371, 539);
+            this.button172.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button172.Name = "button172";
-            this.button172.Size = new System.Drawing.Size(236, 50);
+            this.button172.Size = new System.Drawing.Size(266, 60);
             this.button172.TabIndex = 6;
             this.button172.Tag = "右上推料1原位";
             this.button172.Text = "右上推料1原位";
@@ -3267,9 +3466,10 @@
             // button171
             // 
             this.button171.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button171.Location = new System.Drawing.Point(71, 449);
+            this.button171.Location = new System.Drawing.Point(80, 539);
+            this.button171.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button171.Name = "button171";
-            this.button171.Size = new System.Drawing.Size(236, 50);
+            this.button171.Size = new System.Drawing.Size(266, 60);
             this.button171.TabIndex = 6;
             this.button171.Tag = "左上推料1原位";
             this.button171.Text = "左上推料1原位";
@@ -3278,9 +3478,10 @@
             // button137
             // 
             this.button137.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button137.Location = new System.Drawing.Point(733, 378);
+            this.button137.Location = new System.Drawing.Point(825, 454);
+            this.button137.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button137.Name = "button137";
-            this.button137.Size = new System.Drawing.Size(236, 50);
+            this.button137.Size = new System.Drawing.Size(266, 60);
             this.button137.TabIndex = 6;
             this.button137.Tag = "机械手上料使能";
             this.button137.Text = "机械手可上料";
@@ -3288,64 +3489,122 @@
             // 
             // groupBox10
             // 
+            this.groupBox10.Controls.Add(this.g7Param);
             this.groupBox10.Controls.Add(this.button134);
-            this.groupBox10.Controls.Add(this.textBox57);
-            this.groupBox10.Controls.Add(this.textBox59);
             this.groupBox10.Controls.Add(this.button133);
             this.groupBox10.Controls.Add(this.textBox62);
-            this.groupBox10.Controls.Add(this.textBox64);
-            this.groupBox10.Controls.Add(this.label99);
-            this.groupBox10.Controls.Add(this.label100);
-            this.groupBox10.Controls.Add(this.label101);
             this.groupBox10.Controls.Add(this.button39);
             this.groupBox10.Controls.Add(this.button40);
             this.groupBox10.Controls.Add(this.button41);
-            this.groupBox10.Location = new System.Drawing.Point(61, 37);
+            this.groupBox10.Location = new System.Drawing.Point(69, 44);
+            this.groupBox10.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(587, 313);
+            this.groupBox10.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox10.Size = new System.Drawing.Size(660, 376);
             this.groupBox10.TabIndex = 2;
             this.groupBox10.TabStop = false;
             this.groupBox10.Text = "左推料";
             // 
-            // button134
+            // g7Param
             // 
-            this.button134.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button134.Location = new System.Drawing.Point(142, 241);
-            this.button134.Name = "button134";
-            this.button134.Size = new System.Drawing.Size(121, 50);
-            this.button134.TabIndex = 6;
-            this.button134.Tag = "左推料正限";
-            this.button134.Text = "正限";
-            this.button134.UseVisualStyleBackColor = true;
+            this.g7Param.Controls.Add(this.label101);
+            this.g7Param.Controls.Add(this.label100);
+            this.g7Param.Controls.Add(this.textBox57);
+            this.g7Param.Controls.Add(this.label99);
+            this.g7Param.Controls.Add(this.textBox59);
+            this.g7Param.Controls.Add(this.textBox64);
+            this.g7Param.Location = new System.Drawing.Point(11, 106);
+            this.g7Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g7Param.Name = "g7Param";
+            this.g7Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g7Param.Size = new System.Drawing.Size(341, 196);
+            this.g7Param.TabIndex = 7;
+            this.g7Param.TabStop = false;
+            this.g7Param.Text = "参数";
+            this.g7Param.Visible = false;
+            // 
+            // label101
+            // 
+            this.label101.AutoSize = true;
+            this.label101.Location = new System.Drawing.Point(36, 36);
+            this.label101.Name = "label101";
+            this.label101.Size = new System.Drawing.Size(124, 28);
+            this.label101.TabIndex = 1;
+            this.label101.Text = "手动速度";
+            // 
+            // label100
+            // 
+            this.label100.AutoSize = true;
+            this.label100.Location = new System.Drawing.Point(36, 92);
+            this.label100.Name = "label100";
+            this.label100.Size = new System.Drawing.Size(124, 28);
+            this.label100.TabIndex = 1;
+            this.label100.Text = "手动单量";
             // 
             // textBox57
             // 
-            this.textBox57.Location = new System.Drawing.Point(119, 198);
+            this.textBox57.Location = new System.Drawing.Point(163, 143);
+            this.textBox57.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox57.Name = "textBox57";
-            this.textBox57.Size = new System.Drawing.Size(100, 34);
+            this.textBox57.Size = new System.Drawing.Size(112, 39);
             this.textBox57.TabIndex = 2;
             this.textBox57.Tag = "左推料复位速度";
             this.textBox57.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox57.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox57.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label99
+            // 
+            this.label99.AutoSize = true;
+            this.label99.Location = new System.Drawing.Point(36, 146);
+            this.label99.Name = "label99";
+            this.label99.Size = new System.Drawing.Size(124, 28);
+            this.label99.TabIndex = 1;
+            this.label99.Text = "复位速度";
+            // 
             // textBox59
             // 
-            this.textBox59.Location = new System.Drawing.Point(119, 153);
+            this.textBox59.Location = new System.Drawing.Point(163, 89);
+            this.textBox59.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox59.Name = "textBox59";
-            this.textBox59.Size = new System.Drawing.Size(100, 34);
+            this.textBox59.Size = new System.Drawing.Size(112, 39);
             this.textBox59.TabIndex = 2;
             this.textBox59.Tag = "左推料手动单量";
             this.textBox59.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox59.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox59.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // textBox64
+            // 
+            this.textBox64.Location = new System.Drawing.Point(162, 32);
+            this.textBox64.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox64.Name = "textBox64";
+            this.textBox64.Size = new System.Drawing.Size(112, 39);
+            this.textBox64.TabIndex = 2;
+            this.textBox64.Tag = "左推料手动速度";
+            this.textBox64.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox64.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox64.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // button134
+            // 
+            this.button134.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button134.Location = new System.Drawing.Point(164, 308);
+            this.button134.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button134.Name = "button134";
+            this.button134.Size = new System.Drawing.Size(136, 60);
+            this.button134.TabIndex = 6;
+            this.button134.Tag = "左推料正限";
+            this.button134.Text = "正限";
+            this.button134.UseVisualStyleBackColor = true;
+            // 
             // button133
             // 
             this.button133.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button133.Location = new System.Drawing.Point(6, 241);
+            this.button133.Location = new System.Drawing.Point(11, 308);
+            this.button133.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button133.Name = "button133";
-            this.button133.Size = new System.Drawing.Size(121, 50);
+            this.button133.Size = new System.Drawing.Size(136, 60);
             this.button133.TabIndex = 6;
             this.button133.Tag = "左推料原点";
             this.button133.Text = "原点";
@@ -3353,56 +3612,20 @@
             // 
             // textBox62
             // 
-            this.textBox62.Location = new System.Drawing.Point(142, 48);
+            this.textBox62.Location = new System.Drawing.Point(160, 58);
+            this.textBox62.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox62.Name = "textBox62";
             this.textBox62.ReadOnly = true;
-            this.textBox62.Size = new System.Drawing.Size(151, 34);
+            this.textBox62.Size = new System.Drawing.Size(169, 39);
             this.textBox62.TabIndex = 2;
             this.textBox62.Tag = "左推料位置";
             // 
-            // textBox64
-            // 
-            this.textBox64.Location = new System.Drawing.Point(118, 106);
-            this.textBox64.Name = "textBox64";
-            this.textBox64.Size = new System.Drawing.Size(100, 34);
-            this.textBox64.TabIndex = 2;
-            this.textBox64.Tag = "左推料手动速度";
-            this.textBox64.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox64.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox64.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label99
-            // 
-            this.label99.AutoSize = true;
-            this.label99.Location = new System.Drawing.Point(6, 201);
-            this.label99.Name = "label99";
-            this.label99.Size = new System.Drawing.Size(106, 24);
-            this.label99.TabIndex = 1;
-            this.label99.Text = "复位速度";
-            // 
-            // label100
-            // 
-            this.label100.AutoSize = true;
-            this.label100.Location = new System.Drawing.Point(6, 156);
-            this.label100.Name = "label100";
-            this.label100.Size = new System.Drawing.Size(106, 24);
-            this.label100.TabIndex = 1;
-            this.label100.Text = "手动单量";
-            // 
-            // label101
-            // 
-            this.label101.AutoSize = true;
-            this.label101.Location = new System.Drawing.Point(6, 109);
-            this.label101.Name = "label101";
-            this.label101.Size = new System.Drawing.Size(106, 24);
-            this.label101.TabIndex = 1;
-            this.label101.Text = "手动速度";
-            // 
             // button39
             // 
-            this.button39.Location = new System.Drawing.Point(443, 37);
+            this.button39.Location = new System.Drawing.Point(498, 44);
+            this.button39.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button39.Name = "button39";
-            this.button39.Size = new System.Drawing.Size(121, 50);
+            this.button39.Size = new System.Drawing.Size(136, 60);
             this.button39.TabIndex = 0;
             this.button39.Tag = "左推料复位";
             this.button39.Text = "复位";
@@ -3411,9 +3634,10 @@
             // 
             // button40
             // 
-            this.button40.Location = new System.Drawing.Point(312, 37);
+            this.button40.Location = new System.Drawing.Point(351, 44);
+            this.button40.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button40.Name = "button40";
-            this.button40.Size = new System.Drawing.Size(121, 50);
+            this.button40.Size = new System.Drawing.Size(136, 60);
             this.button40.TabIndex = 0;
             this.button40.Tag = "左推料-";
             this.button40.Text = "负";
@@ -3423,9 +3647,10 @@
             // 
             // button41
             // 
-            this.button41.Location = new System.Drawing.Point(6, 37);
+            this.button41.Location = new System.Drawing.Point(7, 44);
+            this.button41.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button41.Name = "button41";
-            this.button41.Size = new System.Drawing.Size(121, 50);
+            this.button41.Size = new System.Drawing.Size(136, 60);
             this.button41.TabIndex = 0;
             this.button41.Tag = "左推料+";
             this.button41.Text = "正";
@@ -3435,121 +3660,143 @@
             // 
             // groupBox9
             // 
+            this.groupBox9.Controls.Add(this.g8Param);
             this.groupBox9.Controls.Add(this.button136);
-            this.groupBox9.Controls.Add(this.textBox58);
-            this.groupBox9.Controls.Add(this.textBox60);
             this.groupBox9.Controls.Add(this.textBox61);
             this.groupBox9.Controls.Add(this.button135);
-            this.groupBox9.Controls.Add(this.textBox63);
-            this.groupBox9.Controls.Add(this.label93);
-            this.groupBox9.Controls.Add(this.label95);
-            this.groupBox9.Controls.Add(this.label97);
             this.groupBox9.Controls.Add(this.button36);
             this.groupBox9.Controls.Add(this.button37);
             this.groupBox9.Controls.Add(this.button38);
-            this.groupBox9.Location = new System.Drawing.Point(654, 37);
+            this.groupBox9.Location = new System.Drawing.Point(736, 44);
+            this.groupBox9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(570, 313);
+            this.groupBox9.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox9.Size = new System.Drawing.Size(641, 376);
             this.groupBox9.TabIndex = 2;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "右推料";
             // 
-            // button136
+            // g8Param
             // 
-            this.button136.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button136.Location = new System.Drawing.Point(142, 241);
-            this.button136.Name = "button136";
-            this.button136.Size = new System.Drawing.Size(121, 50);
-            this.button136.TabIndex = 6;
-            this.button136.Tag = "右推料正限";
-            this.button136.Text = "正限";
-            this.button136.UseVisualStyleBackColor = true;
+            this.g8Param.Controls.Add(this.label97);
+            this.g8Param.Controls.Add(this.label95);
+            this.g8Param.Controls.Add(this.textBox58);
+            this.g8Param.Controls.Add(this.label93);
+            this.g8Param.Controls.Add(this.textBox60);
+            this.g8Param.Controls.Add(this.textBox63);
+            this.g8Param.Location = new System.Drawing.Point(11, 107);
+            this.g8Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g8Param.Name = "g8Param";
+            this.g8Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g8Param.Size = new System.Drawing.Size(363, 194);
+            this.g8Param.TabIndex = 7;
+            this.g8Param.TabStop = false;
+            this.g8Param.Text = "参数";
+            this.g8Param.Visible = false;
+            // 
+            // label97
+            // 
+            this.label97.AutoSize = true;
+            this.label97.Location = new System.Drawing.Point(30, 36);
+            this.label97.Name = "label97";
+            this.label97.Size = new System.Drawing.Size(124, 28);
+            this.label97.TabIndex = 1;
+            this.label97.Text = "手动速度";
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Location = new System.Drawing.Point(30, 92);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(124, 28);
+            this.label95.TabIndex = 1;
+            this.label95.Text = "手动单量";
             // 
             // textBox58
             // 
-            this.textBox58.Location = new System.Drawing.Point(118, 198);
+            this.textBox58.Location = new System.Drawing.Point(156, 143);
+            this.textBox58.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox58.Name = "textBox58";
-            this.textBox58.Size = new System.Drawing.Size(100, 34);
+            this.textBox58.Size = new System.Drawing.Size(112, 39);
             this.textBox58.TabIndex = 2;
             this.textBox58.Tag = "右推料复位速度";
             this.textBox58.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox58.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox58.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Location = new System.Drawing.Point(30, 146);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(124, 28);
+            this.label93.TabIndex = 1;
+            this.label93.Text = "复位速度";
+            // 
             // textBox60
             // 
-            this.textBox60.Location = new System.Drawing.Point(118, 153);
+            this.textBox60.Location = new System.Drawing.Point(156, 89);
+            this.textBox60.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox60.Name = "textBox60";
-            this.textBox60.Size = new System.Drawing.Size(100, 34);
+            this.textBox60.Size = new System.Drawing.Size(112, 39);
             this.textBox60.TabIndex = 2;
             this.textBox60.Tag = "右推料手动单量";
             this.textBox60.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox60.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox60.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // textBox61
-            // 
-            this.textBox61.Location = new System.Drawing.Point(142, 48);
-            this.textBox61.Name = "textBox61";
-            this.textBox61.ReadOnly = true;
-            this.textBox61.Size = new System.Drawing.Size(151, 34);
-            this.textBox61.TabIndex = 2;
-            this.textBox61.Tag = "右推料位置";
-            // 
-            // button135
-            // 
-            this.button135.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button135.Location = new System.Drawing.Point(10, 241);
-            this.button135.Name = "button135";
-            this.button135.Size = new System.Drawing.Size(121, 50);
-            this.button135.TabIndex = 6;
-            this.button135.Tag = "右推料原点";
-            this.button135.Text = "原点";
-            this.button135.UseVisualStyleBackColor = true;
-            // 
             // textBox63
             // 
-            this.textBox63.Location = new System.Drawing.Point(118, 106);
+            this.textBox63.Location = new System.Drawing.Point(156, 32);
+            this.textBox63.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox63.Name = "textBox63";
-            this.textBox63.Size = new System.Drawing.Size(100, 34);
+            this.textBox63.Size = new System.Drawing.Size(112, 39);
             this.textBox63.TabIndex = 2;
             this.textBox63.Tag = "右推料手动速度";
             this.textBox63.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox63.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox63.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // label93
+            // button136
             // 
-            this.label93.AutoSize = true;
-            this.label93.Location = new System.Drawing.Point(6, 201);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(106, 24);
-            this.label93.TabIndex = 1;
-            this.label93.Text = "复位速度";
+            this.button136.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button136.Location = new System.Drawing.Point(160, 308);
+            this.button136.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button136.Name = "button136";
+            this.button136.Size = new System.Drawing.Size(136, 60);
+            this.button136.TabIndex = 6;
+            this.button136.Tag = "右推料正限";
+            this.button136.Text = "正限";
+            this.button136.UseVisualStyleBackColor = true;
             // 
-            // label95
+            // textBox61
             // 
-            this.label95.AutoSize = true;
-            this.label95.Location = new System.Drawing.Point(6, 156);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(106, 24);
-            this.label95.TabIndex = 1;
-            this.label95.Text = "手动单量";
+            this.textBox61.Location = new System.Drawing.Point(160, 58);
+            this.textBox61.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox61.Name = "textBox61";
+            this.textBox61.ReadOnly = true;
+            this.textBox61.Size = new System.Drawing.Size(169, 39);
+            this.textBox61.TabIndex = 2;
+            this.textBox61.Tag = "右推料位置";
             // 
-            // label97
+            // button135
             // 
-            this.label97.AutoSize = true;
-            this.label97.Location = new System.Drawing.Point(6, 109);
-            this.label97.Name = "label97";
-            this.label97.Size = new System.Drawing.Size(106, 24);
-            this.label97.TabIndex = 1;
-            this.label97.Text = "手动速度";
+            this.button135.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button135.Location = new System.Drawing.Point(11, 308);
+            this.button135.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button135.Name = "button135";
+            this.button135.Size = new System.Drawing.Size(136, 60);
+            this.button135.TabIndex = 6;
+            this.button135.Tag = "右推料原点";
+            this.button135.Text = "原点";
+            this.button135.UseVisualStyleBackColor = true;
             // 
             // button36
             // 
-            this.button36.Location = new System.Drawing.Point(443, 37);
+            this.button36.Location = new System.Drawing.Point(498, 44);
+            this.button36.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button36.Name = "button36";
-            this.button36.Size = new System.Drawing.Size(121, 50);
+            this.button36.Size = new System.Drawing.Size(136, 60);
             this.button36.TabIndex = 0;
             this.button36.Tag = "右推料复位";
             this.button36.Text = "复位";
@@ -3558,9 +3805,10 @@
             // 
             // button37
             // 
-            this.button37.Location = new System.Drawing.Point(312, 37);
+            this.button37.Location = new System.Drawing.Point(351, 44);
+            this.button37.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button37.Name = "button37";
-            this.button37.Size = new System.Drawing.Size(121, 50);
+            this.button37.Size = new System.Drawing.Size(136, 60);
             this.button37.TabIndex = 0;
             this.button37.Tag = "右推料-";
             this.button37.Text = "负";
@@ -3570,9 +3818,10 @@
             // 
             // button38
             // 
-            this.button38.Location = new System.Drawing.Point(6, 37);
+            this.button38.Location = new System.Drawing.Point(7, 44);
+            this.button38.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button38.Name = "button38";
-            this.button38.Size = new System.Drawing.Size(121, 50);
+            this.button38.Size = new System.Drawing.Size(136, 60);
             this.button38.TabIndex = 0;
             this.button38.Tag = "右推料+";
             this.button38.Text = "正";
@@ -3580,13 +3829,256 @@
             this.button38.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
             this.button38.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
             // 
+            // g9Param
+            // 
+            this.g9Param.Controls.Add(this.label2);
+            this.g9Param.Controls.Add(this.textBox88);
+            this.g9Param.Controls.Add(this.label23);
+            this.g9Param.Controls.Add(this.textBox81);
+            this.g9Param.Controls.Add(this.label26);
+            this.g9Param.Controls.Add(this.textBox24);
+            this.g9Param.Controls.Add(this.label27);
+            this.g9Param.Controls.Add(this.textBox87);
+            this.g9Param.Controls.Add(this.label4);
+            this.g9Param.Controls.Add(this.textBox19);
+            this.g9Param.Controls.Add(this.label5);
+            this.g9Param.Controls.Add(this.textBox28);
+            this.g9Param.Controls.Add(this.label6);
+            this.g9Param.Controls.Add(this.textBox21);
+            this.g9Param.Controls.Add(this.label7);
+            this.g9Param.Controls.Add(this.textBox85);
+            this.g9Param.Controls.Add(this.label15);
+            this.g9Param.Controls.Add(this.textBox26);
+            this.g9Param.Controls.Add(this.label16);
+            this.g9Param.Controls.Add(this.textBox1);
+            this.g9Param.Location = new System.Drawing.Point(1384, 17);
+            this.g9Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g9Param.Name = "g9Param";
+            this.g9Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g9Param.Size = new System.Drawing.Size(549, 582);
+            this.g9Param.TabIndex = 7;
+            this.g9Param.TabStop = false;
+            this.g9Param.Text = "参数";
+            this.g9Param.Visible = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(17, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(222, 28);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "推料气缸1-2间距";
+            // 
+            // textBox88
+            // 
+            this.textBox88.Location = new System.Drawing.Point(272, 508);
+            this.textBox88.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox88.Name = "textBox88";
+            this.textBox88.Size = new System.Drawing.Size(248, 39);
+            this.textBox88.TabIndex = 2;
+            this.textBox88.Tag = "靠山气缸时间";
+            this.textBox88.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox88.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox88.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(17, 406);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(194, 28);
+            this.label23.TabIndex = 1;
+            this.label23.Text = "推料1气缸时间";
+            // 
+            // textBox81
+            // 
+            this.textBox81.Location = new System.Drawing.Point(272, 349);
+            this.textBox81.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox81.Name = "textBox81";
+            this.textBox81.Size = new System.Drawing.Size(248, 39);
+            this.textBox81.TabIndex = 2;
+            this.textBox81.Tag = "推料微退距离";
+            this.textBox81.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox81.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox81.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(17, 458);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(194, 28);
+            this.label26.TabIndex = 1;
+            this.label26.Text = "推料2气缸时间";
+            // 
+            // textBox24
+            // 
+            this.textBox24.Location = new System.Drawing.Point(272, 191);
+            this.textBox24.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox24.Name = "textBox24";
+            this.textBox24.Size = new System.Drawing.Size(248, 39);
+            this.textBox24.TabIndex = 2;
+            this.textBox24.Tag = "推料扭力";
+            this.textBox24.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox24.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox24.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(17, 511);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(180, 28);
+            this.label27.TabIndex = 1;
+            this.label27.Text = "靠山气缸时间";
+            // 
+            // textBox87
+            // 
+            this.textBox87.Location = new System.Drawing.Point(272, 455);
+            this.textBox87.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox87.Name = "textBox87";
+            this.textBox87.Size = new System.Drawing.Size(248, 39);
+            this.textBox87.TabIndex = 2;
+            this.textBox87.Tag = "推料2气缸时间";
+            this.textBox87.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox87.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox87.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(17, 89);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(180, 28);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "推料极限位置";
+            // 
+            // textBox19
+            // 
+            this.textBox19.Location = new System.Drawing.Point(272, 86);
+            this.textBox19.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox19.Name = "textBox19";
+            this.textBox19.Size = new System.Drawing.Size(248, 39);
+            this.textBox19.TabIndex = 2;
+            this.textBox19.Tag = "推料极限位置";
+            this.textBox19.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox19.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox19.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(17, 142);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(180, 28);
+            this.label5.TabIndex = 1;
+            this.label5.Text = "推料单次料宽";
+            // 
+            // textBox28
+            // 
+            this.textBox28.Location = new System.Drawing.Point(272, 296);
+            this.textBox28.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox28.Name = "textBox28";
+            this.textBox28.Size = new System.Drawing.Size(248, 39);
+            this.textBox28.TabIndex = 2;
+            this.textBox28.Tag = "推料回快速";
+            this.textBox28.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox28.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox28.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(17, 194);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(124, 28);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "推料扭力";
+            // 
+            // textBox21
+            // 
+            this.textBox21.Location = new System.Drawing.Point(272, 138);
+            this.textBox21.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox21.Name = "textBox21";
+            this.textBox21.Size = new System.Drawing.Size(248, 39);
+            this.textBox21.TabIndex = 2;
+            this.textBox21.Tag = "推料单次料宽";
+            this.textBox21.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox21.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox21.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(17, 248);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(124, 28);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "推料速度";
+            // 
+            // textBox85
+            // 
+            this.textBox85.Location = new System.Drawing.Point(272, 402);
+            this.textBox85.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox85.Name = "textBox85";
+            this.textBox85.Size = new System.Drawing.Size(248, 39);
+            this.textBox85.TabIndex = 2;
+            this.textBox85.Tag = "推料1气缸时间";
+            this.textBox85.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox85.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox85.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(17, 300);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(152, 28);
+            this.label15.TabIndex = 1;
+            this.label15.Text = "推料回快速";
+            // 
+            // textBox26
+            // 
+            this.textBox26.Location = new System.Drawing.Point(272, 244);
+            this.textBox26.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox26.Name = "textBox26";
+            this.textBox26.Size = new System.Drawing.Size(248, 39);
+            this.textBox26.TabIndex = 2;
+            this.textBox26.Tag = "推料速度";
+            this.textBox26.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox26.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox26.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(17, 353);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(180, 28);
+            this.label16.TabIndex = 1;
+            this.label16.Text = "推料微退距离";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(272, 32);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(248, 39);
+            this.textBox1.TabIndex = 2;
+            this.textBox1.Tag = "推料气缸1-2间距";
+            this.textBox1.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox1.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // tabPage8
             // 
             this.tabPage8.Controls.Add(this.groupBox11);
-            this.tabPage8.Location = new System.Drawing.Point(4, 33);
+            this.tabPage8.Location = new System.Drawing.Point(4, 38);
+            this.tabPage8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage8.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage8.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage8.Size = new System.Drawing.Size(1974, 827);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "前送料";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -3594,27 +4086,20 @@
             // groupBox11
             // 
             this.groupBox11.Controls.Add(this.button142);
-            this.groupBox11.Controls.Add(this.textBox65);
+            this.groupBox11.Controls.Add(this.g11Param);
             this.groupBox11.Controls.Add(this.button141);
-            this.groupBox11.Controls.Add(this.textBox66);
             this.groupBox11.Controls.Add(this.button140);
             this.groupBox11.Controls.Add(this.textBox67);
             this.groupBox11.Controls.Add(this.button139);
-            this.groupBox11.Controls.Add(this.textBox86);
-            this.groupBox11.Controls.Add(this.textBox31);
-            this.groupBox11.Controls.Add(this.textBox68);
-            this.groupBox11.Controls.Add(this.label108);
-            this.groupBox11.Controls.Add(this.label109);
-            this.groupBox11.Controls.Add(this.label29);
-            this.groupBox11.Controls.Add(this.label28);
-            this.groupBox11.Controls.Add(this.label110);
             this.groupBox11.Controls.Add(this.button45);
             this.groupBox11.Controls.Add(this.button46);
             this.groupBox11.Controls.Add(this.button48);
             this.groupBox11.Controls.Add(this.button47);
-            this.groupBox11.Location = new System.Drawing.Point(35, 34);
+            this.groupBox11.Location = new System.Drawing.Point(39, 41);
+            this.groupBox11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(854, 488);
+            this.groupBox11.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox11.Size = new System.Drawing.Size(1015, 621);
             this.groupBox11.TabIndex = 3;
             this.groupBox11.TabStop = false;
             this.groupBox11.Text = "前送料";
@@ -3622,53 +4107,186 @@
             // button142
             // 
             this.button142.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button142.Location = new System.Drawing.Point(446, 327);
+            this.button142.Location = new System.Drawing.Point(502, 392);
+            this.button142.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button142.Name = "button142";
-            this.button142.Size = new System.Drawing.Size(121, 50);
+            this.button142.Size = new System.Drawing.Size(136, 60);
             this.button142.TabIndex = 7;
             this.button142.Tag = "前送料料检测";
             this.button142.Text = "料检测";
             this.button142.UseVisualStyleBackColor = true;
             // 
+            // g11Param
+            // 
+            this.g11Param.Controls.Add(this.label31);
+            this.g11Param.Controls.Add(this.textBox89);
+            this.g11Param.Controls.Add(this.label110);
+            this.g11Param.Controls.Add(this.textBox65);
+            this.g11Param.Controls.Add(this.label28);
+            this.g11Param.Controls.Add(this.label29);
+            this.g11Param.Controls.Add(this.textBox66);
+            this.g11Param.Controls.Add(this.label109);
+            this.g11Param.Controls.Add(this.label108);
+            this.g11Param.Controls.Add(this.textBox68);
+            this.g11Param.Controls.Add(this.textBox31);
+            this.g11Param.Controls.Add(this.textBox86);
+            this.g11Param.Location = new System.Drawing.Point(7, 126);
+            this.g11Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g11Param.Name = "g11Param";
+            this.g11Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g11Param.Size = new System.Drawing.Size(708, 223);
+            this.g11Param.TabIndex = 8;
+            this.g11Param.TabStop = false;
+            this.g11Param.Text = "参数";
+            this.g11Param.Visible = false;
+            // 
+            // label31
+            // 
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(312, 156);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(208, 28);
+            this.label31.TabIndex = 3;
+            this.label31.Text = "喷胶前送料补偿";
+            // 
+            // textBox89
+            // 
+            this.textBox89.Location = new System.Drawing.Point(532, 152);
+            this.textBox89.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox89.Name = "textBox89";
+            this.textBox89.Size = new System.Drawing.Size(140, 39);
+            this.textBox89.TabIndex = 4;
+            this.textBox89.Tag = "喷胶前送料补偿";
+            this.textBox89.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox89.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox89.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label110
+            // 
+            this.label110.AutoSize = true;
+            this.label110.Location = new System.Drawing.Point(44, 46);
+            this.label110.Name = "label110";
+            this.label110.Size = new System.Drawing.Size(124, 28);
+            this.label110.TabIndex = 1;
+            this.label110.Text = "手动速度";
+            // 
             // textBox65
             // 
-            this.textBox65.Location = new System.Drawing.Point(119, 187);
+            this.textBox65.Location = new System.Drawing.Point(171, 156);
+            this.textBox65.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox65.Name = "textBox65";
-            this.textBox65.Size = new System.Drawing.Size(100, 34);
+            this.textBox65.Size = new System.Drawing.Size(112, 39);
             this.textBox65.TabIndex = 2;
             this.textBox65.Tag = "前送料复位速度";
             this.textBox65.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox65.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox65.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // button141
+            // label28
             // 
-            this.button141.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button141.Location = new System.Drawing.Point(302, 327);
-            this.button141.Name = "button141";
-            this.button141.Size = new System.Drawing.Size(121, 50);
-            this.button141.TabIndex = 7;
-            this.button141.Tag = "前送料负限";
-            this.button141.Text = "负限";
-            this.button141.UseVisualStyleBackColor = true;
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(312, 58);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(180, 28);
+            this.label28.TabIndex = 1;
+            this.label28.Text = "前送料夹时间";
+            this.label28.Click += new System.EventHandler(this.label28_Click);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(312, 106);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(180, 28);
+            this.label29.TabIndex = 1;
+            this.label29.Text = "前送料松时间";
+            this.label29.Click += new System.EventHandler(this.label28_Click);
             // 
             // textBox66
             // 
-            this.textBox66.Location = new System.Drawing.Point(119, 142);
+            this.textBox66.Location = new System.Drawing.Point(171, 102);
+            this.textBox66.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox66.Name = "textBox66";
-            this.textBox66.Size = new System.Drawing.Size(100, 34);
+            this.textBox66.Size = new System.Drawing.Size(112, 39);
             this.textBox66.TabIndex = 2;
             this.textBox66.Tag = "前送料手动单量";
             this.textBox66.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox66.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox66.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label109
+            // 
+            this.label109.AutoSize = true;
+            this.label109.Location = new System.Drawing.Point(44, 102);
+            this.label109.Name = "label109";
+            this.label109.Size = new System.Drawing.Size(124, 28);
+            this.label109.TabIndex = 1;
+            this.label109.Text = "手动单量";
+            // 
+            // label108
+            // 
+            this.label108.AutoSize = true;
+            this.label108.Location = new System.Drawing.Point(44, 156);
+            this.label108.Name = "label108";
+            this.label108.Size = new System.Drawing.Size(124, 28);
+            this.label108.TabIndex = 1;
+            this.label108.Text = "复位速度";
+            // 
+            // textBox68
+            // 
+            this.textBox68.Location = new System.Drawing.Point(171, 46);
+            this.textBox68.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox68.Name = "textBox68";
+            this.textBox68.Size = new System.Drawing.Size(112, 39);
+            this.textBox68.TabIndex = 2;
+            this.textBox68.Tag = "前送料手动速度";
+            this.textBox68.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox68.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox68.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox31
+            // 
+            this.textBox31.Location = new System.Drawing.Point(532, 54);
+            this.textBox31.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox31.Name = "textBox31";
+            this.textBox31.Size = new System.Drawing.Size(140, 39);
+            this.textBox31.TabIndex = 2;
+            this.textBox31.Tag = "前送料夹时间";
+            this.textBox31.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox31.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox31.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox86
+            // 
+            this.textBox86.Location = new System.Drawing.Point(532, 102);
+            this.textBox86.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox86.Name = "textBox86";
+            this.textBox86.Size = new System.Drawing.Size(140, 39);
+            this.textBox86.TabIndex = 2;
+            this.textBox86.Tag = "前送料松时间";
+            this.textBox86.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox86.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox86.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // button141
+            // 
+            this.button141.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button141.Location = new System.Drawing.Point(340, 392);
+            this.button141.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button141.Name = "button141";
+            this.button141.Size = new System.Drawing.Size(136, 60);
+            this.button141.TabIndex = 7;
+            this.button141.Tag = "前送料负限";
+            this.button141.Text = "负限";
+            this.button141.UseVisualStyleBackColor = true;
+            // 
             // button140
             // 
             this.button140.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button140.Location = new System.Drawing.Point(153, 327);
+            this.button140.Location = new System.Drawing.Point(172, 392);
+            this.button140.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button140.Name = "button140";
-            this.button140.Size = new System.Drawing.Size(121, 50);
+            this.button140.Size = new System.Drawing.Size(136, 60);
             this.button140.TabIndex = 7;
             this.button140.Tag = "前送料正限";
             this.button140.Text = "正限";
@@ -3676,109 +4294,32 @@
             // 
             // textBox67
             // 
-            this.textBox67.Location = new System.Drawing.Point(142, 48);
+            this.textBox67.Location = new System.Drawing.Point(160, 58);
+            this.textBox67.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox67.Name = "textBox67";
             this.textBox67.ReadOnly = true;
-            this.textBox67.Size = new System.Drawing.Size(151, 34);
+            this.textBox67.Size = new System.Drawing.Size(169, 39);
             this.textBox67.TabIndex = 2;
             this.textBox67.Tag = "前送料位置";
             // 
             // button139
             // 
             this.button139.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button139.Location = new System.Drawing.Point(6, 327);
+            this.button139.Location = new System.Drawing.Point(7, 392);
+            this.button139.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button139.Name = "button139";
-            this.button139.Size = new System.Drawing.Size(121, 50);
+            this.button139.Size = new System.Drawing.Size(136, 60);
             this.button139.TabIndex = 7;
             this.button139.Tag = "前送料原点";
             this.button139.Text = "原点";
             this.button139.UseVisualStyleBackColor = true;
             // 
-            // textBox86
-            // 
-            this.textBox86.Location = new System.Drawing.Point(404, 142);
-            this.textBox86.Name = "textBox86";
-            this.textBox86.Size = new System.Drawing.Size(125, 34);
-            this.textBox86.TabIndex = 2;
-            this.textBox86.Tag = "前送料松时间";
-            this.textBox86.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox86.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox86.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox31
-            // 
-            this.textBox31.Location = new System.Drawing.Point(404, 102);
-            this.textBox31.Name = "textBox31";
-            this.textBox31.Size = new System.Drawing.Size(125, 34);
-            this.textBox31.TabIndex = 2;
-            this.textBox31.Tag = "前送料夹时间";
-            this.textBox31.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox31.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox31.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox68
-            // 
-            this.textBox68.Location = new System.Drawing.Point(119, 95);
-            this.textBox68.Name = "textBox68";
-            this.textBox68.Size = new System.Drawing.Size(100, 34);
-            this.textBox68.TabIndex = 2;
-            this.textBox68.Tag = "前送料手动速度";
-            this.textBox68.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox68.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox68.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label108
-            // 
-            this.label108.AutoSize = true;
-            this.label108.Location = new System.Drawing.Point(6, 187);
-            this.label108.Name = "label108";
-            this.label108.Size = new System.Drawing.Size(106, 24);
-            this.label108.TabIndex = 1;
-            this.label108.Text = "复位速度";
-            // 
-            // label109
-            // 
-            this.label109.AutoSize = true;
-            this.label109.Location = new System.Drawing.Point(6, 142);
-            this.label109.Name = "label109";
-            this.label109.Size = new System.Drawing.Size(106, 24);
-            this.label109.TabIndex = 1;
-            this.label109.Text = "手动单量";
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(244, 145);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(154, 24);
-            this.label29.TabIndex = 1;
-            this.label29.Text = "前送料松时间";
-            this.label29.Click += new System.EventHandler(this.label28_Click);
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(244, 105);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(154, 24);
-            this.label28.TabIndex = 1;
-            this.label28.Text = "前送料夹时间";
-            this.label28.Click += new System.EventHandler(this.label28_Click);
-            // 
-            // label110
-            // 
-            this.label110.AutoSize = true;
-            this.label110.Location = new System.Drawing.Point(6, 95);
-            this.label110.Name = "label110";
-            this.label110.Size = new System.Drawing.Size(106, 24);
-            this.label110.TabIndex = 1;
-            this.label110.Text = "手动速度";
-            // 
             // button45
             // 
-            this.button45.Location = new System.Drawing.Point(443, 37);
+            this.button45.Location = new System.Drawing.Point(498, 44);
+            this.button45.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button45.Name = "button45";
-            this.button45.Size = new System.Drawing.Size(121, 50);
+            this.button45.Size = new System.Drawing.Size(136, 60);
             this.button45.TabIndex = 0;
             this.button45.Tag = "前送料复位";
             this.button45.Text = "复位";
@@ -3787,11 +4328,12 @@
             // 
             // button46
             // 
-            this.button46.Location = new System.Drawing.Point(312, 37);
+            this.button46.Location = new System.Drawing.Point(351, 44);
+            this.button46.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button46.Name = "button46";
-            this.button46.Size = new System.Drawing.Size(121, 50);
+            this.button46.Size = new System.Drawing.Size(136, 60);
             this.button46.TabIndex = 0;
-            this.button46.Tag = "前送料+";
+            this.button46.Tag = "前送料-";
             this.button46.Text = "负";
             this.button46.UseVisualStyleBackColor = true;
             this.button46.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
@@ -3799,9 +4341,10 @@
             // 
             // button48
             // 
-            this.button48.Location = new System.Drawing.Point(570, 37);
+            this.button48.Location = new System.Drawing.Point(641, 44);
+            this.button48.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button48.Name = "button48";
-            this.button48.Size = new System.Drawing.Size(156, 50);
+            this.button48.Size = new System.Drawing.Size(176, 60);
             this.button48.TabIndex = 0;
             this.button48.Tag = "前送料夹";
             this.button48.Text = "前送料夹";
@@ -3810,9 +4353,10 @@
             // 
             // button47
             // 
-            this.button47.Location = new System.Drawing.Point(6, 37);
+            this.button47.Location = new System.Drawing.Point(7, 44);
+            this.button47.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button47.Name = "button47";
-            this.button47.Size = new System.Drawing.Size(121, 50);
+            this.button47.Size = new System.Drawing.Size(136, 60);
             this.button47.TabIndex = 0;
             this.button47.Tag = "前送料+";
             this.button47.Text = "正";
@@ -3822,17 +4366,281 @@
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.groupBox17);
             this.tabPage9.Controls.Add(this.groupBox12);
-            this.tabPage9.Location = new System.Drawing.Point(4, 33);
+            this.tabPage9.Location = new System.Drawing.Point(4, 38);
+            this.tabPage9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage9.Name = "tabPage9";
-            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage9.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage9.Size = new System.Drawing.Size(1974, 827);
             this.tabPage9.TabIndex = 4;
             this.tabPage9.Text = "同步接料";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
+            // groupBox17
+            // 
+            this.groupBox17.Controls.Add(this.g18Param);
+            this.groupBox17.Controls.Add(this.button180);
+            this.groupBox17.Controls.Add(this.button181);
+            this.groupBox17.Controls.Add(this.textBox140);
+            this.groupBox17.Controls.Add(this.button182);
+            this.groupBox17.Location = new System.Drawing.Point(1462, 19);
+            this.groupBox17.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox17.Name = "groupBox17";
+            this.groupBox17.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox17.Size = new System.Drawing.Size(504, 752);
+            this.groupBox17.TabIndex = 5;
+            this.groupBox17.TabStop = false;
+            this.groupBox17.Text = "喷胶";
+            // 
+            // g18Param
+            // 
+            this.g18Param.Controls.Add(this.label126);
+            this.g18Param.Controls.Add(this.label127);
+            this.g18Param.Controls.Add(this.textBox141);
+            this.g18Param.Controls.Add(this.textBox142);
+            this.g18Param.Controls.Add(this.textBox144);
+            this.g18Param.Controls.Add(this.textBox146);
+            this.g18Param.Controls.Add(this.textBox147);
+            this.g18Param.Controls.Add(this.textBox148);
+            this.g18Param.Controls.Add(this.textBox149);
+            this.g18Param.Controls.Add(this.textBox150);
+            this.g18Param.Controls.Add(this.label128);
+            this.g18Param.Controls.Add(this.label129);
+            this.g18Param.Controls.Add(this.label133);
+            this.g18Param.Controls.Add(this.label134);
+            this.g18Param.Controls.Add(this.label135);
+            this.g18Param.Controls.Add(this.label136);
+            this.g18Param.Location = new System.Drawing.Point(18, 185);
+            this.g18Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g18Param.Name = "g18Param";
+            this.g18Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g18Param.Size = new System.Drawing.Size(449, 551);
+            this.g18Param.TabIndex = 17;
+            this.g18Param.TabStop = false;
+            this.g18Param.Text = "参数";
+            this.g18Param.Visible = false;
+            // 
+            // label126
+            // 
+            this.label126.AutoSize = true;
+            this.label126.Location = new System.Drawing.Point(7, 392);
+            this.label126.Name = "label126";
+            this.label126.Size = new System.Drawing.Size(180, 28);
+            this.label126.TabIndex = 3;
+            this.label126.Text = "喷胶自动速度";
+            // 
+            // label127
+            // 
+            this.label127.AutoSize = true;
+            this.label127.Location = new System.Drawing.Point(7, 346);
+            this.label127.Name = "label127";
+            this.label127.Size = new System.Drawing.Size(138, 28);
+            this.label127.TabIndex = 3;
+            this.label127.Text = "喷胶2号位";
+            // 
+            // textBox141
+            // 
+            this.textBox141.Location = new System.Drawing.Point(209, 30);
+            this.textBox141.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox141.Name = "textBox141";
+            this.textBox141.Size = new System.Drawing.Size(112, 39);
+            this.textBox141.TabIndex = 2;
+            this.textBox141.Tag = "喷胶手动速度";
+            this.textBox141.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox141.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox141.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox142
+            // 
+            this.textBox142.Location = new System.Drawing.Point(209, 86);
+            this.textBox142.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox142.Name = "textBox142";
+            this.textBox142.Size = new System.Drawing.Size(112, 39);
+            this.textBox142.TabIndex = 2;
+            this.textBox142.Tag = "喷胶手动单量";
+            this.textBox142.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox142.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox142.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox144
+            // 
+            this.textBox144.Location = new System.Drawing.Point(209, 140);
+            this.textBox144.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox144.Name = "textBox144";
+            this.textBox144.Size = new System.Drawing.Size(112, 39);
+            this.textBox144.TabIndex = 2;
+            this.textBox144.Tag = "喷胶复位速度";
+            this.textBox144.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox144.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox144.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox146
+            // 
+            this.textBox146.Location = new System.Drawing.Point(209, 191);
+            this.textBox146.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox146.Name = "textBox146";
+            this.textBox146.Size = new System.Drawing.Size(112, 39);
+            this.textBox146.TabIndex = 2;
+            this.textBox146.Tag = "喷胶时间";
+            this.textBox146.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox146.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox146.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox147
+            // 
+            this.textBox147.Location = new System.Drawing.Point(209, 391);
+            this.textBox147.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox147.Name = "textBox147";
+            this.textBox147.Size = new System.Drawing.Size(112, 39);
+            this.textBox147.TabIndex = 2;
+            this.textBox147.Tag = "喷胶自动速度";
+            this.textBox147.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox147.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox147.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox148
+            // 
+            this.textBox148.Location = new System.Drawing.Point(209, 244);
+            this.textBox148.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox148.Name = "textBox148";
+            this.textBox148.Size = new System.Drawing.Size(112, 39);
+            this.textBox148.TabIndex = 2;
+            this.textBox148.Tag = "喷胶等待位";
+            this.textBox148.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox148.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox148.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox149
+            // 
+            this.textBox149.Location = new System.Drawing.Point(209, 343);
+            this.textBox149.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox149.Name = "textBox149";
+            this.textBox149.Size = new System.Drawing.Size(112, 39);
+            this.textBox149.TabIndex = 2;
+            this.textBox149.Tag = "喷胶2号位";
+            this.textBox149.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox149.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox149.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox150
+            // 
+            this.textBox150.Location = new System.Drawing.Point(209, 294);
+            this.textBox150.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox150.Name = "textBox150";
+            this.textBox150.Size = new System.Drawing.Size(112, 39);
+            this.textBox150.TabIndex = 2;
+            this.textBox150.Tag = "喷胶1号位";
+            this.textBox150.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox150.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox150.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label128
+            // 
+            this.label128.AutoSize = true;
+            this.label128.Location = new System.Drawing.Point(7, 30);
+            this.label128.Name = "label128";
+            this.label128.Size = new System.Drawing.Size(124, 28);
+            this.label128.TabIndex = 1;
+            this.label128.Text = "手动速度";
+            // 
+            // label129
+            // 
+            this.label129.AutoSize = true;
+            this.label129.Location = new System.Drawing.Point(7, 86);
+            this.label129.Name = "label129";
+            this.label129.Size = new System.Drawing.Size(124, 28);
+            this.label129.TabIndex = 1;
+            this.label129.Text = "手动单量";
+            // 
+            // label133
+            // 
+            this.label133.AutoSize = true;
+            this.label133.Location = new System.Drawing.Point(7, 140);
+            this.label133.Name = "label133";
+            this.label133.Size = new System.Drawing.Size(124, 28);
+            this.label133.TabIndex = 1;
+            this.label133.Text = "复位速度";
+            // 
+            // label134
+            // 
+            this.label134.AutoSize = true;
+            this.label134.Location = new System.Drawing.Point(7, 191);
+            this.label134.Name = "label134";
+            this.label134.Size = new System.Drawing.Size(124, 28);
+            this.label134.TabIndex = 1;
+            this.label134.Text = "喷胶时间";
+            // 
+            // label135
+            // 
+            this.label135.AutoSize = true;
+            this.label135.Location = new System.Drawing.Point(7, 244);
+            this.label135.Name = "label135";
+            this.label135.Size = new System.Drawing.Size(152, 28);
+            this.label135.TabIndex = 1;
+            this.label135.Text = "喷胶等待位";
+            // 
+            // label136
+            // 
+            this.label136.AutoSize = true;
+            this.label136.Location = new System.Drawing.Point(7, 294);
+            this.label136.Name = "label136";
+            this.label136.Size = new System.Drawing.Size(138, 28);
+            this.label136.TabIndex = 1;
+            this.label136.Text = "喷胶1号位";
+            // 
+            // button180
+            // 
+            this.button180.Location = new System.Drawing.Point(18, 44);
+            this.button180.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button180.Name = "button180";
+            this.button180.Size = new System.Drawing.Size(114, 60);
+            this.button180.TabIndex = 0;
+            this.button180.Tag = "喷胶+";
+            this.button180.Text = "正";
+            this.button180.UseVisualStyleBackColor = true;
+            this.button180.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.button180.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
+            // 
+            // button181
+            // 
+            this.button181.Location = new System.Drawing.Point(350, 44);
+            this.button181.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button181.Name = "button181";
+            this.button181.Size = new System.Drawing.Size(117, 55);
+            this.button181.TabIndex = 0;
+            this.button181.Tag = "喷胶-";
+            this.button181.Text = "负";
+            this.button181.UseVisualStyleBackColor = true;
+            this.button181.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
+            this.button181.MouseUp += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseUp);
+            // 
+            // textBox140
+            // 
+            this.textBox140.Location = new System.Drawing.Point(153, 52);
+            this.textBox140.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox140.Name = "textBox140";
+            this.textBox140.ReadOnly = true;
+            this.textBox140.Size = new System.Drawing.Size(169, 39);
+            this.textBox140.TabIndex = 2;
+            this.textBox140.Tag = "喷胶位置";
+            // 
+            // button182
+            // 
+            this.button182.Location = new System.Drawing.Point(153, 118);
+            this.button182.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button182.Name = "button182";
+            this.button182.Size = new System.Drawing.Size(170, 60);
+            this.button182.TabIndex = 0;
+            this.button182.Tag = "喷胶复位";
+            this.button182.Text = "复位";
+            this.button182.UseVisualStyleBackColor = true;
+            this.button182.Click += new System.EventHandler(this.HandOff2On_Click);
+            // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.button178);
+            this.groupBox12.Controls.Add(this.g12Param);
             this.groupBox12.Controls.Add(this.button143);
             this.groupBox12.Controls.Add(this.button175);
             this.groupBox12.Controls.Add(this.button176);
@@ -3846,19 +4654,7 @@
             this.groupBox12.Controls.Add(this.button148);
             this.groupBox12.Controls.Add(this.button147);
             this.groupBox12.Controls.Add(this.button146);
-            this.groupBox12.Controls.Add(this.textBox91);
-            this.groupBox12.Controls.Add(this.textBox90);
-            this.groupBox12.Controls.Add(this.textBox89);
-            this.groupBox12.Controls.Add(this.textBox69);
-            this.groupBox12.Controls.Add(this.textBox70);
             this.groupBox12.Controls.Add(this.textBox71);
-            this.groupBox12.Controls.Add(this.textBox72);
-            this.groupBox12.Controls.Add(this.label33);
-            this.groupBox12.Controls.Add(this.label32);
-            this.groupBox12.Controls.Add(this.label31);
-            this.groupBox12.Controls.Add(this.label116);
-            this.groupBox12.Controls.Add(this.label117);
-            this.groupBox12.Controls.Add(this.label118);
             this.groupBox12.Controls.Add(this.button57);
             this.groupBox12.Controls.Add(this.button56);
             this.groupBox12.Controls.Add(this.button55);
@@ -3872,18 +4668,253 @@
             this.groupBox12.Controls.Add(this.button50);
             this.groupBox12.Controls.Add(this.button51);
             this.groupBox12.Controls.Add(this.button52);
-            this.groupBox12.Location = new System.Drawing.Point(18, 16);
+            this.groupBox12.Location = new System.Drawing.Point(20, 19);
+            this.groupBox12.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(1275, 626);
+            this.groupBox12.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox12.Size = new System.Drawing.Size(1434, 752);
             this.groupBox12.TabIndex = 4;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "同步接料";
             // 
+            // button178
+            // 
+            this.button178.Location = new System.Drawing.Point(351, 318);
+            this.button178.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button178.Name = "button178";
+            this.button178.Size = new System.Drawing.Size(163, 60);
+            this.button178.TabIndex = 17;
+            this.button178.Tag = "喷胶伸出";
+            this.button178.Text = "喷胶伸出";
+            this.button178.UseVisualStyleBackColor = true;
+            this.button178.Click += new System.EventHandler(this.HandOff2On_Click);
+            // 
+            // g12Param
+            // 
+            this.g12Param.Controls.Add(this.label120);
+            this.g12Param.Controls.Add(this.label119);
+            this.g12Param.Controls.Add(this.label115);
+            this.g12Param.Controls.Add(this.label114);
+            this.g12Param.Controls.Add(this.textBox72);
+            this.g12Param.Controls.Add(this.textBox70);
+            this.g12Param.Controls.Add(this.textBox139);
+            this.g12Param.Controls.Add(this.textBox69);
+            this.g12Param.Controls.Add(this.textBox138);
+            this.g12Param.Controls.Add(this.textBox137);
+            this.g12Param.Controls.Add(this.textBox90);
+            this.g12Param.Controls.Add(this.textBox136);
+            this.g12Param.Controls.Add(this.textBox91);
+            this.g12Param.Controls.Add(this.label118);
+            this.g12Param.Controls.Add(this.label117);
+            this.g12Param.Controls.Add(this.label116);
+            this.g12Param.Controls.Add(this.label32);
+            this.g12Param.Controls.Add(this.label33);
+            this.g12Param.Location = new System.Drawing.Point(11, 109);
+            this.g12Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g12Param.Name = "g12Param";
+            this.g12Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g12Param.Size = new System.Drawing.Size(332, 532);
+            this.g12Param.TabIndex = 16;
+            this.g12Param.TabStop = false;
+            this.g12Param.Text = "参数";
+            this.g12Param.Visible = false;
+            // 
+            // label120
+            // 
+            this.label120.AutoSize = true;
+            this.label120.Location = new System.Drawing.Point(6, 431);
+            this.label120.Name = "label120";
+            this.label120.Size = new System.Drawing.Size(166, 28);
+            this.label120.TabIndex = 3;
+            this.label120.Text = "侧压OFF时间";
+            // 
+            // label119
+            // 
+            this.label119.AutoSize = true;
+            this.label119.Location = new System.Drawing.Point(7, 386);
+            this.label119.Name = "label119";
+            this.label119.Size = new System.Drawing.Size(152, 28);
+            this.label119.TabIndex = 3;
+            this.label119.Text = "侧压ON时间";
+            // 
+            // label115
+            // 
+            this.label115.AutoSize = true;
+            this.label115.Location = new System.Drawing.Point(7, 341);
+            this.label115.Name = "label115";
+            this.label115.Size = new System.Drawing.Size(166, 28);
+            this.label115.TabIndex = 3;
+            this.label115.Text = "压料OFF时间";
+            // 
+            // label114
+            // 
+            this.label114.AutoSize = true;
+            this.label114.Location = new System.Drawing.Point(7, 294);
+            this.label114.Name = "label114";
+            this.label114.Size = new System.Drawing.Size(152, 28);
+            this.label114.TabIndex = 3;
+            this.label114.Text = "压料ON时间";
+            this.label114.Click += new System.EventHandler(this.label114_Click);
+            // 
+            // textBox72
+            // 
+            this.textBox72.Location = new System.Drawing.Point(209, 30);
+            this.textBox72.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox72.Name = "textBox72";
+            this.textBox72.Size = new System.Drawing.Size(112, 39);
+            this.textBox72.TabIndex = 2;
+            this.textBox72.Tag = "同步接料手动速度";
+            this.textBox72.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox72.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox72.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox70
+            // 
+            this.textBox70.Location = new System.Drawing.Point(209, 86);
+            this.textBox70.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox70.Name = "textBox70";
+            this.textBox70.Size = new System.Drawing.Size(112, 39);
+            this.textBox70.TabIndex = 2;
+            this.textBox70.Tag = "同步接料手动单量";
+            this.textBox70.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox70.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox70.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox139
+            // 
+            this.textBox139.Location = new System.Drawing.Point(208, 428);
+            this.textBox139.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox139.Name = "textBox139";
+            this.textBox139.Size = new System.Drawing.Size(112, 39);
+            this.textBox139.TabIndex = 2;
+            this.textBox139.Tag = "侧压OFF时间";
+            this.textBox139.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox139.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox139.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox69
+            // 
+            this.textBox69.Location = new System.Drawing.Point(209, 140);
+            this.textBox69.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox69.Name = "textBox69";
+            this.textBox69.Size = new System.Drawing.Size(112, 39);
+            this.textBox69.TabIndex = 2;
+            this.textBox69.Tag = "同步接料复位速度";
+            this.textBox69.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox69.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox69.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox138
+            // 
+            this.textBox138.Location = new System.Drawing.Point(209, 384);
+            this.textBox138.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox138.Name = "textBox138";
+            this.textBox138.Size = new System.Drawing.Size(112, 39);
+            this.textBox138.TabIndex = 2;
+            this.textBox138.Tag = "侧压ON时间";
+            this.textBox138.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox138.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox138.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox137
+            // 
+            this.textBox137.Location = new System.Drawing.Point(209, 340);
+            this.textBox137.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox137.Name = "textBox137";
+            this.textBox137.Size = new System.Drawing.Size(112, 39);
+            this.textBox137.TabIndex = 2;
+            this.textBox137.Tag = "压料OFF时间";
+            this.textBox137.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox137.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox137.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox90
+            // 
+            this.textBox90.Location = new System.Drawing.Point(209, 192);
+            this.textBox90.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox90.Name = "textBox90";
+            this.textBox90.Size = new System.Drawing.Size(112, 39);
+            this.textBox90.TabIndex = 2;
+            this.textBox90.Tag = "对接气缸1时间";
+            this.textBox90.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox90.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox90.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox136
+            // 
+            this.textBox136.Location = new System.Drawing.Point(209, 292);
+            this.textBox136.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox136.Name = "textBox136";
+            this.textBox136.Size = new System.Drawing.Size(112, 39);
+            this.textBox136.TabIndex = 2;
+            this.textBox136.Tag = "压料ON时间";
+            this.textBox136.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox136.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox136.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox91
+            // 
+            this.textBox91.Location = new System.Drawing.Point(209, 242);
+            this.textBox91.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox91.Name = "textBox91";
+            this.textBox91.Size = new System.Drawing.Size(112, 39);
+            this.textBox91.TabIndex = 2;
+            this.textBox91.Tag = "对接气缸2时间";
+            this.textBox91.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox91.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox91.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label118
+            // 
+            this.label118.AutoSize = true;
+            this.label118.Location = new System.Drawing.Point(7, 30);
+            this.label118.Name = "label118";
+            this.label118.Size = new System.Drawing.Size(124, 28);
+            this.label118.TabIndex = 1;
+            this.label118.Text = "手动速度";
+            // 
+            // label117
+            // 
+            this.label117.AutoSize = true;
+            this.label117.Location = new System.Drawing.Point(7, 86);
+            this.label117.Name = "label117";
+            this.label117.Size = new System.Drawing.Size(124, 28);
+            this.label117.TabIndex = 1;
+            this.label117.Text = "手动单量";
+            // 
+            // label116
+            // 
+            this.label116.AutoSize = true;
+            this.label116.Location = new System.Drawing.Point(7, 140);
+            this.label116.Name = "label116";
+            this.label116.Size = new System.Drawing.Size(124, 28);
+            this.label116.TabIndex = 1;
+            this.label116.Text = "复位速度";
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(7, 192);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(194, 28);
+            this.label32.TabIndex = 1;
+            this.label32.Text = "对接气缸1时间";
+            // 
+            // label33
+            // 
+            this.label33.AutoSize = true;
+            this.label33.Location = new System.Drawing.Point(7, 242);
+            this.label33.Name = "label33";
+            this.label33.Size = new System.Drawing.Size(194, 28);
+            this.label33.TabIndex = 1;
+            this.label33.Text = "对接气缸2时间";
+            // 
             // button143
             // 
-            this.button143.Location = new System.Drawing.Point(1075, 37);
+            this.button143.Location = new System.Drawing.Point(1209, 44);
+            this.button143.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button143.Name = "button143";
-            this.button143.Size = new System.Drawing.Size(173, 50);
+            this.button143.Size = new System.Drawing.Size(195, 60);
             this.button143.TabIndex = 12;
             this.button143.Tag = "前夹料";
             this.button143.Text = "前夹料";
@@ -3892,9 +4923,10 @@
             // 
             // button175
             // 
-            this.button175.Location = new System.Drawing.Point(1075, 208);
+            this.button175.Location = new System.Drawing.Point(1209, 250);
+            this.button175.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button175.Name = "button175";
-            this.button175.Size = new System.Drawing.Size(173, 50);
+            this.button175.Size = new System.Drawing.Size(195, 60);
             this.button175.TabIndex = 13;
             this.button175.Tag = "气缸复原";
             this.button175.Text = "气缸复原";
@@ -3903,9 +4935,10 @@
             // 
             // button176
             // 
-            this.button176.Location = new System.Drawing.Point(1075, 154);
+            this.button176.Location = new System.Drawing.Point(1209, 185);
+            this.button176.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button176.Name = "button176";
-            this.button176.Size = new System.Drawing.Size(173, 50);
+            this.button176.Size = new System.Drawing.Size(195, 60);
             this.button176.TabIndex = 14;
             this.button176.Tag = "喷胶接料";
             this.button176.Text = "喷胶接料";
@@ -3914,9 +4947,10 @@
             // 
             // button177
             // 
-            this.button177.Location = new System.Drawing.Point(1075, 93);
+            this.button177.Location = new System.Drawing.Point(1209, 112);
+            this.button177.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button177.Name = "button177";
-            this.button177.Size = new System.Drawing.Size(173, 50);
+            this.button177.Size = new System.Drawing.Size(195, 60);
             this.button177.TabIndex = 15;
             this.button177.Tag = "后夹料";
             this.button177.Text = "后夹料";
@@ -3926,9 +4960,10 @@
             // button144
             // 
             this.button144.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button144.Location = new System.Drawing.Point(310, 408);
+            this.button144.Location = new System.Drawing.Point(343, 662);
+            this.button144.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button144.Name = "button144";
-            this.button144.Size = new System.Drawing.Size(121, 50);
+            this.button144.Size = new System.Drawing.Size(136, 60);
             this.button144.TabIndex = 9;
             this.button144.Tag = "同步接料负限";
             this.button144.Text = "负限";
@@ -3937,9 +4972,10 @@
             // button145
             // 
             this.button145.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button145.Location = new System.Drawing.Point(160, 408);
+            this.button145.Location = new System.Drawing.Point(176, 662);
+            this.button145.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button145.Name = "button145";
-            this.button145.Size = new System.Drawing.Size(121, 50);
+            this.button145.Size = new System.Drawing.Size(136, 60);
             this.button145.TabIndex = 10;
             this.button145.Tag = "同步接料正限";
             this.button145.Text = "正限";
@@ -3948,9 +4984,10 @@
             // button150
             // 
             this.button150.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button150.Location = new System.Drawing.Point(847, 319);
+            this.button150.Location = new System.Drawing.Point(953, 383);
+            this.button150.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button150.Name = "button150";
-            this.button150.Size = new System.Drawing.Size(222, 50);
+            this.button150.Size = new System.Drawing.Size(250, 60);
             this.button150.TabIndex = 11;
             this.button150.Tag = "前压料2到位2";
             this.button150.Text = "前压料2到位2";
@@ -3959,9 +4996,10 @@
             // button152
             // 
             this.button152.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button152.Location = new System.Drawing.Point(847, 263);
+            this.button152.Location = new System.Drawing.Point(953, 316);
+            this.button152.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button152.Name = "button152";
-            this.button152.Size = new System.Drawing.Size(222, 50);
+            this.button152.Size = new System.Drawing.Size(250, 60);
             this.button152.TabIndex = 11;
             this.button152.Tag = "前压料2到位";
             this.button152.Text = "前压料2到位";
@@ -3970,9 +5008,10 @@
             // button151
             // 
             this.button151.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button151.Location = new System.Drawing.Point(847, 37);
+            this.button151.Location = new System.Drawing.Point(953, 44);
+            this.button151.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button151.Name = "button151";
-            this.button151.Size = new System.Drawing.Size(222, 50);
+            this.button151.Size = new System.Drawing.Size(250, 60);
             this.button151.TabIndex = 11;
             this.button151.Tag = "前压料1到位";
             this.button151.Text = "前压料1到位";
@@ -3981,9 +5020,10 @@
             // button149
             // 
             this.button149.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button149.Location = new System.Drawing.Point(847, 207);
+            this.button149.Location = new System.Drawing.Point(953, 248);
+            this.button149.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button149.Name = "button149";
-            this.button149.Size = new System.Drawing.Size(222, 50);
+            this.button149.Size = new System.Drawing.Size(250, 60);
             this.button149.TabIndex = 11;
             this.button149.Tag = "后压料到位";
             this.button149.Text = "后压料到位";
@@ -3992,9 +5032,10 @@
             // button148
             // 
             this.button148.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button148.Location = new System.Drawing.Point(847, 151);
+            this.button148.Location = new System.Drawing.Point(953, 181);
+            this.button148.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button148.Name = "button148";
-            this.button148.Size = new System.Drawing.Size(222, 50);
+            this.button148.Size = new System.Drawing.Size(250, 60);
             this.button148.TabIndex = 11;
             this.button148.Tag = "后侧压到位";
             this.button148.Text = "后侧压到位";
@@ -4003,9 +5044,10 @@
             // button147
             // 
             this.button147.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button147.Location = new System.Drawing.Point(847, 93);
+            this.button147.Location = new System.Drawing.Point(953, 112);
+            this.button147.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button147.Name = "button147";
-            this.button147.Size = new System.Drawing.Size(222, 50);
+            this.button147.Size = new System.Drawing.Size(250, 60);
             this.button147.TabIndex = 11;
             this.button147.Tag = "前侧压到位";
             this.button147.Text = "前侧压到位";
@@ -4014,148 +5056,31 @@
             // button146
             // 
             this.button146.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button146.Location = new System.Drawing.Point(10, 408);
+            this.button146.Location = new System.Drawing.Point(6, 662);
+            this.button146.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button146.Name = "button146";
-            this.button146.Size = new System.Drawing.Size(121, 50);
+            this.button146.Size = new System.Drawing.Size(136, 60);
             this.button146.TabIndex = 11;
             this.button146.Tag = "同步接料原点";
             this.button146.Text = "原点";
             this.button146.UseVisualStyleBackColor = true;
             // 
-            // textBox91
-            // 
-            this.textBox91.Location = new System.Drawing.Point(181, 332);
-            this.textBox91.Name = "textBox91";
-            this.textBox91.Size = new System.Drawing.Size(100, 34);
-            this.textBox91.TabIndex = 2;
-            this.textBox91.Tag = "对接气缸2时间";
-            this.textBox91.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox91.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox91.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox90
-            // 
-            this.textBox90.Location = new System.Drawing.Point(181, 290);
-            this.textBox90.Name = "textBox90";
-            this.textBox90.Size = new System.Drawing.Size(100, 34);
-            this.textBox90.TabIndex = 2;
-            this.textBox90.Tag = "对接气缸1时间";
-            this.textBox90.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox90.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox90.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox89
-            // 
-            this.textBox89.Location = new System.Drawing.Point(181, 246);
-            this.textBox89.Name = "textBox89";
-            this.textBox89.Size = new System.Drawing.Size(100, 34);
-            this.textBox89.TabIndex = 2;
-            this.textBox89.Tag = "喷胶时间";
-            this.textBox89.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox89.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox89.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox69
-            // 
-            this.textBox69.Location = new System.Drawing.Point(181, 204);
-            this.textBox69.Name = "textBox69";
-            this.textBox69.Size = new System.Drawing.Size(100, 34);
-            this.textBox69.TabIndex = 2;
-            this.textBox69.Tag = "同步接料复位速度";
-            this.textBox69.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox69.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox69.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox70
-            // 
-            this.textBox70.Location = new System.Drawing.Point(181, 159);
-            this.textBox70.Name = "textBox70";
-            this.textBox70.Size = new System.Drawing.Size(100, 34);
-            this.textBox70.TabIndex = 2;
-            this.textBox70.Tag = "同步接料手动单量";
-            this.textBox70.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox70.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox70.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // textBox71
             // 
-            this.textBox71.Location = new System.Drawing.Point(142, 48);
+            this.textBox71.Location = new System.Drawing.Point(160, 58);
+            this.textBox71.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox71.Name = "textBox71";
             this.textBox71.ReadOnly = true;
-            this.textBox71.Size = new System.Drawing.Size(164, 34);
+            this.textBox71.Size = new System.Drawing.Size(184, 39);
             this.textBox71.TabIndex = 2;
             this.textBox71.Tag = "同步接料位置";
             // 
-            // textBox72
-            // 
-            this.textBox72.Location = new System.Drawing.Point(181, 112);
-            this.textBox72.Name = "textBox72";
-            this.textBox72.Size = new System.Drawing.Size(100, 34);
-            this.textBox72.TabIndex = 2;
-            this.textBox72.Tag = "同步接料手动速度";
-            this.textBox72.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox72.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox72.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label33
-            // 
-            this.label33.AutoSize = true;
-            this.label33.Location = new System.Drawing.Point(6, 330);
-            this.label33.Name = "label33";
-            this.label33.Size = new System.Drawing.Size(166, 24);
-            this.label33.TabIndex = 1;
-            this.label33.Text = "对接气缸2时间";
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(6, 288);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(166, 24);
-            this.label32.TabIndex = 1;
-            this.label32.Text = "对接气缸1时间";
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(6, 244);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(106, 24);
-            this.label31.TabIndex = 1;
-            this.label31.Text = "喷胶时间";
-            // 
-            // label116
-            // 
-            this.label116.AutoSize = true;
-            this.label116.Location = new System.Drawing.Point(6, 202);
-            this.label116.Name = "label116";
-            this.label116.Size = new System.Drawing.Size(106, 24);
-            this.label116.TabIndex = 1;
-            this.label116.Text = "复位速度";
-            // 
-            // label117
-            // 
-            this.label117.AutoSize = true;
-            this.label117.Location = new System.Drawing.Point(6, 157);
-            this.label117.Name = "label117";
-            this.label117.Size = new System.Drawing.Size(106, 24);
-            this.label117.TabIndex = 1;
-            this.label117.Text = "手动单量";
-            // 
-            // label118
-            // 
-            this.label118.AutoSize = true;
-            this.label118.Location = new System.Drawing.Point(6, 110);
-            this.label118.Name = "label118";
-            this.label118.Size = new System.Drawing.Size(106, 24);
-            this.label118.TabIndex = 1;
-            this.label118.Text = "手动速度";
-            // 
             // button57
             // 
-            this.button57.Location = new System.Drawing.Point(654, 154);
+            this.button57.Location = new System.Drawing.Point(736, 185);
+            this.button57.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button57.Name = "button57";
-            this.button57.Size = new System.Drawing.Size(160, 50);
+            this.button57.Size = new System.Drawing.Size(180, 60);
             this.button57.TabIndex = 0;
             this.button57.Tag = "后侧压";
             this.button57.Text = "后侧压";
@@ -4164,9 +5089,10 @@
             // 
             // button56
             // 
-            this.button56.Location = new System.Drawing.Point(654, 93);
+            this.button56.Location = new System.Drawing.Point(736, 112);
+            this.button56.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button56.Name = "button56";
-            this.button56.Size = new System.Drawing.Size(160, 50);
+            this.button56.Size = new System.Drawing.Size(180, 60);
             this.button56.TabIndex = 0;
             this.button56.Tag = "前压料2";
             this.button56.Text = "前压料2";
@@ -4175,9 +5101,10 @@
             // 
             // button55
             // 
-            this.button55.Location = new System.Drawing.Point(475, 154);
+            this.button55.Location = new System.Drawing.Point(534, 185);
+            this.button55.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button55.Name = "button55";
-            this.button55.Size = new System.Drawing.Size(159, 50);
+            this.button55.Size = new System.Drawing.Size(179, 60);
             this.button55.TabIndex = 0;
             this.button55.Tag = "前侧压";
             this.button55.Text = "前侧压";
@@ -4186,9 +5113,10 @@
             // 
             // button54
             // 
-            this.button54.Location = new System.Drawing.Point(475, 93);
+            this.button54.Location = new System.Drawing.Point(534, 112);
+            this.button54.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button54.Name = "button54";
-            this.button54.Size = new System.Drawing.Size(159, 50);
+            this.button54.Size = new System.Drawing.Size(179, 60);
             this.button54.TabIndex = 0;
             this.button54.Tag = "前压料1";
             this.button54.Text = "前压料1";
@@ -4198,9 +5126,10 @@
             // button58
             // 
             this.button58.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button58.Location = new System.Drawing.Point(475, 208);
+            this.button58.Location = new System.Drawing.Point(534, 250);
+            this.button58.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button58.Name = "button58";
-            this.button58.Size = new System.Drawing.Size(159, 50);
+            this.button58.Size = new System.Drawing.Size(179, 60);
             this.button58.TabIndex = 0;
             this.button58.Tag = "对接料气缸1";
             this.button58.Text = "对接料气缸1";
@@ -4210,9 +5139,10 @@
             // button61
             // 
             this.button61.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button61.Location = new System.Drawing.Point(654, 208);
+            this.button61.Location = new System.Drawing.Point(736, 250);
+            this.button61.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button61.Name = "button61";
-            this.button61.Size = new System.Drawing.Size(160, 50);
+            this.button61.Size = new System.Drawing.Size(180, 60);
             this.button61.TabIndex = 0;
             this.button61.Tag = "对接料气缸2";
             this.button61.Text = "对接料气缸2";
@@ -4221,9 +5151,10 @@
             // 
             // button60
             // 
-            this.button60.Location = new System.Drawing.Point(312, 208);
+            this.button60.Location = new System.Drawing.Point(351, 250);
+            this.button60.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button60.Name = "button60";
-            this.button60.Size = new System.Drawing.Size(145, 50);
+            this.button60.Size = new System.Drawing.Size(163, 60);
             this.button60.TabIndex = 0;
             this.button60.Tag = "后压料2";
             this.button60.Text = "后压料2";
@@ -4232,9 +5163,10 @@
             // 
             // button59
             // 
-            this.button59.Location = new System.Drawing.Point(311, 152);
+            this.button59.Location = new System.Drawing.Point(350, 182);
+            this.button59.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button59.Name = "button59";
-            this.button59.Size = new System.Drawing.Size(146, 50);
+            this.button59.Size = new System.Drawing.Size(164, 60);
             this.button59.TabIndex = 0;
             this.button59.Tag = "后压料1";
             this.button59.Text = "后压料1";
@@ -4243,9 +5175,10 @@
             // 
             // button53
             // 
-            this.button53.Location = new System.Drawing.Point(312, 96);
+            this.button53.Location = new System.Drawing.Point(351, 115);
+            this.button53.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button53.Name = "button53";
-            this.button53.Size = new System.Drawing.Size(145, 50);
+            this.button53.Size = new System.Drawing.Size(163, 60);
             this.button53.TabIndex = 0;
             this.button53.Tag = "喷胶水";
             this.button53.Text = "喷胶水";
@@ -4254,9 +5187,10 @@
             // 
             // button49
             // 
-            this.button49.Location = new System.Drawing.Point(475, 37);
+            this.button49.Location = new System.Drawing.Point(534, 44);
+            this.button49.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button49.Name = "button49";
-            this.button49.Size = new System.Drawing.Size(159, 50);
+            this.button49.Size = new System.Drawing.Size(179, 60);
             this.button49.TabIndex = 0;
             this.button49.Tag = "同步接料复位";
             this.button49.Text = "复位";
@@ -4265,9 +5199,10 @@
             // 
             // button50
             // 
-            this.button50.Location = new System.Drawing.Point(312, 37);
+            this.button50.Location = new System.Drawing.Point(351, 44);
+            this.button50.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button50.Name = "button50";
-            this.button50.Size = new System.Drawing.Size(145, 50);
+            this.button50.Size = new System.Drawing.Size(163, 60);
             this.button50.TabIndex = 0;
             this.button50.Tag = "同步接料-";
             this.button50.Text = "负";
@@ -4277,9 +5212,10 @@
             // 
             // button51
             // 
-            this.button51.Location = new System.Drawing.Point(654, 37);
+            this.button51.Location = new System.Drawing.Point(736, 44);
+            this.button51.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button51.Name = "button51";
-            this.button51.Size = new System.Drawing.Size(160, 50);
+            this.button51.Size = new System.Drawing.Size(180, 60);
             this.button51.TabIndex = 0;
             this.button51.Text = "前送料复位";
             this.button51.UseVisualStyleBackColor = true;
@@ -4287,9 +5223,10 @@
             // 
             // button52
             // 
-            this.button52.Location = new System.Drawing.Point(6, 37);
+            this.button52.Location = new System.Drawing.Point(7, 44);
+            this.button52.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button52.Name = "button52";
-            this.button52.Size = new System.Drawing.Size(130, 50);
+            this.button52.Size = new System.Drawing.Size(146, 60);
             this.button52.TabIndex = 0;
             this.button52.Tag = "同步接料+";
             this.button52.Text = "正";
@@ -4301,106 +5238,185 @@
             // 
             this.tabPage10.Controls.Add(this.groupBox18);
             this.tabPage10.Controls.Add(this.groupBox13);
-            this.tabPage10.Location = new System.Drawing.Point(4, 33);
+            this.tabPage10.Location = new System.Drawing.Point(4, 38);
+            this.tabPage10.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage10.Name = "tabPage10";
-            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage10.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage10.Size = new System.Drawing.Size(1974, 827);
             this.tabPage10.TabIndex = 5;
             this.tabPage10.Text = "送料切料";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
             // groupBox18
             // 
-            this.groupBox18.Controls.Add(this.textBox132);
-            this.groupBox18.Controls.Add(this.textBox133);
-            this.groupBox18.Controls.Add(this.textBox134);
-            this.groupBox18.Controls.Add(this.label107);
-            this.groupBox18.Controls.Add(this.label111);
-            this.groupBox18.Controls.Add(this.label112);
-            this.groupBox18.Controls.Add(this.textBox123);
-            this.groupBox18.Controls.Add(this.textBox127);
-            this.groupBox18.Controls.Add(this.textBox128);
+            this.groupBox18.Controls.Add(this.g14Param);
             this.groupBox18.Controls.Add(this.textBox129);
-            this.groupBox18.Controls.Add(this.textBox130);
-            this.groupBox18.Controls.Add(this.label102);
-            this.groupBox18.Controls.Add(this.label103);
-            this.groupBox18.Controls.Add(this.label104);
-            this.groupBox18.Controls.Add(this.label105);
             this.groupBox18.Controls.Add(this.button193);
             this.groupBox18.Controls.Add(this.button194);
             this.groupBox18.Controls.Add(this.button195);
-            this.groupBox18.Location = new System.Drawing.Point(1172, 25);
+            this.groupBox18.Location = new System.Drawing.Point(1318, 30);
+            this.groupBox18.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox18.Name = "groupBox18";
-            this.groupBox18.Size = new System.Drawing.Size(656, 588);
+            this.groupBox18.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox18.Size = new System.Drawing.Size(738, 706);
             this.groupBox18.TabIndex = 6;
             this.groupBox18.TabStop = false;
             this.groupBox18.Text = "切料";
             // 
+            // g14Param
+            // 
+            this.g14Param.Controls.Add(this.textBox132);
+            this.g14Param.Controls.Add(this.label105);
+            this.g14Param.Controls.Add(this.textBox133);
+            this.g14Param.Controls.Add(this.label104);
+            this.g14Param.Controls.Add(this.textBox134);
+            this.g14Param.Controls.Add(this.label103);
+            this.g14Param.Controls.Add(this.label107);
+            this.g14Param.Controls.Add(this.label102);
+            this.g14Param.Controls.Add(this.label111);
+            this.g14Param.Controls.Add(this.textBox130);
+            this.g14Param.Controls.Add(this.label112);
+            this.g14Param.Controls.Add(this.textBox128);
+            this.g14Param.Controls.Add(this.textBox123);
+            this.g14Param.Controls.Add(this.textBox127);
+            this.g14Param.Location = new System.Drawing.Point(7, 112);
+            this.g14Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g14Param.Name = "g14Param";
+            this.g14Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g14Param.Size = new System.Drawing.Size(619, 508);
+            this.g14Param.TabIndex = 11;
+            this.g14Param.TabStop = false;
+            this.g14Param.Text = "参数";
+            // 
             // textBox132
             // 
-            this.textBox132.Location = new System.Drawing.Point(224, 374);
+            this.textBox132.Location = new System.Drawing.Point(242, 384);
+            this.textBox132.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox132.Name = "textBox132";
-            this.textBox132.Size = new System.Drawing.Size(121, 34);
+            this.textBox132.Size = new System.Drawing.Size(136, 39);
             this.textBox132.TabIndex = 8;
             this.textBox132.Tag = "切料复位速度";
             this.textBox132.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox132.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox132.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label105
+            // 
+            this.label105.AutoSize = true;
+            this.label105.Location = new System.Drawing.Point(7, 68);
+            this.label105.Name = "label105";
+            this.label105.Size = new System.Drawing.Size(180, 28);
+            this.label105.TabIndex = 1;
+            this.label105.Text = "切料快进位置";
+            // 
             // textBox133
             // 
-            this.textBox133.Location = new System.Drawing.Point(224, 329);
+            this.textBox133.Location = new System.Drawing.Point(242, 330);
+            this.textBox133.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox133.Name = "textBox133";
-            this.textBox133.Size = new System.Drawing.Size(121, 34);
+            this.textBox133.Size = new System.Drawing.Size(136, 39);
             this.textBox133.TabIndex = 9;
             this.textBox133.Tag = "切料手动单量";
             this.textBox133.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox133.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox133.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label104
+            // 
+            this.label104.AutoSize = true;
+            this.label104.Location = new System.Drawing.Point(7, 125);
+            this.label104.Name = "label104";
+            this.label104.Size = new System.Drawing.Size(180, 28);
+            this.label104.TabIndex = 1;
+            this.label104.Text = "切料快进速度";
+            // 
             // textBox134
             // 
-            this.textBox134.Location = new System.Drawing.Point(224, 282);
+            this.textBox134.Location = new System.Drawing.Point(242, 274);
+            this.textBox134.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox134.Name = "textBox134";
-            this.textBox134.Size = new System.Drawing.Size(121, 34);
+            this.textBox134.Size = new System.Drawing.Size(136, 39);
             this.textBox134.TabIndex = 10;
             this.textBox134.Tag = "切料手动速度";
             this.textBox134.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox134.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox134.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // label103
+            // 
+            this.label103.AutoSize = true;
+            this.label103.Location = new System.Drawing.Point(7, 179);
+            this.label103.Name = "label103";
+            this.label103.Size = new System.Drawing.Size(180, 28);
+            this.label103.TabIndex = 1;
+            this.label103.Text = "切料慢进位置";
+            // 
             // label107
             // 
             this.label107.AutoSize = true;
-            this.label107.Location = new System.Drawing.Point(15, 381);
+            this.label107.Location = new System.Drawing.Point(7, 392);
             this.label107.Name = "label107";
-            this.label107.Size = new System.Drawing.Size(202, 24);
+            this.label107.Size = new System.Drawing.Size(236, 28);
             this.label107.TabIndex = 4;
             this.label107.Text = "切料复位速度mm/s";
+            // 
+            // label102
+            // 
+            this.label102.AutoSize = true;
+            this.label102.Location = new System.Drawing.Point(7, 227);
+            this.label102.Name = "label102";
+            this.label102.Size = new System.Drawing.Size(180, 28);
+            this.label102.TabIndex = 1;
+            this.label102.Text = "切料慢进速度";
             // 
             // label111
             // 
             this.label111.AutoSize = true;
-            this.label111.Location = new System.Drawing.Point(15, 336);
+            this.label111.Location = new System.Drawing.Point(7, 338);
             this.label111.Name = "label111";
-            this.label111.Size = new System.Drawing.Size(178, 24);
+            this.label111.Size = new System.Drawing.Size(208, 28);
             this.label111.TabIndex = 5;
             this.label111.Text = "切料手动单量mm";
+            // 
+            // textBox130
+            // 
+            this.textBox130.Location = new System.Drawing.Point(242, 60);
+            this.textBox130.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox130.Name = "textBox130";
+            this.textBox130.Size = new System.Drawing.Size(136, 39);
+            this.textBox130.TabIndex = 2;
+            this.textBox130.Tag = "切料快进位置";
+            this.textBox130.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox130.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox130.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
             // label112
             // 
             this.label112.AutoSize = true;
-            this.label112.Location = new System.Drawing.Point(15, 289);
+            this.label112.Location = new System.Drawing.Point(7, 282);
             this.label112.Name = "label112";
-            this.label112.Size = new System.Drawing.Size(202, 24);
+            this.label112.Size = new System.Drawing.Size(236, 28);
             this.label112.TabIndex = 6;
             this.label112.Text = "切料手动速度mm/s";
             // 
+            // textBox128
+            // 
+            this.textBox128.Location = new System.Drawing.Point(242, 116);
+            this.textBox128.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox128.Name = "textBox128";
+            this.textBox128.Size = new System.Drawing.Size(136, 39);
+            this.textBox128.TabIndex = 2;
+            this.textBox128.Tag = "切料快进速度";
+            this.textBox128.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox128.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox128.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // textBox123
             // 
-            this.textBox123.Location = new System.Drawing.Point(224, 236);
+            this.textBox123.Location = new System.Drawing.Point(242, 218);
+            this.textBox123.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox123.Name = "textBox123";
-            this.textBox123.Size = new System.Drawing.Size(121, 34);
+            this.textBox123.Size = new System.Drawing.Size(136, 39);
             this.textBox123.TabIndex = 2;
             this.textBox123.Tag = "切料慢进速度";
             this.textBox123.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -4409,87 +5425,32 @@
             // 
             // textBox127
             // 
-            this.textBox127.Location = new System.Drawing.Point(224, 196);
+            this.textBox127.Location = new System.Drawing.Point(242, 170);
+            this.textBox127.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox127.Name = "textBox127";
-            this.textBox127.Size = new System.Drawing.Size(121, 34);
+            this.textBox127.Size = new System.Drawing.Size(136, 39);
             this.textBox127.TabIndex = 2;
             this.textBox127.Tag = "切料慢进位置";
             this.textBox127.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox127.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox127.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
-            // textBox128
-            // 
-            this.textBox128.Location = new System.Drawing.Point(224, 151);
-            this.textBox128.Name = "textBox128";
-            this.textBox128.Size = new System.Drawing.Size(121, 34);
-            this.textBox128.TabIndex = 2;
-            this.textBox128.Tag = "切料快进速度";
-            this.textBox128.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox128.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox128.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // textBox129
             // 
-            this.textBox129.Location = new System.Drawing.Point(142, 48);
+            this.textBox129.Location = new System.Drawing.Point(160, 58);
+            this.textBox129.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox129.Name = "textBox129";
             this.textBox129.ReadOnly = true;
-            this.textBox129.Size = new System.Drawing.Size(151, 34);
+            this.textBox129.Size = new System.Drawing.Size(169, 39);
             this.textBox129.TabIndex = 2;
             this.textBox129.Tag = "切料位置";
             // 
-            // textBox130
-            // 
-            this.textBox130.Location = new System.Drawing.Point(224, 104);
-            this.textBox130.Name = "textBox130";
-            this.textBox130.Size = new System.Drawing.Size(121, 34);
-            this.textBox130.TabIndex = 2;
-            this.textBox130.Tag = "切料快进位置";
-            this.textBox130.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox130.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox130.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label102
-            // 
-            this.label102.AutoSize = true;
-            this.label102.Location = new System.Drawing.Point(15, 243);
-            this.label102.Name = "label102";
-            this.label102.Size = new System.Drawing.Size(154, 24);
-            this.label102.TabIndex = 1;
-            this.label102.Text = "切料慢进速度";
-            // 
-            // label103
-            // 
-            this.label103.AutoSize = true;
-            this.label103.Location = new System.Drawing.Point(15, 203);
-            this.label103.Name = "label103";
-            this.label103.Size = new System.Drawing.Size(154, 24);
-            this.label103.TabIndex = 1;
-            this.label103.Text = "切料慢进位置";
-            // 
-            // label104
-            // 
-            this.label104.AutoSize = true;
-            this.label104.Location = new System.Drawing.Point(15, 158);
-            this.label104.Name = "label104";
-            this.label104.Size = new System.Drawing.Size(154, 24);
-            this.label104.TabIndex = 1;
-            this.label104.Text = "切料快进速度";
-            // 
-            // label105
-            // 
-            this.label105.AutoSize = true;
-            this.label105.Location = new System.Drawing.Point(15, 111);
-            this.label105.Name = "label105";
-            this.label105.Size = new System.Drawing.Size(154, 24);
-            this.label105.TabIndex = 1;
-            this.label105.Text = "切料快进位置";
-            // 
             // button193
             // 
-            this.button193.Location = new System.Drawing.Point(438, 37);
+            this.button193.Location = new System.Drawing.Point(493, 44);
+            this.button193.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button193.Name = "button193";
-            this.button193.Size = new System.Drawing.Size(138, 50);
+            this.button193.Size = new System.Drawing.Size(155, 60);
             this.button193.TabIndex = 0;
             this.button193.Tag = "切料复位";
             this.button193.Text = "复位";
@@ -4498,9 +5459,10 @@
             // 
             // button194
             // 
-            this.button194.Location = new System.Drawing.Point(312, 37);
+            this.button194.Location = new System.Drawing.Point(351, 44);
+            this.button194.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button194.Name = "button194";
-            this.button194.Size = new System.Drawing.Size(121, 50);
+            this.button194.Size = new System.Drawing.Size(136, 60);
             this.button194.TabIndex = 0;
             this.button194.Tag = "切料负";
             this.button194.Text = "负";
@@ -4510,9 +5472,10 @@
             // 
             // button195
             // 
-            this.button195.Location = new System.Drawing.Point(6, 37);
+            this.button195.Location = new System.Drawing.Point(7, 44);
+            this.button195.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button195.Name = "button195";
-            this.button195.Size = new System.Drawing.Size(121, 50);
+            this.button195.Size = new System.Drawing.Size(136, 60);
             this.button195.TabIndex = 0;
             this.button195.Tag = "切料正";
             this.button195.Text = "正";
@@ -4522,18 +5485,11 @@
             // 
             // groupBox13
             // 
+            this.groupBox13.Controls.Add(this.g13Param);
             this.groupBox13.Controls.Add(this.button153);
             this.groupBox13.Controls.Add(this.button154);
             this.groupBox13.Controls.Add(this.button155);
-            this.groupBox13.Controls.Add(this.textBox92);
-            this.groupBox13.Controls.Add(this.textBox73);
-            this.groupBox13.Controls.Add(this.textBox74);
             this.groupBox13.Controls.Add(this.textBox75);
-            this.groupBox13.Controls.Add(this.textBox76);
-            this.groupBox13.Controls.Add(this.label35);
-            this.groupBox13.Controls.Add(this.label123);
-            this.groupBox13.Controls.Add(this.label124);
-            this.groupBox13.Controls.Add(this.label125);
             this.groupBox13.Controls.Add(this.button62);
             this.groupBox13.Controls.Add(this.button63);
             this.groupBox13.Controls.Add(this.button64);
@@ -4546,65 +5502,152 @@
             this.groupBox13.Controls.Add(this.button75);
             this.groupBox13.Controls.Add(this.button67);
             this.groupBox13.Controls.Add(this.button70);
+            this.groupBox13.Controls.Add(this.button179);
             this.groupBox13.Controls.Add(this.button71);
             this.groupBox13.Controls.Add(this.button72);
             this.groupBox13.Controls.Add(this.button74);
-            this.groupBox13.Location = new System.Drawing.Point(33, 25);
+            this.groupBox13.Location = new System.Drawing.Point(37, 30);
+            this.groupBox13.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(1133, 588);
+            this.groupBox13.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox13.Size = new System.Drawing.Size(1275, 706);
             this.groupBox13.TabIndex = 5;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "送料";
             // 
-            // button153
+            // g13Param
             // 
-            this.button153.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button153.Location = new System.Drawing.Point(347, 251);
-            this.button153.Name = "button153";
-            this.button153.Size = new System.Drawing.Size(138, 50);
-            this.button153.TabIndex = 13;
-            this.button153.Tag = "送料切负限";
-            this.button153.Text = "负限";
-            this.button153.UseVisualStyleBackColor = true;
+            this.g13Param.Controls.Add(this.label125);
+            this.g13Param.Controls.Add(this.label124);
+            this.g13Param.Controls.Add(this.label123);
+            this.g13Param.Controls.Add(this.label113);
+            this.g13Param.Controls.Add(this.textBox135);
+            this.g13Param.Controls.Add(this.label106);
+            this.g13Param.Controls.Add(this.textBox131);
+            this.g13Param.Controls.Add(this.label35);
+            this.g13Param.Controls.Add(this.textBox92);
+            this.g13Param.Controls.Add(this.textBox76);
+            this.g13Param.Controls.Add(this.textBox73);
+            this.g13Param.Controls.Add(this.textBox74);
+            this.g13Param.Location = new System.Drawing.Point(8, 106);
+            this.g13Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g13Param.Name = "g13Param";
+            this.g13Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g13Param.Size = new System.Drawing.Size(1116, 230);
+            this.g13Param.TabIndex = 16;
+            this.g13Param.TabStop = false;
+            this.g13Param.Text = "参数";
+            this.g13Param.Visible = false;
             // 
-            // button154
+            // label125
             // 
-            this.button154.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button154.Location = new System.Drawing.Point(186, 251);
-            this.button154.Name = "button154";
-            this.button154.Size = new System.Drawing.Size(138, 50);
-            this.button154.TabIndex = 14;
-            this.button154.Tag = "送料切正限";
-            this.button154.Text = "正限";
-            this.button154.UseVisualStyleBackColor = true;
+            this.label125.AutoSize = true;
+            this.label125.Location = new System.Drawing.Point(28, 62);
+            this.label125.Name = "label125";
+            this.label125.Size = new System.Drawing.Size(124, 28);
+            this.label125.TabIndex = 1;
+            this.label125.Text = "手动速度";
             // 
-            // button155
+            // label124
             // 
-            this.button155.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button155.Location = new System.Drawing.Point(25, 251);
-            this.button155.Name = "button155";
-            this.button155.Size = new System.Drawing.Size(138, 50);
-            this.button155.TabIndex = 15;
-            this.button155.Tag = "送料切原点";
-            this.button155.Text = "原点";
-            this.button155.UseVisualStyleBackColor = true;
+            this.label124.AutoSize = true;
+            this.label124.Location = new System.Drawing.Point(28, 119);
+            this.label124.Name = "label124";
+            this.label124.Size = new System.Drawing.Size(124, 28);
+            this.label124.TabIndex = 1;
+            this.label124.Text = "手动单量";
+            // 
+            // label123
+            // 
+            this.label123.AutoSize = true;
+            this.label123.Location = new System.Drawing.Point(28, 173);
+            this.label123.Name = "label123";
+            this.label123.Size = new System.Drawing.Size(124, 28);
+            this.label123.TabIndex = 1;
+            this.label123.Text = "复位速度";
+            // 
+            // label113
+            // 
+            this.label113.AutoSize = true;
+            this.label113.Location = new System.Drawing.Point(306, 175);
+            this.label113.Name = "label113";
+            this.label113.Size = new System.Drawing.Size(124, 28);
+            this.label113.TabIndex = 1;
+            this.label113.Text = "喷油时长";
+            // 
+            // textBox135
+            // 
+            this.textBox135.Location = new System.Drawing.Point(520, 172);
+            this.textBox135.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox135.Name = "textBox135";
+            this.textBox135.Size = new System.Drawing.Size(112, 39);
+            this.textBox135.TabIndex = 2;
+            this.textBox135.Tag = "喷油时长";
+            this.textBox135.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox135.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox135.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label106
+            // 
+            this.label106.AutoSize = true;
+            this.label106.Location = new System.Drawing.Point(306, 119);
+            this.label106.Name = "label106";
+            this.label106.Size = new System.Drawing.Size(124, 28);
+            this.label106.TabIndex = 1;
+            this.label106.Tag = "";
+            this.label106.Text = "喷油间隔";
+            // 
+            // textBox131
+            // 
+            this.textBox131.Location = new System.Drawing.Point(520, 114);
+            this.textBox131.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox131.Name = "textBox131";
+            this.textBox131.Size = new System.Drawing.Size(112, 39);
+            this.textBox131.TabIndex = 2;
+            this.textBox131.Tag = "喷油间隔";
+            this.textBox131.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox131.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox131.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label35
+            // 
+            this.label35.AutoSize = true;
+            this.label35.Location = new System.Drawing.Point(306, 66);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(208, 28);
+            this.label35.TabIndex = 1;
+            this.label35.Text = "切料电机开时间";
             // 
             // textBox92
             // 
-            this.textBox92.Location = new System.Drawing.Point(443, 101);
+            this.textBox92.Location = new System.Drawing.Point(520, 62);
+            this.textBox92.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox92.Name = "textBox92";
-            this.textBox92.Size = new System.Drawing.Size(100, 34);
+            this.textBox92.Size = new System.Drawing.Size(112, 39);
             this.textBox92.TabIndex = 2;
             this.textBox92.Tag = "切料电机开时间";
             this.textBox92.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox92.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox92.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // textBox76
+            // 
+            this.textBox76.Location = new System.Drawing.Point(155, 62);
+            this.textBox76.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox76.Name = "textBox76";
+            this.textBox76.Size = new System.Drawing.Size(112, 39);
+            this.textBox76.TabIndex = 2;
+            this.textBox76.Tag = "送料切手动速度";
+            this.textBox76.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox76.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox76.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // textBox73
             // 
-            this.textBox73.Location = new System.Drawing.Point(119, 193);
+            this.textBox73.Location = new System.Drawing.Point(155, 173);
+            this.textBox73.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox73.Name = "textBox73";
-            this.textBox73.Size = new System.Drawing.Size(100, 34);
+            this.textBox73.Size = new System.Drawing.Size(112, 39);
             this.textBox73.TabIndex = 2;
             this.textBox73.Tag = "送料切复位速度";
             this.textBox73.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -4613,76 +5656,68 @@
             // 
             // textBox74
             // 
-            this.textBox74.Location = new System.Drawing.Point(119, 148);
+            this.textBox74.Location = new System.Drawing.Point(155, 119);
+            this.textBox74.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox74.Name = "textBox74";
-            this.textBox74.Size = new System.Drawing.Size(100, 34);
+            this.textBox74.Size = new System.Drawing.Size(112, 39);
             this.textBox74.TabIndex = 2;
             this.textBox74.Tag = "送料切手动单量";
             this.textBox74.Enter += new System.EventHandler(this.HandTextBox_Enter);
             this.textBox74.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
             this.textBox74.Leave += new System.EventHandler(this.HandTextTxt_Leave);
             // 
+            // button153
+            // 
+            this.button153.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button153.Location = new System.Drawing.Point(390, 403);
+            this.button153.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button153.Name = "button153";
+            this.button153.Size = new System.Drawing.Size(155, 60);
+            this.button153.TabIndex = 13;
+            this.button153.Tag = "送料切负限";
+            this.button153.Text = "负限";
+            this.button153.UseVisualStyleBackColor = true;
+            // 
+            // button154
+            // 
+            this.button154.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button154.Location = new System.Drawing.Point(209, 403);
+            this.button154.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button154.Name = "button154";
+            this.button154.Size = new System.Drawing.Size(155, 60);
+            this.button154.TabIndex = 14;
+            this.button154.Tag = "送料切正限";
+            this.button154.Text = "正限";
+            this.button154.UseVisualStyleBackColor = true;
+            // 
+            // button155
+            // 
+            this.button155.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button155.Location = new System.Drawing.Point(28, 403);
+            this.button155.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button155.Name = "button155";
+            this.button155.Size = new System.Drawing.Size(155, 60);
+            this.button155.TabIndex = 15;
+            this.button155.Tag = "送料切原点";
+            this.button155.Text = "原点";
+            this.button155.UseVisualStyleBackColor = true;
+            // 
             // textBox75
             // 
-            this.textBox75.Location = new System.Drawing.Point(142, 48);
+            this.textBox75.Location = new System.Drawing.Point(160, 58);
+            this.textBox75.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox75.Name = "textBox75";
             this.textBox75.ReadOnly = true;
-            this.textBox75.Size = new System.Drawing.Size(151, 34);
+            this.textBox75.Size = new System.Drawing.Size(169, 39);
             this.textBox75.TabIndex = 2;
             this.textBox75.Tag = "送料切位置";
             // 
-            // textBox76
-            // 
-            this.textBox76.Location = new System.Drawing.Point(119, 101);
-            this.textBox76.Name = "textBox76";
-            this.textBox76.Size = new System.Drawing.Size(100, 34);
-            this.textBox76.TabIndex = 2;
-            this.textBox76.Tag = "送料切手动速度";
-            this.textBox76.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox76.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox76.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label35
-            // 
-            this.label35.AutoSize = true;
-            this.label35.Location = new System.Drawing.Point(253, 104);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(178, 24);
-            this.label35.TabIndex = 1;
-            this.label35.Text = "切料电机开时间";
-            // 
-            // label123
-            // 
-            this.label123.AutoSize = true;
-            this.label123.Location = new System.Drawing.Point(6, 193);
-            this.label123.Name = "label123";
-            this.label123.Size = new System.Drawing.Size(106, 24);
-            this.label123.TabIndex = 1;
-            this.label123.Text = "复位速度";
-            // 
-            // label124
-            // 
-            this.label124.AutoSize = true;
-            this.label124.Location = new System.Drawing.Point(6, 148);
-            this.label124.Name = "label124";
-            this.label124.Size = new System.Drawing.Size(106, 24);
-            this.label124.TabIndex = 1;
-            this.label124.Text = "手动单量";
-            // 
-            // label125
-            // 
-            this.label125.AutoSize = true;
-            this.label125.Location = new System.Drawing.Point(6, 101);
-            this.label125.Name = "label125";
-            this.label125.Size = new System.Drawing.Size(106, 24);
-            this.label125.TabIndex = 1;
-            this.label125.Text = "手动速度";
-            // 
             // button62
             // 
-            this.button62.Location = new System.Drawing.Point(574, 326);
+            this.button62.Location = new System.Drawing.Point(646, 498);
+            this.button62.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button62.Name = "button62";
-            this.button62.Size = new System.Drawing.Size(183, 50);
+            this.button62.Size = new System.Drawing.Size(206, 60);
             this.button62.TabIndex = 0;
             this.button62.Tag = "右侧压";
             this.button62.Text = "右侧压";
@@ -4691,9 +5726,10 @@
             // 
             // button63
             // 
-            this.button63.Location = new System.Drawing.Point(940, 326);
+            this.button63.Location = new System.Drawing.Point(1058, 498);
+            this.button63.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button63.Name = "button63";
-            this.button63.Size = new System.Drawing.Size(183, 50);
+            this.button63.Size = new System.Drawing.Size(206, 60);
             this.button63.TabIndex = 0;
             this.button63.Tag = "切料气缸";
             this.button63.Text = "切料气缸";
@@ -4702,9 +5738,10 @@
             // 
             // button64
             // 
-            this.button64.Location = new System.Drawing.Point(391, 326);
+            this.button64.Location = new System.Drawing.Point(440, 498);
+            this.button64.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button64.Name = "button64";
-            this.button64.Size = new System.Drawing.Size(183, 50);
+            this.button64.Size = new System.Drawing.Size(206, 60);
             this.button64.TabIndex = 0;
             this.button64.Tag = "左侧压";
             this.button64.Text = "左侧压";
@@ -4713,9 +5750,10 @@
             // 
             // button65
             // 
-            this.button65.Location = new System.Drawing.Point(208, 326);
+            this.button65.Location = new System.Drawing.Point(234, 498);
+            this.button65.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button65.Name = "button65";
-            this.button65.Size = new System.Drawing.Size(183, 50);
+            this.button65.Size = new System.Drawing.Size(206, 60);
             this.button65.TabIndex = 0;
             this.button65.Tag = "切刀电机";
             this.button65.Text = "切刀电机";
@@ -4725,9 +5763,10 @@
             // button66
             // 
             this.button66.Font = new System.Drawing.Font("宋体", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button66.Location = new System.Drawing.Point(757, 326);
+            this.button66.Location = new System.Drawing.Point(852, 498);
+            this.button66.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button66.Name = "button66";
-            this.button66.Size = new System.Drawing.Size(183, 50);
+            this.button66.Size = new System.Drawing.Size(206, 60);
             this.button66.TabIndex = 0;
             this.button66.Tag = "切料压料";
             this.button66.Text = "切料压料";
@@ -4737,9 +5776,10 @@
             // button68
             // 
             this.button68.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button68.Location = new System.Drawing.Point(957, 397);
+            this.button68.Location = new System.Drawing.Point(1077, 583);
+            this.button68.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button68.Name = "button68";
-            this.button68.Size = new System.Drawing.Size(72, 50);
+            this.button68.Size = new System.Drawing.Size(81, 60);
             this.button68.TabIndex = 0;
             this.button68.Tag = "切刀原位";
             this.button68.Text = "原位";
@@ -4748,9 +5788,10 @@
             // button69
             // 
             this.button69.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button69.Location = new System.Drawing.Point(1028, 397);
+            this.button69.Location = new System.Drawing.Point(1156, 583);
+            this.button69.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button69.Name = "button69";
-            this.button69.Size = new System.Drawing.Size(69, 50);
+            this.button69.Size = new System.Drawing.Size(78, 60);
             this.button69.TabIndex = 0;
             this.button69.Tag = "切刀到位";
             this.button69.Text = "到位";
@@ -4759,9 +5800,10 @@
             // button77
             // 
             this.button77.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button77.Location = new System.Drawing.Point(775, 397);
+            this.button77.Location = new System.Drawing.Point(872, 583);
+            this.button77.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button77.Name = "button77";
-            this.button77.Size = new System.Drawing.Size(138, 50);
+            this.button77.Size = new System.Drawing.Size(155, 60);
             this.button77.TabIndex = 0;
             this.button77.Tag = "压料到位";
             this.button77.Text = "到位";
@@ -4770,9 +5812,10 @@
             // button76
             // 
             this.button76.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button76.Location = new System.Drawing.Point(598, 397);
+            this.button76.Location = new System.Drawing.Point(673, 583);
+            this.button76.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button76.Name = "button76";
-            this.button76.Size = new System.Drawing.Size(138, 50);
+            this.button76.Size = new System.Drawing.Size(155, 60);
             this.button76.TabIndex = 0;
             this.button76.Tag = "右侧压到位";
             this.button76.Text = "到位";
@@ -4781,9 +5824,10 @@
             // button75
             // 
             this.button75.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button75.Location = new System.Drawing.Point(405, 397);
+            this.button75.Location = new System.Drawing.Point(456, 583);
+            this.button75.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button75.Name = "button75";
-            this.button75.Size = new System.Drawing.Size(138, 50);
+            this.button75.Size = new System.Drawing.Size(155, 60);
             this.button75.TabIndex = 0;
             this.button75.Tag = "左侧压到位";
             this.button75.Text = "到位";
@@ -4792,9 +5836,10 @@
             // button67
             // 
             this.button67.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button67.Location = new System.Drawing.Point(25, 397);
+            this.button67.Location = new System.Drawing.Point(28, 583);
+            this.button67.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button67.Name = "button67";
-            this.button67.Size = new System.Drawing.Size(138, 50);
+            this.button67.Size = new System.Drawing.Size(155, 60);
             this.button67.TabIndex = 0;
             this.button67.Tag = "送料切夹到位";
             this.button67.Text = "到位";
@@ -4802,20 +5847,34 @@
             // 
             // button70
             // 
-            this.button70.Location = new System.Drawing.Point(25, 326);
+            this.button70.Location = new System.Drawing.Point(28, 498);
+            this.button70.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button70.Name = "button70";
-            this.button70.Size = new System.Drawing.Size(183, 50);
+            this.button70.Size = new System.Drawing.Size(206, 60);
             this.button70.TabIndex = 0;
             this.button70.Tag = "送料切夹";
             this.button70.Text = "送料切夹";
             this.button70.UseVisualStyleBackColor = true;
             this.button70.Click += new System.EventHandler(this.HandOff2On_Click);
             // 
+            // button179
+            // 
+            this.button179.Location = new System.Drawing.Point(673, 44);
+            this.button179.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.button179.Name = "button179";
+            this.button179.Size = new System.Drawing.Size(155, 60);
+            this.button179.TabIndex = 0;
+            this.button179.Tag = "油泵关";
+            this.button179.Text = "油泵关";
+            this.button179.UseVisualStyleBackColor = true;
+            this.button179.Click += new System.EventHandler(this.Opposite_Click_Auto);
+            // 
             // button71
             // 
-            this.button71.Location = new System.Drawing.Point(443, 37);
+            this.button71.Location = new System.Drawing.Point(498, 44);
+            this.button71.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button71.Name = "button71";
-            this.button71.Size = new System.Drawing.Size(138, 50);
+            this.button71.Size = new System.Drawing.Size(155, 60);
             this.button71.TabIndex = 0;
             this.button71.Tag = "送料复位";
             this.button71.Text = "复位";
@@ -4824,11 +5883,12 @@
             // 
             // button72
             // 
-            this.button72.Location = new System.Drawing.Point(312, 37);
+            this.button72.Location = new System.Drawing.Point(351, 44);
+            this.button72.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button72.Name = "button72";
-            this.button72.Size = new System.Drawing.Size(121, 50);
+            this.button72.Size = new System.Drawing.Size(136, 60);
             this.button72.TabIndex = 0;
-            this.button72.Tag = "送料切+";
+            this.button72.Tag = "送料切-";
             this.button72.Text = "负";
             this.button72.UseVisualStyleBackColor = true;
             this.button72.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BtnM101_MouseDown);
@@ -4836,9 +5896,10 @@
             // 
             // button74
             // 
-            this.button74.Location = new System.Drawing.Point(6, 37);
+            this.button74.Location = new System.Drawing.Point(7, 44);
+            this.button74.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button74.Name = "button74";
-            this.button74.Size = new System.Drawing.Size(121, 50);
+            this.button74.Size = new System.Drawing.Size(136, 60);
             this.button74.TabIndex = 0;
             this.button74.Tag = "送料切+";
             this.button74.Text = "正";
@@ -4849,45 +5910,25 @@
             // tabPage11
             // 
             this.tabPage11.Controls.Add(this.groupBox14);
-            this.tabPage11.Location = new System.Drawing.Point(4, 33);
+            this.tabPage11.Location = new System.Drawing.Point(4, 38);
+            this.tabPage11.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage11.Name = "tabPage11";
-            this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage11.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage11.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage11.Size = new System.Drawing.Size(1974, 827);
             this.tabPage11.TabIndex = 6;
             this.tabPage11.Text = "打码/拉料";
             this.tabPage11.UseVisualStyleBackColor = true;
             // 
             // groupBox14
             // 
+            this.groupBox14.Controls.Add(this.g15Param);
             this.groupBox14.Controls.Add(this.button73);
             this.groupBox14.Controls.Add(this.button156);
             this.groupBox14.Controls.Add(this.button85);
             this.groupBox14.Controls.Add(this.button84);
             this.groupBox14.Controls.Add(this.button82);
             this.groupBox14.Controls.Add(this.button83);
-            this.groupBox14.Controls.Add(this.textBox77);
-            this.groupBox14.Controls.Add(this.textBox78);
             this.groupBox14.Controls.Add(this.textBox79);
-            this.groupBox14.Controls.Add(this.textBox117);
-            this.groupBox14.Controls.Add(this.textBox100);
-            this.groupBox14.Controls.Add(this.textBox99);
-            this.groupBox14.Controls.Add(this.textBox98);
-            this.groupBox14.Controls.Add(this.textBox95);
-            this.groupBox14.Controls.Add(this.textBox97);
-            this.groupBox14.Controls.Add(this.textBox94);
-            this.groupBox14.Controls.Add(this.textBox93);
-            this.groupBox14.Controls.Add(this.textBox80);
-            this.groupBox14.Controls.Add(this.label130);
-            this.groupBox14.Controls.Add(this.label131);
-            this.groupBox14.Controls.Add(this.label44);
-            this.groupBox14.Controls.Add(this.label48);
-            this.groupBox14.Controls.Add(this.label46);
-            this.groupBox14.Controls.Add(this.label41);
-            this.groupBox14.Controls.Add(this.label42);
-            this.groupBox14.Controls.Add(this.label71);
-            this.groupBox14.Controls.Add(this.label39);
-            this.groupBox14.Controls.Add(this.label37);
-            this.groupBox14.Controls.Add(this.label132);
             this.groupBox14.Controls.Add(this.button78);
             this.groupBox14.Controls.Add(this.button79);
             this.groupBox14.Controls.Add(this.button80);
@@ -4898,19 +5939,287 @@
             this.groupBox14.Controls.Add(this.button90);
             this.groupBox14.Controls.Add(this.button91);
             this.groupBox14.Controls.Add(this.button93);
-            this.groupBox14.Location = new System.Drawing.Point(25, 24);
+            this.groupBox14.Location = new System.Drawing.Point(28, 29);
+            this.groupBox14.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox14.Name = "groupBox14";
-            this.groupBox14.Size = new System.Drawing.Size(1097, 588);
+            this.groupBox14.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox14.Size = new System.Drawing.Size(1234, 706);
             this.groupBox14.TabIndex = 6;
             this.groupBox14.TabStop = false;
             this.groupBox14.Text = "拉料";
             // 
+            // g15Param
+            // 
+            this.g15Param.Controls.Add(this.label132);
+            this.g15Param.Controls.Add(this.label37);
+            this.g15Param.Controls.Add(this.label39);
+            this.g15Param.Controls.Add(this.label71);
+            this.g15Param.Controls.Add(this.label42);
+            this.g15Param.Controls.Add(this.label41);
+            this.g15Param.Controls.Add(this.textBox77);
+            this.g15Param.Controls.Add(this.label46);
+            this.g15Param.Controls.Add(this.textBox78);
+            this.g15Param.Controls.Add(this.label48);
+            this.g15Param.Controls.Add(this.label44);
+            this.g15Param.Controls.Add(this.textBox117);
+            this.g15Param.Controls.Add(this.label131);
+            this.g15Param.Controls.Add(this.textBox100);
+            this.g15Param.Controls.Add(this.label130);
+            this.g15Param.Controls.Add(this.textBox99);
+            this.g15Param.Controls.Add(this.textBox80);
+            this.g15Param.Controls.Add(this.textBox98);
+            this.g15Param.Controls.Add(this.textBox93);
+            this.g15Param.Controls.Add(this.textBox95);
+            this.g15Param.Controls.Add(this.textBox94);
+            this.g15Param.Controls.Add(this.textBox97);
+            this.g15Param.Location = new System.Drawing.Point(7, 112);
+            this.g15Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g15Param.Name = "g15Param";
+            this.g15Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g15Param.Size = new System.Drawing.Size(1206, 223);
+            this.g15Param.TabIndex = 18;
+            this.g15Param.TabStop = false;
+            this.g15Param.Text = "参数";
+            this.g15Param.Visible = false;
+            // 
+            // label132
+            // 
+            this.label132.AutoSize = true;
+            this.label132.Location = new System.Drawing.Point(7, 36);
+            this.label132.Name = "label132";
+            this.label132.Size = new System.Drawing.Size(124, 28);
+            this.label132.TabIndex = 1;
+            this.label132.Text = "手动速度";
+            // 
+            // label37
+            // 
+            this.label37.AutoSize = true;
+            this.label37.Location = new System.Drawing.Point(346, 36);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(124, 28);
+            this.label37.TabIndex = 1;
+            this.label37.Text = "吹气时间";
+            // 
+            // label39
+            // 
+            this.label39.AutoSize = true;
+            this.label39.Location = new System.Drawing.Point(920, 36);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(152, 28);
+            this.label39.TabIndex = 1;
+            this.label39.Text = "拉料夹时间";
+            // 
+            // label71
+            // 
+            this.label71.AutoSize = true;
+            this.label71.Location = new System.Drawing.Point(920, 89);
+            this.label71.Name = "label71";
+            this.label71.Size = new System.Drawing.Size(152, 28);
+            this.label71.TabIndex = 1;
+            this.label71.Text = "拉料松时间";
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(346, 146);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(152, 28);
+            this.label42.TabIndex = 1;
+            this.label42.Text = "关吸气时间";
+            // 
+            // label41
+            // 
+            this.label41.AutoSize = true;
+            this.label41.Location = new System.Drawing.Point(346, 92);
+            this.label41.Name = "label41";
+            this.label41.Size = new System.Drawing.Size(124, 28);
+            this.label41.TabIndex = 1;
+            this.label41.Text = "拉料速度";
+            // 
+            // textBox77
+            // 
+            this.textBox77.Location = new System.Drawing.Point(133, 143);
+            this.textBox77.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox77.Name = "textBox77";
+            this.textBox77.Size = new System.Drawing.Size(112, 39);
+            this.textBox77.TabIndex = 2;
+            this.textBox77.Tag = "拉料复位速度";
+            this.textBox77.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox77.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox77.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label46
+            // 
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(656, 146);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(124, 28);
+            this.label46.TabIndex = 1;
+            this.label46.Text = "拉料距离";
+            // 
+            // textBox78
+            // 
+            this.textBox78.Location = new System.Drawing.Point(133, 89);
+            this.textBox78.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox78.Name = "textBox78";
+            this.textBox78.Size = new System.Drawing.Size(112, 39);
+            this.textBox78.TabIndex = 2;
+            this.textBox78.Tag = "拉料手动单量";
+            this.textBox78.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox78.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox78.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label48
+            // 
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(629, 32);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(152, 28);
+            this.label48.TabIndex = 1;
+            this.label48.Text = "打码安全位";
+            // 
+            // label44
+            // 
+            this.label44.AutoSize = true;
+            this.label44.Location = new System.Drawing.Point(656, 89);
+            this.label44.Name = "label44";
+            this.label44.Size = new System.Drawing.Size(124, 28);
+            this.label44.TabIndex = 1;
+            this.label44.Text = "拉料快速";
+            // 
+            // textBox117
+            // 
+            this.textBox117.Location = new System.Drawing.Point(1087, 82);
+            this.textBox117.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox117.Name = "textBox117";
+            this.textBox117.Size = new System.Drawing.Size(112, 39);
+            this.textBox117.TabIndex = 2;
+            this.textBox117.Tag = "拉料松时间";
+            this.textBox117.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox117.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox117.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label131
+            // 
+            this.label131.AutoSize = true;
+            this.label131.Location = new System.Drawing.Point(7, 92);
+            this.label131.Name = "label131";
+            this.label131.Size = new System.Drawing.Size(124, 28);
+            this.label131.TabIndex = 1;
+            this.label131.Text = "手动单量";
+            // 
+            // textBox100
+            // 
+            this.textBox100.Location = new System.Drawing.Point(1087, 29);
+            this.textBox100.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox100.Name = "textBox100";
+            this.textBox100.Size = new System.Drawing.Size(112, 39);
+            this.textBox100.TabIndex = 2;
+            this.textBox100.Tag = "拉料夹具时间";
+            this.textBox100.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox100.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox100.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // label130
+            // 
+            this.label130.AutoSize = true;
+            this.label130.Location = new System.Drawing.Point(7, 146);
+            this.label130.Name = "label130";
+            this.label130.Size = new System.Drawing.Size(124, 28);
+            this.label130.TabIndex = 1;
+            this.label130.Text = "复位速度";
+            // 
+            // textBox99
+            // 
+            this.textBox99.Location = new System.Drawing.Point(801, 32);
+            this.textBox99.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox99.Name = "textBox99";
+            this.textBox99.Size = new System.Drawing.Size(112, 39);
+            this.textBox99.TabIndex = 2;
+            this.textBox99.Tag = "打码安全位";
+            this.textBox99.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox99.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox99.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox80
+            // 
+            this.textBox80.Location = new System.Drawing.Point(134, 32);
+            this.textBox80.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox80.Name = "textBox80";
+            this.textBox80.Size = new System.Drawing.Size(112, 39);
+            this.textBox80.TabIndex = 2;
+            this.textBox80.Tag = "拉料手动速度";
+            this.textBox80.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox80.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox80.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox98
+            // 
+            this.textBox98.Location = new System.Drawing.Point(801, 143);
+            this.textBox98.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox98.Name = "textBox98";
+            this.textBox98.Size = new System.Drawing.Size(112, 39);
+            this.textBox98.TabIndex = 2;
+            this.textBox98.Tag = "拉料距离";
+            this.textBox98.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox98.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox98.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox93
+            // 
+            this.textBox93.Location = new System.Drawing.Point(498, 32);
+            this.textBox93.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox93.Name = "textBox93";
+            this.textBox93.Size = new System.Drawing.Size(112, 39);
+            this.textBox93.TabIndex = 2;
+            this.textBox93.Tag = "吹气时间";
+            this.textBox93.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox93.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox93.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox95
+            // 
+            this.textBox95.Location = new System.Drawing.Point(498, 143);
+            this.textBox95.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox95.Name = "textBox95";
+            this.textBox95.Size = new System.Drawing.Size(112, 39);
+            this.textBox95.TabIndex = 2;
+            this.textBox95.Tag = "关吸气时间";
+            this.textBox95.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox95.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox95.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox94
+            // 
+            this.textBox94.Location = new System.Drawing.Point(498, 89);
+            this.textBox94.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox94.Name = "textBox94";
+            this.textBox94.Size = new System.Drawing.Size(112, 39);
+            this.textBox94.TabIndex = 2;
+            this.textBox94.Tag = "拉料速度";
+            this.textBox94.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox94.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox94.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox97
+            // 
+            this.textBox97.Location = new System.Drawing.Point(801, 89);
+            this.textBox97.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox97.Name = "textBox97";
+            this.textBox97.Size = new System.Drawing.Size(112, 39);
+            this.textBox97.TabIndex = 2;
+            this.textBox97.Tag = "拉料快速";
+            this.textBox97.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox97.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox97.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // button73
             // 
             this.button73.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button73.Location = new System.Drawing.Point(167, 257);
+            this.button73.Location = new System.Drawing.Point(188, 342);
+            this.button73.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button73.Name = "button73";
-            this.button73.Size = new System.Drawing.Size(138, 50);
+            this.button73.Size = new System.Drawing.Size(155, 60);
             this.button73.TabIndex = 16;
             this.button73.Tag = "拉料轴正限";
             this.button73.Text = "正限";
@@ -4919,9 +6228,10 @@
             // button156
             // 
             this.button156.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button156.Location = new System.Drawing.Point(6, 257);
+            this.button156.Location = new System.Drawing.Point(7, 342);
+            this.button156.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button156.Name = "button156";
-            this.button156.Size = new System.Drawing.Size(138, 50);
+            this.button156.Size = new System.Drawing.Size(155, 60);
             this.button156.TabIndex = 17;
             this.button156.Tag = "拉料轴原点";
             this.button156.Text = "原点";
@@ -4930,9 +6240,10 @@
             // button85
             // 
             this.button85.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button85.Location = new System.Drawing.Point(198, 412);
+            this.button85.Location = new System.Drawing.Point(223, 494);
+            this.button85.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button85.Name = "button85";
-            this.button85.Size = new System.Drawing.Size(72, 50);
+            this.button85.Size = new System.Drawing.Size(81, 60);
             this.button85.TabIndex = 3;
             this.button85.Tag = "打码下压原位";
             this.button85.Text = "原位";
@@ -4941,9 +6252,10 @@
             // button84
             // 
             this.button84.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button84.Location = new System.Drawing.Point(267, 412);
+            this.button84.Location = new System.Drawing.Point(300, 494);
+            this.button84.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button84.Name = "button84";
-            this.button84.Size = new System.Drawing.Size(69, 50);
+            this.button84.Size = new System.Drawing.Size(78, 60);
             this.button84.TabIndex = 4;
             this.button84.Tag = "打码下压到位";
             this.button84.Text = "到位";
@@ -4952,9 +6264,10 @@
             // button82
             // 
             this.button82.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button82.Location = new System.Drawing.Point(366, 412);
+            this.button82.Location = new System.Drawing.Point(412, 494);
+            this.button82.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button82.Name = "button82";
-            this.button82.Size = new System.Drawing.Size(72, 50);
+            this.button82.Size = new System.Drawing.Size(81, 60);
             this.button82.TabIndex = 3;
             this.button82.Tag = "打码进退原位";
             this.button82.Text = "原位";
@@ -4963,248 +6276,31 @@
             // button83
             // 
             this.button83.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button83.Location = new System.Drawing.Point(431, 412);
+            this.button83.Location = new System.Drawing.Point(485, 494);
+            this.button83.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button83.Name = "button83";
-            this.button83.Size = new System.Drawing.Size(73, 50);
+            this.button83.Size = new System.Drawing.Size(82, 60);
             this.button83.TabIndex = 4;
             this.button83.Tag = "打码进退到位";
             this.button83.Text = "到位";
             this.button83.UseVisualStyleBackColor = true;
             // 
-            // textBox77
-            // 
-            this.textBox77.Location = new System.Drawing.Point(118, 196);
-            this.textBox77.Name = "textBox77";
-            this.textBox77.Size = new System.Drawing.Size(100, 34);
-            this.textBox77.TabIndex = 2;
-            this.textBox77.Tag = "拉料复位速度";
-            this.textBox77.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox77.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox77.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox78
-            // 
-            this.textBox78.Location = new System.Drawing.Point(118, 151);
-            this.textBox78.Name = "textBox78";
-            this.textBox78.Size = new System.Drawing.Size(100, 34);
-            this.textBox78.TabIndex = 2;
-            this.textBox78.Tag = "拉料手动单量";
-            this.textBox78.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox78.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox78.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // textBox79
             // 
-            this.textBox79.Location = new System.Drawing.Point(142, 48);
+            this.textBox79.Location = new System.Drawing.Point(160, 58);
+            this.textBox79.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox79.Name = "textBox79";
             this.textBox79.ReadOnly = true;
-            this.textBox79.Size = new System.Drawing.Size(151, 34);
+            this.textBox79.Size = new System.Drawing.Size(169, 39);
             this.textBox79.TabIndex = 2;
             this.textBox79.Tag = "拉料位置";
             // 
-            // textBox117
-            // 
-            this.textBox117.Location = new System.Drawing.Point(966, 145);
-            this.textBox117.Name = "textBox117";
-            this.textBox117.Size = new System.Drawing.Size(100, 34);
-            this.textBox117.TabIndex = 2;
-            this.textBox117.Tag = "拉料松时间";
-            this.textBox117.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox117.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox117.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox100
-            // 
-            this.textBox100.Location = new System.Drawing.Point(966, 101);
-            this.textBox100.Name = "textBox100";
-            this.textBox100.Size = new System.Drawing.Size(100, 34);
-            this.textBox100.TabIndex = 2;
-            this.textBox100.Tag = "拉料夹具时间";
-            this.textBox100.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox100.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox100.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox99
-            // 
-            this.textBox99.Location = new System.Drawing.Point(712, 104);
-            this.textBox99.Name = "textBox99";
-            this.textBox99.Size = new System.Drawing.Size(100, 34);
-            this.textBox99.TabIndex = 2;
-            this.textBox99.Tag = "打码安全位";
-            this.textBox99.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox99.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox99.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox98
-            // 
-            this.textBox98.Location = new System.Drawing.Point(712, 196);
-            this.textBox98.Name = "textBox98";
-            this.textBox98.Size = new System.Drawing.Size(100, 34);
-            this.textBox98.TabIndex = 2;
-            this.textBox98.Tag = "拉料距离";
-            this.textBox98.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox98.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox98.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox95
-            // 
-            this.textBox95.Location = new System.Drawing.Point(443, 196);
-            this.textBox95.Name = "textBox95";
-            this.textBox95.Size = new System.Drawing.Size(100, 34);
-            this.textBox95.TabIndex = 2;
-            this.textBox95.Tag = "关吸气时间";
-            this.textBox95.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox95.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox95.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox97
-            // 
-            this.textBox97.Location = new System.Drawing.Point(712, 151);
-            this.textBox97.Name = "textBox97";
-            this.textBox97.Size = new System.Drawing.Size(100, 34);
-            this.textBox97.TabIndex = 2;
-            this.textBox97.Tag = "拉料快速";
-            this.textBox97.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox97.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox97.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox94
-            // 
-            this.textBox94.Location = new System.Drawing.Point(443, 151);
-            this.textBox94.Name = "textBox94";
-            this.textBox94.Size = new System.Drawing.Size(100, 34);
-            this.textBox94.TabIndex = 2;
-            this.textBox94.Tag = "拉料速度";
-            this.textBox94.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox94.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox94.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox93
-            // 
-            this.textBox93.Location = new System.Drawing.Point(443, 104);
-            this.textBox93.Name = "textBox93";
-            this.textBox93.Size = new System.Drawing.Size(100, 34);
-            this.textBox93.TabIndex = 2;
-            this.textBox93.Tag = "吹气时间";
-            this.textBox93.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox93.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox93.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // textBox80
-            // 
-            this.textBox80.Location = new System.Drawing.Point(119, 104);
-            this.textBox80.Name = "textBox80";
-            this.textBox80.Size = new System.Drawing.Size(100, 34);
-            this.textBox80.TabIndex = 2;
-            this.textBox80.Tag = "拉料手动速度";
-            this.textBox80.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox80.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox80.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label130
-            // 
-            this.label130.AutoSize = true;
-            this.label130.Location = new System.Drawing.Point(6, 199);
-            this.label130.Name = "label130";
-            this.label130.Size = new System.Drawing.Size(106, 24);
-            this.label130.TabIndex = 1;
-            this.label130.Text = "复位速度";
-            // 
-            // label131
-            // 
-            this.label131.AutoSize = true;
-            this.label131.Location = new System.Drawing.Point(6, 154);
-            this.label131.Name = "label131";
-            this.label131.Size = new System.Drawing.Size(106, 24);
-            this.label131.TabIndex = 1;
-            this.label131.Text = "手动单量";
-            // 
-            // label44
-            // 
-            this.label44.AutoSize = true;
-            this.label44.Location = new System.Drawing.Point(583, 151);
-            this.label44.Name = "label44";
-            this.label44.Size = new System.Drawing.Size(106, 24);
-            this.label44.TabIndex = 1;
-            this.label44.Text = "拉料快速";
-            // 
-            // label48
-            // 
-            this.label48.AutoSize = true;
-            this.label48.Location = new System.Drawing.Point(559, 104);
-            this.label48.Name = "label48";
-            this.label48.Size = new System.Drawing.Size(130, 24);
-            this.label48.TabIndex = 1;
-            this.label48.Text = "打码安全位";
-            // 
-            // label46
-            // 
-            this.label46.AutoSize = true;
-            this.label46.Location = new System.Drawing.Point(583, 199);
-            this.label46.Name = "label46";
-            this.label46.Size = new System.Drawing.Size(106, 24);
-            this.label46.TabIndex = 1;
-            this.label46.Text = "拉料距离";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(308, 154);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(106, 24);
-            this.label41.TabIndex = 1;
-            this.label41.Text = "拉料速度";
-            // 
-            // label42
-            // 
-            this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(308, 199);
-            this.label42.Name = "label42";
-            this.label42.Size = new System.Drawing.Size(130, 24);
-            this.label42.TabIndex = 1;
-            this.label42.Text = "关吸气时间";
-            // 
-            // label71
-            // 
-            this.label71.AutoSize = true;
-            this.label71.Location = new System.Drawing.Point(818, 151);
-            this.label71.Name = "label71";
-            this.label71.Size = new System.Drawing.Size(130, 24);
-            this.label71.TabIndex = 1;
-            this.label71.Text = "拉料松时间";
-            // 
-            // label39
-            // 
-            this.label39.AutoSize = true;
-            this.label39.Location = new System.Drawing.Point(818, 107);
-            this.label39.Name = "label39";
-            this.label39.Size = new System.Drawing.Size(130, 24);
-            this.label39.TabIndex = 1;
-            this.label39.Text = "拉料夹时间";
-            // 
-            // label37
-            // 
-            this.label37.AutoSize = true;
-            this.label37.Location = new System.Drawing.Point(308, 107);
-            this.label37.Name = "label37";
-            this.label37.Size = new System.Drawing.Size(106, 24);
-            this.label37.TabIndex = 1;
-            this.label37.Text = "吹气时间";
-            // 
-            // label132
-            // 
-            this.label132.AutoSize = true;
-            this.label132.Location = new System.Drawing.Point(6, 107);
-            this.label132.Name = "label132";
-            this.label132.Size = new System.Drawing.Size(106, 24);
-            this.label132.TabIndex = 1;
-            this.label132.Text = "手动速度";
-            // 
             // button78
             // 
-            this.button78.Location = new System.Drawing.Point(706, 341);
+            this.button78.Location = new System.Drawing.Point(794, 410);
+            this.button78.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button78.Name = "button78";
-            this.button78.Size = new System.Drawing.Size(175, 50);
+            this.button78.Size = new System.Drawing.Size(197, 60);
             this.button78.TabIndex = 0;
             this.button78.Tag = "条码吹尘";
             this.button78.Text = "条码吹尘";
@@ -5213,9 +6309,10 @@
             // 
             // button79
             // 
-            this.button79.Location = new System.Drawing.Point(531, 341);
+            this.button79.Location = new System.Drawing.Point(597, 410);
+            this.button79.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button79.Name = "button79";
-            this.button79.Size = new System.Drawing.Size(175, 50);
+            this.button79.Size = new System.Drawing.Size(197, 60);
             this.button79.TabIndex = 0;
             this.button79.Tag = "条码吸气";
             this.button79.Text = "条码吸气";
@@ -5224,9 +6321,10 @@
             // 
             // button80
             // 
-            this.button80.Location = new System.Drawing.Point(356, 341);
+            this.button80.Location = new System.Drawing.Point(400, 410);
+            this.button80.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button80.Name = "button80";
-            this.button80.Size = new System.Drawing.Size(175, 50);
+            this.button80.Size = new System.Drawing.Size(197, 60);
             this.button80.TabIndex = 0;
             this.button80.Tag = "打码进退";
             this.button80.Text = "打码进退";
@@ -5235,9 +6333,10 @@
             // 
             // button81
             // 
-            this.button81.Location = new System.Drawing.Point(181, 341);
+            this.button81.Location = new System.Drawing.Point(204, 410);
+            this.button81.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button81.Name = "button81";
-            this.button81.Size = new System.Drawing.Size(175, 50);
+            this.button81.Size = new System.Drawing.Size(197, 60);
             this.button81.TabIndex = 0;
             this.button81.Tag = "打码下压";
             this.button81.Text = "打码下压";
@@ -5247,9 +6346,10 @@
             // button157
             // 
             this.button157.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button157.Location = new System.Drawing.Point(551, 412);
+            this.button157.Location = new System.Drawing.Point(620, 494);
+            this.button157.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button157.Name = "button157";
-            this.button157.Size = new System.Drawing.Size(138, 50);
+            this.button157.Size = new System.Drawing.Size(155, 60);
             this.button157.TabIndex = 0;
             this.button157.Tag = "条码检测";
             this.button157.Text = "条码检测";
@@ -5257,9 +6357,10 @@
             // 
             // button86
             // 
-            this.button86.Location = new System.Drawing.Point(881, 341);
+            this.button86.Location = new System.Drawing.Point(991, 410);
+            this.button86.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button86.Name = "button86";
-            this.button86.Size = new System.Drawing.Size(175, 50);
+            this.button86.Size = new System.Drawing.Size(197, 60);
             this.button86.TabIndex = 0;
             this.button86.Tag = "条码吹气";
             this.button86.Text = "条码吹气";
@@ -5268,9 +6369,10 @@
             // 
             // button89
             // 
-            this.button89.Location = new System.Drawing.Point(6, 341);
+            this.button89.Location = new System.Drawing.Point(7, 410);
+            this.button89.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button89.Name = "button89";
-            this.button89.Size = new System.Drawing.Size(175, 50);
+            this.button89.Size = new System.Drawing.Size(197, 60);
             this.button89.TabIndex = 0;
             this.button89.Tag = "拉料夹";
             this.button89.Text = "拉料夹";
@@ -5279,9 +6381,10 @@
             // 
             // button90
             // 
-            this.button90.Location = new System.Drawing.Point(443, 37);
+            this.button90.Location = new System.Drawing.Point(498, 44);
+            this.button90.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button90.Name = "button90";
-            this.button90.Size = new System.Drawing.Size(138, 50);
+            this.button90.Size = new System.Drawing.Size(155, 60);
             this.button90.TabIndex = 0;
             this.button90.Tag = "拉料复位";
             this.button90.Text = "复位";
@@ -5290,9 +6393,10 @@
             // 
             // button91
             // 
-            this.button91.Location = new System.Drawing.Point(312, 37);
+            this.button91.Location = new System.Drawing.Point(351, 44);
+            this.button91.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button91.Name = "button91";
-            this.button91.Size = new System.Drawing.Size(121, 50);
+            this.button91.Size = new System.Drawing.Size(136, 60);
             this.button91.TabIndex = 0;
             this.button91.Tag = "拉料-";
             this.button91.Text = "负";
@@ -5302,9 +6406,10 @@
             // 
             // button93
             // 
-            this.button93.Location = new System.Drawing.Point(6, 37);
+            this.button93.Location = new System.Drawing.Point(7, 44);
+            this.button93.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button93.Name = "button93";
-            this.button93.Size = new System.Drawing.Size(121, 50);
+            this.button93.Size = new System.Drawing.Size(136, 60);
             this.button93.TabIndex = 0;
             this.button93.Tag = "拉料+";
             this.button93.Text = "正";
@@ -5314,46 +6419,51 @@
             // 
             // tabPage12
             // 
-            this.tabPage12.Controls.Add(this.groupBox17);
+            this.tabPage12.Controls.Add(this.g17Param);
             this.tabPage12.Controls.Add(this.groupBox15);
-            this.tabPage12.Location = new System.Drawing.Point(4, 33);
+            this.tabPage12.Location = new System.Drawing.Point(4, 38);
+            this.tabPage12.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tabPage12.Name = "tabPage12";
-            this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage12.Size = new System.Drawing.Size(1754, 687);
+            this.tabPage12.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.tabPage12.Size = new System.Drawing.Size(1974, 827);
             this.tabPage12.TabIndex = 7;
             this.tabPage12.Text = "分料";
             this.tabPage12.UseVisualStyleBackColor = true;
             // 
-            // groupBox17
+            // g17Param
             // 
-            this.groupBox17.Controls.Add(this.textBox126);
-            this.groupBox17.Controls.Add(this.textBox121);
-            this.groupBox17.Controls.Add(this.textBox125);
-            this.groupBox17.Controls.Add(this.textBox124);
-            this.groupBox17.Controls.Add(this.textBox122);
-            this.groupBox17.Controls.Add(this.textBox118);
-            this.groupBox17.Controls.Add(this.textBox119);
-            this.groupBox17.Controls.Add(this.textBox120);
-            this.groupBox17.Controls.Add(this.label98);
-            this.groupBox17.Controls.Add(this.label96);
-            this.groupBox17.Controls.Add(this.label94);
-            this.groupBox17.Controls.Add(this.label92);
-            this.groupBox17.Controls.Add(this.label72);
-            this.groupBox17.Controls.Add(this.label91);
-            this.groupBox17.Controls.Add(this.label90);
-            this.groupBox17.Controls.Add(this.label74);
-            this.groupBox17.Location = new System.Drawing.Point(822, 23);
-            this.groupBox17.Name = "groupBox17";
-            this.groupBox17.Size = new System.Drawing.Size(437, 588);
-            this.groupBox17.TabIndex = 8;
-            this.groupBox17.TabStop = false;
-            this.groupBox17.Text = "工位";
+            this.g17Param.Controls.Add(this.textBox126);
+            this.g17Param.Controls.Add(this.textBox121);
+            this.g17Param.Controls.Add(this.textBox125);
+            this.g17Param.Controls.Add(this.textBox124);
+            this.g17Param.Controls.Add(this.textBox122);
+            this.g17Param.Controls.Add(this.textBox118);
+            this.g17Param.Controls.Add(this.textBox119);
+            this.g17Param.Controls.Add(this.textBox120);
+            this.g17Param.Controls.Add(this.label98);
+            this.g17Param.Controls.Add(this.label96);
+            this.g17Param.Controls.Add(this.label94);
+            this.g17Param.Controls.Add(this.label92);
+            this.g17Param.Controls.Add(this.label72);
+            this.g17Param.Controls.Add(this.label91);
+            this.g17Param.Controls.Add(this.label90);
+            this.g17Param.Controls.Add(this.label74);
+            this.g17Param.Location = new System.Drawing.Point(925, 28);
+            this.g17Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g17Param.Name = "g17Param";
+            this.g17Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g17Param.Size = new System.Drawing.Size(492, 706);
+            this.g17Param.TabIndex = 8;
+            this.g17Param.TabStop = false;
+            this.g17Param.Text = "工位";
+            this.g17Param.Visible = false;
             // 
             // textBox126
             // 
-            this.textBox126.Location = new System.Drawing.Point(141, 215);
+            this.textBox126.Location = new System.Drawing.Point(159, 258);
+            this.textBox126.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox126.Name = "textBox126";
-            this.textBox126.Size = new System.Drawing.Size(99, 34);
+            this.textBox126.Size = new System.Drawing.Size(111, 39);
             this.textBox126.TabIndex = 3;
             this.textBox126.Tag = "推料模式";
             this.toolTip1.SetToolTip(this.textBox126, "0尾部1料中心");
@@ -5363,9 +6473,10 @@
             // 
             // textBox121
             // 
-            this.textBox121.Location = new System.Drawing.Point(276, 124);
+            this.textBox121.Location = new System.Drawing.Point(310, 149);
+            this.textBox121.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox121.Name = "textBox121";
-            this.textBox121.Size = new System.Drawing.Size(99, 34);
+            this.textBox121.Size = new System.Drawing.Size(111, 39);
             this.textBox121.TabIndex = 2;
             this.textBox121.Tag = "工位2关";
             this.textBox121.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5374,9 +6485,10 @@
             // 
             // textBox125
             // 
-            this.textBox125.Location = new System.Drawing.Point(141, 311);
+            this.textBox125.Location = new System.Drawing.Point(159, 374);
+            this.textBox125.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox125.Name = "textBox125";
-            this.textBox125.Size = new System.Drawing.Size(99, 34);
+            this.textBox125.Size = new System.Drawing.Size(111, 39);
             this.textBox125.TabIndex = 2;
             this.textBox125.Tag = "工位2位置";
             this.textBox125.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5385,9 +6497,10 @@
             // 
             // textBox124
             // 
-            this.textBox124.Location = new System.Drawing.Point(141, 265);
+            this.textBox124.Location = new System.Drawing.Point(159, 318);
+            this.textBox124.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox124.Name = "textBox124";
-            this.textBox124.Size = new System.Drawing.Size(99, 34);
+            this.textBox124.Size = new System.Drawing.Size(111, 39);
             this.textBox124.TabIndex = 2;
             this.textBox124.Tag = "工位1位置";
             this.textBox124.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5396,9 +6509,10 @@
             // 
             // textBox122
             // 
-            this.textBox122.Location = new System.Drawing.Point(141, 171);
+            this.textBox122.Location = new System.Drawing.Point(159, 205);
+            this.textBox122.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox122.Name = "textBox122";
-            this.textBox122.Size = new System.Drawing.Size(99, 34);
+            this.textBox122.Size = new System.Drawing.Size(111, 39);
             this.textBox122.TabIndex = 2;
             this.textBox122.Tag = "分料速度";
             this.textBox122.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5407,9 +6521,10 @@
             // 
             // textBox118
             // 
-            this.textBox118.Location = new System.Drawing.Point(141, 124);
+            this.textBox118.Location = new System.Drawing.Point(159, 149);
+            this.textBox118.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox118.Name = "textBox118";
-            this.textBox118.Size = new System.Drawing.Size(99, 34);
+            this.textBox118.Size = new System.Drawing.Size(111, 39);
             this.textBox118.TabIndex = 2;
             this.textBox118.Tag = "工位2开";
             this.textBox118.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5418,9 +6533,10 @@
             // 
             // textBox119
             // 
-            this.textBox119.Location = new System.Drawing.Point(276, 77);
+            this.textBox119.Location = new System.Drawing.Point(310, 92);
+            this.textBox119.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox119.Name = "textBox119";
-            this.textBox119.Size = new System.Drawing.Size(99, 34);
+            this.textBox119.Size = new System.Drawing.Size(111, 39);
             this.textBox119.TabIndex = 2;
             this.textBox119.Tag = "工位1关";
             this.textBox119.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5429,9 +6545,10 @@
             // 
             // textBox120
             // 
-            this.textBox120.Location = new System.Drawing.Point(141, 77);
+            this.textBox120.Location = new System.Drawing.Point(159, 92);
+            this.textBox120.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox120.Name = "textBox120";
-            this.textBox120.Size = new System.Drawing.Size(99, 34);
+            this.textBox120.Size = new System.Drawing.Size(111, 39);
             this.textBox120.TabIndex = 2;
             this.textBox120.Tag = "工位1开";
             this.textBox120.Enter += new System.EventHandler(this.HandTextBox_Enter);
@@ -5441,77 +6558,78 @@
             // label98
             // 
             this.label98.AutoSize = true;
-            this.label98.Location = new System.Drawing.Point(17, 314);
+            this.label98.Location = new System.Drawing.Point(19, 377);
             this.label98.Name = "label98";
-            this.label98.Size = new System.Drawing.Size(118, 24);
+            this.label98.Size = new System.Drawing.Size(138, 28);
             this.label98.TabIndex = 1;
             this.label98.Text = "工位2位置";
             // 
             // label96
             // 
             this.label96.AutoSize = true;
-            this.label96.Location = new System.Drawing.Point(17, 268);
+            this.label96.Location = new System.Drawing.Point(19, 322);
             this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(118, 24);
+            this.label96.Size = new System.Drawing.Size(138, 28);
             this.label96.TabIndex = 1;
             this.label96.Text = "工位1位置";
             // 
             // label94
             // 
             this.label94.AutoSize = true;
-            this.label94.Location = new System.Drawing.Point(17, 218);
+            this.label94.Location = new System.Drawing.Point(19, 262);
             this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(106, 24);
+            this.label94.Size = new System.Drawing.Size(124, 28);
             this.label94.TabIndex = 1;
             this.label94.Text = "推料模式";
             // 
             // label92
             // 
             this.label92.AutoSize = true;
-            this.label92.Location = new System.Drawing.Point(17, 174);
+            this.label92.Location = new System.Drawing.Point(19, 209);
             this.label92.Name = "label92";
-            this.label92.Size = new System.Drawing.Size(106, 24);
+            this.label92.Size = new System.Drawing.Size(124, 28);
             this.label92.TabIndex = 1;
             this.label92.Text = "分料速度";
             // 
             // label72
             // 
             this.label72.AutoSize = true;
-            this.label72.Location = new System.Drawing.Point(17, 127);
+            this.label72.Location = new System.Drawing.Point(19, 152);
             this.label72.Name = "label72";
-            this.label72.Size = new System.Drawing.Size(70, 24);
+            this.label72.Size = new System.Drawing.Size(82, 28);
             this.label72.TabIndex = 1;
             this.label72.Text = "工位2";
             // 
             // label91
             // 
             this.label91.AutoSize = true;
-            this.label91.Location = new System.Drawing.Point(302, 40);
+            this.label91.Location = new System.Drawing.Point(340, 48);
             this.label91.Name = "label91";
-            this.label91.Size = new System.Drawing.Size(34, 24);
+            this.label91.Size = new System.Drawing.Size(40, 28);
             this.label91.TabIndex = 1;
             this.label91.Text = "关";
             // 
             // label90
             // 
             this.label90.AutoSize = true;
-            this.label90.Location = new System.Drawing.Point(159, 40);
+            this.label90.Location = new System.Drawing.Point(179, 48);
             this.label90.Name = "label90";
-            this.label90.Size = new System.Drawing.Size(34, 24);
+            this.label90.Size = new System.Drawing.Size(40, 28);
             this.label90.TabIndex = 1;
             this.label90.Text = "开";
             // 
             // label74
             // 
             this.label74.AutoSize = true;
-            this.label74.Location = new System.Drawing.Point(17, 80);
+            this.label74.Location = new System.Drawing.Point(19, 96);
             this.label74.Name = "label74";
-            this.label74.Size = new System.Drawing.Size(70, 24);
+            this.label74.Size = new System.Drawing.Size(82, 28);
             this.label74.TabIndex = 1;
             this.label74.Text = "工位1";
             // 
             // groupBox15
             // 
+            this.groupBox15.Controls.Add(this.g16Param);
             this.groupBox15.Controls.Add(this.button166);
             this.groupBox15.Controls.Add(this.button161);
             this.groupBox15.Controls.Add(this.button165);
@@ -5523,29 +6641,86 @@
             this.groupBox15.Controls.Add(this.button167);
             this.groupBox15.Controls.Add(this.button162);
             this.groupBox15.Controls.Add(this.button92);
-            this.groupBox15.Controls.Add(this.textBox82);
             this.groupBox15.Controls.Add(this.textBox83);
-            this.groupBox15.Controls.Add(this.textBox84);
-            this.groupBox15.Controls.Add(this.label138);
-            this.groupBox15.Controls.Add(this.label139);
             this.groupBox15.Controls.Add(this.button109);
             this.groupBox15.Controls.Add(this.button108);
             this.groupBox15.Controls.Add(this.button104);
             this.groupBox15.Controls.Add(this.button105);
             this.groupBox15.Controls.Add(this.button107);
-            this.groupBox15.Location = new System.Drawing.Point(25, 23);
+            this.groupBox15.Location = new System.Drawing.Point(28, 28);
+            this.groupBox15.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox15.Name = "groupBox15";
-            this.groupBox15.Size = new System.Drawing.Size(768, 588);
+            this.groupBox15.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox15.Size = new System.Drawing.Size(864, 706);
             this.groupBox15.TabIndex = 7;
             this.groupBox15.TabStop = false;
             this.groupBox15.Text = "分料";
             // 
+            // g16Param
+            // 
+            this.g16Param.Controls.Add(this.label139);
+            this.g16Param.Controls.Add(this.label138);
+            this.g16Param.Controls.Add(this.textBox84);
+            this.g16Param.Controls.Add(this.textBox82);
+            this.g16Param.Location = new System.Drawing.Point(11, 112);
+            this.g16Param.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g16Param.Name = "g16Param";
+            this.g16Param.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.g16Param.Size = new System.Drawing.Size(333, 148);
+            this.g16Param.TabIndex = 19;
+            this.g16Param.TabStop = false;
+            this.g16Param.Text = "参数";
+            this.g16Param.Visible = false;
+            // 
+            // label139
+            // 
+            this.label139.AutoSize = true;
+            this.label139.Location = new System.Drawing.Point(7, 40);
+            this.label139.Name = "label139";
+            this.label139.Size = new System.Drawing.Size(124, 28);
+            this.label139.TabIndex = 1;
+            this.label139.Text = "手动速度";
+            // 
+            // label138
+            // 
+            this.label138.AutoSize = true;
+            this.label138.Location = new System.Drawing.Point(7, 96);
+            this.label138.Name = "label138";
+            this.label138.Size = new System.Drawing.Size(124, 28);
+            this.label138.TabIndex = 1;
+            this.label138.Text = "手动单量";
+            // 
+            // textBox84
+            // 
+            this.textBox84.Location = new System.Drawing.Point(160, 36);
+            this.textBox84.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox84.Name = "textBox84";
+            this.textBox84.Size = new System.Drawing.Size(137, 39);
+            this.textBox84.TabIndex = 2;
+            this.textBox84.Tag = "分料轴手动速度";
+            this.textBox84.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox84.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox84.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
+            // textBox82
+            // 
+            this.textBox82.Location = new System.Drawing.Point(160, 92);
+            this.textBox82.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.textBox82.Name = "textBox82";
+            this.textBox82.Size = new System.Drawing.Size(137, 39);
+            this.textBox82.TabIndex = 2;
+            this.textBox82.Tag = "分料轴手动单量";
+            this.textBox82.Enter += new System.EventHandler(this.HandTextBox_Enter);
+            this.textBox82.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
+            this.textBox82.Leave += new System.EventHandler(this.HandTextTxt_Leave);
+            // 
             // button166
             // 
             this.button166.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button166.Location = new System.Drawing.Point(355, 385);
+            this.button166.Location = new System.Drawing.Point(399, 462);
+            this.button166.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button166.Name = "button166";
-            this.button166.Size = new System.Drawing.Size(167, 50);
+            this.button166.Size = new System.Drawing.Size(188, 60);
             this.button166.TabIndex = 18;
             this.button166.Tag = "从机变频报警";
             this.button166.Text = "从机变频报警";
@@ -5554,9 +6729,10 @@
             // button161
             // 
             this.button161.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button161.Location = new System.Drawing.Point(185, 381);
+            this.button161.Location = new System.Drawing.Point(208, 457);
+            this.button161.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button161.Name = "button161";
-            this.button161.Size = new System.Drawing.Size(162, 50);
+            this.button161.Size = new System.Drawing.Size(182, 60);
             this.button161.TabIndex = 18;
             this.button161.Tag = "安全门";
             this.button161.Text = "安全门";
@@ -5565,9 +6741,10 @@
             // button165
             // 
             this.button165.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button165.Location = new System.Drawing.Point(10, 385);
+            this.button165.Location = new System.Drawing.Point(11, 462);
+            this.button165.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button165.Name = "button165";
-            this.button165.Size = new System.Drawing.Size(162, 50);
+            this.button165.Size = new System.Drawing.Size(182, 60);
             this.button165.TabIndex = 18;
             this.button165.Tag = "急停按钮";
             this.button165.Text = "急停按钮";
@@ -5576,9 +6753,10 @@
             // button160
             // 
             this.button160.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button160.Location = new System.Drawing.Point(535, 242);
+            this.button160.Location = new System.Drawing.Point(602, 290);
+            this.button160.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button160.Name = "button160";
-            this.button160.Size = new System.Drawing.Size(178, 50);
+            this.button160.Size = new System.Drawing.Size(200, 60);
             this.button160.TabIndex = 18;
             this.button160.Tag = "切料变频报警";
             this.button160.Text = "切料变频报警";
@@ -5587,9 +6765,10 @@
             // button164
             // 
             this.button164.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button164.Location = new System.Drawing.Point(360, 314);
+            this.button164.Location = new System.Drawing.Point(405, 377);
+            this.button164.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button164.Name = "button164";
-            this.button164.Size = new System.Drawing.Size(162, 50);
+            this.button164.Size = new System.Drawing.Size(182, 60);
             this.button164.TabIndex = 18;
             this.button164.Tag = "暂停按钮";
             this.button164.Text = "暂停按钮";
@@ -5598,9 +6777,10 @@
             // button159
             // 
             this.button159.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button159.Location = new System.Drawing.Point(360, 242);
+            this.button159.Location = new System.Drawing.Point(405, 290);
+            this.button159.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button159.Name = "button159";
-            this.button159.Size = new System.Drawing.Size(162, 50);
+            this.button159.Size = new System.Drawing.Size(182, 60);
             this.button159.TabIndex = 18;
             this.button159.Tag = "分料2信号";
             this.button159.Text = "分料2信号";
@@ -5609,9 +6789,10 @@
             // button163
             // 
             this.button163.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button163.Location = new System.Drawing.Point(185, 314);
+            this.button163.Location = new System.Drawing.Point(208, 377);
+            this.button163.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button163.Name = "button163";
-            this.button163.Size = new System.Drawing.Size(162, 50);
+            this.button163.Size = new System.Drawing.Size(182, 60);
             this.button163.TabIndex = 18;
             this.button163.Tag = "启动按钮";
             this.button163.Text = "启动按钮";
@@ -5620,9 +6801,10 @@
             // button158
             // 
             this.button158.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button158.Location = new System.Drawing.Point(185, 242);
+            this.button158.Location = new System.Drawing.Point(208, 290);
+            this.button158.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button158.Name = "button158";
-            this.button158.Size = new System.Drawing.Size(162, 50);
+            this.button158.Size = new System.Drawing.Size(182, 60);
             this.button158.TabIndex = 18;
             this.button158.Tag = "分料1信号";
             this.button158.Text = "分料1信号";
@@ -5631,9 +6813,10 @@
             // button167
             // 
             this.button167.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button167.Location = new System.Drawing.Point(535, 314);
+            this.button167.Location = new System.Drawing.Point(602, 377);
+            this.button167.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button167.Name = "button167";
-            this.button167.Size = new System.Drawing.Size(178, 50);
+            this.button167.Size = new System.Drawing.Size(200, 60);
             this.button167.TabIndex = 18;
             this.button167.Tag = "从机气压报警";
             this.button167.Text = "从机气压报警";
@@ -5642,9 +6825,10 @@
             // button162
             // 
             this.button162.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button162.Location = new System.Drawing.Point(10, 314);
+            this.button162.Location = new System.Drawing.Point(11, 377);
+            this.button162.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button162.Name = "button162";
-            this.button162.Size = new System.Drawing.Size(162, 50);
+            this.button162.Size = new System.Drawing.Size(182, 60);
             this.button162.TabIndex = 18;
             this.button162.Tag = "气压检测";
             this.button162.Text = "气压检测";
@@ -5653,68 +6837,31 @@
             // button92
             // 
             this.button92.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button92.Location = new System.Drawing.Point(10, 242);
+            this.button92.Location = new System.Drawing.Point(11, 290);
+            this.button92.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button92.Name = "button92";
-            this.button92.Size = new System.Drawing.Size(162, 50);
+            this.button92.Size = new System.Drawing.Size(182, 60);
             this.button92.TabIndex = 18;
             this.button92.Tag = "分料料检测";
             this.button92.Text = "分料料检测";
             this.button92.UseVisualStyleBackColor = true;
             // 
-            // textBox82
-            // 
-            this.textBox82.Location = new System.Drawing.Point(142, 171);
-            this.textBox82.Name = "textBox82";
-            this.textBox82.Size = new System.Drawing.Size(140, 34);
-            this.textBox82.TabIndex = 2;
-            this.textBox82.Tag = "分料轴手动单量";
-            this.textBox82.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox82.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox82.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
             // textBox83
             // 
-            this.textBox83.Location = new System.Drawing.Point(155, 48);
+            this.textBox83.Location = new System.Drawing.Point(174, 58);
+            this.textBox83.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox83.Name = "textBox83";
             this.textBox83.ReadOnly = true;
-            this.textBox83.Size = new System.Drawing.Size(151, 34);
+            this.textBox83.Size = new System.Drawing.Size(169, 39);
             this.textBox83.TabIndex = 2;
             this.textBox83.Tag = "分料位置";
             // 
-            // textBox84
-            // 
-            this.textBox84.Location = new System.Drawing.Point(142, 124);
-            this.textBox84.Name = "textBox84";
-            this.textBox84.Size = new System.Drawing.Size(140, 34);
-            this.textBox84.TabIndex = 2;
-            this.textBox84.Tag = "分料轴手动速度";
-            this.textBox84.Enter += new System.EventHandler(this.HandTextBox_Enter);
-            this.textBox84.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.HandTxt_KeyPress);
-            this.textBox84.Leave += new System.EventHandler(this.HandTextTxt_Leave);
-            // 
-            // label138
-            // 
-            this.label138.AutoSize = true;
-            this.label138.Location = new System.Drawing.Point(6, 174);
-            this.label138.Name = "label138";
-            this.label138.Size = new System.Drawing.Size(106, 24);
-            this.label138.TabIndex = 1;
-            this.label138.Text = "手动单量";
-            // 
-            // label139
-            // 
-            this.label139.AutoSize = true;
-            this.label139.Location = new System.Drawing.Point(6, 127);
-            this.label139.Name = "label139";
-            this.label139.Size = new System.Drawing.Size(106, 24);
-            this.label139.TabIndex = 1;
-            this.label139.Text = "手动速度";
-            // 
             // button109
             // 
-            this.button109.Location = new System.Drawing.Point(502, 101);
+            this.button109.Location = new System.Drawing.Point(565, 122);
+            this.button109.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button109.Name = "button109";
-            this.button109.Size = new System.Drawing.Size(171, 50);
+            this.button109.Size = new System.Drawing.Size(192, 60);
             this.button109.TabIndex = 0;
             this.button109.Tag = "工位2挡料";
             this.button109.Text = "工位2挡料";
@@ -5723,9 +6870,10 @@
             // 
             // button108
             // 
-            this.button108.Location = new System.Drawing.Point(312, 101);
+            this.button108.Location = new System.Drawing.Point(351, 122);
+            this.button108.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button108.Name = "button108";
-            this.button108.Size = new System.Drawing.Size(171, 50);
+            this.button108.Size = new System.Drawing.Size(192, 60);
             this.button108.TabIndex = 0;
             this.button108.Tag = "工位1挡料";
             this.button108.Text = "工位1挡料";
@@ -5734,9 +6882,10 @@
             // 
             // button104
             // 
-            this.button104.Location = new System.Drawing.Point(502, 37);
+            this.button104.Location = new System.Drawing.Point(565, 44);
+            this.button104.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button104.Name = "button104";
-            this.button104.Size = new System.Drawing.Size(171, 50);
+            this.button104.Size = new System.Drawing.Size(192, 60);
             this.button104.TabIndex = 0;
             this.button104.Tag = "工位2出料";
             this.button104.Text = "工位2出料";
@@ -5745,9 +6894,10 @@
             // 
             // button105
             // 
-            this.button105.Location = new System.Drawing.Point(312, 37);
+            this.button105.Location = new System.Drawing.Point(351, 44);
+            this.button105.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button105.Name = "button105";
-            this.button105.Size = new System.Drawing.Size(171, 50);
+            this.button105.Size = new System.Drawing.Size(192, 60);
             this.button105.TabIndex = 0;
             this.button105.Tag = "工位1出料";
             this.button105.Text = "工位1出料";
@@ -5756,9 +6906,10 @@
             // 
             // button107
             // 
-            this.button107.Location = new System.Drawing.Point(6, 37);
+            this.button107.Location = new System.Drawing.Point(7, 44);
+            this.button107.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button107.Name = "button107";
-            this.button107.Size = new System.Drawing.Size(144, 50);
+            this.button107.Size = new System.Drawing.Size(162, 60);
             this.button107.TabIndex = 0;
             this.button107.Tag = "分料旋转";
             this.button107.Text = "分料旋转";
@@ -5770,11 +6921,11 @@
             this.tabPage3.Controls.Add(this.groupBox16);
             this.tabPage3.Controls.Add(this.dgvParam);
             this.tabPage3.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.tabPage3.Location = new System.Drawing.Point(4, 33);
+            this.tabPage3.Location = new System.Drawing.Point(4, 38);
             this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage3.Size = new System.Drawing.Size(1783, 759);
+            this.tabPage3.Size = new System.Drawing.Size(2007, 913);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -5817,18 +6968,21 @@
             this.groupBox16.Controls.Add(this.textBox113);
             this.groupBox16.Controls.Add(this.textBox111);
             this.groupBox16.Controls.Add(this.textBox96);
-            this.groupBox16.Location = new System.Drawing.Point(20, 25);
+            this.groupBox16.Location = new System.Drawing.Point(22, 30);
+            this.groupBox16.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox16.Name = "groupBox16";
-            this.groupBox16.Size = new System.Drawing.Size(817, 588);
+            this.groupBox16.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.groupBox16.Size = new System.Drawing.Size(919, 706);
             this.groupBox16.TabIndex = 9;
             this.groupBox16.TabStop = false;
             this.groupBox16.Text = "机械参数";
             // 
             // button88
             // 
-            this.button88.Location = new System.Drawing.Point(538, 380);
+            this.button88.Location = new System.Drawing.Point(605, 456);
+            this.button88.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button88.Name = "button88";
-            this.button88.Size = new System.Drawing.Size(204, 50);
+            this.button88.Size = new System.Drawing.Size(230, 60);
             this.button88.TabIndex = 3;
             this.button88.Tag = "接料切料同时";
             this.button88.Text = "接料切料同时";
@@ -5839,9 +6993,9 @@
             // 
             this.label61.AutoSize = true;
             this.label61.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label61.Location = new System.Drawing.Point(22, 380);
+            this.label61.Location = new System.Drawing.Point(25, 456);
             this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(129, 20);
+            this.label61.Size = new System.Drawing.Size(154, 24);
             this.label61.TabIndex = 1;
             this.label61.Text = "后夹预留料长";
             // 
@@ -5849,9 +7003,9 @@
             // 
             this.label57.AutoSize = true;
             this.label57.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label57.Location = new System.Drawing.Point(22, 192);
+            this.label57.Location = new System.Drawing.Point(25, 230);
             this.label57.Name = "label57";
-            this.label57.Size = new System.Drawing.Size(149, 20);
+            this.label57.Size = new System.Drawing.Size(178, 24);
             this.label57.TabIndex = 1;
             this.label57.Text = "同步前后夹间距";
             // 
@@ -5859,9 +7013,9 @@
             // 
             this.label64.AutoSize = true;
             this.label64.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label64.Location = new System.Drawing.Point(22, 474);
+            this.label64.Location = new System.Drawing.Point(25, 569);
             this.label64.Name = "label64";
-            this.label64.Size = new System.Drawing.Size(89, 20);
+            this.label64.Size = new System.Drawing.Size(106, 24);
             this.label64.TabIndex = 1;
             this.label64.Text = "送料料长";
             // 
@@ -5869,9 +7023,9 @@
             // 
             this.label60.AutoSize = true;
             this.label60.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label60.Location = new System.Drawing.Point(22, 286);
+            this.label60.Location = new System.Drawing.Point(25, 343);
             this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(209, 20);
+            this.label60.Size = new System.Drawing.Size(250, 24);
             this.label60.TabIndex = 1;
             this.label60.Text = "送料切极限至前夹距离";
             // 
@@ -5879,17 +7033,18 @@
             // 
             this.label49.AutoSize = true;
             this.label49.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label49.Location = new System.Drawing.Point(22, 98);
+            this.label49.Location = new System.Drawing.Point(25, 118);
             this.label49.Name = "label49";
-            this.label49.Size = new System.Drawing.Size(189, 20);
+            this.label49.Size = new System.Drawing.Size(226, 24);
             this.label49.TabIndex = 1;
             this.label49.Text = "料头至同步前夹距离";
             // 
             // textBox107
             // 
-            this.textBox107.Location = new System.Drawing.Point(281, 374);
+            this.textBox107.Location = new System.Drawing.Point(316, 449);
+            this.textBox107.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox107.Name = "textBox107";
-            this.textBox107.Size = new System.Drawing.Size(140, 30);
+            this.textBox107.Size = new System.Drawing.Size(157, 35);
             this.textBox107.TabIndex = 2;
             this.textBox107.Tag = "后夹预留料长";
             this.textBox107.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -5898,9 +7053,10 @@
             // 
             // textBox103
             // 
-            this.textBox103.Location = new System.Drawing.Point(281, 186);
+            this.textBox103.Location = new System.Drawing.Point(316, 223);
+            this.textBox103.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox103.Name = "textBox103";
-            this.textBox103.Size = new System.Drawing.Size(140, 30);
+            this.textBox103.Size = new System.Drawing.Size(157, 35);
             this.textBox103.TabIndex = 2;
             this.textBox103.Tag = "同步前后夹间距";
             this.textBox103.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -5909,9 +7065,10 @@
             // 
             // textBox110
             // 
-            this.textBox110.Location = new System.Drawing.Point(280, 468);
+            this.textBox110.Location = new System.Drawing.Point(315, 562);
+            this.textBox110.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox110.Name = "textBox110";
-            this.textBox110.Size = new System.Drawing.Size(140, 30);
+            this.textBox110.Size = new System.Drawing.Size(157, 35);
             this.textBox110.TabIndex = 2;
             this.textBox110.Tag = "送料料长";
             this.textBox110.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -5920,9 +7077,10 @@
             // 
             // textBox106
             // 
-            this.textBox106.Location = new System.Drawing.Point(281, 280);
+            this.textBox106.Location = new System.Drawing.Point(316, 336);
+            this.textBox106.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox106.Name = "textBox106";
-            this.textBox106.Size = new System.Drawing.Size(140, 30);
+            this.textBox106.Size = new System.Drawing.Size(157, 35);
             this.textBox106.TabIndex = 2;
             this.textBox106.Tag = "送料切极限至前夹距离";
             this.textBox106.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -5931,9 +7089,10 @@
             // 
             // textBox101
             // 
-            this.textBox101.Location = new System.Drawing.Point(280, 92);
+            this.textBox101.Location = new System.Drawing.Point(315, 110);
+            this.textBox101.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox101.Name = "textBox101";
-            this.textBox101.Size = new System.Drawing.Size(140, 30);
+            this.textBox101.Size = new System.Drawing.Size(157, 35);
             this.textBox101.TabIndex = 2;
             this.textBox101.Tag = "料头至同步前夹距离";
             this.textBox101.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -5944,9 +7103,9 @@
             // 
             this.label66.AutoSize = true;
             this.label66.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label66.Location = new System.Drawing.Point(464, 98);
+            this.label66.Location = new System.Drawing.Point(522, 118);
             this.label66.Name = "label66";
-            this.label66.Size = new System.Drawing.Size(149, 20);
+            this.label66.Size = new System.Drawing.Size(178, 24);
             this.label66.TabIndex = 1;
             this.label66.Text = "送料切离刀距离";
             // 
@@ -5954,9 +7113,9 @@
             // 
             this.label70.AutoSize = true;
             this.label70.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label70.Location = new System.Drawing.Point(464, 286);
+            this.label70.Location = new System.Drawing.Point(522, 343);
             this.label70.Name = "label70";
-            this.label70.Size = new System.Drawing.Size(149, 20);
+            this.label70.Size = new System.Drawing.Size(178, 24);
             this.label70.TabIndex = 1;
             this.label70.Text = "前送料备料速度";
             // 
@@ -5964,9 +7123,9 @@
             // 
             this.label69.AutoSize = true;
             this.label69.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label69.Location = new System.Drawing.Point(464, 239);
+            this.label69.Location = new System.Drawing.Point(522, 287);
             this.label69.Name = "label69";
-            this.label69.Size = new System.Drawing.Size(149, 20);
+            this.label69.Size = new System.Drawing.Size(178, 24);
             this.label69.TabIndex = 1;
             this.label69.Text = "送料切备料速度";
             // 
@@ -5974,9 +7133,9 @@
             // 
             this.label68.AutoSize = true;
             this.label68.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label68.Location = new System.Drawing.Point(464, 192);
+            this.label68.Location = new System.Drawing.Point(522, 230);
             this.label68.Name = "label68";
-            this.label68.Size = new System.Drawing.Size(149, 20);
+            this.label68.Size = new System.Drawing.Size(178, 24);
             this.label68.TabIndex = 1;
             this.label68.Text = "送料切送料速度";
             // 
@@ -5984,9 +7143,9 @@
             // 
             this.label67.AutoSize = true;
             this.label67.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label67.Location = new System.Drawing.Point(464, 145);
+            this.label67.Location = new System.Drawing.Point(522, 174);
             this.label67.Name = "label67";
-            this.label67.Size = new System.Drawing.Size(89, 20);
+            this.label67.Size = new System.Drawing.Size(106, 24);
             this.label67.TabIndex = 1;
             this.label67.Text = "锯片补偿";
             // 
@@ -5994,9 +7153,9 @@
             // 
             this.label65.AutoSize = true;
             this.label65.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label65.Location = new System.Drawing.Point(464, 51);
+            this.label65.Location = new System.Drawing.Point(522, 61);
             this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(89, 20);
+            this.label65.Size = new System.Drawing.Size(106, 24);
             this.label65.TabIndex = 1;
             this.label65.Text = "料头补偿";
             // 
@@ -6004,9 +7163,9 @@
             // 
             this.label63.AutoSize = true;
             this.label63.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label63.Location = new System.Drawing.Point(22, 521);
+            this.label63.Location = new System.Drawing.Point(25, 626);
             this.label63.Name = "label63";
-            this.label63.Size = new System.Drawing.Size(89, 20);
+            this.label63.Size = new System.Drawing.Size(106, 24);
             this.label63.TabIndex = 1;
             this.label63.Text = "铣齿深度";
             // 
@@ -6014,9 +7173,9 @@
             // 
             this.label59.AutoSize = true;
             this.label59.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label59.Location = new System.Drawing.Point(22, 333);
+            this.label59.Location = new System.Drawing.Point(25, 400);
             this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(129, 20);
+            this.label59.Size = new System.Drawing.Size(154, 24);
             this.label59.TabIndex = 1;
             this.label59.Text = "前夹预留料长";
             // 
@@ -6024,17 +7183,18 @@
             // 
             this.label50.AutoSize = true;
             this.label50.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label50.Location = new System.Drawing.Point(21, 145);
+            this.label50.Location = new System.Drawing.Point(24, 174);
             this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(229, 20);
+            this.label50.Size = new System.Drawing.Size(274, 24);
             this.label50.TabIndex = 1;
             this.label50.Text = "料检测点至同步后夹距离";
             // 
             // textBox109
             // 
-            this.textBox109.Location = new System.Drawing.Point(280, 515);
+            this.textBox109.Location = new System.Drawing.Point(315, 618);
+            this.textBox109.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox109.Name = "textBox109";
-            this.textBox109.Size = new System.Drawing.Size(140, 30);
+            this.textBox109.Size = new System.Drawing.Size(157, 35);
             this.textBox109.TabIndex = 2;
             this.textBox109.Tag = "铣齿深度";
             this.textBox109.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6043,9 +7203,10 @@
             // 
             // textBox105
             // 
-            this.textBox105.Location = new System.Drawing.Point(280, 325);
+            this.textBox105.Location = new System.Drawing.Point(315, 390);
+            this.textBox105.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox105.Name = "textBox105";
-            this.textBox105.Size = new System.Drawing.Size(140, 30);
+            this.textBox105.Size = new System.Drawing.Size(157, 35);
             this.textBox105.TabIndex = 2;
             this.textBox105.Tag = "前夹预留料长";
             this.textBox105.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6054,9 +7215,10 @@
             // 
             // textBox102
             // 
-            this.textBox102.Location = new System.Drawing.Point(280, 139);
+            this.textBox102.Location = new System.Drawing.Point(315, 167);
+            this.textBox102.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox102.Name = "textBox102";
-            this.textBox102.Size = new System.Drawing.Size(140, 30);
+            this.textBox102.Size = new System.Drawing.Size(157, 35);
             this.textBox102.TabIndex = 2;
             this.textBox102.Tag = "料检测点至同步后夹距离";
             this.textBox102.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6067,17 +7229,18 @@
             // 
             this.label62.AutoSize = true;
             this.label62.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label62.Location = new System.Drawing.Point(22, 427);
+            this.label62.Location = new System.Drawing.Point(25, 512);
             this.label62.Name = "label62";
-            this.label62.Size = new System.Drawing.Size(129, 20);
+            this.label62.Size = new System.Drawing.Size(154, 24);
             this.label62.TabIndex = 1;
             this.label62.Text = "同步接料极限";
             // 
             // textBox108
             // 
-            this.textBox108.Location = new System.Drawing.Point(281, 421);
+            this.textBox108.Location = new System.Drawing.Point(316, 505);
+            this.textBox108.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox108.Name = "textBox108";
-            this.textBox108.Size = new System.Drawing.Size(140, 30);
+            this.textBox108.Size = new System.Drawing.Size(157, 35);
             this.textBox108.TabIndex = 2;
             this.textBox108.Tag = "同步接料极限";
             this.textBox108.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6088,17 +7251,18 @@
             // 
             this.label58.AutoSize = true;
             this.label58.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label58.Location = new System.Drawing.Point(22, 239);
+            this.label58.Location = new System.Drawing.Point(25, 287);
             this.label58.Name = "label58";
-            this.label58.Size = new System.Drawing.Size(169, 20);
+            this.label58.Size = new System.Drawing.Size(202, 24);
             this.label58.TabIndex = 1;
             this.label58.Text = "送料切极限备料位";
             // 
             // textBox104
             // 
-            this.textBox104.Location = new System.Drawing.Point(280, 233);
+            this.textBox104.Location = new System.Drawing.Point(315, 280);
+            this.textBox104.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox104.Name = "textBox104";
-            this.textBox104.Size = new System.Drawing.Size(140, 30);
+            this.textBox104.Size = new System.Drawing.Size(157, 35);
             this.textBox104.TabIndex = 2;
             this.textBox104.Tag = "送料切极限备料位";
             this.textBox104.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6109,17 +7273,18 @@
             // 
             this.label40.AutoSize = true;
             this.label40.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label40.Location = new System.Drawing.Point(22, 51);
+            this.label40.Location = new System.Drawing.Point(25, 61);
             this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(109, 20);
+            this.label40.Size = new System.Drawing.Size(130, 24);
             this.label40.TabIndex = 1;
             this.label40.Text = "前送料极限";
             // 
             // textBox116
             // 
-            this.textBox116.Location = new System.Drawing.Point(658, 280);
+            this.textBox116.Location = new System.Drawing.Point(740, 336);
+            this.textBox116.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox116.Name = "textBox116";
-            this.textBox116.Size = new System.Drawing.Size(140, 30);
+            this.textBox116.Size = new System.Drawing.Size(157, 35);
             this.textBox116.TabIndex = 2;
             this.textBox116.Tag = "前送料备料速度";
             this.textBox116.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6128,9 +7293,10 @@
             // 
             // textBox115
             // 
-            this.textBox115.Location = new System.Drawing.Point(658, 233);
+            this.textBox115.Location = new System.Drawing.Point(740, 280);
+            this.textBox115.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox115.Name = "textBox115";
-            this.textBox115.Size = new System.Drawing.Size(140, 30);
+            this.textBox115.Size = new System.Drawing.Size(157, 35);
             this.textBox115.TabIndex = 2;
             this.textBox115.Tag = "送料切备料速度";
             this.textBox115.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6139,9 +7305,10 @@
             // 
             // textBox114
             // 
-            this.textBox114.Location = new System.Drawing.Point(658, 186);
+            this.textBox114.Location = new System.Drawing.Point(740, 223);
+            this.textBox114.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox114.Name = "textBox114";
-            this.textBox114.Size = new System.Drawing.Size(140, 30);
+            this.textBox114.Size = new System.Drawing.Size(157, 35);
             this.textBox114.TabIndex = 2;
             this.textBox114.Tag = "送料切送料速度";
             this.textBox114.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6150,9 +7317,10 @@
             // 
             // textBox112
             // 
-            this.textBox112.Location = new System.Drawing.Point(658, 92);
+            this.textBox112.Location = new System.Drawing.Point(740, 110);
+            this.textBox112.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox112.Name = "textBox112";
-            this.textBox112.Size = new System.Drawing.Size(140, 30);
+            this.textBox112.Size = new System.Drawing.Size(157, 35);
             this.textBox112.TabIndex = 2;
             this.textBox112.Tag = "送料切离刀距离";
             this.textBox112.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6161,9 +7329,10 @@
             // 
             // textBox113
             // 
-            this.textBox113.Location = new System.Drawing.Point(658, 139);
+            this.textBox113.Location = new System.Drawing.Point(740, 167);
+            this.textBox113.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox113.Name = "textBox113";
-            this.textBox113.Size = new System.Drawing.Size(140, 30);
+            this.textBox113.Size = new System.Drawing.Size(157, 35);
             this.textBox113.TabIndex = 2;
             this.textBox113.Tag = "锯片补偿";
             this.textBox113.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6172,9 +7341,10 @@
             // 
             // textBox111
             // 
-            this.textBox111.Location = new System.Drawing.Point(658, 45);
+            this.textBox111.Location = new System.Drawing.Point(740, 54);
+            this.textBox111.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox111.Name = "textBox111";
-            this.textBox111.Size = new System.Drawing.Size(140, 30);
+            this.textBox111.Size = new System.Drawing.Size(157, 35);
             this.textBox111.TabIndex = 2;
             this.textBox111.Tag = "料头补偿";
             this.textBox111.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6183,9 +7353,10 @@
             // 
             // textBox96
             // 
-            this.textBox96.Location = new System.Drawing.Point(280, 45);
+            this.textBox96.Location = new System.Drawing.Point(315, 54);
+            this.textBox96.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.textBox96.Name = "textBox96";
-            this.textBox96.Size = new System.Drawing.Size(140, 30);
+            this.textBox96.Size = new System.Drawing.Size(157, 35);
             this.textBox96.TabIndex = 2;
             this.textBox96.Tag = "前送料极限";
             this.textBox96.Enter += new System.EventHandler(this.ParamTextBox_Enter);
@@ -6199,14 +7370,14 @@
             this.dgvParam.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bin,
             this.value});
-            this.dgvParam.Location = new System.Drawing.Point(870, 41);
+            this.dgvParam.Location = new System.Drawing.Point(979, 50);
             this.dgvParam.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
             dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvParam.RowTemplate.Height = 35;
-            this.dgvParam.Size = new System.Drawing.Size(326, 221);
+            this.dgvParam.Size = new System.Drawing.Size(367, 266);
             this.dgvParam.TabIndex = 1;
             this.dgvParam.Visible = false;
             this.dgvParam.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvParam_CellBeginEdit);
@@ -6228,11 +7399,11 @@
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.dgvIO);
-            this.tabPage4.Location = new System.Drawing.Point(4, 33);
+            this.tabPage4.Location = new System.Drawing.Point(4, 38);
             this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage4.Size = new System.Drawing.Size(1783, 759);
+            this.tabPage4.Size = new System.Drawing.Size(2007, 913);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "IO监控";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -6245,14 +7416,14 @@
             this.dgvIO.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.bin0,
             this.value0});
-            this.dgvIO.Location = new System.Drawing.Point(29, 38);
+            this.dgvIO.Location = new System.Drawing.Point(33, 46);
             this.dgvIO.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
             dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvIO.RowTemplate.Height = 35;
-            this.dgvIO.Size = new System.Drawing.Size(1093, 540);
+            this.dgvIO.Size = new System.Drawing.Size(1230, 648);
             this.dgvIO.TabIndex = 2;
             // 
             // bin0
@@ -6273,10 +7444,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.infoLbl});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 843);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 917);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 13, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1815, 36);
+            this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 15, 0);
+            this.statusStrip1.Size = new System.Drawing.Size(2062, 41);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -6284,16 +7455,17 @@
             // 
             this.statusLabel.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(134, 31);
+            this.statusLabel.Size = new System.Drawing.Size(155, 36);
             this.statusLabel.Text = "设备无通信";
             // 
             // infoLbl
             // 
-            this.infoLbl.BackColor = System.Drawing.Color.Red;
+            this.infoLbl.BackColor = System.Drawing.Color.LightGreen;
             this.infoLbl.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.infoLbl.Name = "infoLbl";
-            this.infoLbl.Size = new System.Drawing.Size(140, 31);
-            this.infoLbl.Text = "123456789";
+            this.infoLbl.Size = new System.Drawing.Size(651, 36);
+            this.infoLbl.Text = "浙江省台州市意利欧机械有限公司-0576-86520151";
+            this.infoLbl.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // UpdateTimer
             // 
@@ -6319,136 +7491,11 @@
             this.toolTip1.AutomaticDelay = 200;
             this.toolTip1.IsBalloon = true;
             // 
-            // g1Param
-            // 
-            this.g1Param.Controls.Add(this.textBox7);
-            this.g1Param.Controls.Add(this.textBox4);
-            this.g1Param.Controls.Add(this.textBox6);
-            this.g1Param.Controls.Add(this.textBox3);
-            this.g1Param.Controls.Add(this.textBox5);
-            this.g1Param.Controls.Add(this.textBox2);
-            this.g1Param.Controls.Add(this.label14);
-            this.g1Param.Controls.Add(this.label11);
-            this.g1Param.Controls.Add(this.label13);
-            this.g1Param.Controls.Add(this.label9);
-            this.g1Param.Controls.Add(this.label12);
-            this.g1Param.Controls.Add(this.label8);
-            this.g1Param.Location = new System.Drawing.Point(10, 93);
-            this.g1Param.Name = "g1Param";
-            this.g1Param.Size = new System.Drawing.Size(526, 225);
-            this.g1Param.TabIndex = 3;
-            this.g1Param.TabStop = false;
-            this.g1Param.Text = "参数测试";
-            this.g1Param.Visible = false;
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(388, 141);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(100, 34);
-            this.textBox7.TabIndex = 999;
-            this.textBox7.Tag = "机械手X放料位置";
-            this.textBox7.Text = "1234";
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(151, 141);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(100, 34);
-            this.textBox4.TabIndex = 10;
-            this.textBox4.Tag = "机械手X复位速度";
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(388, 96);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(100, 34);
-            this.textBox6.TabIndex = 11;
-            this.textBox6.Tag = "机械手X抓料位置";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(151, 96);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 34);
-            this.textBox3.TabIndex = 12;
-            this.textBox3.Tag = "机械手X手动单量";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(388, 49);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(100, 34);
-            this.textBox5.TabIndex = 13;
-            this.textBox5.Tag = "机械手X自动速度";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(151, 49);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 34);
-            this.textBox2.TabIndex = 14;
-            this.textBox2.Tag = "机械手X手动速度";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(275, 141);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(106, 24);
-            this.label14.TabIndex = 3;
-            this.label14.Text = "放料位置";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(38, 141);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(106, 24);
-            this.label11.TabIndex = 4;
-            this.label11.Text = "复位速度";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(275, 96);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(106, 24);
-            this.label13.TabIndex = 5;
-            this.label13.Text = "抓料位置";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(38, 96);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(106, 24);
-            this.label9.TabIndex = 6;
-            this.label9.Text = "手动单量";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(275, 49);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(106, 24);
-            this.label12.TabIndex = 7;
-            this.label12.Text = "自动速度";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(38, 49);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 24);
-            this.label8.TabIndex = 8;
-            this.label8.Text = "手动速度";
-            // 
             // WorkForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1815, 879);
+            this.ClientSize = new System.Drawing.Size(2062, 958);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tc1);
             this.Controls.Add(this.menuStrip1);
@@ -6471,47 +7518,78 @@
             this.tabPage2.ResumeLayout(false);
             this.handTc.ResumeLayout(false);
             this.tabPage5.ResumeLayout(false);
-            this.tabPage5.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.g2Param.ResumeLayout(false);
+            this.g2Param.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.g1Param.ResumeLayout(false);
+            this.g1Param.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
-            this.groupBox8.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
+            this.g5Param.ResumeLayout(false);
+            this.g5Param.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.g4Param.ResumeLayout(false);
+            this.g4Param.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.g3Param.ResumeLayout(false);
+            this.g3Param.PerformLayout();
+            this.g6Param.ResumeLayout(false);
+            this.g6Param.PerformLayout();
             this.tabPage7.ResumeLayout(false);
-            this.tabPage7.PerformLayout();
             this.groupBox10.ResumeLayout(false);
             this.groupBox10.PerformLayout();
+            this.g7Param.ResumeLayout(false);
+            this.g7Param.PerformLayout();
             this.groupBox9.ResumeLayout(false);
             this.groupBox9.PerformLayout();
+            this.g8Param.ResumeLayout(false);
+            this.g8Param.PerformLayout();
+            this.g9Param.ResumeLayout(false);
+            this.g9Param.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.groupBox11.ResumeLayout(false);
             this.groupBox11.PerformLayout();
+            this.g11Param.ResumeLayout(false);
+            this.g11Param.PerformLayout();
             this.tabPage9.ResumeLayout(false);
+            this.groupBox17.ResumeLayout(false);
+            this.groupBox17.PerformLayout();
+            this.g18Param.ResumeLayout(false);
+            this.g18Param.PerformLayout();
             this.groupBox12.ResumeLayout(false);
             this.groupBox12.PerformLayout();
+            this.g12Param.ResumeLayout(false);
+            this.g12Param.PerformLayout();
             this.tabPage10.ResumeLayout(false);
             this.groupBox18.ResumeLayout(false);
             this.groupBox18.PerformLayout();
+            this.g14Param.ResumeLayout(false);
+            this.g14Param.PerformLayout();
             this.groupBox13.ResumeLayout(false);
             this.groupBox13.PerformLayout();
+            this.g13Param.ResumeLayout(false);
+            this.g13Param.PerformLayout();
             this.tabPage11.ResumeLayout(false);
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
+            this.g15Param.ResumeLayout(false);
+            this.g15Param.PerformLayout();
             this.tabPage12.ResumeLayout(false);
-            this.groupBox17.ResumeLayout(false);
-            this.groupBox17.PerformLayout();
+            this.g17Param.ResumeLayout(false);
+            this.g17Param.PerformLayout();
             this.groupBox15.ResumeLayout(false);
             this.groupBox15.PerformLayout();
+            this.g16Param.ResumeLayout(false);
+            this.g16Param.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.groupBox16.ResumeLayout(false);
             this.groupBox16.PerformLayout();
@@ -6520,8 +7598,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvIO)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.g1Param.ResumeLayout(false);
-            this.g1Param.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -6596,28 +7672,11 @@
         private System.Windows.Forms.Button button99;
         private System.Windows.Forms.Button button168;
         private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.TextBox textBox18;
         private System.Windows.Forms.Button button9;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox15;
-        private System.Windows.Forms.TextBox textBox8;
-        private System.Windows.Forms.TextBox textBox14;
-        private System.Windows.Forms.TextBox textBox9;
         private System.Windows.Forms.TextBox textBox17;
-        private System.Windows.Forms.TextBox textBox10;
-        private System.Windows.Forms.TextBox textBox11;
-        private System.Windows.Forms.TextBox textBox12;
-        private System.Windows.Forms.TextBox textBox13;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.Label label19;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Button button98;
-        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Button button97;
-        private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button button96;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
@@ -6630,7 +7689,6 @@
         private System.Windows.Forms.Button button94;
         private System.Windows.Forms.Button button87;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label30;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Label label73;
@@ -6837,14 +7895,12 @@
         private System.Windows.Forms.Button button146;
         private System.Windows.Forms.TextBox textBox91;
         private System.Windows.Forms.TextBox textBox90;
-        private System.Windows.Forms.TextBox textBox89;
         private System.Windows.Forms.TextBox textBox69;
         private System.Windows.Forms.TextBox textBox70;
         private System.Windows.Forms.TextBox textBox71;
         private System.Windows.Forms.TextBox textBox72;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label116;
         private System.Windows.Forms.Label label117;
         private System.Windows.Forms.Label label118;
@@ -6990,7 +8046,7 @@
         private System.Windows.Forms.TextBox textBox113;
         private System.Windows.Forms.TextBox textBox111;
         private System.Windows.Forms.TextBox textBox96;
-        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.GroupBox g17Param;
         private System.Windows.Forms.TextBox textBox118;
         private System.Windows.Forms.TextBox textBox120;
         private System.Windows.Forms.Label label72;
@@ -7046,6 +8102,76 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.GroupBox g2Param;
+        private System.Windows.Forms.TextBox textBox15;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox14;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBox11;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.TextBox textBox18;
+        private System.Windows.Forms.Label label30;
+        private System.Windows.Forms.GroupBox g3Param;
+        private System.Windows.Forms.GroupBox g5Param;
+        private System.Windows.Forms.GroupBox g4Param;
+        private System.Windows.Forms.GroupBox g6Param;
+        private System.Windows.Forms.GroupBox g7Param;
+        private System.Windows.Forms.GroupBox g8Param;
+        private System.Windows.Forms.GroupBox g9Param;
+        private System.Windows.Forms.GroupBox g11Param;
+        private System.Windows.Forms.GroupBox g12Param;
+        private System.Windows.Forms.GroupBox g13Param;
+        private System.Windows.Forms.GroupBox g14Param;
+        private System.Windows.Forms.GroupBox g15Param;
+        private System.Windows.Forms.GroupBox g16Param;
+        private System.Windows.Forms.Button button178;
+        private System.Windows.Forms.Label label113;
+        private System.Windows.Forms.TextBox textBox135;
+        private System.Windows.Forms.Label label106;
+        private System.Windows.Forms.TextBox textBox131;
+        private System.Windows.Forms.Button button179;
+        private System.Windows.Forms.Label label120;
+        private System.Windows.Forms.Label label119;
+        private System.Windows.Forms.Label label115;
+        private System.Windows.Forms.Label label114;
+        private System.Windows.Forms.TextBox textBox139;
+        private System.Windows.Forms.TextBox textBox138;
+        private System.Windows.Forms.TextBox textBox137;
+        private System.Windows.Forms.TextBox textBox136;
+        private System.Windows.Forms.GroupBox groupBox17;
+        private System.Windows.Forms.Button button180;
+        private System.Windows.Forms.Button button181;
+        private System.Windows.Forms.TextBox textBox140;
+        private System.Windows.Forms.GroupBox g18Param;
+        private System.Windows.Forms.Label label126;
+        private System.Windows.Forms.Label label127;
+        private System.Windows.Forms.TextBox textBox141;
+        private System.Windows.Forms.TextBox textBox142;
+        private System.Windows.Forms.TextBox textBox144;
+        private System.Windows.Forms.TextBox textBox146;
+        private System.Windows.Forms.TextBox textBox147;
+        private System.Windows.Forms.TextBox textBox148;
+        private System.Windows.Forms.TextBox textBox149;
+        private System.Windows.Forms.TextBox textBox150;
+        private System.Windows.Forms.Label label128;
+        private System.Windows.Forms.Label label129;
+        private System.Windows.Forms.Label label133;
+        private System.Windows.Forms.Label label134;
+        private System.Windows.Forms.Label label135;
+        private System.Windows.Forms.Label label136;
+        private System.Windows.Forms.Button button182;
+        private System.Windows.Forms.Label label31;
+        private System.Windows.Forms.TextBox textBox89;
     }
 }
 

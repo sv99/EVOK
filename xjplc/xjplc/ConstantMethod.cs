@@ -20,6 +20,8 @@ using System.Linq.Expressions;
 using FastReport;
 using System.Drawing.Drawing2D;
 using System.Drawing.Printing;
+using System.Collections;
+using System.Net.NetworkInformation;
 
 namespace xjplc
 {
@@ -57,8 +59,8 @@ namespace xjplc
             }
         }
 
+ 
 
-       
         /// <summary>
         /// 重要信息写入日志
         /// </summary>
@@ -124,7 +126,40 @@ namespace xjplc
    
     public class ConstantMethod
     {
+        public static int getSum(List<int> lst,int id)
+        {
+            if (lst == null) return 0;
+            if (lst.Count == 0) return 0;
+            if(id>=lst.Count) return 0;
+            if (id == 0) return 0;
+            int sum = 0;
+            for (int i = 0; i < id; i++)
+            {
+                sum += lst[i];
+            }
 
+            return sum;
+                       
+        }
+        //去除文件名中的非法字符
+        public static string pathFilter(string pathName,string replaceString)
+        {
+
+            string resultname = Path.GetFileName(pathName);
+            var invalidFileName = "\"I\"\\n/va/l**id:>> file\\/:*?\"| il*e|n|| a\"me.?\t\r";
+            var invalid = new string(Path.GetInvalidFileNameChars()) + new string(Path.GetInvalidPathChars());
+            foreach (char c in invalid)
+            {
+                resultname = resultname.Replace(c.ToString(), replaceString);
+            }
+
+           string  dirName = Path.GetDirectoryName(pathName);
+
+            resultname = Path.Combine(dirName,resultname) ;
+           
+
+            return resultname;
+        }
 
         public static string DesktopPath
         {
@@ -134,6 +169,130 @@ namespace xjplc
 
             }
         }
+
+        //传入服务器IP 先确定当前电脑是否已经连入该字段的网络
+        public static bool CheckServeIpExist(string serIp)
+        {
+
+            IPAddress[] ips = Dns.GetHostAddresses(""); //当参数为""时返回本机所有IP
+            string serP = "";
+            bool IsExist = false;
+            int i = serIp.LastIndexOf(".");
+            serP = serIp.Substring(0,  i+1);
+            foreach (IPAddress ip in ips)
+            {
+                string serIpPattern = string.Format("({0})+", serP);
+
+                if (Regex.IsMatch(ip.ToString(), serIpPattern))
+                {
+                    IsExist = true;
+                }
+            }
+
+
+            return IsExist;
+        }
+
+        public static bool  IsNetWorkExist(string hostName)
+        {
+            bool online = false; //是否在线
+            Ping ping = new Ping();
+            PingReply pingReply = ping.Send(hostName);
+            if (pingReply.Status == IPStatus.Success)
+            {
+                online = true;
+                        
+            }
+            ping.Dispose();
+            return online;
+        }
+        //在IP存在的情况下 确认服务器端口是否可以连上
+        public  static bool CheckAddressPort(ServerInfo ser)
+        {
+
+            //PING 一下
+
+            string ip = ser.server_Ip;
+            
+            ip = ip.Trim();
+            if (ip == string.Empty)
+                return false;
+            try
+            {              
+                // 是否 Ping 的通  
+                if (IsNetWorkExist(ip))
+                {
+                   
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            #region 隐藏         
+            /***
+            try
+            {
+                //先确认IP网段是否正确
+                string ipAddress = ser.server_Ip;
+                int portNum = int.Parse(ser.server_Port);
+
+                if (!CheckServeIpExist(ipAddress))
+                {
+                    return false;                
+                }
+                //开始尝试连接测试
+                IPAddress ip = IPAddress.Parse(ipAddress);
+                IPEndPoint point = new IPEndPoint(ip, portNum);
+                using (Socket sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
+                {
+                    sock.Connect(point);
+                                     
+                    sock.Close();
+
+                    return true;
+                }
+            }
+            catch (SocketException e)
+            {
+                return false;
+            }
+            ***/
+            #endregion
+        }
+
+        public static void ChangeIco(Form f)
+        {
+            if (!File.Exists(Constant.SourceIco)) return;
+            Icon ico = new Icon(Constant.SourceIco);
+            f.Icon = ico;
+        }
+        //此方法有点问题 居然有常量字符串 只适用于tanuo机器项目使用
+        public static bool checkIP(string ipPattern)
+        {
+                                
+            IPAddress[] ips = Dns.GetHostAddresses(""); //当参数为""时返回本机所有IP
+
+            bool IsExist = false;
+
+
+            foreach (IPAddress ip in ips)
+            {
+                string s = string.Format("({0})+", ipPattern);
+
+                if (Regex.IsMatch(ip.ToString(), "(192.168.0.)+"))
+                {
+                    IsExist = true;
+                }
+            }
+
+
+            return IsExist;
+        }
+
         //去掉字符串中的非数字
         public static string RemoveNotNumber(string key)
         {
@@ -191,6 +350,20 @@ namespace xjplc
                 dt.Columns.Add(valueCol[i]);
             }
             return dt;
+        }
+
+        public static byte[] CheckSum(byte[] byteSum)
+        {
+
+            int j = 0;
+
+            for (int i = 0; i < byteSum.Count(); i++)
+            {
+                j += byteSum[i];
+            }
+            
+            return ConstantMethod.getDataHighLowByte(j);
+
         }
 
         //根据规则转换表格 得到数据表格
@@ -277,7 +450,7 @@ namespace xjplc
                     {
                         if (dt.Rows[i]["bin"].ToString().Equals(psLst[j].Name))
                         {
-
+                            psLst[j].ShowStr.Clear();
                             psLst[j].Mode = dt.Rows[i]["mode"].ToString();
                             psLst[j].RowIndex = i;
                             psLst[j].BelongToDataform = dt;
@@ -312,7 +485,7 @@ namespace xjplc
             string str1 = control.Tag.ToString() + Constant.Read;
             string str2 = control.Tag.ToString() + Constant.Write + Constant.Read;
             string str3 = control.Tag.ToString() + Constant.Read + Constant.Write;
-
+           
 
             if (simple2.Name.Equals(str1) || simple2.Name.Equals(str2) || simple2.Name.Equals(str3))
             {
@@ -346,61 +519,32 @@ namespace xjplc
 
             return false;
         }
-        public static bool XJFindPort() //如果可以连接 则写到config里
+        public static bool XJFindPort(int id) //如果可以连接 则写到config里
         {
             SerialPort m_serialPort = new SerialPort();
 
             string[] str = SerialPort.GetPortNames();
 
             List<string> portNameLst = new List<string>();
-            PortParam portparam0 = new PortParam(); 
 
-            try
-            {
-                if (File.Exists(Constant.ConfigSerialportFilePath))
-                {
-                    portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
-                    ConstantMethod.fileCopy(Constant.ConfigSerialportFilePath, Constant.ConfigSerialportFilePath_bak);
-                }
-                else
-                {
-                    if (!ConstantMethod.fileCopy(Constant.ConfigSerialportFilePath_bak, Constant.ConfigSerialportFilePath))
-                    {
-                        MessageBox.Show(Constant.ConfigSerialportFilePath_bak + Constant.ErrorSerialportConfigFile);
-
-                        Application.Exit();
-
-                        System.Environment.Exit(0);
-
-                    }
-                }
-
-            }
-            catch
-            {
-
-                if (!ConstantMethod.fileCopy(Constant.ConfigSerialportFilePath_bak, Constant.ConfigSerialportFilePath))
-                {
-                    MessageBox.Show(Constant.ConfigSerialportFilePath_bak+Constant.ErrorSerialportConfigFile);
-
-                    Application.Exit();
-
-                    System.Environment.Exit(0);
-
-                }
-                portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
-            }
+            PortParam    portparam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+                               
             for (int i = 0; i < (str.Length + 1); i++)
             {
                 try
                 {
-                    if (i == 0)
+
+                    if (i == 0 && str.Contains(portparam0.m_portName))
                         m_serialPort.PortName = portparam0.m_portName;
                     else
                     {
-                        if (!str[i - 1].Equals(portparam0.m_portName))
-                            m_serialPort.PortName = str[i - 1];
-                        else continue;
+                        if (i > 0)
+                        {
+                            if (!str[i - 1].Equals(portparam0.m_portName))
+                                m_serialPort.PortName = str[i - 1];
+                            else continue;
+                        }
+                        else { continue; }
                     }
                     m_serialPort.BaudRate = portparam0.m_baudRate;
                     m_serialPort.Parity = portparam0.m_parity;
@@ -409,20 +553,41 @@ namespace xjplc
                     m_serialPort.DataBits = portparam0.m_dataBits;
                     m_serialPort.ReadBufferSize = 1024;
                     m_serialPort.WriteBufferSize = 1024;
-                    m_serialPort.ReadTimeout = 100;
+                    m_serialPort.ReadTimeout = 200;
+                    m_serialPort.WriteTimeout = 200;
                     if (!m_serialPort.IsOpen)
                     {
-                        m_serialPort.Open();
+                        try
+                        {
+                            m_serialPort.Open();
+                        }
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
                     }
                     byte[] resultByte = new byte[Constant.XJExistByteIn.Count()];
-
-                    m_serialPort.Write(Constant.XJExistByteOut, 0, Constant.XJExistByteOut.Length);
-
-                    ConstantMethod.Delay(200);
-
-                    m_serialPort.Read(resultByte, 0, Constant.XJExistByteIn.Count());
-
-                    if (ConstantMethod.compareByteStrictly(resultByte, Constant.XJExistByteIn))
+                    try
+                    {
+                        m_serialPort.Write(Constant.XJExistByteOut, 0, Constant.XJExistByteOut.Length);
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+                    ConstantMethod.Delay(300);
+                    try
+                    {
+                        m_serialPort.Read(resultByte, 0, Constant.XJExistByteIn.Count());
+                    }
+                    catch (Exception ex)
+                    {
+                         continue;
+                    }
+                    if (ConstantMethod.compareByteStrictly(resultByte, Constant.XJExistByteIn) 
+                        || (
+                         resultByte[0]>0
+                        && !ConstantMethod.compareByte(resultByte, Constant.XJExistByteOut)))
                     {
                         //rtbResult.AppendText("连接成功" + m_serialPort.PortName);
                         ConstantMethod.SetPortParam(Constant.ConfigSerialportFilePath, Constant.PortName, m_serialPort.PortName);
@@ -430,25 +595,28 @@ namespace xjplc
                     }
 
                 }
-                catch
+                catch (EvaluateException ex)
                 {
                     //rtbResult.AppendText("连接失败" + m_serialPort.PortName);
-                    // throw new SerialPortException(
+                    //throw new SerialPortException(
                     //string.Format("无法打开串口:{0}", m_serialPort.PortName));
                     //continue;
 
                 }
-                finally { m_serialPort.Close(); };
+                finally
+                {
+
+                    m_serialPort.Close();
+                    m_serialPort.Dispose();
+                }
 
             }
-
-            //GC.Collect();
-
-            //GC.WaitForPendingFinalizers();
+         
 
             return false;
 
         }
+
         #endregion
         public static int getModeCount(string type)
         {
@@ -472,6 +640,38 @@ namespace xjplc
 
             count = typerCount[type];
             return count;
+        }
+        /// <summary>
+        /// 获取数据中某一位的值
+        /// </summary>
+        /// <param name="input">传入的数据类型,可换成其它数据类型,比如Int</param>
+        /// <param name="index">要获取的第几位的序号,从0开始</param>
+        /// <returns>返回值为-1表示获取值失败</returns>
+        public static int GetbitValue(byte input, int index)
+        {
+            if (index > sizeof(byte))
+            {
+                return -1;
+            }
+            //左移到最高位
+            int value = input << (sizeof(byte) - 1 - index);
+            //右移到最低位
+            value = value >> (sizeof(byte) - 1);
+            return value;
+        }
+       /// <summary>
+        /// 设置某一位的值
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="index">要设置的位， 值从低到高为 1-8</param>
+        /// <param name="flag">要设置的值 true / false</param>
+        /// <returns></returns>
+        public static byte set_bit(byte data, int index, bool flag)
+        {
+            if (index > 8 || index < 1)
+                throw new ArgumentOutOfRangeException();
+            int v = index < 2 ? index : (2 << (index - 2));
+            return flag ? (byte)(data | v) : (byte)(data & ~v);
         }
         //统计字符出现次数
         public static int CharNum(string str, string search)
@@ -519,9 +719,32 @@ namespace xjplc
         {
             string str = DateTime.Now.ToString("MMdd");
             int psswdInt = 0;
-            int.TryParse(str, out psswdInt);
-            psswdInt = psswdInt + Constant.PwdOffSet * i;
+                     
+            //确定用户是否有配置密码逻辑 没有就按固定的来       
+            ConfigFileManager configManager = configFileBak(Constant.ConfigParamFilePath); 
+            string pwd = configManager.ReadConfig(Constant.passwd);
+            int pssOffset = 0;
+            //密码策略 分为固定和用户可配置模式 读取配置文件中的passwd 关键字可更新密码生成逻辑
+            if (int.TryParse(pwd, out pssOffset))
+            {
+                int.TryParse(str, out psswdInt);
+                psswdInt = psswdInt + pssOffset*i;
+            }
+            else
+            {
+                int.TryParse(str, out psswdInt);
+                psswdInt = psswdInt + Constant.PwdOffSet * i;
+            }
+
+            //如果id是固定的6666 那就不要偏移了 
+            if (i == Constant.PwdNoOffSet) psswdInt = pssOffset;
             return psswdInt.ToString();
+        }
+
+        public static void PointCopy(ref Point p0, Point p1)
+        {
+            p0.X = p1.X;
+            p0.Y = p1.Y;
         }
         public static string getDataMultipleZero(string str)
         {
@@ -719,7 +942,7 @@ namespace xjplc
         {
             foreach (PlcInfoSimple p in pLst)
             {
-                if (p.Name.Contains(name))
+                if (p.Name.Equals(name))
                 {
                     return p;
                 }
@@ -809,46 +1032,7 @@ namespace xjplc
             return rp1;
         }
 
-        public static void FindPosTcp(DataTable dt, List<DTPlcInfoSimple> psLst)
-        {
-            if (dt != null && psLst.Count > 0)
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    for (int j = 0; j < psLst.Count; j++)
-                    {
-                        if (dt.Rows[i]["bin"].ToString().Equals(psLst[j].Name))
-                        {
-
-                            psLst[j].Mode = dt.Rows[i]["mode"].ToString();
-                            psLst[j].RowIndex = i;
-                            psLst[j].BelongToDataform = dt;
-                            int addrInt = 0;
-                            string areaStr = "D";
-                            string userdata = dt.Rows[i]["addr"].ToString();
-                            string param3 = dt.Rows[i]["param3"].ToString();
-                            string param4 = dt.Rows[i]["param4"].ToString();
-                            if (!string.IsNullOrWhiteSpace(param3))
-                            {
-                                psLst[j].ShowStr.Add(param3);
-                            }
-                            if (!string.IsNullOrWhiteSpace(param4))
-                            {
-                                psLst[j].ShowStr.Add(param4);
-                            }
-
-                            ConstantMethod.getAddrAndAreaByStr(userdata, ref addrInt, ref areaStr);
-                           // ConstantMethod.SplitAreaAndAddr(userdata, ref addrInt, ref areaStr);
-                            //区域符号在前面 后面地址就可以计算了
-                            psLst[j].Area = areaStr;
-                            psLst[j].Addr = addrInt;
-
-
-                        }
-                    }
-                }
-
-        }
-        public static void getAddrAndAreaByStrUseAsPlc(string strArea, ref int addr, ref string area)
+        public static void getAddrAndAreaByStr(string strArea, ref int addr, ref string area,int id)
         {
             string strSplit1;
             string strSplit2;//地址区域          
@@ -874,45 +1058,9 @@ namespace xjplc
                 {
                     if (int.TryParse(value[0], out z) && int.TryParse(value[1], out x))
                     {
+                        if(id==Constant.xzjDeivceId)
                         addr = z * 16 + x;
-                    }
-                }
-            }
-            else
-            {
-                if (!int.TryParse(strSplit1, out addr))
-                {
-
-                }
-            }
-        }
-
-        public static void getAddrAndAreaByStr(string strArea, ref int addr, ref string area)
-        {
-            string strSplit1;
-            string strSplit2;//地址区域          
-
-            strSplit1 = Regex.Replace(strArea.Trim(), "[A-Z]", "", RegexOptions.IgnoreCase);
-
-            //取字母
-            strSplit2 = Regex.Replace(strArea.Trim(), "[0-9]", "", RegexOptions.IgnoreCase);
-
-            strSplit1 = strSplit1.Trim();
-            strSplit2 = strSplit2.Trim();
-            strSplit2 = strSplit2.Replace(".", "");
-
-            area = strSplit2;
-
-
-            if (strSplit1.Contains("."))
-            {
-                int z = 0;
-                int x = 0;
-                string[] value = strSplit1.Split('.');
-                if (value.Count() == 2)
-                {
-                    if (int.TryParse(value[0], out z) && int.TryParse(value[1], out x))
-                    {
+                        else
                         addr = z * 8 + x;
                     }
                 }
@@ -925,7 +1073,8 @@ namespace xjplc
                 }
             }
         }
-        public static void FindPos(DataTable dt, List<DTPlcInfoSimple> psLst)
+
+       public static void FindPos(DataTable dt, List<DTPlcInfoSimple> psLst)
         {
             if (dt != null && psLst.Count > 0)
                 for (int i = 0; i < dt.Rows.Count; i++)
@@ -1066,7 +1215,19 @@ namespace xjplc
             }
             return d;
         }
+        public static EvokXJWork GetWork()
+        {
+            EvokXJWork e;
+            
+            ConfigFileManager para = new ConfigFileManager(Constant.ConfigParamFilePath);
+            string s = para.ReadConfig(Constant.connectMode);
+            if (s.Equals(Constant.connectTcp))
+            {
+                e = new EvokXJWork(Constant.evokGetTcp);
+            }else e=new EvokXJWork();
 
+            return e;
+        }
         public static void CheckAllCtrls(Control item, Queue<Control> allCtrls)
         {
           
@@ -1081,7 +1242,7 @@ namespace xjplc
         }
         public static void ShowInfo(RichTextBox r1, string s)
         {
-            if (r1 != null && r1.IsHandleCreated)
+            if (r1 != null && r1.IsHandleCreated && r1.Visible)
             {
                 r1.Invoke((EventHandler)(delegate
                 {
@@ -1132,6 +1293,22 @@ namespace xjplc
         }
         public static void SetText(Control r1, string s)
         {
+            int index = 0;
+            if (r1 is ComboBox)
+            {
+                if (int.TryParse(s, out index))
+                {
+                    if (index < ((ComboBox)r1).Items.Count && index>=0)
+                    {
+                        if(((ComboBox)r1).SelectedIndex != index)
+                        ((ComboBox)r1).SelectedIndex = index;// ((ComboBox)r1).Items[index].ToString();
+                    }
+                    else ((ComboBox)r1).Text = Constant.dataOutOfRange+s;
+                }
+                else ((ComboBox)r1).Text = Constant.dataOutOfRange+s;
+
+                return;           
+            }
             if (r1 != null && r1.IsHandleCreated)
             {
                 r1.Invoke((EventHandler)(delegate
@@ -1442,8 +1619,10 @@ namespace xjplc
             const string PATTERN = @"[0-7]+$";
             return System.Text.RegularExpressions.Regex.IsMatch(str, PATTERN);
         }
+        
         /// <summary>
-        /// 8进制转十进制
+        /// 8进制转十进制  Y11转换为地址9 的意思 只在台达ES系列 信捷系列中使用
+        /// 台达DVP as中不用 因为DVP15MC 中是最大为Y0.7  AS最大为Y0.15 根据DeviceID判断得出
         /// </summary>
         /// <param name="addr"></param>
         /// <returns></returns>
@@ -1451,8 +1630,8 @@ namespace xjplc
         {
             string strAddr = addr.ToString();
             if (IsOctal(strAddr))
-                return Convert.ToInt32(strAddr, 8);
-            else return 0;
+            return Convert.ToInt32(strAddr, 8);           
+            else return addr;
         }
         /// <summary>
         /// 8进制转十进制
@@ -1654,9 +1833,13 @@ namespace xjplc
 
             string port= configManager.ReadConfig(Constant.ServerIpPort);
 
+
+
             portparam0.server_Ip = ip;
                  
             portparam0.server_Port = port;     
+
+
 
             
             return portparam0;
@@ -1880,6 +2063,56 @@ namespace xjplc
 
             return true;
         }
+
+        
+        public static int addrGetXjTcp(int reladdr ,int Intarea)
+        {
+            int addr = reladdr;
+            switch (Intarea)
+            {
+                case Constant.M_ID:
+                    {
+                        addr += Constant.M_addr;
+                        break;
+                    }
+                case Constant.HM_ID:
+                    {
+                        addr += Constant.HM_addr;
+                        break;
+                    }
+                case Constant.X_ID:
+                    {
+                        addr += Constant.X_addr;
+                        break;
+                    }
+                case Constant.Y_ID:
+                    {
+                        addr += Constant.Y_addr;
+                        break;
+                    }
+
+                case Constant.D_ID:
+                    {
+
+
+                        break;
+                    }
+                case Constant.HD_ID:
+                    {
+
+                        break;
+                    }
+                case Constant.HSD_ID:
+                    {
+
+                        break;
+                    }
+                
+            }
+
+            return addr;
+        }
+
         public static int max(int a, int b)
         {
             if (a >= b) return a;
@@ -2136,7 +2369,31 @@ namespace xjplc
             value = d.ToString("f2");
             return value;
         }
+        public static int[] BitToIntTwo(BitArray bit)
+        {
+            int[] res = new int[1];
 
+            for (int i = 0; i < bit.Count; i++)
+            {
+                bit.CopyTo(res, 0);
+            }
+
+            return res;
+        }
+
+        //获取一个整型的数据 的位值 集合 16位
+        public static BitArray getBitValueInByteLst(int data,int pos,int count)
+        {
+            if (count > 16) return null;
+            if (pos+count > 16) return null;
+
+            int[] d = { data };
+            BitArray bitLst = new BitArray(d);                  
+
+            return bitLst;
+
+
+        }
         public static int getBitValueInByte(int pos,byte byte1)
         {
             int i = 0;

@@ -25,26 +25,23 @@ namespace xjplc
             {
                 id = 0;
             }
-
-            langXml.Dispose();
             return id;
         }
-        public static bool setLangId(int id)
-        {    
+        public static bool setLangId(int id,ConfigFileManager p)
+        {
 
-            ConfigFileManager langXml = new ConfigFileManager(Constant.ConfigParamFilePath);
+            ConfigFileManager langXml = p;// ConfigFileManager(Constant.ConfigParamFilePath);
 
             try
             {
                 langXml.WriteConfig(langStr, id.ToString());                     
                 
             }
-            catch (Exception ex )
+            catch (Exception ex)
             {
                 return false;
             }
-
-          //  langXml.Dispose();
+                   
             return true;
         }
         public static void  saveId()

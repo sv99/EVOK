@@ -17,6 +17,13 @@ namespace xjplc
 
         private Encoding encoding;        //编码
 
+        private char splitChar=' ';
+        public char SplitChar
+        {
+            get { return splitChar; }
+            set { splitChar = value; }
+        }
+
         public CsvStreamReader()
         {
             this.rowAL = new ArrayList();
@@ -34,7 +41,7 @@ namespace xjplc
             this.fileName = fileName;
             this.encoding = Encoding.Default;
             LoadCsvFile();
-        }
+        }      
         public Boolean CheckCSVFile0(string[] str)
         {
             string strcmp;
@@ -60,7 +67,11 @@ namespace xjplc
             for (int i = 0; i < j; i++)
             {
                 strcmp = this[1, i + 1];
-                if (!strcmp .Equals( str[i])) return false;
+                if (!strcmp.Equals(str[i]))
+                {
+                   // if(!string.IsNullOrWhiteSpace(strcmp))
+                    return false;
+                }
             }
             return true;
  
@@ -102,8 +113,11 @@ namespace xjplc
         }
         public void SaveCSV(DataTable dt, string fileName)
         {
-            if (ConstantMethod.FileIsUsed(FileName)) return;
-            FileStream fs = new FileStream(fileName, System.IO.FileMode.Create, System.IO.FileAccess.Write);
+           
+            if (dt == null || dt.Rows.Count == 0) return;
+            if (ConstantMethod.FileIsUsed(fileName)) return;
+            string path = ConstantMethod.pathFilter(fileName,"x") ;
+            FileStream fs = new FileStream(path, System.IO.FileMode.Create, System.IO.FileAccess.Write);
             StreamWriter sw = new StreamWriter(fs, System.Text.Encoding.Default);
             string data = "";
 
@@ -431,8 +445,211 @@ namespace xjplc
                 throw new Exception("没有当前列的数据");
             }
         }
+        //201904281138 修改
+        /// 将CSV文件的数据读取到DataTable中在fileconvert中使用
+        /// 导入后在字符串中含有逗号的情况下 ，源文件会有引号作为区分
+        /// 保留 " 状态 以便在导入机器软件中可以用opencsv进行去除使用
+        /// CSV文件路径 
+        /// 返回读取了CSV数据的DataTable
+        public DataTable OpenCSV1(string fileName)
+        {
+            DataTable dt = new DataTable();
+            FileStream fs = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            StreamReader sr = new StreamReader(fs, System.Text.Encoding.Default);
+            //记录每次读取的一行记录
+            string strLine = "";
+            //记录每行记录中的各字段内容
+            string[] aryLine = null; 
+            //标示列数
+            int columnCount = 0;
+            //标示是否是读取的第一行
+            bool IsFirst = true;
+            int CsvSplitDoubleQuaotaionCount = 0;//统计遇到几个" 因为：
+            //逐行读取CSV中的数据
+            while ((strLine = sr.ReadLine()) != null)
+            {
+                //if is first read not execute
+                int idCount = ConstantMethod.CharNum(strLine, Constant.CsvSplitComma);
+                int idCount0 = ConstantMethod.CharNum(strLine, Constant.CsvSplitSemiColon);
+
+                if (IsFirst == false)
+                {
+                    if (idCount >= (dt.Columns.Count) || idCount > idCount0)
+                    {
+                        //碰到字符中有逗号的情况 欧派遇到了                        
+                        aryLine = strLine.Split(Constant.CsvSplitCommaChar);
+                        List<string> resultStr = new List<string>();
+                        for (int i = 0; i < aryLine.Length; i++)
+                        {
+                            if (aryLine[i].Contains(Constant.CsvSplitDoubleQuaotaion))
+                            {
+                                CsvSplitDoubleQuaotaionCount++;
+                                if (CsvSplitDoubleQuaotaionCount >= 2)
+                                {
+                                    CsvSplitDoubleQuaotaionCount = 0;
+                                    resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1] + Constant.CsvSplitComma + aryLine[i];
+                                    // resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1].Replace(Constant.CsvSplitDoubleQuaotaion, "");
+                                }
+                                else
+                                    resultStr.Add(@aryLine[i]);
+                            }
+                            else
+                                resultStr.Add(aryLine[i]);
+                        }
+                        aryLine = resultStr.ToArray();
+                    }
+                    else
+                    {
+                        if (idCount0 == (dt.Columns.Count))
+                            aryLine = strLine.Split(Constant.CsvSplitSemiColonChar);
+                        else return null;
+                    }
+                }
+                else
+                {
+                    if (idCount > idCount0) aryLine = strLine.Split(Constant.CsvSplitCommaChar);
+                    else
+                    {
+                        aryLine = strLine.Split(Constant.CsvSplitSemiColonChar);
+                    }
+                }
+
+                if (IsFirst == true)
+                {
+                    IsFirst = false;
+                    columnCount = aryLine.Length;
+                    //创建列
+                    for (int i = 0; i < columnCount; i++)
+                    {
+                        DataColumn dc = new DataColumn(aryLine[i]);
+                        dt.Columns.Add(dc);
+                    }
+                }
+                else
+                {
+
+                    DataRow dr = dt.NewRow();
+                    for (int j = 0; j < dr.ItemArray.Length; j++)
+                    {
+                        if (j < aryLine.Length)
+                            dr[j] = aryLine[j];
+                    }
+                    dt.Rows.Add(dr);
+
+                }
+            }
+            sr.Close();
+            fs.Close();
+
+            return dt;
+        }
+
+        //不判别数据抬头
+        // 将CSV文件的数据读取到DataTable中
+        /// CSV文件路径 
+        /// 返回读取了CSV数据的DataTable
+        public DataTable OpenCSVWithOutCheck(string fileName)
+        {
+            DataTable dt = new DataTable();
+            FileStream fs = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            StreamReader sr = new StreamReader(fs, System.Text.Encoding.Default);
+            //记录每次读取的一行记录
+            string strLine = "";
+            //记录每行记录中的各字段内容
+            string[] aryLine = null; 
+            //标示列数
+            int columnCount = 0;
+            //标示是否是读取的第一行
+            bool IsFirst = true;
+            int CsvSplitDoubleQuaotaionCount = 0;//统计遇到几个" 因为：
+            //逐行读取CSV中的数据
+            while ((strLine = sr.ReadLine()) != null)
+            {
+                //if is first read not execute
+                int idCount = ConstantMethod.CharNum(strLine, Constant.CsvSplitComma);
+                int idCount0 = ConstantMethod.CharNum(strLine, Constant.CsvSplitSemiColon);
+
+                if (IsFirst == false)
+                {
+                    if (idCount >= (dt.Columns.Count) || idCount > idCount0)
+                    {
+                        //碰到字符中有逗号的情况 欧派遇到了                        
+                        aryLine = strLine.Split(Constant.CsvSplitCommaChar);
+                        List<string> resultStr = new List<string>();
+                        for (int i = 0; i < aryLine.Length; i++)
+                        {
+                            if (aryLine[i].Contains(Constant.CsvSplitDoubleQuaotaion))
+                            {
+                                CsvSplitDoubleQuaotaionCount++;
+                                if (CsvSplitDoubleQuaotaionCount >= 2)
+                                {
+                                    CsvSplitDoubleQuaotaionCount = 0;
+                                    resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1] + Constant.CsvSplitComma + aryLine[i];
+                                    resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1].Replace(Constant.CsvSplitDoubleQuaotaion, "");
+                                }
+                                else
+                                    resultStr.Add(@aryLine[i]);
+                            }
+                            else
+                                resultStr.Add(aryLine[i]);
+                        }
+                        aryLine = resultStr.ToArray();
+                    }
+                    else
+                    {
+                        if (idCount0 == (dt.Columns.Count))
+                            aryLine = strLine.Split(Constant.CsvSplitSemiColonChar);
+                        else return null;
+                    }
+                }
+                else
+                {
+                    if (idCount > idCount0) aryLine = strLine.Split(Constant.CsvSplitCommaChar);
+                    else
+                    {
+                        aryLine = strLine.Split(Constant.CsvSplitSemiColonChar);
+                    }
+                }
+
+                //直接指定列名 然后添加第一行数据
+                if (IsFirst == true)
+                {
+                    IsFirst = false;
+                    string[] s= new string[aryLine.Length];
+                    for(int i=0;i< s.Length;i++)
+                    {
+                        s[i] = "Col" + (i + 1).ToString();
+                    }
+                    dt = ConstantMethod.getDataTableByString(s) ;
+
+                    DataRow dr = dt.NewRow();
+                    for (int j = 0; j < dr.ItemArray.Length; j++)
+                    {
+                        if (j < aryLine.Length)
+                            dr[j] = aryLine[j];
+                    }
+                    dt.Rows.Add(dr);
+                }
+                else
+                {
+
+                    DataRow dr = dt.NewRow();
+                    for (int j = 0; j < dr.ItemArray.Length; j++)
+                    {
+                        if (j < aryLine.Length)
+                            dr[j] = aryLine[j];
+                    }
+                    dt.Rows.Add(dr);
+
+                }
+            }
+            sr.Close();
+            fs.Close();
+
+            return dt;
+        }
+        
         /// 将CSV文件的数据读取到DataTable中
-        ///
         /// CSV文件路径 
         /// 返回读取了CSV数据的DataTable
         public DataTable OpenCSV(string fileName)
@@ -473,7 +690,8 @@ namespace xjplc
                                     CsvSplitDoubleQuaotaionCount = 0;
                                     resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1] + Constant.CsvSplitComma + aryLine[i];
                                     resultStr[resultStr.Count - 1] = resultStr[resultStr.Count - 1].Replace(Constant.CsvSplitDoubleQuaotaion, "");
-                                }else resultStr.Add(aryLine[i]);
+                                }else
+                                    resultStr.Add(@aryLine[i]);
                             }
                             else
                             resultStr.Add(aryLine[i]);
@@ -503,8 +721,16 @@ namespace xjplc
                     //创建列
                     for (int i = 0; i < columnCount; i++)
                     {
-                        DataColumn dc = new DataColumn(aryLine[i]);
-                        dt.Columns.Add(dc);
+                        if (dt.Columns.Contains(aryLine[i]))
+                        {
+                            DataColumn dc = new DataColumn(aryLine[i] + "p"+ i.ToString());
+                            dt.Columns.Add(dc);
+                        }
+                        else
+                        {
+                            DataColumn dc = new DataColumn(aryLine[i]);
+                            dt.Columns.Add(dc);
+                        }
                     }
                 }
                 else
@@ -525,6 +751,86 @@ namespace xjplc
              
                 return dt;            
         }
+        //司米橱柜的分隔符 抬头有/n 没有/r 最后才有/r /n 
+        public DataTable OpenCSVSimi(string fileName)
+        {
+            DataTable dt = new DataTable();
+            FileStream fs = new FileStream(fileName, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+            StreamReader sr = new StreamReader(fs, System.Text.Encoding.Default);
+            //记录每次读取的一行记录
+            string strLine = "";
+            //记录每行记录中的各字段内容
+            string[] aryLine;
+            //标示列数
+            int columnCount = 0;
+            //标示是否是读取的第一行
+            bool IsFirst = true;
+            // 出现第一个/r 就停止代表读到了 否则数据返回错误
+            //逐行读取CSV中的数据
+            #region 读取列名
+            string colNameStr = "";
+            int readStr = 0;
+            while ((readStr =sr.Read()) != Constant.DTEnd[0])
+            {
+                if(Constant.DTEnd[0]!= readStr || Constant.DTEnd[1] != readStr)
+                    colNameStr += (char)(readStr);              
+            }
+
+            if (readStr == -1) return dt;
+            //再读一个 把/n 也读了
+            readStr = sr.Read();
+            //获取 列名了
+            string[] colName = colNameStr.Split('§');
+
+            #endregion
+            //逐行读取CSV中的数据
+            while ((strLine = sr.ReadLine()) != null)
+            {
+
+                aryLine = strLine.Split('§');
+                
+                if (IsFirst == true)
+                {
+                    //如果列名称数量 和当前数据读的不对 那就退出                 
+                    IsFirst = false;
+                    columnCount = aryLine.Length;
+
+                    if (columnCount != colName.Length)
+                    {
+                        return dt;
+                    }
+                    //创建列
+                    for (int i = 0; i < columnCount; i++)
+                    {
+                        DataColumn dc = new DataColumn(colName[i]);
+                        dt.Columns.Add(dc);
+                    }
+                }
+                
+                {
+
+                    DataRow dr = dt.NewRow();
+                    int maxCol = 0;
+                    if (aryLine.Length < dt.Columns.Count)
+                    {
+                        maxCol = aryLine.Length;
+                    }
+                    else
+                        maxCol = dt.Columns.Count;
+                    for (int j = 0; j < maxCol; j++)
+                    {
+                        dr[j] = aryLine[j];
+                    }
+                    dt.Rows.Add(dr);
+
+                }
+            }
+            sr.Close();
+            fs.Close();
+
+            return dt;
+        }
+
         //分号
         public DataTable OpenCSV0(string fileName)
         {

@@ -13,6 +13,9 @@ using System.Diagnostics;
 using NPOI.POIFS.FileSystem;
 using NPOI;
 using NPOI.OpenXml4Net.OPC;
+using System.Drawing;
+using NPOI.SS.Util;
+using System.Threading;
 
 namespace xjplc
 {
@@ -28,10 +31,13 @@ namespace xjplc
         {
             FileName = file;
         }
+        IWorkbook currentWk;
         public ExcelNpoi()
         {
 
         }
+
+
 
         private string GetCellValue(ICell cell)
         {
@@ -72,7 +78,37 @@ namespace xjplc
                     }
             }
         }
-
+        /// <summary>
+        /// 获取当前单元格所在的合并单元格的位置
+        /// </summary>
+        /// <param name="sheet">sheet表单</param>
+        /// <param name="rowIndex">行索引 0开始</param>
+        /// <param name="colIndex">列索引 0开始</param>
+        /// <param name="start">合并单元格左上角坐标</param>
+        /// <param name="end">合并单元格右下角坐标</param>
+        /// <returns>返回false表示非合并单元格</returns>
+        private  bool IsMergeCell(ISheet sheet, int rowIndex, int colIndex, out Point start, out Point end)
+        {
+            bool result = false;
+            start = new Point(0, 0);
+            end = new Point(0, 0);
+            if ((rowIndex < 0) || (colIndex < 0)) return result;
+            int regionsCount = sheet.NumMergedRegions;
+            for (int i = 0; i < regionsCount; i++)
+            {
+                CellRangeAddress range = sheet.GetMergedRegion(i);
+                //sheet.IsMergedRegion(range); 
+                if (rowIndex >= range.FirstRow && rowIndex <= range.LastRow && colIndex >= range.FirstColumn && colIndex <= range.LastColumn)
+                {
+                    start = new Point(range.FirstRow, range.FirstColumn);
+                    end = new Point(range.LastRow, range.LastColumn);
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
+        #region 合并单元格读取
         public void ChangeCellValue(string[] data,string key)
         {
             IWorkbook workbook = NPOIOpenExcel(FileName);
@@ -104,9 +140,166 @@ namespace xjplc
             {
                 AddRow(data);
             }
-           //获取原格式行                                
+            //获取原格式行                                
 
         }
+
+        bool compareCurrentWk(List<DataTable> dtL)
+        {
+            List<string> sheetname = new List<string>();
+            for (int i = 0; i < currentWk.NumberOfSheets;i++)
+            {
+                sheetname.Add(currentWk.GetSheetName(i));
+            }
+            foreach (DataTable dt in dtL)
+            {
+                if (!sheetname.Contains(dt.TableName))
+                {
+                    return false;
+                }
+            }
+
+           return true;
+        }
+
+        /// <summary>
+        /// 将多个DataTable数据导入到excel中
+        /// </summary>
+        /// <param name="dts">要导入的数据集合</param>
+        /// <param name="strExcelFileName">定义Excel文件名</param>
+        /// <param name="indexType">给个 1 就行</param>
+        public bool GridToExcels(List<DataTable> dts, string strExcelFileName, int indexType)
+        {
+            bool BSave = false;
+            try
+            {
+                IWorkbook
+                workbook =null;
+                //获取后缀名
+                string extension = strExcelFileName.Substring(strExcelFileName.LastIndexOf(".")).ToString().ToLower();
+                //判断是否是excel文件
+                if (extension == ".xlsx" || extension == ".xls")
+                {
+                    //判断excel的版本
+                    if (extension == ".xlsx")
+                    {
+                        workbook = new XSSFWorkbook();
+                    }
+                    else
+                    {
+                        workbook = new HSSFWorkbook();
+                    }
+                }
+            
+                DataSet set = new DataSet();
+                foreach (DataTable dt in dts)
+                {
+                    ISheet sheet = workbook.CreateSheet(dt.TableName);
+                    ICellStyle HeadercellStyle = workbook.CreateCellStyle();
+                    HeadercellStyle.BorderBottom = NPOI.SS.UserModel.BorderStyle.Thin;
+                    HeadercellStyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
+                    HeadercellStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
+                    HeadercellStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
+                    HeadercellStyle.Alignment = NPOI.SS.UserModel.HorizontalAlignment.Center;
+                    //字体
+                    NPOI.SS.UserModel.IFont headerfont = workbook.CreateFont();
+                    headerfont.Boldweight = (short)FontBoldWeight.Bold;
+                    HeadercellStyle.SetFont(headerfont);
+
+
+                    //用column name 作为列名
+                    int icolIndex = 0;
+                    IRow headerRow = sheet.CreateRow(0);
+                    foreach (DataColumn item in dt.Columns)
+                    {
+                        ICell cell = headerRow.CreateCell(icolIndex);
+                        cell.SetCellValue(item.ColumnName);
+                        cell.CellStyle = HeadercellStyle;
+                        icolIndex++;
+                    }
+
+
+                    ICellStyle cellStyle = workbook.CreateCellStyle();
+                    //为避免日期格式被Excel自动替换，所以设定 format 为 『@』 表示一率当成text来看
+                    cellStyle.DataFormat = HSSFDataFormat.GetBuiltinFormat("@");
+                    cellStyle.BorderBottom = NPOI.SS.UserModel.BorderStyle.Thin;
+                    cellStyle.BorderLeft = NPOI.SS.UserModel.BorderStyle.Thin;
+                    cellStyle.BorderRight = NPOI.SS.UserModel.BorderStyle.Thin;
+                    cellStyle.BorderTop = NPOI.SS.UserModel.BorderStyle.Thin;
+                    NPOI.SS.UserModel.IFont cellfont = workbook.CreateFont();
+                    cellfont.Boldweight = (short)FontBoldWeight.Normal;
+                    cellStyle.SetFont(cellfont);
+                    if (indexType == 1)
+                    {
+                        //建立内容行
+                        int iRowIndex = 1;
+                        int iCellIndex = 0;
+                        foreach (DataRow Rowitem in dt.Rows)
+                        {
+                            IRow DataRow = sheet.CreateRow(iRowIndex);
+                            foreach (DataColumn Colitem in dt.Columns)
+                            {
+
+
+                                ICell cell = DataRow.CreateCell(iCellIndex);
+                                cell.SetCellValue(Rowitem[Colitem].ToString());
+                                cell.CellStyle = cellStyle;
+                                iCellIndex++;
+                            }
+                            iCellIndex = 0;
+                            iRowIndex++;
+                        }
+                        //自适应列宽
+                        for (int i = 0; i < icolIndex; i++)
+                        {
+                            sheet.AutoSizeColumn(i);
+                        }
+                    }
+
+                }
+                FileStream fswrite = File.Open(FileName, FileMode.Create, FileAccess.ReadWrite);
+                workbook.Write(fswrite);
+                fswrite.Close();
+                BSave = true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return BSave;
+        }
+
+        public void saveMultiSheet(List<DataTable> dtLst)
+        {
+            if (currentWk != null && currentWk.NumberOfSheets == dtLst.Count && compareCurrentWk(dtLst))
+            {
+                FileStream fswrite = File.Open(FileName,FileMode.Create,FileAccess.ReadWrite);
+                currentWk.Write(fswrite);
+                fswrite.Close();
+            }
+        }
+        //修改内容
+        public void ChangeCellValue(string data,string tablename,Point p)
+        {
+
+            try
+            {
+
+                if (currentWk != null)
+                { 
+                    ISheet mysheet = currentWk.GetSheet(tablename);
+                    mysheet.GetRow(p.X+1).GetCell(p.Y).SetCellValue(data);                                                                                                                                               
+                }
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+
+        }
+
+       
+        #endregion
         private void IrowFromString(IRow irow,string[] data)
         {
             for (int m = 0; m < irow.LastCellNum; m++)
@@ -198,6 +391,218 @@ namespace xjplc
                 }
             }
         }
+        public DataTable ImportExcel(string filePath,int id,ref List<DataTable> dtLst)
+        {
+            DataTable dt = new DataTable();
+            FileName = filePath;
+            using (FileStream fsRead = System.IO.File.OpenRead(filePath))
+            {
+                IWorkbook wk = null;
+                //获取后缀名
+                string extension = filePath.Substring(filePath.LastIndexOf(".")).ToString().ToLower();
+                //判断是否是excel文件
+                if (extension == ".xlsx" || extension == ".xls")
+                {
+                    //判断excel的版本
+                    if (extension == ".xlsx")
+                    {
+                        wk = new XSSFWorkbook(fsRead);
+                    }
+                    else
+                    {
+                        wk = new HSSFWorkbook(fsRead);
+                    }
+
+                    //获取第一个sheet
+                    int count = wk.NumberOfSheets;
+                    for (int k = 0; k < count; k++)
+                    {                    
+
+                        ISheet sheet = wk.GetSheetAt(k);
+                        dt = new DataTable(sheet.SheetName);
+                        //获取第一行
+                        IRow headrow = sheet.GetRow(0);
+                        #region 根据第一行创建抬头
+                        for (int i = headrow.FirstCellNum; i < headrow.Cells.Count; i++)
+                        {
+                            if (!dt.Columns.Contains(headrow.GetCell(i).StringCellValue))
+                            {
+                                DataColumn datacolum = new DataColumn(headrow.GetCell(i).StringCellValue);
+                                // DataColumn datacolum = new DataColumn("F" + (i + 1));
+                                dt.Columns.Add(datacolum);
+                            }
+                        }
+                        #endregion
+
+                        #region 读取每一行
+                        //读取每行,从第二行起
+                        for (int r = 1; r <= sheet.LastRowNum; r++)
+                        {
+                            bool result = false;
+                            DataRow dr = dt.NewRow();
+                            //获取当前行
+                            IRow row = sheet.GetRow(r);
+                            if (row == null) continue;
+                            //读取每列
+                            for (int j = 0; j < headrow.Cells.Count; j++)
+                            {
+
+                                ICell cell = row.GetCell(j); //一个单元格
+
+                                if (cell == null) continue;
+
+                                if (cell != null && cell.IsMergedCell)
+                                {
+
+                                    Point start = new Point();
+                                    Point end = new Point();
+                                    if (!IsMergeCell(sheet, r, j, out start, out end)) continue;
+                                    IRow rowMerge = sheet.GetRow(start.X);
+                                    ICell cellMerge = rowMerge.GetCell(start.Y); //一个单元格
+                                    if (cellMerge != null)
+                                    {
+                                        dr[j] = GetCellValue(cellMerge);
+                                        result = true;
+                                    }
+                                }
+                                else
+                                {
+
+                                    dr[j] = GetCellValue(cell); //获取单元格的值 //全为空则不取
+
+                                    if (dr[j].ToString() != "")
+                                    {
+                                        result = true;
+                                    }
+                                }
+                            }
+                            if (result == true)
+                            {
+                                dt.Rows.Add(dr); //把每行追加到DataTable
+                            }
+                        }
+                        #endregion
+
+                        //保存当前列
+                        if (dtLst == null) dtLst = new List<DataTable>();
+                        dtLst.Add(dt);
+
+                    }
+
+                }
+                currentWk = wk;
+                
+                fsRead.Close();
+            }          
+            return dt;
+        }
+        public DataTable ImportExcel(string filePath,string sheetname)
+        {
+            DataTable dt = new DataTable();
+            using (FileStream fsRead = System.IO.File.OpenRead(filePath))
+            {
+                IWorkbook wk = null;
+                //获取后缀名
+                string extension = filePath.Substring(filePath.LastIndexOf(".")).ToString().ToLower();
+                //判断是否是excel文件
+                if (extension == ".xlsx" || extension == ".xls")
+                {
+                    //判断excel的版本
+                    if (extension == ".xlsx")
+                    {
+                        wk = new XSSFWorkbook(fsRead);
+                    }
+                    else
+                    {
+                        wk = new HSSFWorkbook(fsRead);
+                    }
+                    //搜索相应的sheet在不在
+                    int count = wk.NumberOfSheets;
+                    int getId = 0;
+                    bool isSheetExist = false;
+                    for (int i = 0; i < count; i++)
+                    {
+                        ISheet sheet0 = wk.GetSheetAt(i);
+
+                        if (sheet0.SheetName.Contains(sheetname))
+                        {
+                            getId = i;
+                            isSheetExist = true;
+                            break;
+                        }
+
+                    }
+                    if (!isSheetExist) return dt;
+
+                    //获取第一个sheet
+                    ISheet sheet = wk.GetSheetAt(getId);
+                    //获取第一行
+                    IRow headrow = sheet.GetRow(4);
+                    //创建列
+                    for (int i = headrow.FirstCellNum; i < headrow.Cells.Count; i++)
+                    {
+                        if (!dt.Columns.Contains(headrow.GetCell(i).StringCellValue))
+                        {
+                            DataColumn datacolum = new DataColumn(headrow.GetCell(i).StringCellValue);
+                            // DataColumn datacolum = new DataColumn("F" + (i + 1));
+                            dt.Columns.Add(datacolum);
+                        }
+                    }
+                    //读取每行,从第二行起
+                    for (int r = 5; r <= sheet.LastRowNum; r++)
+                    {
+
+                        Application.DoEvents();
+
+                        bool result = false;
+                        DataRow dr = dt.NewRow();
+                        //获取当前行
+                        IRow row = sheet.GetRow(r);
+                        if (row == null) continue;
+                        //读取每列
+                        for (int j = 0; j < headrow.Cells.Count; j++)
+                        {
+                            Application.DoEvents();
+                            ICell cell = row.GetCell(j); //一个单元格
+
+                            if (cell == null) continue;
+
+                            if (cell != null && cell.IsMergedCell)
+                            {
+
+                                Point start = new Point();
+                                Point end = new Point();
+                                if (!IsMergeCell(sheet, r, j, out start, out end)) continue;
+                                IRow rowMerge = sheet.GetRow(start.X);
+                                ICell cellMerge = rowMerge.GetCell(start.Y); //一个单元格
+                                if (cellMerge != null)
+                                {
+                                    dr[j] = GetCellValue(cellMerge);
+                                    result = true;
+                                }
+                            }
+                            else
+                            {
+
+                                dr[j] = GetCellValue(cell); //获取单元格的值 //全为空则不取
+
+                                if (dr[j].ToString() != "")
+                                {
+                                    result = true;
+                                }
+                            }
+                        }
+                        if (result == true)
+                        {
+                            dt.Rows.Add(dr); //把每行追加到DataTable
+                        }
+                    }
+                }
+
+            }
+            return dt;
+        }
+
         public DataTable ImportExcel(string filePath)
         {
             DataTable dt = new DataTable();
@@ -236,6 +641,9 @@ namespace xjplc
                     //读取每行,从第二行起
                     for (int r = 1; r <= sheet.LastRowNum; r++)
                     {
+
+                        Application.DoEvents();
+                    
                         bool result = false;
                         DataRow dr = dt.NewRow();
                         //获取当前行
@@ -243,14 +651,35 @@ namespace xjplc
                         if (row == null) continue;
                         //读取每列
                         for (int j = 0; j < headrow.Cells.Count; j++)
-                        {                                                      
+                        {
+                            Application.DoEvents();
                             ICell cell = row.GetCell(j); //一个单元格
+
                             if (cell == null) continue;
-                            dr[j] = GetCellValue(cell); //获取单元格的值
-                                                        //全为空则不取
-                            if (dr[j].ToString() != "")
+
+                            if (cell != null && cell.IsMergedCell)
                             {
-                                result = true;
+
+                                Point start = new Point();
+                                Point end = new Point();
+                                if (!IsMergeCell(sheet, r, j, out start, out end)) continue;
+                                IRow rowMerge = sheet.GetRow(start.X);
+                                ICell cellMerge = rowMerge.GetCell(start.Y); //一个单元格
+                                if (cellMerge != null)
+                                {
+                                    dr[j] = GetCellValue(cellMerge);
+                                    result = true;
+                                }
+                            }
+                            else
+                            {
+
+                                dr[j] = GetCellValue(cell); //获取单元格的值 //全为空则不取
+
+                                if (dr[j].ToString() != "")
+                                {
+                                    result = true;
+                                }
                             }
                         }
                         if (result == true)
@@ -369,7 +798,7 @@ namespace xjplc
                     if (lblStatus != null && barStatus != null)
                     {
                         Percent = (int)(100 * RowRead / TotalCount);
-                        barStatus.Maximum = TotalCount;
+                        barStatus.Maximum = TotalCount; 
                         barStatus.Value = RowRead;
                         lblStatus.Text = "共有" + TotalCount + "条数据，已读取" + Percent.ToString() + "%的数据。";
                     }
@@ -434,6 +863,7 @@ namespace xjplc
                 }
             }
         }
+
 
     }
 

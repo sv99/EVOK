@@ -33,6 +33,12 @@ namespace xjplc.delta.TCP
        public List<byte>  ReadMCmdOut ;
        public List<byte>  ReadMCmdIn ;
 
+       public List<List<byte>> ReadDCmdOutLst;
+       public List<List<byte>> ReadDCmdInLst;
+
+       public List<List<byte>> ReadMCmdOutLst;
+       public List<List<byte>> ReadMCmdInLst;
+
        public List<byte>  SetDMCmdOut;
        public List<byte>  SetDMCmdIn;
 
@@ -129,8 +135,14 @@ namespace xjplc.delta.TCP
             CmdOutLst = new List<List<byte>>();
             CmdInLst = new List<List<byte>>();
 
+            ReadDCmdOutLst = new List<List<byte>>();;
+            ReadDCmdInLst = new List<List<byte>>();;
 
-        }
+           ReadMCmdOutLst = new List<List<byte>>();;
+           ReadMCmdInLst = new List<List<byte>>();;
+
+
+    }
         public void SetDeviceId(int id)
         {
             DeviceId = id;
@@ -150,6 +162,7 @@ namespace xjplc.delta.TCP
         {
             if (IsGoToGetData)
             {
+              
                 ErrorConnCount = 0;
                 if (CmdOut != null && CmdOut.Count() > 0) socketDt .Send(CmdOut.ToArray());
             }
@@ -188,6 +201,7 @@ namespace xjplc.delta.TCP
             //通讯错误次数太多 就直接停了吧
             if (ErrorConnCount < Constant.ErrorConnCountMax && ErrorConnCount > 2)
             {
+                SetReadCmd();
                 GetData();
                 return;
             }
@@ -268,9 +282,15 @@ namespace xjplc.delta.TCP
         }
         private void SetReadCmd()
         {
-            if (ReadDCmdOut.Count == 0 && ReadMCmdOut.Count == 0)
+            if (ReadDCmdOut.Count == 0 && 
+                ReadMCmdOut.Count == 0 && 
+                ReadDCmdOutLst.Count==0&&
+                ReadMCmdOutLst.Count == 0
+              )
             {
+
                 ClearBufferCmdOut();
+
                 if (DeviceId == Constant.xzjDeivceId)
                 {
                     CmdOutLst.Add(Constant.IsDtAsPlcTcpExitOut.ToList<byte>());
@@ -286,6 +306,18 @@ namespace xjplc.delta.TCP
             {
                 if (CmdOutLst.Count == 0)
                 {
+                    if (ReadDCmdOutLst.Count > 0)
+                    {
+                        CmdOutLst.AddRange(ReadDCmdOutLst);
+                        CmdInLst.AddRange(ReadDCmdOutLst);
+                    }
+
+                    if (ReadMCmdOutLst.Count > 0)
+                    {
+                        CmdOutLst.AddRange(ReadMCmdOutLst);
+                        CmdInLst.AddRange(ReadMCmdInLst);
+                    }
+
                     if (ReadDCmdOut.Count > 0)
                     {
                         CmdOutLst.Add(ReadDCmdOut);
@@ -296,13 +328,15 @@ namespace xjplc.delta.TCP
                         CmdOutLst.Add(ReadMCmdOut);
                         CmdInLst.Add(ReadMCmdIn);
                     }
-                }           
 
+                }           
             }
+
             CmdOut = CmdOutLst[0].ToArray();
             CmdIn = CmdInLst[0].ToArray();
             CmdOutLst.RemoveAt(0);
             CmdInLst.RemoveAt(0);
+
         }
         void DTPLC_TCPClient_Received()
         {
@@ -349,22 +383,23 @@ namespace xjplc.delta.TCP
 
                                 if (ConstantMethod.compareByte(array_buffer, Constant.IsDtAsPlcTcpExitIn))
                                 {
-                                    SetReadCmd();
-                                } 
-                                else                  
+                                   SetReadCmd();
+                                }
+                                else
                                 //判断数据是否正确                             
                                 if (array_buffer.Count() == CmdIn.Count())
                                 {
                                     SetReadCmd();
-                                    isDeviceReady = true;                                                                                                                                 
+                                    isDeviceReady = true;
                                     DataProcessEventArgs.Byte_buffer = array_buffer.ToArray();
                                     EventDataProcess(this, DataProcessEventArgs);
-                                }
+                                }else
+                                SetReadCmd();
                             }
                         }
                         GetData();
                         //获取到数据 显示
-                        ConstantMethod.ShowInfo(showRichTextBox, ConstantMethod.byteToHexStr(array_buffer));  
+                       // ConstantMethod.ShowInfo(showRichTextBox, ConstantMethod.byteToHexStr(array_buffer));  
                                                                                   
                     }
                     else

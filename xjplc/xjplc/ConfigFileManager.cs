@@ -13,18 +13,19 @@ namespace xjplc
     {    
             XmlDocument _xmldoc = null;
             string FilePath;
-            //
+                   
             public ConfigFileManager()
             {
                 _xmldoc = new XmlDocument();
             }
-        //
+        
         
         public ConfigFileManager(string file)
         {
             _xmldoc = new XmlDocument();
             LoadFile(file);
         }
+       
         public bool LoadFile(string file)
         {          
             FilePath = file;
@@ -33,19 +34,15 @@ namespace xjplc
             {
                 _xmldoc.Load(file);
             }
-            catch (Exception ex)
+            catch
             {
 
-                return false;
-               //throw new Exception(ex.Message);
-                //MessageBox.Show("加载参数文件错误！请重新配置或者还原文件");
-               //ConstantMethod.AppExit();
+                return false;            
             }
 
             return true;
         }
         
-
         public void Dispose()
         {
             _xmldoc.Save(FilePath);
@@ -54,6 +51,7 @@ namespace xjplc
         public bool WriteConfig(string s1, string s2, string value)
         {
             string str = "";
+
             XmlNode root = _xmldoc.DocumentElement;
             XmlNodeList nodes = root.SelectNodes(s1);
 
@@ -174,7 +172,7 @@ namespace xjplc
                     if (atrr != null)
                         str = atrr.Value.ToString();
                 }
-                //_xmldoc.Save(FilePath);
+
                 return str;
             }
 
@@ -187,6 +185,7 @@ namespace xjplc
             for (int i = 0; i < nodes.Count; i++)
             {
                 atrr = nodes[i].Attributes[key];
+                if(atrr!=null)
                 atrr.Value = value;
             }
             _xmldoc.Save(FilePath);

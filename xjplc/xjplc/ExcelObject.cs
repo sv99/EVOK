@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace xjplc
 {
-    class ExcelObject
+   public  class ExcelObject
     {
         public string mFilename;
         public Excel.Application app;

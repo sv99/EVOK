@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
+using xjplc.xj;
 
 namespace xjplc
 {
@@ -24,8 +25,11 @@ namespace xjplc
             get { return deviceId; }
             set { deviceId = value; }
         }
+
         CsvStreamReader CSVData ;
 
+
+        bool IsCommSet=false;
         private List<DataTable> dataFormLst; //表格 
         public List<DataTable> DataFormLst  
         {
@@ -53,6 +57,9 @@ namespace xjplc
 
         XJCommManager comManager ;
 
+        XjTcpManager tcpManager;
+
+
         System.Timers.Timer WatchCommTimer ;// new System.Timers.Timer(500);
 
         int CommError = 0;  //只能在通讯上之后 清零
@@ -75,19 +82,10 @@ namespace xjplc
             get { return isShiftDataForm; }
             set { isShiftDataForm = value; }
         }
-
-         bool isStopConnection;
-        public bool IsStopConnection
-        {
-            get { return isStopConnection; }
-            set {
-                isStopConnection = value;
-                comManager.IsNoConnection = value;
-            }
-        }
-
+       
         public XJDevice(List<string> filestr,PortParam p0)
         {
+            IsCommSet = true;
             XJPLCcmd = new XJPLCPackCmdAndDataUnpack();
             DataFormLst = new List<DataTable>();
             CSVData = new CsvStreamReader();
@@ -122,18 +120,47 @@ namespace xjplc
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
 
 
+
+        }
+        public XJDevice(List<string> filestr, ServerInfo s0)
+        {
+            XJPLCcmd = new XJPLCPackCmdAndDataUnpack();
+            DataFormLst = new List<DataTable>();
+            CSVData = new CsvStreamReader();
+            dgShowLst = new List<DataGridView>();
+
+            //获取监控数据 dataformLst 填充
+            GetPlcDataTableFromFile(filestr);           
+
+            //监控第一个列表数据 考虑下 这个还要不要 因为已经有一个 shift在后面了
+            if (dataFormLst.Count > 0)
+                SetPlcReadDMData(dataFormLst[0]);
+
+            //设置端口
+            SetComm(s0);
+
+            //监控通讯
+            WatchCommTimer = new System.Timers.Timer(Constant.XJRestartTimeOut);  //这里1.5 秒别改 加到常量里 工控机性能不行 
+
+            WatchCommTimer.Enabled = false;
+
+            WatchCommTimer.AutoReset = true;
+
+            WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTcpTimerEvent);
+
         }
 
         public void setDeviceId(string idStr)
-        {
+         {
             DeviceId = idStr;
-
+            
         }
         /// <summary>
         /// 针对信捷PLC 进行设备的存在获取
         /// </summary>
         /// <returns></returns>
 
+        
         public XJDevice(List<string> filestr)
         {
             XJPLCcmd    = new XJPLCPackCmdAndDataUnpack();
@@ -145,7 +172,7 @@ namespace xjplc
             GetPlcDataTableFromFile(filestr);
 
             //找一下串口 不存在就报错 退出
-            if (!ConstantMethod.XJFindPort())
+            if (!ConstantMethod.XJFindPort(1))
             {
                
                 MessageBox.Show(DeviceId+Constant.ConnectMachineFail);
@@ -165,8 +192,7 @@ namespace xjplc
             //监控通讯
             WatchCommTimer = new System.Timers.Timer(Constant.XJRestartTimeOut);  //这里1.5 秒别改 加到常量里 工控机性能不行 
 
-            WatchCommTimer.Enabled = false;
-
+            
             WatchCommTimer.AutoReset = true;
 
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
@@ -174,10 +200,34 @@ namespace xjplc
            
         }
         #region 通讯错误
+        private void WatchTcpTimerEvent(object sender, EventArgs e)
+        {
+            if (tcpManager != null)
+                if (tcpManager.Status == Constant.DeviceNoConnection)
+                {
+                    //先停了再说省的下一个定时事件又来
+                    WatchCommTimer.Enabled = false;
+                    status = Constant.DeviceNoConnection;
+                    CommError++;
+                    LogManager.WriteProgramLog(DeviceId + Constant.DeviceConnectionError);
+
+                    if (CommError < Constant.DeviceErrorConnCountMax)
+                    {
+                        getDeviceData();
+                    }
+                    else
+                    {
+                        MessageBox.Show(Constant.ConnectMachineFail);
+                        return;
+                    }
+                }
+
+        }
+
         //通讯错误引发的事件
         private void WatchTimerEvent(object sender, EventArgs e)
-        {
-           
+        {    
+            if(comManager!=null)      
             if (!comManager.Status)
             {
                 //先停了再说省的下一个定时事件又来
@@ -191,28 +241,47 @@ namespace xjplc
                     getDeviceData();                
                 }
                 else
-                {
-                   
+                {              
                     MessageBox.Show(Constant.ConnectMachineFail);
                     return;
-                }
-               
-                
+                }                                           
             }
+            
         }
         #endregion
         #region 正常通讯
         public void startRepack()
         {
-            comManager.IsRePackCmdReadDMDataOut = true;
-            comManager.IsRepackDone = false;
+            if (comManager != null)
+            {
+                comManager.IsRePackCmdReadDMDataOut = true;
+                comManager.IsRepackDone = false;
+            }
+            if (tcpManager != null)
+            {
+                tcpManager.IsRePackCmdReadDMDataOut = true;
 
+                while (tcpManager.IsReadingData)
+                {
+                    Application.DoEvents();
+                }
+            }
+           
         }
 
         public void doneRepack()
         {
+            if(comManager!=null)
             comManager.IsRepackDone = true;
 
+            if (tcpManager != null)
+            {
+                tcpManager.IsRePackCmdReadDMDataOut = false;
+               
+                //每次结束以后 要重新绑定下 各种数据
+                shiftDataSource();
+               
+            }
         }
         public bool shiftDataFormSplit(int formid,int rowSt,int count)
         {
@@ -240,13 +309,13 @@ namespace xjplc
             }
 
             splitDataForm(dt,dataFormLst[formid]);
+
             isShiftDataForm = true;
 
             doneRepack();
 
             return true;
         }
-
 
         /// <summary>
         /// 切换监控数据表格
@@ -258,7 +327,7 @@ namespace xjplc
             if (dataFormLst[formid] != null && dataFormLst[formid].Rows.Count > 0)
             {
                 startRepack();
-
+    
                 isShiftDataForm = true;
                 dataForm = dataFormLst[formid];
                 int dAreaCount = 0;
@@ -271,7 +340,7 @@ namespace xjplc
                        }
                 }
 
-                if (dAreaCount > Constant.DataRowWatchMax)
+                if (dAreaCount > Constant.DataRowWatchMax && !DeviceId.Equals(Constant.simiDeivceName))
                 {
                     DataTable dt = dataFormLst[formid].Copy();
                     for (int i = dt.Rows.Count - 1; i >= 0; i--)
@@ -285,8 +354,9 @@ namespace xjplc
                 else                                                        
                 if (dataForm != null && dataForm.Rows.Count > 0)
                     PackCmdReadDMDataOut(dataForm);
-
-                doneRepack();                                                                                                                                                                                  
+             
+                doneRepack();
+      
 
                 return true;
 
@@ -311,12 +381,10 @@ namespace xjplc
         public void RestartConneect(DataTable dt)
         {
             DeviceShutDown();
-
-            
+          
             ConstantMethod.Delay(50);
 
-          //  portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
-
+            //portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
             /*****
             if (!ConstantMethod.XJFindPort())
             {
@@ -324,6 +392,7 @@ namespace xjplc
                 ConstantMethod.AppExit();
             }
             *****/
+                    
             if (dataFormLst.Count>0)
             SetPlcReadDMData(dt);
             if (portParam.m_portName != null)
@@ -342,20 +411,35 @@ namespace xjplc
         /// <returns></returns>
         public bool getDeviceData()
         {
-            WatchCommTimer.Enabled = true;
-            status = Constant.DeviceNoConnection;
-
-            if (XJPLCcmd !=null)
-
-
-            if (comManager.ConnectMachine())
+            if (comManager != null)
             {
-                    CommError = 0;
-                    status = Constant.DeviceConnected;
-                    return true;
-             }
+                status = Constant.DeviceNoConnection;
+                WatchCommTimer.Enabled = true;
+                if (XJPLCcmd != null && !comManager.Status)
+                if (comManager.ConnectMachine(IsCommSet))
+                {
+                        CommError = 0;
+                        status = Constant.DeviceConnected;
+                        return true;
+                }
+                comManager.Status = false;
+            }
+            else
+            {
+                if (tcpManager != null)
+                {
+                    status = Constant.DeviceNoConnection;
+                    
+                    if (tcpManager.Status == Constant.DeviceNoConnection)
+                    tcpManager.Reset();
 
-            comManager.Status = false;
+                    status = Constant.DeviceConnected;
+
+                    WatchCommTimer.Enabled = true;
+
+                    return true;
+                }
+            }
             return false;
         }
         /// <summary>
@@ -367,7 +451,7 @@ namespace xjplc
         {
             if (comManager != null)
             {
-                comManager.Reset();
+                comManager.DeviceClear();
                 comManager = null;
             }
                                  
@@ -381,19 +465,39 @@ namespace xjplc
             //命令打包类重新确认
             comManager.SetXJPLCcmd(XJPLCcmd);
            
-            //GC.Collect();
-            //GC.WaitForPendingFinalizers();
         }
+        public void SetComm(ServerInfo s0)
+        {
+            if (tcpManager != null)
+            {
+                tcpManager.Reset();
+                tcpManager = null;
+            }
+            else
+            tcpManager = new XjTcpManager(s0);
+            //设置数据源
+            shiftDataSource();
+
+        }
+        #region tcpPackAndEvent //tcp 通讯只要设置数据源即可
+        void shiftDataSource()
+        {
+            tcpManager.dataForm    = dataForm;
+            tcpManager.DPlcInfo    = DPlcInfo;
+            tcpManager.MPlcInfoAll = MPlcInfoAll;
+        }
+
+        #endregion
+
         public void SetPlcReadDMData(DataTable dt)
         {
-    
-            //确认表格 //这个要隔离出来 方便以后可以单独调用 针对用户更改读取内容
-                      
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                     dataForm = dt;
-                     PackCmdReadDMDataOut(dataForm);              
-                }           
+
+            //确认表格 //这个要隔离出来 方便以后可以单独调用 针对用户更改读取内容                     
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                dataForm = dt;
+                PackCmdReadDMDataOut(dataForm);
+            }
         }
         /// <summary>
         /// 如果用户需要重新制定读取一些D区 M区的话可以先设置保存读取PLC 内容的文件
@@ -463,7 +567,6 @@ namespace xjplc
                             MessageBox.Show(Constant.ReadPlcInfoFail);
                             ConstantMethod.AppExit();
                         }
-
                     }
                     else
                     {
@@ -478,6 +581,10 @@ namespace xjplc
             get { return dataForm; }
             set { dataForm = value; }
         }
+        void preProcess()
+        {
+
+        }
 
         /// <summary>
         /// 本函数的思路：
@@ -489,9 +596,10 @@ namespace xjplc
         {
             List<XJPlcInfo> plcInfoLst = new List<XJPlcInfo>();
             List<XJPlcInfo> MPlcInfo   = new List<XJPlcInfo>();
+       
             foreach (DataRow row in dataForm0.Rows)
             {
-                int mAddr = 0;
+                double mAddr = 0;
                 int count = 0;
                 string strSplit1;
                 string strSplit2;
@@ -518,23 +626,28 @@ namespace xjplc
                     continue;
                 }
                 //地址超了 无效 暂且定XDM 最大69999
-                if (!int.TryParse(strSplit1, out mAddr) || (mAddr<0) || (mAddr > Constant.XJMaxAddr))
+                if (!double.TryParse(strSplit1, out mAddr) || (mAddr<0) || (mAddr > Constant.XJMaxAddr))
                 {
                     continue;
                 }
                 //字母大于4 无效地址
                 if (strSplit2.Count() > 3) continue;
                 //这里数组进行统计 
-                if (DSmode.Equals(Constant.DoubleMode)&&(XJPLCPackCmdAndDataUnpack.AreaGetFromStr(strSplit2) <Constant.M_ID))
+                if ((DSmode.Equals(Constant.DoubleMode)&&(XJPLCPackCmdAndDataUnpack.AreaGetFromStr(strSplit2) <Constant.M_ID)) 
+                    || DSmode.Equals(Constant.DoubleModeInt))
                 {
                     count = count * 2;
                 }
+               
                 //传入数据起始地址 个数 区域 模式
-                XJPlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo(mAddr,count,strSplit2, DSmode);
+                XJPlcInfo[] tmpInfoLst = XJPLCcmd.GetPlcInfo((int)mAddr,count,strSplit2, DSmode);
 
                 if (tmpInfoLst.Count() > 0) plcInfoLst.AddRange(tmpInfoLst);
                 #endregion
             }
+            #region 西门子
+            
+            #endregion
             #region 排序 去重复 统计DM 起始点
             //排序 按照绝对地址 
             plcInfoLst = plcInfoLst.OrderBy(x => x.AbsAddr).ToList();
@@ -614,8 +727,7 @@ namespace xjplc
             for (int i = 0; i < MPlcInfoAll.Count; i++)
             {
                 double cntdb = (double)MPlcInfoAll[i].Count / 8;
-                mCount = mCount +  
-                    (int)Math.Ceiling(cntdb);
+                mCount = mCount +  (int)Math.Ceiling(cntdb);
             }
             //dataform表格里面地址对应dplcinfo和mplcinfo的数据对应起来
             FindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfoAll);
@@ -631,6 +743,7 @@ namespace xjplc
             //GC.Collect();
             //GC.WaitForPendingFinalizers();
         }
+        
         /// <summary>
         /// 这里增加一个 就是 主form太大了 分割一个form出来 但是 绑定 还是在原来那个主form上
         /// </summary>
@@ -901,7 +1014,7 @@ namespace xjplc
 
                     if (dpResultLow.Count > 0)
                     {
-                        result[0] = i;;
+                        result[0] = i;
                         result[1] = MPlcInfoAll[i].IndexOf(dpResultLow[0]);
                         break;
                     }
@@ -909,7 +1022,10 @@ namespace xjplc
                 }
 
             }
-                    
+            if ((result[0] == -1) && (result[1] == -1))
+            {
+                int x = 0;
+            }
 
             return result;
 
@@ -1024,12 +1140,33 @@ namespace xjplc
         //写D寄存器支持多个使用
         private bool SetMultipleDArea(int Addr, int count, int[] value, string Area)
         {
-            return comManager.SetMultipleDArea(Addr, count, value, Area);
+            if (comManager != null)
+                return comManager.SetMultipleDArea(Addr, count, value, Area);
+            else
+            {
+                if (tcpManager != null)
+                {
+                     return tcpManager.SetMultipleDArea(Addr, count, value, Area);
+                }
+            }
+
+           return false;
+
         }
         //写m寄存器支持多个使用
         private bool SetMultipleMArea(int Addr, int count, int[] value, string Area)
         {
-            return comManager.SetMultipleMArea(Addr, count, value, Area);
+            if (comManager != null)
+                return comManager.SetMultipleMArea(Addr, count, value, Area);
+            else
+            {
+                if (tcpManager != null)
+                {
+                    return tcpManager.SetMultipleMArea(Addr, count, value, Area);
+                }
+            }
+
+            return false;
         }
         /// <summary>
         /// 测试 D区域写
@@ -1043,10 +1180,7 @@ namespace xjplc
         /// 测试M区域写
         /// </summary>
         /// <returns></returns>
-        public bool WriteMarea(int addr,int count ,int[] value,String area)
-        {                              
-            return SetMultipleMArea(addr, count, value, area);
-        }
+       
         public bool WriteSingleDData(int relAddr, int value, string area, string mode)
         {
             int[] valueInt = new int[1];
@@ -1074,8 +1208,17 @@ namespace xjplc
                     {
                         int addr_high = (int)((valuevaluesingle & 0xFFFF0000) >> 16);
                         int addr_low = valuevaluesingle & 0xFFFF;
-                        valueLst.Add(addr_low);
-                        valueLst.Add(addr_high);
+                        //判断下西门子的
+                        if (area.Contains(Constant.SimensDB))
+                        {
+                            valueLst.Add(addr_high);
+                            valueLst.Add(addr_low);
+                        }
+                        else
+                        {
+                            valueLst.Add(addr_low);
+                            valueLst.Add(addr_high);
+                        }
                     }
 
                     return SetMultipleDArea(relAddr, dcount, valueLst.ToArray(), area);
@@ -1110,8 +1253,7 @@ namespace xjplc
                 //这里传入的数据 应该是               
                 return SetMultipleMArea(relAddr, value.Count(), mvalueLst.ToArray(), area);
             }
-           
-       
+                 
         #endregion
 
         #region 开始更新表格数据
@@ -1120,17 +1262,22 @@ namespace xjplc
         {
             WatchCommTimer.Enabled = false;
 
+
             //CloseUpdateUI();
-            comManager.Reset();
+            if(comManager !=null)
+            comManager.DeviceClear();
 
             CommError = 0;
-            status = -1;
+            status = Constant.DeviceNoConnection;
 
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
         }
         #endregion
+
+
+
     }
-   
+    
 }

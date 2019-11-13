@@ -526,8 +526,8 @@ namespace xjplc
                             {
                                 p.ShowStr.Add(param4);
                             }
-
-                            ConstantMethod.getAddrAndAreaByStr(userdata, ref addrInt, ref areaStr);
+                            
+                            ConstantMethod.getAddrAndAreaByStr(userdata, ref addrInt, ref areaStr,DeviceId);
                             // ConstantMethod.SplitAreaAndAddr(userdata, ref addrInt, ref areaStr);
                             //区域符号在前面 后面地址就可以计算了
                             p.Area = areaStr;
@@ -2203,7 +2203,7 @@ namespace xjplc
             string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
             string area = "D";
             int addr = 0;
-            ConstantMethod.getAddrAndAreaByStr(userdata,ref addr,ref area);          
+            ConstantMethod.getAddrAndAreaByStr(userdata,ref addr,ref area,DeviceId);          
             int result = 0;
 
             if (DeviceId == Constant.xzjDeivceId)

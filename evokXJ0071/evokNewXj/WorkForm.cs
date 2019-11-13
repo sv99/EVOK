@@ -29,7 +29,7 @@ namespace evokNew0071
 
         private void autoSLBtn_Click(object sender, EventArgs e)
         {
-             evokWork.autoSL();
+           //  evokWork.autoSL();
         }
 
         private void AutoTextBox_Enter(object sender, EventArgs e)

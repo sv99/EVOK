@@ -17,25 +17,31 @@ namespace xjplc.TcpDevice
     public class TcpDevice
     {
 
+        //缓冲区发送数据
         public byte[] CmdOut = Constant.IsDtTcpExitOut;
 
         public byte[] CmdIn = Constant.IsDtTcpExitIn;
 
-        public byte[] CmdOutDefault = Constant.IsDtTcpExitOut;
+        //缓冲区即将发送的数据
+        public byte[] CmdOutReadyGo  ;
 
-        public byte[] CmdInDefault = Constant.IsDtTcpExitIn;
+        public byte[] CmdInReadyCome  ;
+
+        //发送队列的数据
         List<List<byte>> cmdOutLst;
         public System.Collections.Generic.List<System.Collections.Generic.List<byte>> CmdOutLst
         {
             get { return cmdOutLst; }
             set { cmdOutLst = value; }
         }
+        //接收队列数据
         List<List<byte>> cmdInLst;
         public System.Collections.Generic.List<System.Collections.Generic.List<byte>> CmdInLst
         {
             get { return cmdInLst; }
             set { cmdInLst = value; }
         }
+  
         System.Timers.Timer connectWatchTimer;
 
         Socket socketDt;
@@ -45,7 +51,7 @@ namespace xjplc.TcpDevice
         Thread recThread;
         //网口连接超时次数
         int ErrorConnCount = 0;
-
+        //设备ID
         int deviceId = 0;
         public int DeviceId
         {
@@ -83,7 +89,7 @@ namespace xjplc.TcpDevice
             get { return isGoToGetData; }
             set { isGoToGetData = value; }
         }
-        public void Reset()
+        public bool Reset()
         {
             status = false;
             ErrorConnCount = 0;
@@ -92,16 +98,19 @@ namespace xjplc.TcpDevice
             isGoToGetData = false;
             
             ConstantMethod.Delay(150);
+
             ClearBufferCmdOut();
+
             CloseTcpClient();
-            OpenTcpClient();
+
+            return  OpenTcpClient();
+
         }
 
-        public void ClearBufferCmdOut()
+        void ClearBufferCmdOut()
         {
-            CmdOutLst.Clear();
             CmdInLst.Clear();
-
+            CmdOutLst.Clear();
         }
         //设备是否准备好 发送了设备是否存在命令后 就可以判断了
         bool isDeviceReady;
@@ -113,9 +122,9 @@ namespace xjplc.TcpDevice
 
         public  void SetReadCmd()
         {
+            /**
             if (CmdOutLst.Count > 0 && CmdInLst.Count > 0)
             {
-
                 CmdOut = CmdOutLst[0].ToArray();
                 CmdIn = CmdInLst[0].ToArray();
                 CmdOutLst.RemoveAt(0);
@@ -123,10 +132,13 @@ namespace xjplc.TcpDevice
             }
             else
             {
-                CmdOut = CmdOutDefault;
-                CmdIn = CmdInDefault;
-            }
-           
+         ***/
+                CmdOut = CmdOutReadyGo;
+                CmdIn = CmdInReadyCome;
+              
+            System.Diagnostics.Debug.WriteLine(ConstantMethod.byteToHexStr(CmdOutReadyGo));
+            // }
+
         }
         public TcpDevice(ServerInfo p0)
         {
@@ -164,10 +176,11 @@ namespace xjplc.TcpDevice
             }
             else if (ErrorConnCount > Constant.ErrorConnCountMax)
             {
-                connectWatchTimer.Enabled = false;
                 Reset();
             }
         }
+        bool isOnLine = false;
+
         public void CloseTcpClient()
         {
             try { socketDt.Shutdown(SocketShutdown.Both); } catch { }
@@ -175,9 +188,13 @@ namespace xjplc.TcpDevice
             try { socketDt.Close(); } catch { }
 
             connectWatchTimer.Enabled = false;
-
+            Status = false;
+            isOnLine = false;
         }
-
+        void OnConnect(object sender,SocketAsyncEventArgs e)
+        {
+            isOnLine = true;
+        }
         public bool OpenTcpClient()
         {
             try
@@ -191,27 +208,43 @@ namespace xjplc.TcpDevice
                 IPAddress ip = IPAddress.Parse(serverParam.server_Ip);
                 IPEndPoint point = new IPEndPoint(ip, int.Parse(serverParam.server_Port));
                 //获得要连接的远程服务器应用程序的IP地址和端口号
-                socketDt.Connect(point);
+              //  socketDt.Connect(point);
+
+                //非阻塞连接
+                SocketAsyncEventArgs connectArgs = new SocketAsyncEventArgs();
+                connectArgs.UserToken = socketDt;
+                connectArgs.RemoteEndPoint = point;
+                connectArgs.Completed += new EventHandler<SocketAsyncEventArgs>(OnConnect);
+
+                socketDt.ConnectAsync(connectArgs);
+
+                ConstantMethod.Delay(500);
 
                 if (recThread != null && recThread.IsAlive)
                 {
                     recThread.Abort();
                 }
-                //开启一个新的线程不停的接收服务端发来的消息
-                recThread = new Thread(DataReceived);
-                recThread.IsBackground = true;
-                recThread.Start();
-                //开启定时器
-                connectWatchTimer.Enabled = true;
-                SetReadCmd();
-                Start();
-                return true;
+                if (isOnLine)
+                {
+
+                    //开启一个新的线程不停的接收服务端发来的消息
+                    recThread = new Thread(DataReceived);
+                    recThread.IsBackground = true;
+                    recThread.Start();
+                    //开启定时器
+                    connectWatchTimer.Enabled = true;
+                    SetReadCmd();
+                    Start();
+                    ConstantMethod.Delay(200);
+                    return Status;
+                }
+                return false;
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(DeviceName+"无法连接，请检查网络！");
-                ConstantMethod.AppExit();
+               // MessageBox.Show(DeviceName+"无法连接，请检查网络！");
+                //ConstantMethod.AppExit();
                 return false;
             }
 
@@ -229,7 +262,6 @@ namespace xjplc.TcpDevice
         {
             IsGoToGetData = true;
             IsDeviceReady = true;
-            status = true;
             ClearBufferCmdOut();
             GetData();
         }
@@ -258,8 +290,10 @@ namespace xjplc.TcpDevice
                         if(EventDataProcess != null && DataProcessEventArgs !=null)
                         EventDataProcess(this, DataProcessEventArgs);
                         SetReadCmd();
+                        Status = true;
                         ErrorConnCount = 0;
                         GetData();
+                       
 
                     }
                 }

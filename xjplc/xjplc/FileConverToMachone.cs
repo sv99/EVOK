@@ -156,6 +156,11 @@ namespace xjplc
 
             int offset = 0;
             if (!File.Exists(Constant.SplitTypeFile)) return -1;
+            if(ConstantMethod.FileIsUsed(Constant.SplitTypeFile))
+            {
+                MessageBox.Show(Constant.SplitTypeFile+"使用中，请先关闭再打开软件！");
+                ConstantMethod.AppExit();
+            }
             DataTable dtFormula =exop.ImportExcel(Constant.SplitTypeFile); 
 
 
@@ -330,7 +335,7 @@ namespace xjplc
                 door.Name = dr[valCol["产品名称"]].ToString() ;
 
                 double height = 0;
-
+                string s = dr[valCol["高"]].ToString();
                 if (!double.TryParse(dr[valCol["高"]].ToString(), out height))
                 {
                     MessageBox.Show("门高数据错误！");
@@ -393,8 +398,7 @@ namespace xjplc
             int resultInt=0;
             if (int.TryParse(result.ToString(),out resultInt))
             {
-              
-
+                           
             }
 
             return resultInt;
@@ -402,15 +406,15 @@ namespace xjplc
         //获取门皮 门板 码头等尺寸 门型 还他妈的有字母和文字
         public bool getSizeDataTable(doorTypeInfo door)
         {
-            //志邦的 20190418
-            //string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
-            string doorType = door.Name;
+            //志邦的 20190418 string doorType = door.Name;
+            string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
+
             foreach (sizeLstByDoorType split in UserSplitType)
             {
-                //志邦的 20190418
+                //志邦的 20190418   // if (split.Name.Equals(doorType))
                 //匹配成功 找到公式  找到尺寸
-                //if (split.Name.Contains(doorType)) 
-                if (split.Name.Equals(doorType))
+                if (split.Name.Contains(doorType)) 
+              
                 {                                       
                     foreach (singleSize size in split.Size)
                     {                      
@@ -429,6 +433,7 @@ namespace xjplc
                                         dr[Constant.strformatZh[3]] = size.Name;
                                         dr[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
                                         dr[Constant.strformatZh[5]] = door.Xuhao;
+                                        dr[Constant.strformatZh[13]] = door.Xuhao;
                                         door.Door_Ban.Rows.Add(dr);
 
                                         break;
@@ -442,7 +447,7 @@ namespace xjplc
                                         dr0[Constant.strformatZh[2]] = "0";
                                         dr0[Constant.strformatZh[3]] = size.Name;
                                         int shellWidth = GetFormulaResult(size.Formula[1].Strexe, door);
-                                        if (shellWidth < 645)
+                                        if (shellWidth < 610)
                                         {
                                             MessageBox.Show("门皮数据超范围，请检查数据后再拆单！");
                                             return false;
@@ -450,6 +455,7 @@ namespace xjplc
                                         dr0[Constant.strformatZh[4]] = GetFormulaResult(size.Formula[1].Strexe, door);
                                         door.Door_shell.Rows.Add(dr0);
                                         dr0[Constant.strformatZh[5]] = door.Xuhao;
+                                        dr0[Constant.strformatZh[13]] = door.Xuhao;
                                         break;
                                     }
                             }                           
@@ -464,18 +470,19 @@ namespace xjplc
                                 dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
                                 dr[Constant.strformatZh[2]] = "0";
                                 dr[Constant.strformatZh[5]] = door.Xuhao;
-                                 dr[Constant.strformatZh[13]] = doorType+ door.GwId;
+                                dr[Constant.strformatZh[13]] = door.Xuhao;// doorType+door.GwId;
                                 // dr[Constant.strformatZh[15]] = door.GwId;
 
                                 if (door.BarCodeStr.Count > 13)
                                 {
-                                    dr[Constant.strformatZh[3]] = door.BarCodeStr[0];
+                                    /***
+                                    dr[Constant.strformatZh[3]] = door.BarCodeStr[1];
                                     dr[Constant.strformatZh[4]] = door.BarCodeStr[1];
                                     dr[Constant.strformatZh[6]] = door.BarCodeStr[2];
                                     dr[Constant.strformatZh[7]] = door.BarCodeStr[3];
                                     dr[Constant.strformatZh[8]] = door.BarCodeStr[4];
                                     dr[Constant.strformatZh[9]] = door.BarCodeStr[5];
-                                    dr[Constant.strformatZh[10]] = door.BarCodeStr[6];
+                                    dr[Constant.strformatZh[10]] = door.BarCodeStr[6]; 
                                     dr[Constant.strformatZh[11]] = door.BarCodeStr[7];
                                     dr[Constant.strformatZh[12]] = door.BarCodeStr[8];
                                     //dr[Constant.strformatZh[13]] = door.BarCodeStr[9];
@@ -483,13 +490,15 @@ namespace xjplc
                                     dr[Constant.strformatZh[15]] = door.BarCodeStr[11];
                                     dr[Constant.strformatZh[16]] = door.BarCodeStr[12];
                                     dr[Constant.strformatZh[17]] = door.BarCodeStr[13];
+                                    ***/
                                 }
                                 door.Door_Size.Rows.Add(dr);
                             }
                         }                                                                    
                     }
                 }             
-            }           
+            }
+          
             return true;
         }   
     }

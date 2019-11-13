@@ -19,7 +19,7 @@ namespace xjplc.报警
         }
         void Init()
         {
-          
+          //  ConstantMethod.Delay(2000);
         }
         public void showAlram(List<string> lst)
         {

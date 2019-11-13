@@ -26,6 +26,8 @@ namespace fileconvert
         ConfigFileManager paraFile;
 
         int userSelectIdx = 0;
+
+        int userId=0;
         public int UserSelectIdx
         {
             get { return userSelectIdx; }
@@ -65,10 +67,7 @@ namespace fileconvert
 
             csvSaveDemo = new CsvStreamReader();
 
-            if (!ReadFileDemo(""))
-            {
-                ConstantMethod.AppExit();
-            }
+            
 
             if (File.Exists(Constant.barCodeDemo))
             {
@@ -87,7 +86,28 @@ namespace fileconvert
             {
                 paraFile.LoadFile(Constant.ConfigParamFilePath);
             }
+
+            
+            if (int.TryParse(paraFile.ReadConfig(Constant.userName), out userId))
+            {
+                //用户名获取成功
+                if(userId==Constant.hdiaoId)
+                {
+                    menu.Enabled = false;
+                    csv1.Enabled = false;
+                    csv2.Enabled = false;
+
+                }
+            }
+
             paramStr = new List<string>();
+
+            if (userId != Constant.hdiaoId)
+            if (!ReadFileDemo(""))
+            {
+                ConstantMethod.AppExit();
+            }
+           
             int i = 1;
             string s="";            
             while (!string.IsNullOrWhiteSpace(s=paraFile.ReadConfig(Constant.strParam + i.ToString())))
@@ -108,10 +128,105 @@ namespace fileconvert
             if (s.Length > 0 && beizhu.Contains(s))
                 beizhu = beizhu.Replace(s, "");
         }
+        #region 华雕转换
+        //华雕转换
+        public void hdiao(string  PathStr)
+        {
+            if (UserDt.Rows.Count == 0)
+            {
+                ConstantMethod.ShowInfo(rtbResult, "无数据！");
+                return;
+            }
+            //获取有效行号
+            int rowStart= UserDt.Rows.Count - 1;
+            int rowEnd  = UserDt.Rows.Count - 1;
+            //再转换长宽为尺寸
+            for(int i = 0; i < UserDt.Rows.Count; i++)
+            {
+                List<object> arr = new List<object>(UserDt.Rows[i].ItemArray);
+
+                string[] data= arr.ConvertAll(c => { return c.ToString(); }).ToArray();
+              
+                if (ConstantMethod.compareString(data,Constant.stValueArray))
+                {
+                    rowStart = i;
+                }
+                if (UserDt.Rows[i][0].ToString().Equals(Constant.edValue))
+                {
+                    rowEnd = i;
+                }
+
+            }
+     
+            //获取数量
+            if (rowStart > 0 && rowStart < rowEnd && UserDt.Rows.Count>8)
+            {
+                DataTable dtOutPutTmp = ConstantMethod.getDataTableByString(Constant.strformatZh);
+
+                string customName = UserDt.Rows[0][0].ToString();
+
+                //长度 宽度都拿来当尺寸 同时增加客户姓名 增加标记号
+                for (int i = rowStart + 1; i < rowEnd; i++)
+                {
+                    DataRow dr = dtOutPutTmp.NewRow();
+
+                    dr[0] = UserDt.Rows[i][1].ToString();
+                    int cnt = 0;
+                    if (int.TryParse(UserDt.Rows[i][5].ToString(), out cnt))
+                    {
+                        dr[1] = (cnt*2).ToString();
+                    }
+                    else
+                    {
+                        dr[1] = 1;
+                    }
+                    
+                    dr[2] = "0";
+                    dr[3] = UserDt.Rows[i][1].ToString();
+                    dr[4] = UserDt.Rows[i][0].ToString();
+                    dr[5] = UserDt.Rows[i][3].ToString();
+                    dr[6] = UserDt.Rows[i][4].ToString();
+                    dr[7] = UserDt.Rows[i][6].ToString();
+                    dr[8] = UserDt.Rows[i][7].ToString();
+                    dr[9] = UserDt.Rows[i][8].ToString();
+                    dr[10] = customName;
+                    dr[11] = i.ToString() + "--1";
+                    dr[12] = UserDt.Rows[i][1].ToString();
+                    dr[13] = UserDt.Rows[i][2].ToString();
+                    DataRow dr0 = dtOutPutTmp.NewRow();
+
+                    dr0.ItemArray = dr.ItemArray;
+                    dr0[0] = UserDt.Rows[i][2].ToString();
+                    dr0[3] = UserDt.Rows[i][2].ToString();
+                    dr0[11] = i.ToString() + "--2";
+                    dtOutPutTmp.Rows.Add(dr);
+                    dtOutPutTmp.Rows.Add(dr0);
+                }
+                //存在则开始分割表格 把表格集合 第一给dtouput 用户可以查看条码
+                List<DataTable> dt = new List<DataTable>();              
+                getDataTableByParam(dt, dtOutPutTmp, paramStr);
+                foreach (DataTable dttemp in dt)
+                {
+                    if(dttemp.Rows[1][8] !=null)
+                    fileManager.
+                    SaveFileWithDefault(dttemp, PathStr,dttemp.Rows[1][8].ToString());
+                    else ConstantMethod.ShowInfo(rtbResult, "分类标志错误！");
+                }
+                
+            }
+            else
+                ConstantMethod.ShowInfo(rtbResult,"数据格式错误！");
+
+            ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换结束！");
+        }
+
+        #endregion
+        //通用型转换
         public void fileConvertFun(string PathStr)
         {
+
             //首先判断下 参数名 是否在源表格列名中存在
-            bool isParamExist = true;;
+            bool isParamExist = true;
             string[] strColumns = new string[UserDt.Columns.Count];
             for (int i = 0; i < UserDt.Columns.Count; i++)
             {
@@ -225,7 +340,7 @@ namespace fileconvert
                     DataTable dtTemp = res.Clone();
                     DataRow dr0 = dtTemp.NewRow();
                     dr0.ItemArray = dr.ItemArray;
-                    dtTemp.Rows.Add(dr0);
+                    dtTemp.Rows.Add(dr0);           
                     dtLst.Add(dtTemp);
                 }                           
             }
@@ -235,8 +350,20 @@ namespace fileconvert
         DataTable dtOutPut ;
         private void button3_Click(object sender, EventArgs e)
         {
-                                  
-            fileConvertFun(DialogExcelDataLoad.FileName);
+            switch (userId)
+            {
+                case Constant.hdiaoId:
+                    {
+                        hdiao(DialogExcelDataLoad.FileName);
+                        break;
+                    }
+                default:
+                    {
+                        fileConvertFun(DialogExcelDataLoad.FileName);
+                        break;
+                    }
+            }                     
+                     
             if (File.Exists(Constant.barCodeDemo))
             {
                 barCodeButton.Enabled = true;
@@ -468,8 +595,7 @@ namespace fileconvert
         private void button6_Click(object sender, EventArgs e)
         {
 
-        }
-        
+        }       
         private void 导入CSV文件ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
@@ -484,7 +610,7 @@ namespace fileconvert
                 {
                     UserDt = null;
                                       
-                    UserDt = csvop.OpenCSV(DialogExcelDataLoad.FileName);
+                    UserDt = csvop.OpenCSV1(DialogExcelDataLoad.FileName);
 
                     if (UserDt != null && UserDt.Columns.Count > 3)
                     {

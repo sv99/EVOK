@@ -36,9 +36,9 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.导入excel文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.导入CSV文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.导入CSVToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.设置ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.csv1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.csv2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.menu = new System.Windows.Forms.ToolStripMenuItem();
             this.设置导出模板ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.保存配置文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.加载文件模板ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -88,7 +88,7 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.文件ToolStripMenuItem,
-            this.设置ToolStripMenuItem});
+            this.menu});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1481, 35);
@@ -99,8 +99,8 @@
             // 
             this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.导入excel文件ToolStripMenuItem,
-            this.导入CSV文件ToolStripMenuItem,
-            this.导入CSVToolStripMenuItem});
+            this.csv1,
+            this.csv2});
             this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
             this.文件ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
             this.文件ToolStripMenuItem.Text = "文件";
@@ -112,31 +112,31 @@
             this.导入excel文件ToolStripMenuItem.Text = "导入excel文件";
             this.导入excel文件ToolStripMenuItem.Click += new System.EventHandler(this.导入excel文件ToolStripMenuItem_Click);
             // 
-            // 导入CSV文件ToolStripMenuItem
+            // csv1
             // 
-            this.导入CSV文件ToolStripMenuItem.Name = "导入CSV文件ToolStripMenuItem";
-            this.导入CSV文件ToolStripMenuItem.Size = new System.Drawing.Size(217, 32);
-            this.导入CSV文件ToolStripMenuItem.Text = "导入CSV(,)";
-            this.导入CSV文件ToolStripMenuItem.Click += new System.EventHandler(this.导入CSV文件ToolStripMenuItem_Click);
+            this.csv1.Name = "csv1";
+            this.csv1.Size = new System.Drawing.Size(217, 32);
+            this.csv1.Text = "导入CSV(,)";
+            this.csv1.Click += new System.EventHandler(this.导入CSV文件ToolStripMenuItem_Click);
             // 
-            // 导入CSVToolStripMenuItem
+            // csv2
             // 
-            this.导入CSVToolStripMenuItem.Name = "导入CSVToolStripMenuItem";
-            this.导入CSVToolStripMenuItem.Size = new System.Drawing.Size(217, 32);
-            this.导入CSVToolStripMenuItem.Text = "导入CSV(;)";
-            this.导入CSVToolStripMenuItem.Click += new System.EventHandler(this.导入CSVToolStripMenuItem_Click);
+            this.csv2.Name = "csv2";
+            this.csv2.Size = new System.Drawing.Size(217, 32);
+            this.csv2.Text = "导入CSV(;)";
+            this.csv2.Click += new System.EventHandler(this.导入CSVToolStripMenuItem_Click);
             // 
-            // 设置ToolStripMenuItem
+            // menu
             // 
-            this.设置ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.设置导出模板ToolStripMenuItem,
             this.保存配置文件ToolStripMenuItem,
             this.加载文件模板ToolStripMenuItem,
             this.barCodeButton,
             this.加载条码ToolStripMenuItem});
-            this.设置ToolStripMenuItem.Name = "设置ToolStripMenuItem";
-            this.设置ToolStripMenuItem.Size = new System.Drawing.Size(64, 31);
-            this.设置ToolStripMenuItem.Text = "设置";
+            this.menu.Name = "menu";
+            this.menu.Size = new System.Drawing.Size(64, 31);
+            this.menu.Text = "设置";
             // 
             // 设置导出模板ToolStripMenuItem
             // 
@@ -291,11 +291,11 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 导入excel文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 导入CSV文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 设置ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem csv1;
+        private System.Windows.Forms.ToolStripMenuItem menu;
         private System.Windows.Forms.ToolStripMenuItem 设置导出模板ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 保存配置文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 导入CSVToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem csv2;
         private System.Windows.Forms.ProgressBar pBar1;
         private System.Windows.Forms.ToolStripMenuItem 加载文件模板ToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog demoLoadDialog;

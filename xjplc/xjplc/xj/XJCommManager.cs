@@ -89,7 +89,6 @@ namespace xjplc
            
             ErrorConnCount = 0;
 
-
             DataProcessEventArgs = new CommEventArgs();
 
         } 
@@ -141,8 +140,14 @@ namespace xjplc
         //复位所有状态位和缓冲 
         //复位之后假定 硬件端口不会变化，那端口不会关闭
         //
-        public void Reset()
+        public void DeviceClear()
         {
+            //ConstantMethod.XJFindPort(1);
+            PortParam
+            portParam0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+
+            m_SerialPort.PortName = portParam0.m_portName;
+
             ErrorConnCount = 0;
             ErrorConnTimer.Enabled = false;            
             isDeviceReady = false;
@@ -171,7 +176,7 @@ namespace xjplc
             }
             else if (ErrorConnCount > Constant.ErrorConnCountMax)
             {
-                Reset();
+                DeviceClear();
             }
         }
         /// <summary>
@@ -185,17 +190,21 @@ namespace xjplc
                 m_buffer.Clear();
                 if (XJPLCcmd.CmdOut!=null && XJPLCcmd.CmdOut.Count()>0)
                 m_SerialPort.Send(XJPLCcmd.CmdOut.ToArray());
-            }
-            
+            }            
         }
               
         /// <summary>
         /// 连接PLC 步骤： 打开串口 发送设备是否存在命令 
         /// </summary>
         /// <returns></returns>
-        public bool ConnectMachine()
-        {
-            Reset();
+        public bool ConnectMachine( bool isSetComm)
+        {  
+                             
+            if (m_SerialPort.IsOpen) m_SerialPort.Stop(); 
+            //如果不是固定comm口
+             if(!isSetComm)          
+            if (!ConstantMethod.XJFindPort(1)) return false;
+            DeviceClear();
 
             //目前只是打开窗口 后续要增加打开串口后 返回协议 是否正确
             openPort();
@@ -431,6 +440,7 @@ namespace xjplc
                 
                 return (!isWriteCmd);
             }
+
             return false;
 
         }

@@ -19,8 +19,8 @@ namespace evokNew0071
         CsvStreamReader csvop;
         OptSize optsize;
         bool propertyA = true;
-        bool propertyB = true;
-        bool propertyC = true;
+        bool propertyB = false;
+        bool propertyC = false;
         OptSize op0;
         OptSize op1;
         OptSize op2;
@@ -383,7 +383,7 @@ namespace evokNew0071
             checkBox2.Checked = false; 
             if (workMan.LoadData())
             {
-                workMan.ShowResult(listView1);               
+                workMan.ShowResult(listView1);                                            
                 workMan.showDoorTypeList(comboBox1, 0);
                 checkBox2.Checked=true;
                 richTextBox7.Text = "当前木方数据数量行数为："+((DataTable)dgSize.DataSource).Rows.Count.ToString();

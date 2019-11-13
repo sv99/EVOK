@@ -88,7 +88,8 @@ namespace evokNew0054
 
         public void showHyMode(int id)
         {
-            if(id>0)
+            if (id < 0) return ;
+            if (id>0)
             {
                 L2Lbl.Visible = true;
                 L2Txt.Visible = true;
@@ -109,6 +110,7 @@ namespace evokNew0054
         }
         public bool showScKaoshan(int id)
         {
+            if (id < 0) return false;
             int scPicTag = 0;
             if (int.TryParse(scPic.Tag.ToString(), out scPicTag))
             {
@@ -129,6 +131,7 @@ namespace evokNew0054
         }
         public bool showHyPic(int id)
         {
+            if (id < 0) return false;
 
             int hyPicTag = 0;
             if (int.TryParse(hyPic.Tag.ToString(), out hyPicTag))
@@ -421,7 +424,9 @@ namespace evokNew0054
             }
             else if (!evokWork.ShiftPage(tc1.SelectedIndex))
             {
+                
                 e.Cancel = true;
+               
             }
         }
 
@@ -576,10 +581,7 @@ namespace evokNew0054
                 {
                     if (p.Name.Contains(Constant.Alarm)&& p.ShowStr != null && p.ShowStr.Count > 0)
                     {
-                        if (p.Addr == 1004)
-                        {
-                            p.Addr = 1004;
-                        }
+                       
                         for (int i = 0; i < p.ShowStr.Count; i++)
                         {
                             int index = errorList.IndexOf(p.ShowStr[i]);
@@ -773,7 +775,7 @@ namespace evokNew0054
         private void textBox15_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (evokWork.KeyPress_Page(sender, e, tc1.SelectedIndex))
-                ((TextBox)sender).Parent.Focus();
+            ((TextBox)sender).Parent.Focus();
         }
 
         private void textBox15_Enter(object sender, EventArgs e)
@@ -900,6 +902,11 @@ namespace evokNew0054
         private void label25_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void tc1_Selected(object sender, TabControlEventArgs e)
+        {
+           ConstantMethod.Delay(800);
         }
     }
 

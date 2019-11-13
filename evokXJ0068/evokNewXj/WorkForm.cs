@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using xjplc;
 using System.IO;
+using xjplc;
 
 namespace evokNew0068
 {
@@ -28,10 +28,7 @@ namespace evokNew0068
             InitializeComponent();
         }
 
-        private void autoSLBtn_Click(object sender, EventArgs e)
-        {
-             evokWork.autoSL();
-        }
+        
 
         private void AutoTextBox_Enter(object sender, EventArgs e)
         {
@@ -190,7 +187,7 @@ namespace evokNew0068
              evokWork.SetPrintReport();
              evokWork.InitDgvParam(dgvParam);
              evokWork.InitDgvIO(dgvIO);
-             evokWork.SetShowCnt(comboBox1);
+            
             UpdateTimer.Enabled = true;
         }
 
@@ -336,6 +333,7 @@ namespace evokNew0068
         private void resetBtn_Click(object sender, EventArgs e)
         {
              evokWork.reset();
+             stopBtnShow();
         }
 
         /// <summary>
@@ -406,8 +404,7 @@ namespace evokNew0068
              optBtn.Enabled = false;
              button10.Enabled = false;
              qClr.Enabled = false;
-             autoSLBtn.Enabled = false;
-             ccBtn.Enabled = false;
+             
              UserData.ReadOnly = true;
              printcb.Enabled = false;
             设备ToolStripMenuItem.Enabled = false;
@@ -419,8 +416,7 @@ namespace evokNew0068
             optBtn.Enabled = false;
             button10.Enabled = false;
             qClr.Enabled = false;
-            autoSLBtn.Enabled = false;
-            ccBtn.Enabled = false;
+            
             UserData.ReadOnly = true;
             stopBtn.Enabled = false;
             pauseBtn.Enabled = false;
@@ -439,8 +435,7 @@ namespace evokNew0068
             optBtn.Enabled = true;
             button10.Enabled = true;
             qClr.Enabled = true;
-            autoSLBtn.Enabled = true;
-            ccBtn.Enabled = true;
+            
             UserData.ReadOnly = true;
             stopBtn.Enabled = true;
             pauseBtn.Enabled = true;
@@ -454,9 +449,9 @@ namespace evokNew0068
         {
             startBtnShow();
 
-            // if ( evokWork.AutoMes)
-            //  {
-            //   evokWork.CutStartMeasure(Constant.CutMeasureMode);
+            //if( evokWork.AutoMes)
+            //{
+            //evokWork.CutStartMeasure(Constant.CutMeasureMode);
             //测试代码 后续回复弹窗
             /**
             qClr_Click(sender, e);
@@ -482,7 +477,6 @@ namespace evokNew0068
         private void stopBtn_Click(object sender, EventArgs e)
         {
              evokWork.stop();        
-
         }
 
         private void stopBtnShow()
@@ -492,8 +486,7 @@ namespace evokNew0068
              optBtn.Enabled = true;
              button10.Enabled = true;
              qClr.Enabled = true;
-             autoSLBtn.Enabled = true;
-             ccBtn.Enabled = true;
+            
              UserData.ReadOnly = false;
              printcb.Enabled = true;
             设备ToolStripMenuItem.Enabled = true;

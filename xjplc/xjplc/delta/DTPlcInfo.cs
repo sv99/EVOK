@@ -122,6 +122,7 @@ namespace xjplc
         //显示浮点数锯
         void controlValueShow(int id)
         {
+        
             //没有在编辑状态
             if (!IsInEdit || showControl.Focused==false)
             {
@@ -195,6 +196,7 @@ namespace xjplc
         }
         void controlValueShow()
         {
+            
             //没有在编辑状态
             if (!IsInEdit)
             {
@@ -293,18 +295,21 @@ namespace xjplc
 
             
         }
+       
         int addr;
         public int Addr
         {
-            get {             
-                return addr; }
+            get
+            {             
+                return addr;
+            }
             set
             {
-                if (area.Equals(Constant.strDMArea[5]) || (area.Equals(Constant.strDMArea[6])))
-                {
-                    addr = ConstantMethod.GetXYAddr8To10(value);              
-                }
-                else addr = value;
+                //20190514
+               //关于这里 需要考虑ES 地址不对的情况  ES情况下 XY 地址还是需要转换的 目前没用到 
+               //只考虑到as DVP15mc的情况
+
+               addr = value;
 
             }
         }

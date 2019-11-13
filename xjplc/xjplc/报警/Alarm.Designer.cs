@@ -34,12 +34,14 @@
             // 
             // listBox1
             // 
+            this.listBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.listBox1.ForeColor = System.Drawing.Color.Red;
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 15;
+            this.listBox1.ItemHeight = 27;
             this.listBox1.Location = new System.Drawing.Point(12, 12);
             this.listBox1.Name = "listBox1";
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBox1.Size = new System.Drawing.Size(574, 589);
+            this.listBox1.Size = new System.Drawing.Size(574, 571);
             this.listBox1.TabIndex = 0;
             // 
             // Alarm
@@ -50,6 +52,7 @@
             this.Controls.Add(this.listBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Alarm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "报警信息一览";
             this.ResumeLayout(false);
 

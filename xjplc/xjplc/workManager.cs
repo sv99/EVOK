@@ -240,6 +240,7 @@ namespace xjplc
             if (op1.ShowDialog() == DialogResult.OK)
             {
                 op1.InitialDirectory = Path.GetDirectoryName(op1.FileName);
+                LogManager.WriteProgramLog("加载数据文件："+op1.FileName);
                 return fileConvert.LoadDoorTypeDataTable(op1.FileName,DoorLst);
             }
 

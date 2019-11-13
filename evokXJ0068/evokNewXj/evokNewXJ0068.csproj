@@ -128,7 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\xjplc\xjplc\xjplc.csproj">
-      <Project>{b6157322-be1b-4a85-83d0-88adc63e9134}</Project>
+      <Project>{B6157322-BE1B-4A85-83D0-88ADC63E9134}</Project>
       <Name>xjplc</Name>
     </ProjectReference>
   </ItemGroup>

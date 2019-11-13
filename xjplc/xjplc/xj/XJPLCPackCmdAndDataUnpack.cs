@@ -114,12 +114,20 @@ namespace xjplc
                                     string s = dplcInfoLst[i].PlcValue.ToString();
                                     datform.Rows[dplcInfoLst[i].Row]["value"] = s;
 
+                                    double ration = Constant.dataMultiple;
+                                    if (!double.TryParse(datform.Rows[dplcInfoLst[i].Row][Constant.strParam7].ToString(), out ration))
+                                    {
+                                         ration = Constant.dataMultiple;
+                                    }
+                                    
                                     double valueDouble;
                                     if (double.TryParse(s, out valueDouble))
                                     {
-                                        valueDouble = valueDouble / Constant.dataMultiple;
-                                        datform.Rows[dplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
+                                        valueDouble = valueDouble / ration;
+                                        datform.Rows[dplcInfoLst[i].Row][Constant.strParam6] = valueDouble.ToString();
                                     }
+                                  
+
                                     UpDateRow.Add(dplcInfoLst[i].Row);
                                                                        
                                 }
@@ -183,7 +191,7 @@ namespace xjplc
             int count_high = (count & 0xFF00) >> 8;
             int count_low = count & 0xFF;
             //站号 命令码
-            CmSetDREGIn[0] = 0x01;
+            CmSetDREGIn[0] = (byte)Constant.DefaultUnitId;
             CmSetDREGIn[1] = 0x10;
             //地址 
             CmSetDREGIn[2] = (byte)addr_high;
@@ -214,7 +222,7 @@ namespace xjplc
             int count_high = (count & 0xFF00) >> 8;
             int count_low = count & 0xFF;
             //站号 命令码
-            CmSetBREGIn[0] = 0x01;
+            CmSetBREGIn[0] = (byte)Constant.DefaultUnitId;
             CmSetBREGIn[1] = 0x0f;
             //地址 
             CmSetBREGIn[2] = (byte)addr_high;
@@ -244,8 +252,7 @@ namespace xjplc
                 case "X":
                     {
                         addr = ConstantMethod.GetXYAddr8To10(addr);
-                        addr = addr + Constant.X_addr;
-                       
+                        addr = addr + Constant.X_addr;                     
                        
                         break;
                     }
@@ -287,7 +294,7 @@ namespace xjplc
             int count_high = (count & 0xFF00) >> 8;
             int count_low = count & 0xFF;
             //站号 命令码
-            CmdSetBREGOut[0] = 0x01;
+            CmdSetBREGOut[0] = (byte)Constant.DefaultUnitId;
             CmdSetBREGOut[1] = 0x0F;
             //地址 
             CmdSetBREGOut[2] = (byte)addr_high;
@@ -331,7 +338,7 @@ namespace xjplc
             int count_high = (count & 0xFF00) >> 8;
             int count_low = count & 0xFF;
             //站号 命令码
-            CmdSetDREGOut[0] = 0x01;
+            CmdSetDREGOut[0] = (byte)Constant.DefaultUnitId;
             CmdSetDREGOut[1] = 0x10;
             //地址 
             CmdSetDREGOut[2] = (byte)addr_high;
@@ -413,6 +420,12 @@ namespace xjplc
 
                         break;
                     }
+                case "DB":
+                    {
+                        addr = Constant.D_ID;
+
+                        break;
+                    }
                 case "HSD":
                     {
                         addr = Constant.HSD_ID;
@@ -442,9 +455,10 @@ namespace xjplc
             {
 
                 case "X":
-                    {                                                                 
+                    {   
+                                                                                      
                         addr = addr + Constant.X_addr;
-
+                                               
                         break;
                     }
                 case "Y":
@@ -476,6 +490,12 @@ namespace xjplc
                     {
                         addr = addr + Constant.D_addr;
                        
+                        break;
+                    }
+                case "DB":
+                    {
+                        addr = addr + Constant.D_addr;
+
                         break;
                     }
                 case "HSD":
@@ -673,25 +693,25 @@ namespace xjplc
         /// <param name="addr"></param>
         /// <returns></returns>
      
-
         public XJPlcInfo[] GetPlcInfo(int addr, int count ,string XYM,string mode)
         {
             List<XJPlcInfo> plcinforlst = new List<XJPlcInfo>();
+            
             int addrreal=addr;
+           
             if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(XYM.Trim()) > Constant.HM_ID)
             {
                 addrreal = ConstantMethod.GetXYAddr8To10(addr);
             }
+
             for (int i = 0; i < count; i++)
             {
                 XJPlcInfo tmpInfo = new XJPlcInfo(addrreal, XYM.Trim(),mode);                          
                 tmpInfo.Xuhao = -1;
                 plcinforlst.Add(tmpInfo);
                 addrreal++;
-
             }
             
-
             
             return plcinforlst.ToArray();
 
@@ -738,7 +758,7 @@ namespace xjplc
                 //开始拼接
                 CmdReadDMDataOut = new byte[7 + addrLst.Count * 4];
 
-                CmdReadDMDataOut[0] = 0x01;
+                CmdReadDMDataOut[0] = (byte)Constant.DefaultUnitId;
                 CmdReadDMDataOut[1] = 0x19;
                 CmdReadDMDataOut[2] = 0x00;
                 CmdReadDMDataOut[3] = (byte)addrLst.Count;

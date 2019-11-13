@@ -14,6 +14,9 @@ namespace xjplc.delta.TCP
 
         CsvStreamReader CSVData;
 
+        //ASplc 数量比较多 那就先分个数量
+        List<int> splitDLst;
+        List<int> splitMLst;
         private List<DataTable> dataFormLst; //表格 
         public List<DataTable> DataFormLst
         {
@@ -83,6 +86,8 @@ namespace xjplc.delta.TCP
         }
         void Init(List<string> filestr)
         {
+            splitDLst = new List<int>();
+            splitMLst = new List<int>();
 
             DataFormLst = new List<DataTable>();
             CSVData = new CsvStreamReader();
@@ -111,6 +116,8 @@ namespace xjplc.delta.TCP
             WatchCommTimer.AutoReset = true;
 
             WatchCommTimer.Elapsed += new System.Timers.ElapsedEventHandler(WatchTimerEvent);
+
+            
 
         }
        
@@ -388,10 +395,18 @@ namespace xjplc.delta.TCP
         void PackCmdReadDMDataOut(DataTable dataForm0)
         {
             
+
             List<DTTcpPlcInfo> plcInfoLst = new List<DTTcpPlcInfo>();
             DPlcInfo.Clear();
-            MPlcInfo.Clear(); 
-            
+            MPlcInfo.Clear();
+            //分段的参数 初始化
+            tcpClientManager.ReadDCmdOutLst.Clear();
+            tcpClientManager.ReadDCmdInLst.Clear();
+            tcpClientManager.ReadMCmdOutLst.Clear();
+            tcpClientManager.ReadMCmdInLst.Clear();
+            splitDLst.Clear();
+            splitMLst.Clear();
+
             foreach (DataRow row in dataForm0.Rows)
             {
                 int mAddr = -1;
@@ -438,11 +453,38 @@ namespace xjplc.delta.TCP
 
            if (DeviceId == Constant.xzjDeivceId)
             {
-                DTTcpCmdPackAndDataUnpack.ASPLCPackReadDCmd
-                (DPlcInfo.ToArray(), tcpClientManager.ReadDCmdOut, tcpClientManager.ReadDCmdIn);
+                //针对Dplc进行拆分 按照数据数量 进行拆分 逐渐加1
+                if (DPlcInfo.Count > Constant.maxplcInfoCount)
+                {
+                    splitDLst =
+                    splitLstGet(DPlcInfo.Count, Constant.maxplcInfoCount);
 
+                    splitLstGetLst(splitDLst, DPlcInfo,
+                                    tcpClientManager.ReadDCmdOutLst,
+                                    tcpClientManager.ReadDCmdInLst, Constant.D_ID);
+
+                }
+                else
+                {
+                    if (DPlcInfo.Count > 0)
+                        DTTcpCmdPackAndDataUnpack.ASPLCPackReadDCmd
+                      (DPlcInfo.ToArray(), tcpClientManager.ReadDCmdOut, tcpClientManager.ReadDCmdIn);
+                }
+                //针对Dplc进行拆分 按照数据数量 进行拆分 逐渐加1
+                if (MPlcInfo.Count > Constant.maxplcInfoCount)
+                {
+                    splitMLst =
+                    splitLstGet(MPlcInfo.Count, Constant.maxplcInfoCount);
+                    splitLstGetLst(splitMLst,MPlcInfo,
+                                   tcpClientManager.ReadMCmdOutLst,
+                                   tcpClientManager.ReadMCmdInLst,Constant.M_ID);                   
+
+                }
+                else
+                if(MPlcInfo.Count>0)
                 DTTcpCmdPackAndDataUnpack.ASPLCPackReadMCmd
                 (MPlcInfo.ToArray(), tcpClientManager.ReadMCmdOut, tcpClientManager.ReadMCmdIn);
+                               
                 //dataform表格里面地址对应dplcinfo和mplcinfo的数据对应起来
                 AsPlcFindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfo);
             }
@@ -459,22 +501,85 @@ namespace xjplc.delta.TCP
                 FindIndexInPlcInfo(dataForm0, DPlcInfo, MPlcInfo);
             }              
         }
-        
-        //根据字符 获取地址和区域
-        private string getAreaByStr(string strSplit1)
+
+        //开始分割
+        public void splitLstGetLst(List<int> splitLst,
+            List<DTTcpPlcInfo> pLst,
+            List<List<byte>> ReadCmdOutLst,
+            List<List<byte>> ReadCmdInLst,
+            int id
+            )
         {
-            string area="";
-            int addr=0;
-           ConstantMethod. getAddrAndAreaByStr(strSplit1, ref addr, ref area);
-            return area;
+            //开始分割
+            for (int i = 0; i < splitLst.Count; i++)
+            {
+                DTTcpPlcInfo[] temp;
+                List<byte> tempOut = new List<byte>();
+                List<byte> tempIn = new List<byte>();
+                int skipCount = ConstantMethod.getSum(splitLst, i);
+                temp = pLst.Skip(skipCount).Take(splitLst[i]).ToArray();
+                if (id == Constant.D_ID)
+                {
+                    DTTcpCmdPackAndDataUnpack.ASPLCPackReadDCmd(temp, tempOut, tempIn);
+                }
+
+                if (id == Constant.M_ID)
+                {
+                    DTTcpCmdPackAndDataUnpack.ASPLCPackReadMCmd(temp, tempOut, tempIn);
+                }
+
+                if (tempOut.Count > 0)
+                    ReadCmdOutLst.Add(tempOut);
+                if (tempIn.Count > 0)
+                    ReadCmdInLst.Add(tempIn);
+
+            }
         }
+
+
+
+        //将集合拆分成不同的几个集合之和 以后可以判断 是哪组数据传上来的 
+        public List<int> splitLstGet(int sum,int max)
+        {
+            
+            List<int> valueLst = new List<int>();
+
+            int cnt = sum / Constant.maxplcInfoCount+1; //35
+            int avr = sum / cnt;
+
+            if (cnt >= Constant.maxplcInfoCount)
+            {
+                MessageBox.Show(Constant.outOfRangeStr);
+                ConstantMethod.AppExit();
+            }
+
+            for (int i = 0; i < cnt; i++)
+            {
+                if(avr-i>0)
+                valueLst.Add(avr-i);
+            }
+
+            if ((sum - valueLst.Sum()) > 0)
+            {
+                valueLst.Add(sum - valueLst.Sum());
+            }
+            //看下最后一个数据和第一个加起来 是不是 超过极限最大值 42
+            if (valueLst[0] + valueLst[valueLst.Count - 1] < Constant.maxplcInfoReal)
+            {
+                valueLst[0] += valueLst[valueLst.Count - 1];
+                valueLst.RemoveAt(valueLst.Count - 1);
+            }
+
+            return valueLst;
+        }
+       
         //根据字符 获取地址和区域
         //根据一行的数据 返回固定的 plc单元格参数 这个函数 是返回相对地址的 
         private int getAddrByStr(string strSplit1)
         {
             string area = "";
             int addr = 0;
-            ConstantMethod.getAddrAndAreaByStr(strSplit1, ref addr, ref area);
+            ConstantMethod.getAddrAndAreaByStr(strSplit1, ref addr, ref area,DeviceId);
 
             return addr;
         }
@@ -487,13 +592,8 @@ namespace xjplc.delta.TCP
             string area="";//地址区域          
             string valueStr = row["addr"].ToString().Trim();
 
-            //区分asPlc和DVP plc  
-            if (DeviceId == Constant.xzjDeivceId)
-            {
-                ConstantMethod.getAddrAndAreaByStrUseAsPlc(valueStr, ref mAddr, ref area);
-            }
-            else
-            ConstantMethod.getAddrAndAreaByStr(valueStr, ref mAddr, ref area);
+            //区分asPlc和DVP plc       
+            ConstantMethod.getAddrAndAreaByStr(valueStr, ref mAddr, ref area,DeviceId);
 
             //地址超了 无效 暂且定XDM 最大69999
             if ((mAddr < 0) || (mAddr > Constant.DTTCPMAXAddr))
@@ -525,10 +625,8 @@ namespace xjplc.delta.TCP
             string area = "";///地址区域          
             string valueStr = row["addr"].ToString().Trim();
             int count = 0;
-            if(DeviceId==Constant.xzjDeivceId)
-                ConstantMethod.getAddrAndAreaByStrUseAsPlc(valueStr, ref mAddr, ref area);
-            else
-            ConstantMethod.getAddrAndAreaByStr(valueStr, ref mAddr, ref area);
+          
+            ConstantMethod.getAddrAndAreaByStr(valueStr, ref mAddr, ref area,DeviceId);
 
             //地址超了 无效 暂且定XDM 最大69999
             if ((mAddr < 0) || (mAddr > Constant.DTTCPMAXAddr))
@@ -724,9 +822,7 @@ namespace xjplc.delta.TCP
                     if (dpResultLow.Count > 0)
                     {           
                         result[0] = MPlcInfo.IndexOf(dpResultLow[0]);                 
-                    }
-               
-
+                    }           
             }
 
 
@@ -786,71 +882,46 @@ namespace xjplc.delta.TCP
             
             if (ConstantMethod.compareByteStrictly(s, Constant.DTAsPlcTcpFunctionReadBitCmd))
             {
-                while (data.Count > 0)
+                               
+                value = getMValue(data);
+                //m 看下是否存在分组的数据
+                if (splitMLst.Count == 0)
                 {
-                    Application.DoEvents();
-                    if (data.Count > 1)
+                    if (MPlcInfo.Count() == value.Count())
                     {
-                        byte[] dataArray = data.Skip(0).Take(2).ToArray();
-                        Array.Reverse(dataArray);
-                        int m = BitConverter.ToInt16(dataArray, 0);
-                        data.RemoveRange(0, 2);
-
-                        if (data.Count() > (m - 1))
+                        for (int i = 0; i < MPlcInfo.Count(); i++)
                         {
-                            byte[] dataArray0 = data.Skip(0).Take(m).ToArray();
-
-                            value.Add(dataArray0);
-                            data.RemoveRange(0, m);
+                            MPlcInfo[i].ByteValue = value[i];
                         }
                     }
                 }
-                //m
-                if (MPlcInfo.Count() == value.Count())
+                else
                 {
-                    for (int i = 0; i < MPlcInfo.Count(); i++)
-                    { 
-                       MPlcInfo[i].ByteValue = value[i];
-                    }
+                    valueGet(splitMLst, value, MPlcInfo);
                 }
             }
             else    
             {
                 if (ConstantMethod.compareByteStrictly(s, Constant.DTAsPlcTcpFunctionReadByteCmd))
-                {
-                    while (data.Count > 0)
+                {                   
+                    value = getDValue(data);
+                    //D 
+                    if (splitDLst.Count == 0)
                     {
-                        if (data.Count > 1)
+                        if (DPlcInfo.Count() == value.Count())
                         {
-                            byte[] dataArray = data.Skip(0).Take(2).ToArray();
-                            Array.Reverse(dataArray);
-                            int m = BitConverter.ToInt16(dataArray, 0);
-                            data.RemoveRange(0, 2);
-                            List<byte> tempLst = new List<byte>();
-                            for (int i = 0; i < m; i++)
+                            for (int i = 0; i < DPlcInfo.Count(); i++)
                             {
-                                byte[] dataArray0 = data.Skip(0).Take(2).ToArray();
-                                Array.Reverse(dataArray0);
-                                tempLst.AddRange(dataArray0);
-                                if (data.Count() > 1)
-                                {
-                                    data.RemoveRange(0, 2);
-                                }
-                            }
 
-                            value.Add(tempLst.ToArray());
+                                DPlcInfo[i].ByteValue = value[i];
+                            }
                         }
                     }
-
-
-                    //D 
-                    if (DPlcInfo.Count() == value.Count())
+                    else
                     {
-                        for (int i = 0; i < DPlcInfo.Count(); i++)
-                        {
-                                                      
-                            DPlcInfo[i].ByteValue = value[i];                            
-                        }
+                        valueGet(splitDLst, value, DPlcInfo);
+
+
                     }
 
                 }
@@ -863,7 +934,77 @@ namespace xjplc.delta.TCP
             e.Byte_buffer = null;
 
         }
+        //分组的时候 计算值
+        public void valueGet(List<int>  intLst,List<byte[]> value,List<DTTcpPlcInfo> plst)
+        {
+            int id = intLst.IndexOf(value.Count);
+            if (id > -1 && id < intLst.Count)
+            {
+                int st = ConstantMethod.getSum(intLst, id);
+                for (int i = st; i < st + intLst[id]; i++)
+                {
+                    plst[i].ByteValue = value[i - st];
+                }
+            }
+        }
+        //解析M的值
+        public List<byte[]> getMValue(List<byte> data)
+        {
+            List<byte[]> value = new List<byte[]>();
+            while (data.Count > 0)
+            {
+                Application.DoEvents();
+                if (data.Count > 1)
+                {
+                    byte[] dataArray = data.Skip(0).Take(2).ToArray();
+                    Array.Reverse(dataArray);
+                    int m = BitConverter.ToInt16(dataArray, 0);
+                    data.RemoveRange(0, 2);
 
+                    if (data.Count() > (m - 1))
+                    {
+
+                        byte[] dataArray0 = data.Skip(0).Take(m).ToArray();
+                        value.Add(dataArray0);
+                        data.RemoveRange(0, m);
+                    }
+                }
+            }
+
+            return value;
+
+        }
+        //解析D的值
+        public List<byte[]> getDValue(List<byte> data)
+        {
+            List<byte[]> value = new List<byte[]>();
+            while (data.Count > 0)
+            {
+                if (data.Count > 1)
+                {
+                    byte[] dataArray = data.Skip(0).Take(2).ToArray();
+                    Array.Reverse(dataArray);
+                    int m = BitConverter.ToInt16(dataArray, 0);
+                    data.RemoveRange(0, 2);
+                    List<byte> tempLst = new List<byte>();
+                    for (int i = 0; i < m; i++)
+                    {
+                        byte[] dataArray0 = data.Skip(0).Take(2).ToArray();
+                        Array.Reverse(dataArray0);
+                        tempLst.AddRange(dataArray0);
+                        if (data.Count() > 1)
+                        {
+                            data.RemoveRange(0, 2);
+                        }
+                    }
+
+                    value.Add(tempLst.ToArray());
+                }
+            }
+
+            return value;
+
+        }
         void Dataprocess(object sender, SocEventArgs e)
         {
 
@@ -961,9 +1102,9 @@ namespace xjplc.delta.TCP
                     if (!datform.Rows[mplcInfoLst[i].Row]["value"].ToString().Equals(mplcInfoLst[i].PlcValue)
                             && !mplcInfoLst[i].IsInEdit)
                     {
-                                              
+
                         int m10addr = getAddrByStr(datform.Rows[mplcInfoLst[i].Row]["addr"].ToString());
-                    
+
                         if (datform.Rows[mplcInfoLst[i].Row]["addr"].ToString().Contains(m10addr.ToString())
                             ||
                           datform.Rows[mplcInfoLst[i].Row]["addr"].ToString().Contains(mplcInfoLst[i].StrArea)

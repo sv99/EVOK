@@ -225,7 +225,7 @@ namespace xjplc
             }
             catch
             {
-                MessageBox.Show(string.Format("无法打开口:{0}", m_SerialPort.PortName));
+                //MessageBox.Show(string.Format("无法打开口:{0}", m_SerialPort.PortName));
             }
 
             return false;
@@ -342,7 +342,8 @@ namespace xjplc
         {
             if (!m_SerialPort.IsOpen)
             {
-                throw new SerialPortException("不能在串口关闭状态发送数据");
+                return;
+                //throw new SerialPortException("不能在串口关闭状态发送数据");
             }
             
             //异步发送  

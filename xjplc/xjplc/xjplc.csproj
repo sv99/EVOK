@@ -47,7 +47,8 @@
     <DebugType>none</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -83,6 +84,9 @@
     <ApplicationIcon>evok.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CSkin">
+      <HintPath>bin\CSkin.dll</HintPath>
+    </Reference>
     <Reference Include="FastReport, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.dll</HintPath>
@@ -102,6 +106,10 @@
     <Reference Include="FastReport.Web, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="handControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\个人库\关于编程\C#\游戏手柄\handControl\bin\Release\handControl.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -161,17 +169,45 @@
     <Compile Include="delta\TCP\EvokDTTcpWork.cs" />
     <Compile Include="delta\YBDTDevice.cs" />
     <Compile Include="delta\YBDTWorkManger.cs" />
+    <Compile Include="easyComm\easyCom.cs" />
     <Compile Include="evokWorkManager.cs" />
     <Compile Include="ExcelObject.cs" />
     <Compile Include="FileConverToMachone.cs" />
     <Compile Include="ky\DeviceManager.cs" />
     <Compile Include="MultiLanguage.cs" />
+    <Compile Include="Permutation.cs" />
+    <Compile Include="simi\simiMaterial.cs" />
     <Compile Include="SqlHelper.cs" />
+    <Compile Include="tanuo\Camera.cs" />
+    <Compile Include="tanuo\CHCNetSDK.cs" />
+    <Compile Include="tanuo\cmdRobot.cs" />
+    <Compile Include="tanuo\DeviceManageer.cs" />
+    <Compile Include="tanuo\easyCom.cs" />
+    <Compile Include="tanuo\handControl.cs" />
+    <Compile Include="tanuo\NetSDK.cs" />
+    <Compile Include="tanuo\prjCfg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tanuo\prjCfg.Designer.cs">
+      <DependentUpon>prjCfg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tanuo\sysInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="tanuo\sysInfo.Designer.cs">
+      <DependentUpon>sysInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="tanuo\xmCam.cs" />
     <Compile Include="TcpDevice\JxpDevice.cs" />
     <Compile Include="TcpDevice\TcpDevice.cs" />
     <Compile Include="TcpDevice\ZdDevice.cs" />
+    <Compile Include="UserDataInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UserDataInputForm.Designer.cs">
+      <DependentUpon>UserDataInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="workManager.cs" />
-    <Compile Include="xj\EvokXJWork.cs" />
     <Compile Include="LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +220,8 @@
     <Compile Include="passWdForm.Designer.cs">
       <DependentUpon>passWdForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="xj\EvokXJWork.cs" />
+    <Compile Include="xj\SimiPatternPoint.cs" />
     <Compile Include="xj\XJCommManager.cs" />
     <Compile Include="ConfigFileManager.cs" />
     <Compile Include="ConstantMethod.cs" />
@@ -207,6 +245,7 @@
     <Compile Include="Constant.cs" />
     <Compile Include="delta\DTPLCPackCmdAndDataUnpack.cs" />
     <Compile Include="xj\XJPLCPackCmdAndDataUnpack.cs" />
+    <Compile Include="xj\XjTcpManager.cs" />
     <Compile Include="ybtd\SetDeviceInfo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -225,6 +264,7 @@
     <Compile Include="报警\Alarm.Designer.cs">
       <DependentUpon>Alarm.cs</DependentUpon>
     </Compile>
+    <Compile Include="数据库\sqlManager.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -245,6 +285,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="tanuo\prjCfg.resx">
+      <DependentUpon>prjCfg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="tanuo\sysInfo.resx">
+      <DependentUpon>sysInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserDataInputForm.resx">
+      <DependentUpon>UserDataInputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ybtd\SetDeviceInfo.resx">
       <DependentUpon>SetDeviceInfo.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,7 +330,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Schneider\" />
+    <Folder Include="wifi\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="evok.ico" />

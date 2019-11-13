@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7A05422F-F23B-40C9-99AE-DF3D20C4BDF6}</ProjectGuid>
+    <ProjectGuid>{CBEB8355-77BE-4BF3-B3DD-A4744EB7C104}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>evokNewXJ</RootNamespace>

@@ -63,12 +63,13 @@ namespace xjplc
             set { isInEdit = value; }
         }
         //最小值
-        private int minValue = 0;
+        private int minValue = -100000000;
         public int MinValue
         {
             get { return minValue; }
             set { minValue = value; }
         }
+
         //最大值
         private int maxValue = 100000000;
         public int MaxValue
@@ -98,10 +99,24 @@ namespace xjplc
             }
 
         }
+        public void visibleControl()
+        {
+            if (ShowControl != null)
+            {
+                if (ShowValue == 0)
+                    ShowControl.Visible = false;
+                else ShowControl.Visible = true;
+            }
+        }
         //201904082331 更改
         //这个值需要存储的情况是 showvalue 小于raion时 为0的值
         double showValueDouble = 0;
-        int showValue=0;
+        public double ShowValueDouble
+        {
+            get { return showValueDouble; }
+            set { showValueDouble = value; }
+        }
+        int showValue =0;
         public int ShowValue //从表格读取数据回来
         {       
             get
@@ -109,13 +124,20 @@ namespace xjplc
                 if (this == null) return 0;
                 if (pInfo != null)
                 {
-                  
+
+                   
                     //201810222控件没获取 就发现showvalue != pInfo.PlcValue 已经相等了 控件就不显示了 所以增加控件显示的判断 
                     if (showValue != pInfo.PlcValue || showValue == 0 || (showControl!=null &&!showControl.Text.Equals(showValue.ToString())))
-                    {
+                    {  
+                                       
                         showValue =pInfo.PlcValue;
 
-                        if (ration > 0 && showValue>=ration) showValue = (int)((double)showValue / ration);
+                        if (ration > 0 && showValue >= ration)
+                        {
+                            //这里注意了 数据如果小于
+                            ShowValueDouble = (double)showValue / ration;
+                            showValue = (int)((double)showValue / ration);
+                        }
                        
                         if (!IsInEdit)
                         {
@@ -136,7 +158,7 @@ namespace xjplc
                                 else
                                 {
                                     showControl.BackColor = System.Drawing.Color.Red;
-                                    if (showStr.Count > showValue)
+                                    if (showStr.Count > showValue && showValue>=0)
                                     {
                                         ConstantMethod.
                                         SetText(showControl, showStr[showValue]);
@@ -145,9 +167,35 @@ namespace xjplc
                             }
 
                           
-                            if (showControl != null && (showControl is TextBox || showControl is Label))
+                            if (showControl != null && (showControl is TextBox || showControl is Label || showControl is ComboBox))
                             {
-                           
+                               
+                                //如果是label 又是M值
+                                if (pInfo.IntArea > 2)
+                                {
+                                    if (showValue == 0)
+                                    {
+                                        showControl.BackColor = System.Drawing.Color.Transparent;
+
+                                        if (showStr.Count > showValue)
+                                        {
+                                            ConstantMethod.
+                                            SetText(showControl, showStr[showValue]);
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        showControl.BackColor = System.Drawing.Color.Red;
+                                        if (showStr.Count > showValue)
+                                        {
+                                            ConstantMethod.
+                                            SetText(showControl, showStr[showValue]);
+                                        }
+                                    }
+
+                                    return showValue; 
+                                }
                                 if (!IsValueNormal)
                                 {
                                     ConstantMethod.SetText(showControl, Constant.dataOutOfRange);
@@ -158,21 +206,27 @@ namespace xjplc
                                     { //为了兼容前面的产品 当设置了 数据比例的时候 Constant.dataMultiple 就无效了
                                         if (Ration >= 1)
                                         {
+                                            
                                             if (Ration > 1)
                                             if (pInfo.PlcValue < ration && pInfo.PlcValue != 0)
                                             {
                                                 //这里注意了 数据如果小于
-                                                showValueDouble=(double)showValue/ration;
-                                                ConstantMethod.SetText(showControl, showValueDouble.ToString());
+                                                ShowValueDouble=(double)showValue/ration;
+                                               
+                                                ConstantMethod.SetText(showControl, ShowValueDouble.ToString());
                                             }
                                             else
                                             {
-                                                string str = String.Format("{0:F}", showValue);
+                                                //这里注意了 数据如果小于
+                                                if(pInfo.PlcValue==0)
+                                                ShowValueDouble = 0;
+                                                string str = String.Format("{0:F}", ShowValueDouble);
                                                 ConstantMethod.SetText(showControl, str);
                                             }
 
                                             if (Ration == 1)
                                             {
+
                                                 ConstantMethod.SetText(showControl, showValue.ToString());
                                             }
                                         }
@@ -242,6 +296,7 @@ namespace xjplc
             this.StrArea = areaIn;
 
             absAddr = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(relativeaddr, StrArea);
+
             intArea = XJPLCPackCmdAndDataUnpack.AreaGetFromStr(StrArea);
           
             valueMode = valuemode;
@@ -395,7 +450,7 @@ namespace xjplc
         {
             get
             {            
-                if (ByteValue != null)
+                    if (ByteValue != null)
                     if (intArea < Constant.M_ID)
                     {
                         //如果是双字
@@ -404,18 +459,26 @@ namespace xjplc
                          
                             int value0 = ((int)(ByteValue[0] << 8) | (int)(ByteValue[1]));
                             int value1 = ((int)(doubleModeHigh.ByteValue[0] << 8) | (int)(doubleModeHigh.ByteValue[1]));
-                            plcValue = ConstantMethod.Pack4BytesToInt(value0, value1);
+                           
+                            if (StrArea.Contains(Constant.SimensDB))
+                              plcValue = ConstantMethod.Pack4BytesToInt(value1,value0);
+                            else
+                              plcValue = ConstantMethod.Pack4BytesToInt(value0, value1);
                         }
                         else
                         {
-                            plcValue = ((int)(ByteValue[0] << 8) | (int)(ByteValue[1]));
+                             plcValue = ((int)(ByteValue[0] << 8) | (int)(ByteValue[1]));
                         }
                     }
                     else
                     {
-                        int duibi = 0;
-                        duibi = (int)Math.Pow(2, Xuhao);
-                        plcValue = (ByteValue[0] & duibi) == duibi ? 1 : 0;
+
+                        if (ByteValue[0] != Constant.tcpMValue)
+                        {
+                            int duibi = 0;
+                            duibi = (int)Math.Pow(2, Xuhao);
+                            plcValue = (ByteValue[0] & duibi) == duibi ? 1 : 0;
+                        }
                     }
             
                 return plcValue;

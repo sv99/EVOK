@@ -12,6 +12,9 @@ namespace xjplc
 {
     public partial class passWdForm : Form
     {
+
+        int lang = Constant.idChinese;
+
         public string Pwd;
 
         public int PwdCount;
@@ -28,8 +31,11 @@ namespace xjplc
             PwdCount = 0;
             Pwd = "0";
             IsStart = false;
-        }
-    
+            this.Text = Constant.pwdInput;
+            button1.Text = Constant.confirm;
+
+        }       
+
         private void button1_Click(object sender, EventArgs e)
         {
             userInput = pwdTxt.Text;

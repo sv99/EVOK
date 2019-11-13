@@ -19,8 +19,15 @@ namespace fileconvert
             CsvStreamReader csvop = new CsvStreamReader();
             csvop.SaveCSV(dt, filename);
         }
+        //带多个参数文件名
+        public static void SaveFileWithDefault(DataTable dt, string PathStr,string param1)
+        {
+            string dir = Path.GetDirectoryName(PathStr);
+            string filename = Path.GetFileNameWithoutExtension(PathStr)+"_"+param1 + "_";
+            string f0 = dir + "\\" + filename + "Machine.csv";
+            SaveFile(dt, f0);
 
-       
+        }
         //根据转换公式 转换表格 最后一个参数代表是用默认规则保存文件还是用带参数名的
         /// <summary>
         /// 

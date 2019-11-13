@@ -28,10 +28,7 @@ namespace evokNew0072
             InitializeComponent();
         }
 
-        private void autoSLBtn_Click(object sender, EventArgs e)
-        {
-             evokWork.autoSL();
-        }
+       
 
         private void AutoTextBox_Enter(object sender, EventArgs e)
         {
@@ -404,7 +401,7 @@ namespace evokNew0072
              optBtn.Enabled = false;
              button10.Enabled = false;
              qClr.Enabled = false;
-             autoSLBtn.Enabled = false;
+           
              ccBtn.Enabled = false;
              UserData.ReadOnly = true;
              printcb.Enabled = false;
@@ -417,7 +414,7 @@ namespace evokNew0072
             optBtn.Enabled = false;
             button10.Enabled = false;
             qClr.Enabled = false;
-            autoSLBtn.Enabled = false;
+    
             ccBtn.Enabled = false;
             
             stopBtn.Enabled = false;
@@ -437,7 +434,7 @@ namespace evokNew0072
             optBtn.Enabled = true;
             button10.Enabled = true;
             qClr.Enabled = true;
-            autoSLBtn.Enabled = true;
+          
             ccBtn.Enabled = true;
             stopBtn.Enabled = true;
             pauseBtn.Enabled = true;
@@ -470,7 +467,7 @@ namespace evokNew0072
              optBtn.Enabled = true;
              button10.Enabled = true;
              qClr.Enabled = true;
-             autoSLBtn.Enabled = true;
+        
              ccBtn.Enabled = true;
              UserData.ReadOnly = false;
              printcb.Enabled = true;

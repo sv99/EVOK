@@ -1,666 +1,733 @@
-Ôªøusing FastReport;
-using FastReport.Barcode;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing.Printing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
 namespace xjplc
 {
+    using FastReport;
+    using FastReport.Barcode;
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Drawing;
+    using System.Drawing.Printing;
+    using System.IO;
+    using System.Linq;
+    using System.Threading;
+    using System.Timers;
+    using System.Windows.Forms;
+
     public class EvokXJWork
     {
-        //Áî®Êà∑ÊéíÁâàÊï∞ÊçÆ
-        DataTable userDataTable;
-
-        List<string> errorList;
-        public System.Collections.Generic.List<string> ErrorList
-        {
-            get { return errorList; }
-            set { errorList = value; }
-        }
-        OptSize optSize;
-        //ËÆæÂ§áÁ±ª
-        EvokXJDevice evokDevice;
-
-        int deviceProperty;
-        public int DeviceProperty
-        {
-            get { return deviceProperty; }
-            set { deviceProperty = value; }
-        }
-        string deviceName;
-        public string DeviceName
-        {
-            get { return deviceName; }
-            set {
-                evokDevice.setDeviceId(value);
-                deviceName = value;
-            }
-        }
-        int currentPageId = -1;
-        public int CurrentPageId
-        {
-            get { return currentPageId; }
-            set { currentPageId = value; }
-        }
-        //ÊòæÁ§∫Â∑•‰Ωú‰ø°ÊÅØ
-        RichTextBox rtbWork;
-
-        //label ÊòæÁ§∫Â∑•‰ΩúÁöÑÁä∂ÊÄÅ‰ø°ÊÅØ
-        Label lblStatus;
-
-        //ÊâìÂç∞ÁöÑÊä•Ë°®
-        FastReport.Report printReport;
-
-        //print
-        int minPrintSize=0;
-        string minPrinterName="";
-        //ÊòæÁ§∫‰ºòÂåñÊñáÊú¨Ê°Ü
-        RichTextBox rtbResult;
-
-        ConfigFileManager paramFile;
-
-        //ÊâìÊù°Á†ÅÊ®°Âºè
-        int printBarCodeMode = 0;
-
-        public int PrintBarCodeMode
-        {
-            get { return printBarCodeMode; }
-            set { printBarCodeMode = value; }
-        }
-
-        //
-        List<List<PlcInfoSimple>> allPlcSimpleLst;
-        public System.Collections.Generic.List<System.Collections.Generic.List<xjplc.PlcInfoSimple>> AllPlcSimpleLst
-        {
-            get { return allPlcSimpleLst; }
-            set { allPlcSimpleLst = value; }
-        }
-        public DataTable UserDataTable
-        {
-            get { return userDataTable; }
-            set { userDataTable = value; }
-        }
-        public bool AutoMes
-        {
-            get {
-
-                if (autoMesOutInPs.ShowValue == Constant.M_OFF)
-                {
-                    return true;
-                }
-                else return false;
-            }
-        }
-        public bool lliao
-        {
-            get
-            {
-
-                if (lliaoOutInPs.ShowValue == Constant.M_ON)
-                {
-                    return true;
-                }
-                else return false;
-            }
-        }
-        private bool scarMode;
-        public bool ScarMode
-        {
-            get
-            {
-                if (scarInPs.ShowValue > 0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-        }
-
-        public int DeviceMode
-        {
-          get{  if(modeSelectOutInPs!=null)           
-                return modeSelectOutInPs.ShowValue;
-                return 0;
-
-            }
-        }
-        public bool IsPrintBarCode
-        {
-            get
-            {
-                if (PrintBarCodeMode != Constant.NoPrintBarCode)
-                {
-                    return true;
-                }
-                else return false;
-
-            }
-        }
-
+        private List<List<PlcInfoSimple>> allPlcSimpleLst;
+        public PlcInfoSimple autoCCInPs;
+        public PlcInfoSimple autoMesOutInPs;
+        private ComboBox cbOptParam1;
+        public PlcInfoSimple clInPs;
+        private bool comIsDownLoading;
+        private int currentDoorSizeCount;
+        private string CurrentDoorType;
+        private int currentPageId;
+        public PlcInfoSimple cutDoneOutInPs;
+        private int CutProCnt;
+        private int cutSelMode;
+        private Thread CutThread;
+        private ThreadStart CutThreadStart;
+        public PlcInfoSimple dataNotEnoughOutInPs;
+        public PlcInfoSimple dataNotEnoughValueOutInPs;
+        public PlcInfoSimple dataOutPs;
+        public PlcInfoSimple dbcOutInPs;
+        private string deviceName;
+        private int deviceProperty;
+        public PlcInfoSimple deviceStatusOutInPs;
+        private DataGridView dgvIO;
+        public PlcInfoSimple doorbanCurrentDoorIdInPs;
+        public PlcInfoSimple doorbanCurrentStatusInPs;
+        public PlcInfoSimple doorbanDataChangDownLoadSuccessOutPs;
+        public PlcInfoSimple doorbanDataChangRequestInPs;
+        public PlcInfoSimple doorbanDataKuanDownLoadSuccessOutPs;
+        public PlcInfoSimple doorbanDataKuanRequestInPs;
+        public PlcInfoSimple doorbanDoorCountInOutPs;
+        public PlcInfoSimple doorBanLen;
+        public PlcInfoSimple doorbanLenthChangInOutPs;
+        public PlcInfoSimple doorbanLenthKuanInOutPs;
+        private string[] doorBanStatus0;
+        public PlcInfoSimple doorBanWidth;
+        public PlcInfoSimple doorCutCntOutInPs;
+        public PlcInfoSimple doorDownLoadCountInOutPs;
+        public PlcInfoSimple doorshellCurrentDoorIdInPs;
+        public PlcInfoSimple doorshellCurrentStatusInPs;
+        public PlcInfoSimple doorshellDataChangDownLoadSuccessOutPs;
+        public PlcInfoSimple doorshellDataChangRequestInPs;
+        public PlcInfoSimple doorshellDataDoorIdDownLoadSuccessOutPs;
+        public PlcInfoSimple doorshellDataDoorIdRequestInPs;
+        public PlcInfoSimple doorshellDataKuanDownLoadSuccessOutPs;
+        public PlcInfoSimple doorshellDataKuanRequestInPs;
+        public PlcInfoSimple doorshellDoorCountInOutPs;
+        public PlcInfoSimple doorshellDoorIdInOutPs;
+        public PlcInfoSimple doorShellLen;
+        public PlcInfoSimple doorshellLenthChangInOutPs;
+        public PlcInfoSimple doorshellLenthKuanInOutPs;
+        private string[] doorShellStatus0;
+        public PlcInfoSimple doorShellWidth;
+        public PlcInfoSimple doorSize;
+        public PlcInfoSimple doorTypeCutCountOutInPs;
+        private const int downLoadIdDoorBanChang = 2;
+        private const int downLoadIdDoorBanKuan = 3;
+        private const int downLoadIdShellChang = 4;
+        private const int downLoadIdShellDoorId = 6;
+        private const int downLoadIdShellKuan = 5;
+        private const int downLoadIdXiaLiaoChang = 1;
+        private int downLoadSizeId;
+        public PlcInfoSimple emgStopInPs;
+        public PlcInfoSimple emgStopOutPs;
+        private List<string> errorList;
+        private EvokXJDevice evokDevice;
+        public PlcInfoSimple gjOutInPs;
+        public PlcInfoSimple GWOutInPs;
+        public PlcInfoSimple heightCountInOutPs;
+        private List<DataTable> holeDataLst;
+        public PlcInfoSimple inspectPatternDoneInOutPs;
+        public PlcInfoSimple inspectPatternModeInOutPs;
+        public PlcInfoSimple inspectPatternPosInOutPs;
+        private bool IsRuninng;
         private bool isSaveProdLog;
-        public bool IsSaveProdLog
-        {
-            get { return isSaveProdLog; }
-            set { isSaveProdLog = value; }
-        }
-        public int DataFormCount
-        {
-            get { return evokDevice.DataFormLst.Count; }
-        }
+        public PlcInfoSimple KSInPs;
+        private Label lblStatus;
+        public PlcInfoSimple lcOutInPs;
+        public PlcInfoSimple ldsOutInPs;
+        public PlcInfoSimple leftRightShowInPs;
+        public PlcInfoSimple leftRightShowOutPs;
+        public PlcInfoSimple lineEmgStopInPs;
+        public PlcInfoSimple lineEmgStopOutPs;
+        public PlcInfoSimple linePauseInPs;
+        public PlcInfoSimple linePauseOutPs;
+        public PlcInfoSimple lineResetInPs;
+        public PlcInfoSimple lineResetOutPs;
+        public PlcInfoSimple lineStartInPs;
+        public PlcInfoSimple lineStartOutPs;
+        public PlcInfoSimple lineStartTipInPs;
+        public PlcInfoSimple lineStopInPs;
+        public PlcInfoSimple lineStopOutPs;
+        public PlcInfoSimple liWaiInPs;
+        public PlcInfoSimple liWaiOutPs;
+        public PlcInfoSimple lkOutInPs;
+        public PlcInfoSimple lliaoOutInPs;
+        public PlcInfoSimple LMInPs;
+        public PlcInfoSimple LMSLInPs;
+        public PlcInfoSimple ltbcDefaultOutInPs;
+        public PlcInfoSimple ltbcOutInPs;
+        private Form mainForm;
+        public PlcInfoSimple materialIdInOutPs;
+        public PlcInfoSimple materialSetEnInOutPs;
+        private string minPrinterName;
+        private int minPrintSize;
+        public PlcInfoSimple modeSelectOutInPs;
+        private bool mRunFlag;
+        public PlcInfoSimple muxiaoHoleOutPs;
+        public PlcInfoSimple mxkShowInPs;
+        public PlcInfoSimple mxkShowOutPs;
+        public PlcInfoSimple mxkStringShowInPs;
+        public PlcInfoSimple noSizeToCutOutInPs;
+        private int oldPrintBarCodeMode;
+        private OptSize optSize;
+        public PlcInfoSimple pageShiftOutPs;
+        private ConfigFileManager paramFile;
+        public PlcInfoSimple pauseInPs;
+        public PlcInfoSimple pauseOutPs;
+        public PlcInfoSimple PJInPs;
+        public PlcInfoSimple PJOutPs;
+        public PlcInfoSimple plcHandlebarCodeOutInPs;
+        public PlcInfoSimple pos1EnInPs;
+        public PlcInfoSimple pos1EnOutPs;
+        public PlcInfoSimple pos1OutInPs;
+        public PlcInfoSimple pos2EnInPs;
+        public PlcInfoSimple pos2EnOutPs;
+        public PlcInfoSimple pos2OutInPs;
+        public PlcInfoSimple posMode;
+        public PlcInfoSimple pressOutInPs;
+        private int printBarCodeMode;
+        public PlcInfoSimple printMiniSizeOutInPs;
+        private Report printReport;
+      //  private Dictionary<Thread, barCodeManger> printThreadLst;
+        public PlcInfoSimple prodOutInPs;
+        private patternSize pSize;
+        private List<PlcInfoSimple> psLstAuto;
+        private List<PlcInfoSimple> psLstEx1;
+        private List<PlcInfoSimple> psLstEx2;
+        private List<PlcInfoSimple> psLstEx3;
+        private List<PlcInfoSimple> psLstEx4;
+        private List<PlcInfoSimple> psLstEx5;
+        private List<PlcInfoSimple> psLstEx6;
+        private List<PlcInfoSimple> psLstEx7;
+        private List<PlcInfoSimple> psLstEx8;
+        private List<PlcInfoSimple> psLstEx9;
+        private List<PlcInfoSimple> psLstHand;
+        private List<PlcInfoSimple> psLstIO;
+        private List<PlcInfoSimple> psLstParam;
+        public PlcInfoSimple resetInPs;
+        public PlcInfoSimple resetOutPs;
+        public PlcInfoSimple restMaterialRangeInOutPs;
+        private RichTextBox rtbResult;
+        private RichTextBox rtbWork;
+        private bool runflag_DoorBanChang;
+        private bool runflag_DoorBanKuan;
+        private bool runflag_DoorShellChang;
+        private bool runflag_DoorShellDoorId;
+        private bool runflag_DoorShellKuan;
+        private bool runflag_XialiaoJu;
+        public PlcInfoSimple safeOutInPs;
+        public PlcInfoSimple scarInPs;
+        private bool scarMode;
+        public PlcInfoSimple scarModeInPs;
+        public PlcInfoSimple scarModeOutPs;
+        public PlcInfoSimple sfslwInPs;
+        public Label showFilePathLabel;
+        public PlcInfoSimple slInPs;
+        public PlcInfoSimple smxShowInPs;
+        public PlcInfoSimple smxShowOutPs;
+        public PlcInfoSimple startCountInOutPs;
+        public PlcInfoSimple startInPs;
+        public PlcInfoSimple startOutPs;
+        public PlcInfoSimple stopInPs;
+        public PlcInfoSimple stopOutPs;
+        private System.Timers.Timer tCheckPrint;
+        public Action<string> updateData;
+        private DataTable userDataTable;
+        public PlcInfoSimple widht1InOutPs;
+        public PlcInfoSimple widht2InOutPs;
+        public PlcInfoSimple widthCountInOutPs;
+        public PlcInfoSimple wlExistOutInPs;
+        public PlcInfoSimple wlHeightOutInPs;
+        public PlcInfoSimple wlInOutPs;
+        public PlcInfoSimple wlMiniSizeOutInPs;
+        public PlcInfoSimple wlWidthOutInPs;
+        public PlcInfoSimple xialiaoCurrentDoorIdInPs;
+        public PlcInfoSimple xialiaoCurrentStatusInPs;
+        public PlcInfoSimple xialiaoDataDownLoadSuccessOutPs;
+        public PlcInfoSimple xialiaoDataRequestInPs;
+        public PlcInfoSimple xialiaoDoorCntInPs;
+        public PlcInfoSimple xialiaoDoorCountInOutPs;
+        public PlcInfoSimple xialiaojuOutPs;
+        private string[] xialiaojuStatus0;
+        public PlcInfoSimple yljxOutInPs;
+        public PlcInfoSimple zkShowInPs;
+        public PlcInfoSimple zkShowOutPs;
+        public PlcInfoSimple ZQInPs;
+        public PlcInfoSimple zxShowInPs;
+        public PlcInfoSimple zxShowOutPs;
 
-
-        bool sfslw;
-
-        public bool Sfslw
+        public EvokXJWork()
         {
-            get { return sfslw; }
-        }
-
-        bool mRunFlag = false;
-        public bool RunFlag
-        {
-            get { return mRunFlag; }
-            set { mRunFlag = value; }
-        }
-        ThreadStart CutThreadStart;
-        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-        Thread CutThread;   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥
-        public void SetEvokDevice(EvokXJDevice evokDevice0)
-        {
-            evokDevice = evokDevice0;
-        }
-        /// <summary>
-        ///20181104ËøôÈáåÊú¨Êù•initcontrol ÂèØ‰ª•ÂéªÊéâ ‰ΩÜÊòØÁé∞Âú®ÁöÑËØù ‰∏çÂ•ΩÂéª Âõ†‰∏∫Ëøô‰∏™Êú∫Âà∂ÂíåÂè∞ËææTCP ÈÇ£‰∏™‰∏ç‰∏ÄÊ†∑ Ëá™Âä®È°µÈù¢ËøòÊúâËá™Â∑±ÂàõÂª∫ÁöÑÊï∞ÊçÆ ÂêéÊúüÈúÄË¶Å‰øÆÊîπ
-        /// ËÆæÂÆöÊâãÂä®È°µÈù¢ ÈÄöËøáË°®Ê†ºbinÂ≠óÁ¨¶ËøõË°åËá™Âä®ÁîüÊàêplcinfosimpleÂèòÈáè
-        /// </summary>
-        /// <param name="evokDevice0"></param>
-        //Ê†πÊçÆË°®Ê†ºÂàõÂª∫plcsimple
-        public void SetPage(int id)
-        {
-            if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[id].Rows.Count > 0)
+            deviceName = "";
+            currentPageId = -1;
+            minPrintSize = 0;
+            minPrinterName = "";
+            cutSelMode = 0;
+            printBarCodeMode = 0;
+            mRunFlag = false;
+            oldPrintBarCodeMode = Constant.NoPrintBarCode;
+            printMiniSizeOutInPs = new PlcInfoSimple("¥Ú”°◊Ó–°≥ﬂ¥Á∂¡–¥");
+            wlMiniSizeOutInPs = new PlcInfoSimple("Œ≤¡œ≥ﬂ¥Áœﬁ÷∆∂¡–¥");
+            autoMesOutInPs = new PlcInfoSimple("◊‘∂Ø≤‚≥§±Í÷æ∂¡–¥");
+            dbcOutInPs = new PlcInfoSimple("µ∂≤π≥•∂¡–¥");
+            ltbcOutInPs = new PlcInfoSimple("¡œÕ∑≤π≥•∂¡–¥");
+            ltbcDefaultOutInPs = new PlcInfoSimple("¡œÕ∑πÃ∂®≤π≥•∂¡–¥");
+            safeOutInPs = new PlcInfoSimple("∞≤»´æ‡¿Î∂¡–¥");
+            prodOutInPs = new PlcInfoSimple("◊‹≤˙¡ø∂¡–¥");
+            noSizeToCutOutInPs = new PlcInfoSimple("Œﬁ∆•≈‰∂¡–¥");
+            ldsOutInPs = new PlcInfoSimple("¡œ∂Œ ˝∂¡–¥");
+            lcOutInPs = new PlcInfoSimple("¡œ≥§∂¡–¥");
+            lkOutInPs = new PlcInfoSimple("¡œøÌ∂¡–¥");
+            yljxOutInPs = new PlcInfoSimple("‘§¡Ùº‰œ∂∂¡–¥");
+            stopOutPs = new PlcInfoSimple("Õ£÷π–¥");
+            stopInPs = new PlcInfoSimple("Õ£÷π∂¡");
+            cutDoneOutInPs = new PlcInfoSimple("«–∏ÓÕÍ±œ∂¡–¥");
+            plcHandlebarCodeOutInPs = new PlcInfoSimple("Ãı¬Î¥Ú”°∂¡–¥");
+            startCountInOutPs = new PlcInfoSimple("ø™ ºº∆ ˝∂¡–¥");
+            wlInOutPs = new PlcInfoSimple("Œ≤¡œ∂¡–¥");
+            wlExistOutInPs = new PlcInfoSimple("H0∂¡–¥");
+            wlWidthOutInPs = new PlcInfoSimple("H100∂¡–¥");
+            wlHeightOutInPs = new PlcInfoSimple("H101∂¡–¥");
+            lliaoOutInPs = new PlcInfoSimple("¿≠¡œø™πÿ∂¡–¥");
+            widthCountInOutPs = new PlcInfoSimple("≥ﬂ¥ÁøÌ∂Œ ˝∂¡–¥");
+            heightCountInOutPs = new PlcInfoSimple("≥ﬂ¥Á≥§∂Œ ˝∂¡–¥");
+            modeSelectOutInPs = new PlcInfoSimple("ƒ£ Ω—°‘Ò∂¡–¥");
+            deviceStatusOutInPs = new PlcInfoSimple("…Ë±∏◊¥Ã¨∂¡–¥");
+            lineStartTipInPs = new PlcInfoSimple("∆Ù∂ØÃ·–—∂¡");
+            lineStartOutPs = new PlcInfoSimple("œﬂ∆Ù∂Ø–¥");
+            lineStartInPs = new PlcInfoSimple("œﬂ∆Ù∂Ø∂¡");
+            lineResetOutPs = new PlcInfoSimple("œﬂ∏¥Œª–¥");
+            lineResetInPs = new PlcInfoSimple("œﬂ∏¥Œª∂¡");
+            lineStopOutPs = new PlcInfoSimple("œﬂÕ£÷π–¥");
+            lineStopInPs = new PlcInfoSimple("œﬂÕ£÷π∂¡");
+            linePauseOutPs = new PlcInfoSimple("œﬂ‘›Õ£–¥");
+            linePauseInPs = new PlcInfoSimple("œﬂ‘›Õ£∂¡");
+            doorSize = new PlcInfoSimple("œ¬¡œæ‚¡œ≥§∂¡–¥");
+            doorBanLen = new PlcInfoSimple("◊›∫·æ‚¡œ≥§∂¡–¥");
+            doorBanWidth = new PlcInfoSimple("◊›∫·æ‚¡œøÌ∂¡–¥");
+            doorShellLen = new PlcInfoSimple("√≈∆§æ‚¡œ≥§∂¡–¥");
+            doorShellWidth = new PlcInfoSimple("√≈∆§æ‚¡œøÌ∂¡–¥");
+            doorDownLoadCountInOutPs = new PlcInfoSimple("√ø¥Œœ¬∑¢√≈ ˝∂¡–¥");
+            xialiaojuOutPs = new PlcInfoSimple("œ¬¡œæ‚≥§∂»∂¡–¥");
+            xialiaoDataRequestInPs = new PlcInfoSimple("œ¬¡œæ‚«Î«Û ˝æ›∂¡");
+            xialiaoDataDownLoadSuccessOutPs = new PlcInfoSimple("œ¬¡œæ‚œ¬∑¢≥…π¶–¥");
+            xialiaoCurrentDoorIdInPs = new PlcInfoSimple("œ¬¡œæ‚µ±«∞√≈∫≈∂¡");
+            xialiaoCurrentStatusInPs = new PlcInfoSimple("œ¬¡œæ‚◊¥Ã¨∂¡");
+            xialiaoDoorCountInOutPs = new PlcInfoSimple("œ¬¡œæ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            xialiaoDoorCntInPs = new PlcInfoSimple("œ¬¡œæ‚º∆ ˝∂¡");
+            doorbanLenthChangInOutPs = new PlcInfoSimple("√≈∞Âæ‚≥§∂»∂¡–¥");
+            doorbanLenthKuanInOutPs = new PlcInfoSimple("√≈∞Âæ‚øÌ∂»∂¡–¥");
+            doorbanDataKuanRequestInPs = new PlcInfoSimple("√≈∞Âæ‚«Î«ÛøÌ ˝æ›∂¡");
+            doorbanDataChangRequestInPs = new PlcInfoSimple("√≈∞Âæ‚«Î«Û≥§ ˝æ›∂¡");
+            doorbanDataKuanDownLoadSuccessOutPs = new PlcInfoSimple("√≈∞Âæ‚øÌœ¬∑¢≥…π¶–¥");
+            doorbanDataChangDownLoadSuccessOutPs = new PlcInfoSimple("√≈∞Âæ‚≥§œ¬∑¢≥…π¶–¥");
+            doorbanCurrentDoorIdInPs = new PlcInfoSimple("√≈∞Âæ‚µ±«∞√≈∫≈∂¡");
+            doorbanCurrentStatusInPs = new PlcInfoSimple("√≈∞Âæ‚◊¥Ã¨∂¡");
+            doorbanDoorCountInOutPs = new PlcInfoSimple("√≈∞Âæ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            doorshellLenthChangInOutPs = new PlcInfoSimple("√≈∆§æ‚≥§∂»∂¡–¥");
+            doorshellLenthKuanInOutPs = new PlcInfoSimple("√≈∆§æ‚øÌ∂»∂¡–¥");
+            doorshellDataKuanRequestInPs = new PlcInfoSimple("√≈∆§æ‚«Î«ÛøÌ ˝æ›∂¡");
+            doorshellDataKuanDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚øÌœ¬∑¢≥…π¶–¥");
+            doorshellDataChangRequestInPs = new PlcInfoSimple("√≈∆§æ‚«Î«Û≥§ ˝æ›∂¡");
+            doorshellDataChangDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚≥§œ¬∑¢≥…π¶–¥");
+            doorshellCurrentDoorIdInPs = new PlcInfoSimple("√≈∆§æ‚µ±«∞√≈∫≈∂¡");
+            doorshellCurrentStatusInPs = new PlcInfoSimple("√≈∆§æ‚◊¥Ã¨∂¡");
+            doorshellDoorIdInOutPs = new PlcInfoSimple("√≈∆§æ‚√≈Id∂¡–¥");
+            doorshellDataDoorIdRequestInPs = new PlcInfoSimple("√≈∆§æ‚√≈Id«Î«Û ˝æ›∂¡");
+            doorshellDataDoorIdDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚√≈Idœ¬∑¢≥…π¶–¥");
+            doorshellDoorCountInOutPs = new PlcInfoSimple("√≈∆§æ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            lineEmgStopInPs = new PlcInfoSimple("œﬂº±Õ£∂¡");
+            lineEmgStopOutPs = new PlcInfoSimple("œﬂº±Õ£–¥");
+            dataOutPs = new PlcInfoSimple(" ˝æ›œ¬‘ÿ∂¡–¥");
+            muxiaoHoleOutPs = new PlcInfoSimple("ƒæœ˙ø◊œ¬‘ÿ–¥");
+            mxkStringShowInPs = new PlcInfoSimple("≤ª¥Úƒæœ˙ø◊—°‘Òœ‘ æ∂¡");
+            zxShowInPs = new PlcInfoSimple("÷––ƒƒæ–º∂¡");
+            zkShowInPs = new PlcInfoSimple("÷–ø◊À´ƒæ–º∂¡");
+            smxShowInPs = new PlcInfoSimple("À´ƒæ–º∂¡");
+            mxkShowInPs = new PlcInfoSimple("ƒæ…“ø◊—°‘Ò∂¡");
+            leftRightShowInPs = new PlcInfoSimple("◊Û”“ƒ£ Ω∂¡");
+            liWaiInPs = new PlcInfoSimple("¿ÔÕ‚ƒ£ Ω∂¡");
+            zxShowOutPs = new PlcInfoSimple("÷––ƒƒæ–º–¥");
+            zkShowOutPs = new PlcInfoSimple("÷–ø◊À´ƒæ–º–¥");
+            smxShowOutPs = new PlcInfoSimple("À´ƒæ–º–¥");
+            mxkShowOutPs = new PlcInfoSimple("ƒæ…“ø◊—°‘Ò–¥");
+            leftRightShowOutPs = new PlcInfoSimple("◊Û”“ƒ£ Ω–¥");
+            liWaiOutPs = new PlcInfoSimple("¿ÔÕ‚ƒ£ Ω–¥");
+            widht1InOutPs = new PlcInfoSimple("¡œøÌ1∂¡–¥");
+            widht2InOutPs = new PlcInfoSimple("¡œøÌ2∂¡–¥");
+            restMaterialRangeInOutPs = new PlcInfoSimple("”‡¡œ…Ë÷√∂¡–¥");
+            inspectPatternModeInOutPs = new PlcInfoSimple("ª®Œ∆ƒ£ Ω∂¡–¥");
+            inspectPatternDoneInOutPs = new PlcInfoSimple("ª®Œ∆≤‚¡øÕÍ≥…∂¡–¥");
+            inspectPatternPosInOutPs = new PlcInfoSimple("ª®Œ∆æ‡¿Î…Ë÷√∂¡–¥");
+            materialSetEnInOutPs = new PlcInfoSimple("≤ƒ¡œ…Ë÷√ πƒ‹∂¡–¥");
+            materialIdInOutPs = new PlcInfoSimple("≤ƒ¡œ¥˙∫≈∂¡–¥");
+            pos1OutInPs = new PlcInfoSimple("∂®≥§1≥§∂»∂¡–¥");
+            pos2OutInPs = new PlcInfoSimple("∂®≥§2≥§∂»∂¡–¥");
+            pos1EnOutPs = new PlcInfoSimple("∂®≥§1 πƒ‹–¥");
+            pos2EnOutPs = new PlcInfoSimple("∂®≥§2 πƒ‹–¥");
+            pos1EnInPs = new PlcInfoSimple("∂®≥§1 πƒ‹∂¡");
+            pos2EnInPs = new PlcInfoSimple("∂®≥§2 πƒ‹∂¡");
+            posMode = new PlcInfoSimple("ƒ£ Ω—°‘ÒŒª÷√∂¡–¥");
+            pauseOutPs = new PlcInfoSimple("‘›Õ£–¥");
+            startOutPs = new PlcInfoSimple("∆Ù∂Ø–¥");
+            resetOutPs = new PlcInfoSimple("∏¥Œª–¥");
+            scarModeOutPs = new PlcInfoSimple("Ω·∞Ã≤‚¡ø–¥");
+            pageShiftOutPs = new PlcInfoSimple("“≥√Ê«–ªª–¥");
+            pressOutInPs = new PlcInfoSimple("—π¡œ∂¡–¥");
+            doorCutCntOutInPs = new PlcInfoSimple("√≈µ∂ ˝∂¡–¥");
+            dataNotEnoughOutInPs = new PlcInfoSimple(" ˝æ›¥ÔµΩœﬁŒª∂¡–¥");
+            dataNotEnoughValueOutInPs = new PlcInfoSimple(" ˝æ›œﬁŒª÷µ∂¡–¥");
+            gjOutInPs = new PlcInfoSimple("π˝Ω∫∂¡–¥");
+            GWOutInPs = new PlcInfoSimple("π§Œª∂¡–¥");
+            PJOutPs = new PlcInfoSimple("≈ÁΩ∫–¥");
+            PJInPs = new PlcInfoSimple("≈ÁΩ∫∂¡");
+            ZQInPs = new PlcInfoSimple("◊›«–∂¡");
+            KSInPs = new PlcInfoSimple("øø’§∂¡");
+            LMInPs = new PlcInfoSimple("∫·«–µ∂∂¡");
+            LMSLInPs = new PlcInfoSimple("∫·«–ÀÕ¡œ∂¡");
+            doorTypeCutCountOutInPs = new PlcInfoSimple("√≈–Õµ∂ ˝∂¡–¥");
+            sfslwInPs = new PlcInfoSimple("À≈∑˛…œ¡œŒª∂¡");
+            emgStopInPs = new PlcInfoSimple("º±Õ£∂¡");
+            emgStopOutPs = new PlcInfoSimple("º±Õ£–¥");
+            startInPs = new PlcInfoSimple("∆Ù∂Ø∂¡");
+            resetInPs = new PlcInfoSimple("∏¥Œª∂¡");
+            pauseInPs = new PlcInfoSimple("‘›Õ£∂¡");
+            scarModeInPs = new PlcInfoSimple("Ω·∞Ã≤‚¡ø∂¡");
+            scarInPs = new PlcInfoSimple("Ω·∞Ã∂¡");
+            autoCCInPs = new PlcInfoSimple("◊‘∂Ø≤‚≥§∂¡");
+            clInPs = new PlcInfoSimple("≥ˆ¡œ∂¡");
+            slInPs = new PlcInfoSimple("ÀÕ¡œ∂¡");
+            xialiaojuStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            doorBanStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            doorShellStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            comIsDownLoading = false;
+            downLoadSizeId = 0;
+            pSize = new patternSize();
+            tCheckPrint = new System.Timers.Timer(1000.0);
+            CutProCnt = 0;
+            CurrentDoorType = "123456789";
+            List<string> strfile = new List<string> {
+                Constant.PlcDataFilePathAuto,
+                Constant.PlcDataFilePathHand,
+                Constant.PlcDataFilePathParam,
+                Constant.PlcDataFilePathIO
+            };
+            if (File.Exists(Constant.PlcDataFilePathScar))
             {
-                AllPlcSimpleLst[id].Clear();
-
-                foreach (DataRow dr in evokDevice.DataFormLst[id].Rows)
+                strfile.Add(Constant.PlcDataFilePathScar);
+            }
+            for (int i = strfile.Count - 1; i >= 0; i--)
+            {
+                if (!File.Exists(strfile[i]))
                 {
-                    if (dr == null) continue;
-                    string name = dr["bin"].ToString();
+                    MessageBox.Show(strfile[i] + Constant.ErrorPlcFile);
+                    strfile.RemoveAt(i);
+                }
+            }
+            evokDevice = new EvokXJDevice(strfile);
+            evokDevice.setDeviceId(DeviceName);
+            InitUsualTest();
+        }
 
-                    if (!string.IsNullOrWhiteSpace(name))
+        public EvokXJWork(int id)
+        {
+            deviceName = "";
+            currentPageId = -1;
+            minPrintSize = 0;
+            minPrinterName = "";
+            cutSelMode = 0;
+            printBarCodeMode = 0;
+            mRunFlag = false;
+            oldPrintBarCodeMode = Constant.NoPrintBarCode;
+            printMiniSizeOutInPs = new PlcInfoSimple("¥Ú”°◊Ó–°≥ﬂ¥Á∂¡–¥");
+            wlMiniSizeOutInPs = new PlcInfoSimple("Œ≤¡œ≥ﬂ¥Áœﬁ÷∆∂¡–¥");
+            autoMesOutInPs = new PlcInfoSimple("◊‘∂Ø≤‚≥§±Í÷æ∂¡–¥");
+            dbcOutInPs = new PlcInfoSimple("µ∂≤π≥•∂¡–¥");
+            ltbcOutInPs = new PlcInfoSimple("¡œÕ∑≤π≥•∂¡–¥");
+            ltbcDefaultOutInPs = new PlcInfoSimple("¡œÕ∑πÃ∂®≤π≥•∂¡–¥");
+            safeOutInPs = new PlcInfoSimple("∞≤»´æ‡¿Î∂¡–¥");
+            prodOutInPs = new PlcInfoSimple("◊‹≤˙¡ø∂¡–¥");
+            noSizeToCutOutInPs = new PlcInfoSimple("Œﬁ∆•≈‰∂¡–¥");
+            ldsOutInPs = new PlcInfoSimple("¡œ∂Œ ˝∂¡–¥");
+            lcOutInPs = new PlcInfoSimple("¡œ≥§∂¡–¥");
+            lkOutInPs = new PlcInfoSimple("¡œøÌ∂¡–¥");
+            yljxOutInPs = new PlcInfoSimple("‘§¡Ùº‰œ∂∂¡–¥");
+            stopOutPs = new PlcInfoSimple("Õ£÷π–¥");
+            stopInPs = new PlcInfoSimple("Õ£÷π∂¡");
+            cutDoneOutInPs = new PlcInfoSimple("«–∏ÓÕÍ±œ∂¡–¥");
+            plcHandlebarCodeOutInPs = new PlcInfoSimple("Ãı¬Î¥Ú”°∂¡–¥");
+            startCountInOutPs = new PlcInfoSimple("ø™ ºº∆ ˝∂¡–¥");
+            wlInOutPs = new PlcInfoSimple("Œ≤¡œ∂¡–¥");
+            wlExistOutInPs = new PlcInfoSimple("H0∂¡–¥");
+            wlWidthOutInPs = new PlcInfoSimple("H100∂¡–¥");
+            wlHeightOutInPs = new PlcInfoSimple("H101∂¡–¥");
+            lliaoOutInPs = new PlcInfoSimple("¿≠¡œø™πÿ∂¡–¥");
+            widthCountInOutPs = new PlcInfoSimple("≥ﬂ¥ÁøÌ∂Œ ˝∂¡–¥");
+            heightCountInOutPs = new PlcInfoSimple("≥ﬂ¥Á≥§∂Œ ˝∂¡–¥");
+            modeSelectOutInPs = new PlcInfoSimple("ƒ£ Ω—°‘Ò∂¡–¥");
+            deviceStatusOutInPs = new PlcInfoSimple("…Ë±∏◊¥Ã¨∂¡–¥");
+            lineStartTipInPs = new PlcInfoSimple("∆Ù∂ØÃ·–—∂¡");
+            lineStartOutPs = new PlcInfoSimple("œﬂ∆Ù∂Ø–¥");
+            lineStartInPs = new PlcInfoSimple("œﬂ∆Ù∂Ø∂¡");
+            lineResetOutPs = new PlcInfoSimple("œﬂ∏¥Œª–¥");
+            lineResetInPs = new PlcInfoSimple("œﬂ∏¥Œª∂¡");
+            lineStopOutPs = new PlcInfoSimple("œﬂÕ£÷π–¥");
+            lineStopInPs = new PlcInfoSimple("œﬂÕ£÷π∂¡");
+            linePauseOutPs = new PlcInfoSimple("œﬂ‘›Õ£–¥");
+            linePauseInPs = new PlcInfoSimple("œﬂ‘›Õ£∂¡");
+            doorSize = new PlcInfoSimple("œ¬¡œæ‚¡œ≥§∂¡–¥");
+            doorBanLen = new PlcInfoSimple("◊›∫·æ‚¡œ≥§∂¡–¥");
+            doorBanWidth = new PlcInfoSimple("◊›∫·æ‚¡œøÌ∂¡–¥");
+            doorShellLen = new PlcInfoSimple("√≈∆§æ‚¡œ≥§∂¡–¥");
+            doorShellWidth = new PlcInfoSimple("√≈∆§æ‚¡œøÌ∂¡–¥");
+            doorDownLoadCountInOutPs = new PlcInfoSimple("√ø¥Œœ¬∑¢√≈ ˝∂¡–¥");
+            xialiaojuOutPs = new PlcInfoSimple("œ¬¡œæ‚≥§∂»∂¡–¥");
+            xialiaoDataRequestInPs = new PlcInfoSimple("œ¬¡œæ‚«Î«Û ˝æ›∂¡");
+            xialiaoDataDownLoadSuccessOutPs = new PlcInfoSimple("œ¬¡œæ‚œ¬∑¢≥…π¶–¥");
+            xialiaoCurrentDoorIdInPs = new PlcInfoSimple("œ¬¡œæ‚µ±«∞√≈∫≈∂¡");
+            xialiaoCurrentStatusInPs = new PlcInfoSimple("œ¬¡œæ‚◊¥Ã¨∂¡");
+            xialiaoDoorCountInOutPs = new PlcInfoSimple("œ¬¡œæ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            xialiaoDoorCntInPs = new PlcInfoSimple("œ¬¡œæ‚º∆ ˝∂¡");
+            doorbanLenthChangInOutPs = new PlcInfoSimple("√≈∞Âæ‚≥§∂»∂¡–¥");
+            doorbanLenthKuanInOutPs = new PlcInfoSimple("√≈∞Âæ‚øÌ∂»∂¡–¥");
+            doorbanDataKuanRequestInPs = new PlcInfoSimple("√≈∞Âæ‚«Î«ÛøÌ ˝æ›∂¡");
+            doorbanDataChangRequestInPs = new PlcInfoSimple("√≈∞Âæ‚«Î«Û≥§ ˝æ›∂¡");
+            doorbanDataKuanDownLoadSuccessOutPs = new PlcInfoSimple("√≈∞Âæ‚øÌœ¬∑¢≥…π¶–¥");
+            doorbanDataChangDownLoadSuccessOutPs = new PlcInfoSimple("√≈∞Âæ‚≥§œ¬∑¢≥…π¶–¥");
+            doorbanCurrentDoorIdInPs = new PlcInfoSimple("√≈∞Âæ‚µ±«∞√≈∫≈∂¡");
+            doorbanCurrentStatusInPs = new PlcInfoSimple("√≈∞Âæ‚◊¥Ã¨∂¡");
+            doorbanDoorCountInOutPs = new PlcInfoSimple("√≈∞Âæ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            doorshellLenthChangInOutPs = new PlcInfoSimple("√≈∆§æ‚≥§∂»∂¡–¥");
+            doorshellLenthKuanInOutPs = new PlcInfoSimple("√≈∆§æ‚øÌ∂»∂¡–¥");
+            doorshellDataKuanRequestInPs = new PlcInfoSimple("√≈∆§æ‚«Î«ÛøÌ ˝æ›∂¡");
+            doorshellDataKuanDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚øÌœ¬∑¢≥…π¶–¥");
+            doorshellDataChangRequestInPs = new PlcInfoSimple("√≈∆§æ‚«Î«Û≥§ ˝æ›∂¡");
+            doorshellDataChangDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚≥§œ¬∑¢≥…π¶–¥");
+            doorshellCurrentDoorIdInPs = new PlcInfoSimple("√≈∆§æ‚µ±«∞√≈∫≈∂¡");
+            doorshellCurrentStatusInPs = new PlcInfoSimple("√≈∆§æ‚◊¥Ã¨∂¡");
+            doorshellDoorIdInOutPs = new PlcInfoSimple("√≈∆§æ‚√≈Id∂¡–¥");
+            doorshellDataDoorIdRequestInPs = new PlcInfoSimple("√≈∆§æ‚√≈Id«Î«Û ˝æ›∂¡");
+            doorshellDataDoorIdDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚√≈Idœ¬∑¢≥…π¶–¥");
+            doorshellDoorCountInOutPs = new PlcInfoSimple("√≈∆§æ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            lineEmgStopInPs = new PlcInfoSimple("œﬂº±Õ£∂¡");
+            lineEmgStopOutPs = new PlcInfoSimple("œﬂº±Õ£–¥");
+            dataOutPs = new PlcInfoSimple(" ˝æ›œ¬‘ÿ∂¡–¥");
+            muxiaoHoleOutPs = new PlcInfoSimple("ƒæœ˙ø◊œ¬‘ÿ–¥");
+            mxkStringShowInPs = new PlcInfoSimple("≤ª¥Úƒæœ˙ø◊—°‘Òœ‘ æ∂¡");
+            zxShowInPs = new PlcInfoSimple("÷––ƒƒæ–º∂¡");
+            zkShowInPs = new PlcInfoSimple("÷–ø◊À´ƒæ–º∂¡");
+            smxShowInPs = new PlcInfoSimple("À´ƒæ–º∂¡");
+            mxkShowInPs = new PlcInfoSimple("ƒæ…“ø◊—°‘Ò∂¡");
+            leftRightShowInPs = new PlcInfoSimple("◊Û”“ƒ£ Ω∂¡");
+            liWaiInPs = new PlcInfoSimple("¿ÔÕ‚ƒ£ Ω∂¡");
+            zxShowOutPs = new PlcInfoSimple("÷––ƒƒæ–º–¥");
+            zkShowOutPs = new PlcInfoSimple("÷–ø◊À´ƒæ–º–¥");
+            smxShowOutPs = new PlcInfoSimple("À´ƒæ–º–¥");
+            mxkShowOutPs = new PlcInfoSimple("ƒæ…“ø◊—°‘Ò–¥");
+            leftRightShowOutPs = new PlcInfoSimple("◊Û”“ƒ£ Ω–¥");
+            liWaiOutPs = new PlcInfoSimple("¿ÔÕ‚ƒ£ Ω–¥");
+            widht1InOutPs = new PlcInfoSimple("¡œøÌ1∂¡–¥");
+            widht2InOutPs = new PlcInfoSimple("¡œøÌ2∂¡–¥");
+            restMaterialRangeInOutPs = new PlcInfoSimple("”‡¡œ…Ë÷√∂¡–¥");
+            inspectPatternModeInOutPs = new PlcInfoSimple("ª®Œ∆ƒ£ Ω∂¡–¥");
+            inspectPatternDoneInOutPs = new PlcInfoSimple("ª®Œ∆≤‚¡øÕÍ≥…∂¡–¥");
+            inspectPatternPosInOutPs = new PlcInfoSimple("ª®Œ∆æ‡¿Î…Ë÷√∂¡–¥");
+            materialSetEnInOutPs = new PlcInfoSimple("≤ƒ¡œ…Ë÷√ πƒ‹∂¡–¥");
+            materialIdInOutPs = new PlcInfoSimple("≤ƒ¡œ¥˙∫≈∂¡–¥");
+            pos1OutInPs = new PlcInfoSimple("∂®≥§1≥§∂»∂¡–¥");
+            pos2OutInPs = new PlcInfoSimple("∂®≥§2≥§∂»∂¡–¥");
+            pos1EnOutPs = new PlcInfoSimple("∂®≥§1 πƒ‹–¥");
+            pos2EnOutPs = new PlcInfoSimple("∂®≥§2 πƒ‹–¥");
+            pos1EnInPs = new PlcInfoSimple("∂®≥§1 πƒ‹∂¡");
+            pos2EnInPs = new PlcInfoSimple("∂®≥§2 πƒ‹∂¡");
+            posMode = new PlcInfoSimple("ƒ£ Ω—°‘ÒŒª÷√∂¡–¥");
+            pauseOutPs = new PlcInfoSimple("‘›Õ£–¥");
+            startOutPs = new PlcInfoSimple("∆Ù∂Ø–¥");
+            resetOutPs = new PlcInfoSimple("∏¥Œª–¥");
+            scarModeOutPs = new PlcInfoSimple("Ω·∞Ã≤‚¡ø–¥");
+            pageShiftOutPs = new PlcInfoSimple("“≥√Ê«–ªª–¥");
+            pressOutInPs = new PlcInfoSimple("—π¡œ∂¡–¥");
+            doorCutCntOutInPs = new PlcInfoSimple("√≈µ∂ ˝∂¡–¥");
+            dataNotEnoughOutInPs = new PlcInfoSimple(" ˝æ›¥ÔµΩœﬁŒª∂¡–¥");
+            dataNotEnoughValueOutInPs = new PlcInfoSimple(" ˝æ›œﬁŒª÷µ∂¡–¥");
+            gjOutInPs = new PlcInfoSimple("π˝Ω∫∂¡–¥");
+            GWOutInPs = new PlcInfoSimple("π§Œª∂¡–¥");
+            PJOutPs = new PlcInfoSimple("≈ÁΩ∫–¥");
+            PJInPs = new PlcInfoSimple("≈ÁΩ∫∂¡");
+            ZQInPs = new PlcInfoSimple("◊›«–∂¡");
+            KSInPs = new PlcInfoSimple("øø’§∂¡");
+            LMInPs = new PlcInfoSimple("∫·«–µ∂∂¡");
+            LMSLInPs = new PlcInfoSimple("∫·«–ÀÕ¡œ∂¡");
+            doorTypeCutCountOutInPs = new PlcInfoSimple("√≈–Õµ∂ ˝∂¡–¥");
+            sfslwInPs = new PlcInfoSimple("À≈∑˛…œ¡œŒª∂¡");
+            emgStopInPs = new PlcInfoSimple("º±Õ£∂¡");
+            emgStopOutPs = new PlcInfoSimple("º±Õ£–¥");
+            startInPs = new PlcInfoSimple("∆Ù∂Ø∂¡");
+            resetInPs = new PlcInfoSimple("∏¥Œª∂¡");
+            pauseInPs = new PlcInfoSimple("‘›Õ£∂¡");
+            scarModeInPs = new PlcInfoSimple("Ω·∞Ã≤‚¡ø∂¡");
+            scarInPs = new PlcInfoSimple("Ω·∞Ã∂¡");
+            autoCCInPs = new PlcInfoSimple("◊‘∂Ø≤‚≥§∂¡");
+            clInPs = new PlcInfoSimple("≥ˆ¡œ∂¡");
+            slInPs = new PlcInfoSimple("ÀÕ¡œ∂¡");
+            xialiaojuStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            doorBanStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            doorShellStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            comIsDownLoading = false;
+            downLoadSizeId = 0;
+            pSize = new patternSize();
+            tCheckPrint = new System.Timers.Timer(1000.0);
+            CutProCnt = 0;
+            CurrentDoorType = "123456789";
+            PortParam param = new PortParam();
+            List<string> strfile = new List<string>();
+            switch (id)
+            {
+                case 0:
+                    param = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
+                    strfile.Add(Constant.PlcDataFilePathAuto);
+                    strfile.Add(Constant.PlcDataFilePathHand);
+                    strfile.Add(Constant.PlcDataFilePathParam);
+                    strfile.Add(Constant.PlcDataFilePathIO);
+                    evokDevice = new EvokXJDevice(strfile, param);
+                    break;
+
+                case 1:
+                    for (int i = strfile.Count - 1; i >= 0; i--)
                     {
-                        PlcInfoSimple p = new PlcInfoSimple(name);
-                        try
+                        if (!File.Exists(strfile[i]))
                         {
-
-                            p.Mode = dr["mode"].ToString();
-                            p.RowIndex = evokDevice.DataFormLst[id].Rows.IndexOf(dr);
-                            p.BelongToDataform = evokDevice.DataFormLst[id];
-                            int addrInt = 0;
-                            string areaStr = "D";
-                            string userdata = dr["addr"].ToString();
-                            string param3 = dr["param3"].ToString();
-                            string param4 = dr["param4"].ToString();
-                            if (!string.IsNullOrWhiteSpace(param3))
-                            {
-                                p.ShowStr.Add(param3);
-                            }
-                            if (!string.IsNullOrWhiteSpace(param4))
-                            {
-                                p.ShowStr.Add(param4);
-                            }
-                            ConstantMethod.SplitAreaAndAddr(userdata, ref addrInt, ref areaStr);
-                            //Âå∫ÂüüÁ¨¶Âè∑Âú®ÂâçÈù¢ ÂêéÈù¢Âú∞ÂùÄÂ∞±ÂèØ‰ª•ËÆ°ÁÆó‰∫Ü
-                            p.Area = areaStr;
-                            p.Addr = addrInt;
-
-
-                            if (dr.Table.Columns.Contains("param7"))
-                            {
-                                string ration = dr["param7"].ToString();
-                                if (!string.IsNullOrWhiteSpace(ration)) p.Ration = int.Parse(ration);
-                            }
-                            if (dr.Table.Columns.Contains("param8"))
-                            {
-                                string max = dr["param8"].ToString();
-                                if (!string.IsNullOrWhiteSpace(max)) p.MaxValue = int.Parse(max);
-                            }
-                            if (dr.Table.Columns.Contains("param9"))
-                            {
-                                string min = dr["param9"].ToString();
-                                if (!string.IsNullOrWhiteSpace(min)) p.MinValue = int.Parse(min);
-                            }
-
-                            AllPlcSimpleLst[id].Add(p);
+                            strfile.RemoveAt(i);
+                            MessageBox.Show(strfile[i] + Constant.ErrorPlcFile);
+                            Environment.Exit(0);
                         }
-                        catch (Exception ex)
-                        {
-
-                        }
-
                     }
-                }
-            }
-        }
-        //‰ºòÂåñÊñôÊ†πÊï∞ ÊúâÂá†Ê†π ËÆæÁΩÆ‰∏ã
-        public void SetShowCnt(ComboBox cb1)
-        {
-            if (cb1 != null) optSize.CbResultCnt = cb1;
-        }
-        public void SetOptSize(OptSize optSize0)
-        {
-            optSize = optSize0;
-        }
-        public void optReady(int OPTID)
-        {                   
-            optSize.Len = lcOutInPs.ShowValue;
-            //20181201 Èó®ÁöÆ Èó®ÊùøÊú∫Âô® Áî±‰∫éÂ∏¶ÊúâÂÆΩÂ∫¶ Âú®ÊñôÈïø
-            if (DeviceProperty == Constant.devicePropertyB )
-            {
-                optSize.Len = lcOutInPs.ShowValue + 5000;
-            }
+                    evokDevice = new EvokXJDevice(strfile, param);
+                    break;
 
-            if(dbcOutInPs!=null)
-            optSize.Dbc = dbcOutInPs.ShowValue;
-
-            if (ltbcOutInPs != null)
-            optSize.Ltbc = ltbcOutInPs.ShowValue;
-
-            if (safeOutInPs != null)
-            optSize.Safe = safeOutInPs.ShowValue;
-
-            if(wlMiniSizeOutInPs!=null)
-            optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
-
-            switch (OPTID)
-            {
-                case Constant.optNormal:
+                case 2:
                     {
-                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                        strfile.Add(Constant.PlcDataFilePathAuto);
+                        strfile.Add(Constant.PlcDataFilePathHand);
+                        strfile.Add(Constant.PlcDataFilePathParam);
+                        strfile.Add(Constant.PlcDataFilePathIO);
+                        ServerInfo info = new ServerInfo();
+                        info = ConstantMethod.LoadServerParam(Constant.ConfigServerPortFilePath);
+                        evokDevice = new EvokXJDevice(strfile, info);
                         break;
                     }
-                case Constant.optNormalExcel:
-                    {
-                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, Constant.optNormalExcel));
-                        break;
-                    }
-                case Constant.optNo:
-                    {
-                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, Constant.optNo));
-                        break;
-                    }
-                case Constant.optShuChi:
-                    {
-                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, Constant.optShuChi));
-                        break;
-                    }
-            }         
-        }
-
-        public void shiftToLine()
-        {
-            PlcInfoSimple temp = new PlcInfoSimple(0,"D");
-            temp = startOutPs;
-            startOutPs = lineStartOutPs;
-            lineStartOutPs = temp;
-
-            temp = startInPs;
-            startInPs = lineStartInPs;
-            lineStartInPs = temp;
-
-        }
-        public void SetRtbWork(RichTextBox richrtbWork0)
-        {
-            rtbWork = richrtbWork0;
-            //rtbWork.Clear();
-        }
-        public void SetUserDataGridView(DataGridView dgv1)
-        {
-            optSize.UserDataView = dgv1;
-        }
-
-        public void SetRtbResult(RichTextBox richrtbWork0)
-        {
-            rtbResult = richrtbWork0;
-        }
-
-        public void SetLblStatus(Label lblstatus0)
-        {
-            lblStatus = lblstatus0;
-        }
-        //ÊòæÁ§∫Áä∂ÊÄÅ
-        public void ShowLblStatus()
-        {
-            if (lblStatus != null)
-            {
-                if (deviceStatusId < Constant.constantStatusStr.Count())
-                {
-                    lblStatus.Text = Constant.constantStatusStr[deviceStatusId];
-                    lblStatus.BackColor = Constant.colorRgb[deviceStatusId];
-                }
             }
-        }
-        public bool DeviceStatus {
-            get {
-
-                return evokDevice.Status == Constant.DeviceConnected;
-            }
-        }
-        public void SetPrintReport()
-        {
-            if (printReport == null)
-            {
-                printReport = new FastReport.Report();
-            }
-            string filter = "*.frx";
-            string FilePath = System.AppDomain.CurrentDomain.BaseDirectory;
-            string[] getbarcodepath;
-            getbarcodepath = Directory.GetFiles(FilePath, filter);
-            if (Directory.GetFiles(FilePath, filter).Length == 0)
-            {
-                MessageBox.Show(Constant.barCodeError);
-            }
-            else
-            {
-                if (Directory.GetFiles(FilePath, filter).Length > 1)
-                {
-                    MessageBox.Show(Constant.barCodeError1);
-                }
-                if (Directory.GetFiles(FilePath, filter).Length == 1)
-                {
-                    printReport.Load(getbarcodepath[0]);
-                    printReport.PrintSettings.ShowDialog = false;
-                }
-            }
-
+            InitUsualTest();
         }
 
-        public void ShowNowLog(string filename0)
-        {
-            if (!File.Exists(filename0))
-            {
-                MessageBox.Show(Constant.DeviceNoLogFile);
-                return;
-            }
-
-            LogForm log1 = new LogForm();
-            log1.fileName = filename0;
-            log1.LoadData();
-            log1.ShowDialog();
-        }
-        public void SaveProdDataLog(ProdInfo p, int id)
-        {
-            if (IsSaveProdLog)
-            {
-                if (optSize.ProdInfoLst.Count > 0)
-                {
-                    string savestr = "";
-                    string header = String.Format("ÊñôÈïø:{0}  ÊñôÂ§¥Ë°•ÂÅø:{1}  ÂàÄË°•ÂÅø:{2}  ÂÆâÂÖ®Ë∑ùÁ¶ª:{3} Â∞æÊñô:{4}", optSize.Len, optSize.Ltbc, optSize.Dbc, optSize.Safe, p.WL);
-                    //for (int i = 0; i < optSize.ProdInfoLst.Count; i++)
-                    // {
-                    savestr = savestr + "  Á¨¨" + (id + 1).ToString() + "Ê†π:";
-                    for (int j = 0; j < p.Cut.Count; j++)
-                    {
-                        savestr = savestr + "  Á¨¨" + (j + 1).ToString() + "ÂàÄÂ∞∫ÂØ∏" + p.Cut[j].ToString() + "\n";
-                    }
-
-                    LogManager.WriteProgramLogProdData(String.Concat(header, savestr));
-                    //}
-                }
-            }
-
-        }
-        public void ChangePrintMode(int value)
-        {
-
-            if (PrinterSettings.InstalledPrinters.Count == 0)
-            {
-                value = 0;
-                LogManager.WriteProgramLog(DeviceName + Constant.DeviceNoPrinter);
-            }
-
-            paramFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
-
-            OldPrintBarCodeMode = PrintBarCodeMode;
-
-            printBarCodeMode = value;
-
-            if (printBarCodeMode == Constant.AutoBarCode)
-            {
-                if(plcHandlebarCodeOutInPs !=null)
-                evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
-            }
-            else
-            {
-                if (plcHandlebarCodeOutInPs != null)
-                    evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
-            }
-
-            string issaveProdLog = "0";
-            issaveProdLog = paramFile.ReadConfig(Constant.IsSaveProdLog);
-            int save = 0;
-            if (int.TryParse(issaveProdLog, out save))
-            {
-                if (save == 0) IsSaveProdLog = false;
-                else
-                {
-                    IsSaveProdLog = true;
-                }
-            }
-        }
-        
-        public DataTable GetDataForm(int id)
-        {
-            
-            if (id < DataFormCount)
-            {
-                return evokDevice.DataForm;
-            }
-            else return null;
-        }
-        #region Ëá™Âä®
-        //Ëá™Âä®È°µÈù¢
-        List<PlcInfoSimple> psLstAuto;
-        public List<xjplc.PlcInfoSimple> PsLstAuto
-        {
-            get { return psLstAuto; }
-            set { psLstAuto = value; }
-        }
-        //ÊâìÂç∞Ê†áÁ≠æËøáÁ®ãÂΩì‰∏≠ÔºåË¶ÅÂÆûÁé∞ÂàáÊç¢ÊâìÂç∞Ê®°Âºè 
-        int oldPrintBarCodeMode = Constant.NoPrintBarCode;
-        public int OldPrintBarCodeMode
-        {
-            get { return oldPrintBarCodeMode; }
-            set { oldPrintBarCodeMode = value; }
-        }
-        //ÂÆö‰πâÂêéË¶ÅÂä†ÂÖ•ÈõÜÂêà  //ÂøΩÁï•ÂØÑÂ≠òÂô®ÁöÑÂΩ±ÂìçÁõ¥Êé•ÂåπÈÖçÂèÇÊï∞Âêç     
-        public PlcInfoSimple printMiniSizeOutInPs = new PlcInfoSimple("ÊâìÂç∞ÊúÄÂ∞èÂ∞∫ÂØ∏ËØªÂÜô");
-        public PlcInfoSimple wlMiniSizeOutInPs = new PlcInfoSimple("Â∞æÊñôÂ∞∫ÂØ∏ÈôêÂà∂ËØªÂÜô");
-        public PlcInfoSimple autoMesOutInPs = new PlcInfoSimple("Ëá™Âä®ÊµãÈïøÊ†áÂøóËØªÂÜô");
-        public PlcInfoSimple dbcOutInPs = new PlcInfoSimple("ÂàÄË°•ÂÅøËØªÂÜô");
-        public PlcInfoSimple ltbcOutInPs = new PlcInfoSimple("ÊñôÂ§¥Ë°•ÂÅøËØªÂÜô");
-        public PlcInfoSimple ltbcDefaultOutInPs = new PlcInfoSimple("ÊñôÂ§¥Âõ∫ÂÆöË°•ÂÅøËØªÂÜô");
-        public PlcInfoSimple safeOutInPs = new PlcInfoSimple("ÂÆâÂÖ®Ë∑ùÁ¶ªËØªÂÜô");
-        public PlcInfoSimple prodOutInPs = new PlcInfoSimple("ÊÄª‰∫ßÈáèËØªÂÜô");
-        public PlcInfoSimple noSizeToCutOutInPs = new PlcInfoSimple("Êó†ÂåπÈÖçËØªÂÜô");
-        public PlcInfoSimple ldsOutInPs = new PlcInfoSimple("ÊñôÊÆµÊï∞ËØªÂÜô");
-        public PlcInfoSimple lcOutInPs = new PlcInfoSimple("ÊñôÈïøËØªÂÜô");
-        public PlcInfoSimple lkOutInPs = new PlcInfoSimple("ÊñôÂÆΩËØªÂÜô");
-        public PlcInfoSimple yljxOutInPs = new PlcInfoSimple("È¢ÑÁïôÈó¥ÈöôËØªÂÜô");
-        public PlcInfoSimple stopOutPs = new PlcInfoSimple("ÂÅúÊ≠¢ÂÜô");
-        public PlcInfoSimple stopInPs = new PlcInfoSimple("ÂÅúÊ≠¢ËØª");
-        public PlcInfoSimple cutDoneOutInPs = new PlcInfoSimple("ÂàáÂâ≤ÂÆåÊØïËØªÂÜô");
-        public PlcInfoSimple plcHandlebarCodeOutInPs = new PlcInfoSimple("Êù°Á†ÅÊâìÂç∞ËØªÂÜô");
-        public PlcInfoSimple startCountInOutPs = new PlcInfoSimple("ÂºÄÂßãËÆ°Êï∞ËØªÂÜô");
-        public PlcInfoSimple wlInOutPs = new PlcInfoSimple("Â∞æÊñôËØªÂÜô");
-        public PlcInfoSimple wlExistOutInPs = new PlcInfoSimple("H0ËØªÂÜô");
-        public PlcInfoSimple wlWidthOutInPs = new PlcInfoSimple("H100ËØªÂÜô");
-        public PlcInfoSimple wlHeightOutInPs = new PlcInfoSimple("H101ËØªÂÜô");
-        public PlcInfoSimple lliaoOutInPs = new PlcInfoSimple("ÊãâÊñôÂºÄÂÖ≥ËØªÂÜô");
-        public PlcInfoSimple widthCountInOutPs = new PlcInfoSimple("Â∞∫ÂØ∏ÂÆΩÊÆµÊï∞ËØªÂÜô");
-        public PlcInfoSimple heightCountInOutPs = new PlcInfoSimple("Â∞∫ÂØ∏ÈïøÊÆµÊï∞ËØªÂÜô");
-        public PlcInfoSimple modeSelectOutInPs = new PlcInfoSimple("Ê®°ÂºèÈÄâÊã©ËØªÂÜô");
-        public PlcInfoSimple deviceStatusOutInPs = new PlcInfoSimple("ËÆæÂ§áÁä∂ÊÄÅËØªÂÜô");
-
-        public PlcInfoSimple lineStartTipInPs = new PlcInfoSimple("ÂêØÂä®ÊèêÈÜíËØª");
-        public PlcInfoSimple lineStartOutPs = new PlcInfoSimple("H1ÂÜô");
-        public PlcInfoSimple lineStartInPs = new PlcInfoSimple("H1ËØª");
-
-        public PlcInfoSimple pauseOutPs = new PlcInfoSimple("ÊöÇÂÅúÂÜô");
-        public PlcInfoSimple startOutPs = new PlcInfoSimple("ÂêØÂä®ÂÜô");
-        public PlcInfoSimple resetOutPs = new PlcInfoSimple("Â§ç‰ΩçÂÜô");
-        public PlcInfoSimple scarModeOutPs = new PlcInfoSimple("ÁªìÁñ§ÊµãÈáèÂÜô");
-        public PlcInfoSimple pageShiftOutPs = new PlcInfoSimple("È°µÈù¢ÂàáÊç¢ÂÜô");
-        public PlcInfoSimple pressOutInPs = new PlcInfoSimple("ÂéãÊñôËØªÂÜô");
-        public PlcInfoSimple doorCutCntOutInPs = new PlcInfoSimple("Èó®ÂàÄÊï∞ËØªÂÜô");
-        public PlcInfoSimple dataNotEnoughOutInPs = new PlcInfoSimple("Êï∞ÊçÆËææÂà∞Èôê‰ΩçËØªÂÜô");
-        public PlcInfoSimple dataNotEnoughValueOutInPs = new PlcInfoSimple("Êï∞ÊçÆÈôê‰ΩçÂÄºËØªÂÜô");
-        public PlcInfoSimple gjOutInPs = new PlcInfoSimple("ËøáËÉ∂ËØªÂÜô");
-        public PlcInfoSimple GWOutInPs = new PlcInfoSimple("Â∑•‰ΩçËØªÂÜô");
-        public PlcInfoSimple PJOutPs = new PlcInfoSimple("Âñ∑ËÉ∂ÂÜô");
-        public PlcInfoSimple PJInPs = new PlcInfoSimple("Âñ∑ËÉ∂ËØª");
-        public PlcInfoSimple ZQInPs = new PlcInfoSimple("Á∫µÂàáËØª");
-        public PlcInfoSimple KSInPs = new PlcInfoSimple("Èù†Ê†ÖËØª");
-        public PlcInfoSimple LMInPs = new PlcInfoSimple("Ê®™ÂàáÂàÄËØª");
-        public PlcInfoSimple LMSLInPs = new PlcInfoSimple("Ê®™ÂàáÈÄÅÊñôËØª");
-        public PlcInfoSimple doorTypeCutCountOutInPs = new PlcInfoSimple("Èó®ÂûãÂàÄÊï∞ËØªÂÜô");
-        public PlcInfoSimple sfslwInPs = new PlcInfoSimple("‰º∫Êúç‰∏äÊñô‰ΩçËØª");
-        public PlcInfoSimple emgStopInPs = new PlcInfoSimple("ÊÄ•ÂÅúËØª");
-        public PlcInfoSimple emgStopOutPs = new PlcInfoSimple("ÊÄ•ÂÅúÂÜô");
-        public PlcInfoSimple startInPs = new PlcInfoSimple("ÂêØÂä®ËØª");
-        public PlcInfoSimple resetInPs = new PlcInfoSimple("Â§ç‰ΩçËØª");
-        public PlcInfoSimple pauseInPs = new PlcInfoSimple("ÊöÇÂÅúËØª");
-        public PlcInfoSimple scarModeInPs = new PlcInfoSimple("ÁªìÁñ§ÊµãÈáèËØª");
-        public PlcInfoSimple scarInPs = new PlcInfoSimple("ÁªìÁñ§ËØª");
-        public PlcInfoSimple autoCCInPs = new PlcInfoSimple("Ëá™Âä®ÊµãÈïøËØª");
-        public PlcInfoSimple clInPs = new PlcInfoSimple("Âá∫ÊñôËØª");
-        public PlcInfoSimple slInPs = new PlcInfoSimple("ÈÄÅÊñôËØª");
-        public PlcInfoSimple alarm1InPs = new PlcInfoSimple("Êä•Ë≠¶1");
-        public PlcInfoSimple alarm2InPs = new PlcInfoSimple("Êä•Ë≠¶2");
-        public PlcInfoSimple alarm3InPs = new PlcInfoSimple("Êä•Ë≠¶3");
-        public PlcInfoSimple alarm4InPs = new PlcInfoSimple("Êä•Ë≠¶4");
-        public PlcInfoSimple alarm5InPs = new PlcInfoSimple("Êä•Ë≠¶5");
-        public PlcInfoSimple alarm6InPs = new PlcInfoSimple("Êä•Ë≠¶6");
-        public PlcInfoSimple alarm7InPs = new PlcInfoSimple("Êä•Ë≠¶7");
-        public PlcInfoSimple alarm8InPs = new PlcInfoSimple("Êä•Ë≠¶8");
-        public PlcInfoSimple alarm9InPs = new PlcInfoSimple("Êä•Ë≠¶9");
-        public PlcInfoSimple alarm10InPs = new PlcInfoSimple("Êä•Ë≠¶10");
-        public PlcInfoSimple alarm11InPs = new PlcInfoSimple("Êä•Ë≠¶11");
-        public PlcInfoSimple alarm12InPs = new PlcInfoSimple("Êä•Ë≠¶12");
-        public PlcInfoSimple alarm13InPs = new PlcInfoSimple("Êä•Ë≠¶13");
-        public PlcInfoSimple alarm14InPs = new PlcInfoSimple("Êä•Ë≠¶14");
-        public PlcInfoSimple alarm15InPs = new PlcInfoSimple("Êä•Ë≠¶15");
-        public PlcInfoSimple alarm16InPs = new PlcInfoSimple("Êä•Ë≠¶16");
-        public PlcInfoSimple alarm17InPs = new PlcInfoSimple("Êä•Ë≠¶17");
-        public PlcInfoSimple alarm18InPs = new PlcInfoSimple("Êä•Ë≠¶18");
-        public PlcInfoSimple alarm19InPs = new PlcInfoSimple("Êä•Ë≠¶19");
-        public PlcInfoSimple alarm20InPs = new PlcInfoSimple("Êä•Ë≠¶20");
-        public PlcInfoSimple alarm21InPs = new PlcInfoSimple("Êä•Ë≠¶21");
-        public PlcInfoSimple alarm22InPs = new PlcInfoSimple("Êä•Ë≠¶22");
-        public PlcInfoSimple alarm23InPs = new PlcInfoSimple("Êä•Ë≠¶23");
-        public PlcInfoSimple alarm24InPs = new PlcInfoSimple("Êä•Ë≠¶24");
-        public PlcInfoSimple alarm25InPs = new PlcInfoSimple("Êä•Ë≠¶25");
-        public PlcInfoSimple alarm26InPs = new PlcInfoSimple("Êä•Ë≠¶26");
-        public PlcInfoSimple alarm27InPs = new PlcInfoSimple("Êä•Ë≠¶27");
-        public PlcInfoSimple alarm28InPs = new PlcInfoSimple("Êä•Ë≠¶28");
-        public PlcInfoSimple alarm29InPs = new PlcInfoSimple("Êä•Ë≠¶29");
-        public PlcInfoSimple alarm30InPs = new PlcInfoSimple("Êä•Ë≠¶30");
-
-        #endregion
-        #region ÊâãÂä®
-        List<PlcInfoSimple> psLstHand;
-
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstHand
-        {
-            get { return psLstHand; }
-            set { psLstHand = value; }
-        }
-        #endregion
-        #region ÂèÇÊï∞
-        List<PlcInfoSimple> psLstParam;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstParam
-        {
-            get { return psLstParam; }
-            set { psLstParam = value; }
-        }
-        #endregion
-        #region IOÁõëÊéß
-        List<PlcInfoSimple> psLstIO;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstIO
-        {
-            get { return psLstIO; }
-            set { psLstIO = value; }
-        }
-        #endregion
-        #region Êâ©Â±ïÈ°µÈù¢
-        
-        List<PlcInfoSimple> psLstEx1;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx1
-        {
-            get { return psLstEx1; }
-            set { psLstEx1 = value; }
-        }
-        List<PlcInfoSimple> psLstEx2;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx2
-        {
-            get { return psLstEx2; }
-            set { psLstEx2 = value; }
-        }
-        List<PlcInfoSimple> psLstEx3;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx3
-        {
-            get { return psLstEx3; }
-            set { psLstEx3 = value; }
-        }
-        List<PlcInfoSimple> psLstEx4;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx4
-        {
-            get { return psLstEx4; }
-            set { psLstEx4 = value; }
-        }
-        List<PlcInfoSimple> psLstEx5;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx5
-        {
-            get { return psLstEx5; }
-            set { psLstEx5 = value; }
-        }
-        List<PlcInfoSimple> psLstEx6;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx6
-        {
-            get { return psLstEx6; }
-            set { psLstEx6 = value; }
-        }
-        List<PlcInfoSimple> psLstEx7;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx7
-        {
-            get { return psLstEx7; }
-            set { psLstEx7 = value; }
-        }
-        List<PlcInfoSimple> psLstEx8;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx8
-        {
-            get { return psLstEx8; }
-            set { psLstEx8 = value; }
-        }
-        List<PlcInfoSimple> psLstEx9;
-        public System.Collections.Generic.List<xjplc.PlcInfoSimple> PsLstEx9
-        {
-            get { return psLstEx9; }
-            set { psLstEx9 = value; }
-        }
-        #endregion
         public EvokXJWork(List<string> strDataFormPath, PortParam p0)
         {
+            deviceName = "";
+            currentPageId = -1;
+            minPrintSize = 0;
+            minPrinterName = "";
+            cutSelMode = 0;
+            printBarCodeMode = 0;
+            mRunFlag = false;
+            oldPrintBarCodeMode = Constant.NoPrintBarCode;
+            printMiniSizeOutInPs = new PlcInfoSimple("¥Ú”°◊Ó–°≥ﬂ¥Á∂¡–¥");
+            wlMiniSizeOutInPs = new PlcInfoSimple("Œ≤¡œ≥ﬂ¥Áœﬁ÷∆∂¡–¥");
+            autoMesOutInPs = new PlcInfoSimple("◊‘∂Ø≤‚≥§±Í÷æ∂¡–¥");
+            dbcOutInPs = new PlcInfoSimple("µ∂≤π≥•∂¡–¥");
+            ltbcOutInPs = new PlcInfoSimple("¡œÕ∑≤π≥•∂¡–¥");
+            ltbcDefaultOutInPs = new PlcInfoSimple("¡œÕ∑πÃ∂®≤π≥•∂¡–¥");
+            safeOutInPs = new PlcInfoSimple("∞≤»´æ‡¿Î∂¡–¥");
+            prodOutInPs = new PlcInfoSimple("◊‹≤˙¡ø∂¡–¥");
+            noSizeToCutOutInPs = new PlcInfoSimple("Œﬁ∆•≈‰∂¡–¥");
+            ldsOutInPs = new PlcInfoSimple("¡œ∂Œ ˝∂¡–¥");
+            lcOutInPs = new PlcInfoSimple("¡œ≥§∂¡–¥");
+            lkOutInPs = new PlcInfoSimple("¡œøÌ∂¡–¥");
+            yljxOutInPs = new PlcInfoSimple("‘§¡Ùº‰œ∂∂¡–¥");
+            stopOutPs = new PlcInfoSimple("Õ£÷π–¥");
+            stopInPs = new PlcInfoSimple("Õ£÷π∂¡");
+            cutDoneOutInPs = new PlcInfoSimple("«–∏ÓÕÍ±œ∂¡–¥");
+            plcHandlebarCodeOutInPs = new PlcInfoSimple("Ãı¬Î¥Ú”°∂¡–¥");
+            startCountInOutPs = new PlcInfoSimple("ø™ ºº∆ ˝∂¡–¥");
+            wlInOutPs = new PlcInfoSimple("Œ≤¡œ∂¡–¥");
+            wlExistOutInPs = new PlcInfoSimple("H0∂¡–¥");
+            wlWidthOutInPs = new PlcInfoSimple("H100∂¡–¥");
+            wlHeightOutInPs = new PlcInfoSimple("H101∂¡–¥");
+            lliaoOutInPs = new PlcInfoSimple("¿≠¡œø™πÿ∂¡–¥");
+            widthCountInOutPs = new PlcInfoSimple("≥ﬂ¥ÁøÌ∂Œ ˝∂¡–¥");
+            heightCountInOutPs = new PlcInfoSimple("≥ﬂ¥Á≥§∂Œ ˝∂¡–¥");
+            modeSelectOutInPs = new PlcInfoSimple("ƒ£ Ω—°‘Ò∂¡–¥");
+            deviceStatusOutInPs = new PlcInfoSimple("…Ë±∏◊¥Ã¨∂¡–¥");
+            lineStartTipInPs = new PlcInfoSimple("∆Ù∂ØÃ·–—∂¡");
+            lineStartOutPs = new PlcInfoSimple("œﬂ∆Ù∂Ø–¥");
+            lineStartInPs = new PlcInfoSimple("œﬂ∆Ù∂Ø∂¡");
+            lineResetOutPs = new PlcInfoSimple("œﬂ∏¥Œª–¥");
+            lineResetInPs = new PlcInfoSimple("œﬂ∏¥Œª∂¡");
+            lineStopOutPs = new PlcInfoSimple("œﬂÕ£÷π–¥");
+            lineStopInPs = new PlcInfoSimple("œﬂÕ£÷π∂¡");
+            linePauseOutPs = new PlcInfoSimple("œﬂ‘›Õ£–¥");
+            linePauseInPs = new PlcInfoSimple("œﬂ‘›Õ£∂¡");
+            doorSize = new PlcInfoSimple("œ¬¡œæ‚¡œ≥§∂¡–¥");
+            doorBanLen = new PlcInfoSimple("◊›∫·æ‚¡œ≥§∂¡–¥");
+            doorBanWidth = new PlcInfoSimple("◊›∫·æ‚¡œøÌ∂¡–¥");
+            doorShellLen = new PlcInfoSimple("√≈∆§æ‚¡œ≥§∂¡–¥");
+            doorShellWidth = new PlcInfoSimple("√≈∆§æ‚¡œøÌ∂¡–¥");
+            doorDownLoadCountInOutPs = new PlcInfoSimple("√ø¥Œœ¬∑¢√≈ ˝∂¡–¥");
+            xialiaojuOutPs = new PlcInfoSimple("œ¬¡œæ‚≥§∂»∂¡–¥");
+            xialiaoDataRequestInPs = new PlcInfoSimple("œ¬¡œæ‚«Î«Û ˝æ›∂¡");
+            xialiaoDataDownLoadSuccessOutPs = new PlcInfoSimple("œ¬¡œæ‚œ¬∑¢≥…π¶–¥");
+            xialiaoCurrentDoorIdInPs = new PlcInfoSimple("œ¬¡œæ‚µ±«∞√≈∫≈∂¡");
+            xialiaoCurrentStatusInPs = new PlcInfoSimple("œ¬¡œæ‚◊¥Ã¨∂¡");
+            xialiaoDoorCountInOutPs = new PlcInfoSimple("œ¬¡œæ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            xialiaoDoorCntInPs = new PlcInfoSimple("œ¬¡œæ‚º∆ ˝∂¡");
+            doorbanLenthChangInOutPs = new PlcInfoSimple("√≈∞Âæ‚≥§∂»∂¡–¥");
+            doorbanLenthKuanInOutPs = new PlcInfoSimple("√≈∞Âæ‚øÌ∂»∂¡–¥");
+            doorbanDataKuanRequestInPs = new PlcInfoSimple("√≈∞Âæ‚«Î«ÛøÌ ˝æ›∂¡");
+            doorbanDataChangRequestInPs = new PlcInfoSimple("√≈∞Âæ‚«Î«Û≥§ ˝æ›∂¡");
+            doorbanDataKuanDownLoadSuccessOutPs = new PlcInfoSimple("√≈∞Âæ‚øÌœ¬∑¢≥…π¶–¥");
+            doorbanDataChangDownLoadSuccessOutPs = new PlcInfoSimple("√≈∞Âæ‚≥§œ¬∑¢≥…π¶–¥");
+            doorbanCurrentDoorIdInPs = new PlcInfoSimple("√≈∞Âæ‚µ±«∞√≈∫≈∂¡");
+            doorbanCurrentStatusInPs = new PlcInfoSimple("√≈∞Âæ‚◊¥Ã¨∂¡");
+            doorbanDoorCountInOutPs = new PlcInfoSimple("√≈∞Âæ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            doorshellLenthChangInOutPs = new PlcInfoSimple("√≈∆§æ‚≥§∂»∂¡–¥");
+            doorshellLenthKuanInOutPs = new PlcInfoSimple("√≈∆§æ‚øÌ∂»∂¡–¥");
+            doorshellDataKuanRequestInPs = new PlcInfoSimple("√≈∆§æ‚«Î«ÛøÌ ˝æ›∂¡");
+            doorshellDataKuanDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚øÌœ¬∑¢≥…π¶–¥");
+            doorshellDataChangRequestInPs = new PlcInfoSimple("√≈∆§æ‚«Î«Û≥§ ˝æ›∂¡");
+            doorshellDataChangDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚≥§œ¬∑¢≥…π¶–¥");
+            doorshellCurrentDoorIdInPs = new PlcInfoSimple("√≈∆§æ‚µ±«∞√≈∫≈∂¡");
+            doorshellCurrentStatusInPs = new PlcInfoSimple("√≈∆§æ‚◊¥Ã¨∂¡");
+            doorshellDoorIdInOutPs = new PlcInfoSimple("√≈∆§æ‚√≈Id∂¡–¥");
+            doorshellDataDoorIdRequestInPs = new PlcInfoSimple("√≈∆§æ‚√≈Id«Î«Û ˝æ›∂¡");
+            doorshellDataDoorIdDownLoadSuccessOutPs = new PlcInfoSimple("√≈∆§æ‚√≈Idœ¬∑¢≥…π¶–¥");
+            doorshellDoorCountInOutPs = new PlcInfoSimple("√≈∆§æ‚œ¬∑¢√≈ ˝Ω· ¯∂¡–¥");
+            lineEmgStopInPs = new PlcInfoSimple("œﬂº±Õ£∂¡");
+            lineEmgStopOutPs = new PlcInfoSimple("œﬂº±Õ£–¥");
+            dataOutPs = new PlcInfoSimple(" ˝æ›œ¬‘ÿ∂¡–¥");
+            muxiaoHoleOutPs = new PlcInfoSimple("ƒæœ˙ø◊œ¬‘ÿ–¥");
+            mxkStringShowInPs = new PlcInfoSimple("≤ª¥Úƒæœ˙ø◊—°‘Òœ‘ æ∂¡");
+            zxShowInPs = new PlcInfoSimple("÷––ƒƒæ–º∂¡");
+            zkShowInPs = new PlcInfoSimple("÷–ø◊À´ƒæ–º∂¡");
+            smxShowInPs = new PlcInfoSimple("À´ƒæ–º∂¡");
+            mxkShowInPs = new PlcInfoSimple("ƒæ…“ø◊—°‘Ò∂¡");
+            leftRightShowInPs = new PlcInfoSimple("◊Û”“ƒ£ Ω∂¡");
+            liWaiInPs = new PlcInfoSimple("¿ÔÕ‚ƒ£ Ω∂¡");
+            zxShowOutPs = new PlcInfoSimple("÷––ƒƒæ–º–¥");
+            zkShowOutPs = new PlcInfoSimple("÷–ø◊À´ƒæ–º–¥");
+            smxShowOutPs = new PlcInfoSimple("À´ƒæ–º–¥");
+            mxkShowOutPs = new PlcInfoSimple("ƒæ…“ø◊—°‘Ò–¥");
+            leftRightShowOutPs = new PlcInfoSimple("◊Û”“ƒ£ Ω–¥");
+            liWaiOutPs = new PlcInfoSimple("¿ÔÕ‚ƒ£ Ω–¥");
+            widht1InOutPs = new PlcInfoSimple("¡œøÌ1∂¡–¥");
+            widht2InOutPs = new PlcInfoSimple("¡œøÌ2∂¡–¥");
+            restMaterialRangeInOutPs = new PlcInfoSimple("”‡¡œ…Ë÷√∂¡–¥");
+            inspectPatternModeInOutPs = new PlcInfoSimple("ª®Œ∆ƒ£ Ω∂¡–¥");
+            inspectPatternDoneInOutPs = new PlcInfoSimple("ª®Œ∆≤‚¡øÕÍ≥…∂¡–¥");
+            inspectPatternPosInOutPs = new PlcInfoSimple("ª®Œ∆æ‡¿Î…Ë÷√∂¡–¥");
+            materialSetEnInOutPs = new PlcInfoSimple("≤ƒ¡œ…Ë÷√ πƒ‹∂¡–¥");
+            materialIdInOutPs = new PlcInfoSimple("≤ƒ¡œ¥˙∫≈∂¡–¥");
+            pos1OutInPs = new PlcInfoSimple("∂®≥§1≥§∂»∂¡–¥");
+            pos2OutInPs = new PlcInfoSimple("∂®≥§2≥§∂»∂¡–¥");
+            pos1EnOutPs = new PlcInfoSimple("∂®≥§1 πƒ‹–¥");
+            pos2EnOutPs = new PlcInfoSimple("∂®≥§2 πƒ‹–¥");
+            pos1EnInPs = new PlcInfoSimple("∂®≥§1 πƒ‹∂¡");
+            pos2EnInPs = new PlcInfoSimple("∂®≥§2 πƒ‹∂¡");
+            posMode = new PlcInfoSimple("ƒ£ Ω—°‘ÒŒª÷√∂¡–¥");
+            pauseOutPs = new PlcInfoSimple("‘›Õ£–¥");
+            startOutPs = new PlcInfoSimple("∆Ù∂Ø–¥");
+            resetOutPs = new PlcInfoSimple("∏¥Œª–¥");
+            scarModeOutPs = new PlcInfoSimple("Ω·∞Ã≤‚¡ø–¥");
+            pageShiftOutPs = new PlcInfoSimple("“≥√Ê«–ªª–¥");
+            pressOutInPs = new PlcInfoSimple("—π¡œ∂¡–¥");
+            doorCutCntOutInPs = new PlcInfoSimple("√≈µ∂ ˝∂¡–¥");
+            dataNotEnoughOutInPs = new PlcInfoSimple(" ˝æ›¥ÔµΩœﬁŒª∂¡–¥");
+            dataNotEnoughValueOutInPs = new PlcInfoSimple(" ˝æ›œﬁŒª÷µ∂¡–¥");
+            gjOutInPs = new PlcInfoSimple("π˝Ω∫∂¡–¥");
+            GWOutInPs = new PlcInfoSimple("π§Œª∂¡–¥");
+            PJOutPs = new PlcInfoSimple("≈ÁΩ∫–¥");
+            PJInPs = new PlcInfoSimple("≈ÁΩ∫∂¡");
+            ZQInPs = new PlcInfoSimple("◊›«–∂¡");
+            KSInPs = new PlcInfoSimple("øø’§∂¡");
+            LMInPs = new PlcInfoSimple("∫·«–µ∂∂¡");
+            LMSLInPs = new PlcInfoSimple("∫·«–ÀÕ¡œ∂¡");
+            doorTypeCutCountOutInPs = new PlcInfoSimple("√≈–Õµ∂ ˝∂¡–¥");
+            sfslwInPs = new PlcInfoSimple("À≈∑˛…œ¡œŒª∂¡");
+            emgStopInPs = new PlcInfoSimple("º±Õ£∂¡");
+            emgStopOutPs = new PlcInfoSimple("º±Õ£–¥");
+            startInPs = new PlcInfoSimple("∆Ù∂Ø∂¡");
+            resetInPs = new PlcInfoSimple("∏¥Œª∂¡");
+            pauseInPs = new PlcInfoSimple("‘›Õ£∂¡");
+            scarModeInPs = new PlcInfoSimple("Ω·∞Ã≤‚¡ø∂¡");
+            scarInPs = new PlcInfoSimple("Ω·∞Ã∂¡");
+            autoCCInPs = new PlcInfoSimple("◊‘∂Ø≤‚≥§∂¡");
+            clInPs = new PlcInfoSimple("≥ˆ¡œ∂¡");
+            slInPs = new PlcInfoSimple("ÀÕ¡œ∂¡");
+            xialiaojuStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            doorBanStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            doorShellStatus0 = new string[] { "‘À––÷–", "◊º±∏æÕ–˜", "‘›Õ£÷–", "º±Õ£÷–", "±®æØ÷–", "Õ®—∂¥ÌŒÛ", "∏¥Œª÷–" };
+            comIsDownLoading = false;
+            downLoadSizeId = 0;
+            pSize = new patternSize();
+            tCheckPrint = new System.Timers.Timer(1000.0);
+            CutProCnt = 0;
+            CurrentDoorType = "123456789";
             for (int i = strDataFormPath.Count - 1; i >= 0; i--)
             {
                 if (!File.Exists(strDataFormPath[i]))
@@ -670,115 +737,2286 @@ namespace xjplc
                     Environment.Exit(0);
                 }
             }
-
             evokDevice = new EvokXJDevice(strDataFormPath, p0);
-
             InitUsualTest();
-
         }
-        //ÂèØ‰ª•ÈÄâÊã©ÈªòËÆ§ËØªÂèñÁ´ØÂè£ÂíåËá™Âä®ËØªÂèñÁ´ØÂè£
-        public EvokXJWork(int id)
+
+        public void addDataForm(List<string> filestr)
         {
-            PortParam p0 = new PortParam();
-            List<string> strDataFormPath = new List<string>();
-            switch (id)
+            if (DeviceName.Equals(Constant.scjDeivceName))
             {
-                case Constant.evokGetDefaultMode:
-                    {
-                        p0 = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);
-                        strDataFormPath.Add(Constant.PlcDataFilePathAuto);
-                        strDataFormPath.Add(Constant.PlcDataFilePathHand);
-                        strDataFormPath.Add(Constant.PlcDataFilePathParam);
-                        strDataFormPath.Add(Constant.PlcDataFilePathIO);
-                        break;
-                    }
-                case Constant.evokGetAutoMode:
-                    {
-                        //ÈÄâÊã©Â∑•ÂéÇÊ®°Âºè
-                        for (int i = strDataFormPath.Count - 1; i >= 0; i--)
-                        {
-                            if (!File.Exists(strDataFormPath[i]))
-                            {
-                                strDataFormPath.RemoveAt(i);
-                                MessageBox.Show(strDataFormPath[i] + Constant.ErrorPlcFile);
-                                Environment.Exit(0);
-                            }
-                        }
-                        break;
-                    }
+                PsLstEx1 = new List<PlcInfoSimple>();
+                PsLstEx2 = new List<PlcInfoSimple>();
+                PsLstEx3 = new List<PlcInfoSimple>();
+                PsLstEx4 = new List<PlcInfoSimple>();
+                PsLstEx5 = new List<PlcInfoSimple>();
+                PsLstEx6 = new List<PlcInfoSimple>();
+                PsLstEx7 = new List<PlcInfoSimple>();
+                PsLstEx8 = new List<PlcInfoSimple>();
+                PsLstEx9 = new List<PlcInfoSimple>();
+                AllPlcSimpleLst.Add(PsLstEx1);
+                AllPlcSimpleLst.Add(PsLstEx2);
+                AllPlcSimpleLst.Add(PsLstEx3);
+                AllPlcSimpleLst.Add(PsLstEx4);
+                AllPlcSimpleLst.Add(PsLstEx5);
+                AllPlcSimpleLst.Add(PsLstEx6);
+                AllPlcSimpleLst.Add(PsLstEx7);
+                AllPlcSimpleLst.Add(PsLstEx8);
+                AllPlcSimpleLst.Add(PsLstEx9);
             }
-
-            evokDevice = new EvokXJDevice(strDataFormPath, p0);
-
-            InitUsualTest();
-
-        }
-        public bool IsPause()
-        {
-            return (pauseInPs.ShowValue == 1);
-        }
-        ComboBox cbOptParam1;
-        public void SetOptParamShowCombox(ComboBox cbOptParam0)
-        {
-            cbOptParam1 = cbOptParam0;
-            //‰ºòÂåñÁ≥ªÊï∞
-            int optParamInt = 0;
-            try
+            if (filestr.Count > 0)
             {
-                if (!int.TryParse(paramFile.ReadConfig(Constant.optParam1), out optParamInt))
+                evokDevice.GetPlcDataTableFromFile(filestr);
+            }
+            for (int i = 4; i < evokDevice.DataFormLst.Count; i++)
+            {
+                SetPage(i);
+                psLstHand.AddRange(AllPlcSimpleLst[i]);
+            }
+        }
+
+        public void addDataForm(List<string> filestr, int id)
+        {
+            if (DeviceName.Equals(Constant.scjDeivceName) || DeviceName.Equals(Constant.sdjDeivceName))
+            {
+                PsLstEx1 = new List<PlcInfoSimple>();
+                PsLstEx2 = new List<PlcInfoSimple>();
+                PsLstEx3 = new List<PlcInfoSimple>();
+                PsLstEx4 = new List<PlcInfoSimple>();
+                PsLstEx5 = new List<PlcInfoSimple>();
+                PsLstEx6 = new List<PlcInfoSimple>();
+                PsLstEx7 = new List<PlcInfoSimple>();
+                PsLstEx8 = new List<PlcInfoSimple>();
+                PsLstEx9 = new List<PlcInfoSimple>();
+                AllPlcSimpleLst.Add(PsLstEx1);
+                AllPlcSimpleLst.Add(PsLstEx2);
+                AllPlcSimpleLst.Add(PsLstEx3);
+                AllPlcSimpleLst.Add(PsLstEx4);
+                AllPlcSimpleLst.Add(PsLstEx5);
+                AllPlcSimpleLst.Add(PsLstEx6);
+                AllPlcSimpleLst.Add(PsLstEx7);
+                AllPlcSimpleLst.Add(PsLstEx8);
+                AllPlcSimpleLst.Add(PsLstEx9);
+            }
+            if (filestr.Count > 0)
+            {
+                evokDevice.GetPlcDataTableFromFile(filestr);
+            }
+            for (int i = 4; i < evokDevice.DataFormLst.Count; i++)
+            {
+                SetPage(i);
+                AllPlcSimpleLst[id].AddRange(AllPlcSimpleLst[i]);
+            }
+        }
+
+        public bool angleModify()
+        {
+            if (!DeviceName.Equals(Constant.simiDeivceName))
+            {
+                return false;
+            }
+            List<double> list = new List<double>();
+            List<double> list2 = new List<double>();
+            return true;
+        }
+
+        public void autoMesOFF()
+        {
+            evokDevice.SetMValueON(autoMesOutInPs);
+        }
+
+        public void autoMesON()
+        {
+            evokDevice.SetMValueOFF(autoMesOutInPs);
+        }
+
+        public bool AutoParamTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                if (double.TryParse(((TextBox)sender).Text, out num) && (num > -1.0))
                 {
-                    MessageBox.Show(Constant.ErrorParamConfigFile);
+                    num *= Constant.dataMultiple;
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, (int)num);
+                }
+                return true;
+            }
+            return false;
+        }
 
-                    Application.Exit();
+        public bool AutoParamTxt_KeyPressWithRatio(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                if (double.TryParse(((TextBox)sender).Text, out num) && (num > -1.0))
+                {
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, ((TextBox)sender).Text);
+                }
+                return true;
+            }
+            return false;
+        }
 
-                    System.Environment.Exit(0);
+        public bool AutoParamTxt_KeyPressWithRatioWithId(object sender, KeyPressEventArgs e, int id)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                List<PlcInfoSimple> pLst = new List<PlcInfoSimple>();
+                if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
+                {
+                    pLst = AllPlcSimpleLst[id];
+                }
+                else
+                {
+                    return false;
+                }
+                if (double.TryParse(((TextBox)sender).Text, out num) && (num > -1.0))
+                {
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, pLst, ((TextBox)sender).Text);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public void ChangeCutMode(int value)
+        {
+            ParamFile.WriteConfig(Constant.cutSelMode, value.ToString());
+            cutSelMode = value;
+        }
+
+        public void ChangePrintMode(int value)
+        {
+            if (PrinterSettings.InstalledPrinters.Count == 0)
+            {
+                value = 0;
+                string[] logs = new string[] { DeviceName + Constant.DeviceNoPrinter };
+                LogManager.WriteProgramLog(logs);
+            }
+            ParamFile.WriteConfig(Constant.printBarcodeMode, value.ToString());
+            OldPrintBarCodeMode = PrintBarCodeMode;
+            printBarCodeMode = value;
+            if (printBarCodeMode == Constant.AutoBarCode)
+            {
+                if (plcHandlebarCodeOutInPs !=null)
+                {
+                    evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
                 }
             }
-            catch (Exception ex)
+            else if (plcHandlebarCodeOutInPs !=null)
             {
-
+                evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
             }
-            if (cbOptParam1 != null && optParamInt > -1)
-            { cbOptParam1.Text = optParamInt.ToString(); }
+            string s = "0";
+            s = ParamFile.ReadConfig(Constant.IsSaveProdLog);
+            int result = 0;
+            if (int.TryParse(s, out result))
+            {
+                if (result == 0)
+                {
+                    IsSaveProdLog = false;
+                }
+                else
+                {
+                    IsSaveProdLog = true;
+                }
+            }
         }
-        
-        public bool startTip
+
+        public void ChangtToAuto()
         {
-            
-            get {
+            evokDevice.SetDValue(pageShiftOutPs, Constant.AutoPageID);
+        }
 
-                if (lineStartTipInPs != null)
-                    return
-                    lineStartTipInPs.ShowValue == 1 ? true : false;
-
-                else return false;
+        private void CheckIsDataNotEnough(int id)
+        {
+            int num = 0;
+            if (AutoMes)
+            {
+                if (optSize.SizeLeft < dataNotEnoughValueOutInPs.ShowValue)
+                {
+                    OpenDataNotEnough();
+                }
+            }
+            else
+            {
+                if (id < optSize.ProdInfoLst.Count)
+                {
+                    for (int i = id; i < optSize.ProdInfoLst.Count; i++)
+                    {
+                        num += optSize.ProdInfoLst[i].Cut.Count;
+                    }
+                }
+                if (num < dataNotEnoughValueOutInPs.ShowValue)
+                {
+                    OpenDataNotEnough();
+                }
+                else
+                {
+                    CloseDataNotEnough();
+                }
             }
         }
+
+        public void CloseDataNotEnough()
+        {
+            if (dataNotEnoughOutInPs !=null)
+            {
+                evokDevice.SetMValueOFF(dataNotEnoughOutInPs);
+            }
+        }
+
+        private void collectDeviceData()
+        {
+            SetSimiReady();
+            if (lcOutInPs.Ration > 1.0)
+            {
+                if ((DeviceName == null) || !DeviceName.Equals(Constant.scjDeivceName))
+                {
+                    optSize.Len = lcOutInPs.ShowValue * Constant.dataMultiple;
+                }
+            }
+            else
+            {
+                optSize.Len = lcOutInPs.ShowValue;
+            }
+            if (DeviceProperty == 1)
+            {
+                optSize.Len = lcOutInPs.ShowValue + 0x1388;
+            }
+            if (dbcOutInPs !=null)
+            {
+                if ((dbcOutInPs != null) && (dbcOutInPs.Ration > 1.0))
+                {
+                    optSize.Dbc = (int)(dbcOutInPs.ShowValueDouble * Constant.dataMultiple);
+                }
+                else
+                {
+                    optSize.Dbc = dbcOutInPs.ShowValue;
+                }
+            }
+            if (ltbcOutInPs !=null)
+            {
+                if (ltbcOutInPs.Ration > 1.0)
+                {
+                    optSize.Ltbc = (int)(ltbcOutInPs.ShowValueDouble * Constant.dataMultiple);
+                }
+                else
+                {
+                    optSize.Ltbc = ltbcOutInPs.ShowValue;
+                }
+            }
+            if (safeOutInPs !=null)
+            {
+                if (safeOutInPs.Ration > 1.0)
+                {
+                    if (DeviceName.Equals(Constant.simiDeivceId))
+                    {
+                        optSize.Safe = ((int)(safeOutInPs.ShowValueDouble * Constant.dataMultiple)) + (optSize.Dbc * 5);
+                    }
+                    else
+                    {
+                        optSize.Safe = (int)(safeOutInPs.ShowValueDouble * Constant.dataMultiple);
+                    }
+                }
+                else
+                {
+                    optSize.Safe = safeOutInPs.ShowValue;
+                }
+            }
+            if (wlMiniSizeOutInPs !=null)
+            {
+                if (wlMiniSizeOutInPs.Ration > 1.0)
+                {
+                    optSize.WlMiniValue = (int)(wlMiniSizeOutInPs.ShowValueDouble * Constant.dataMultiple);
+                }
+                else
+                {
+                    optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+                }
+            }
+        }
+
+        private void collectUserInputData()
+        {
+
+            new UserDataInputForm { Op = optSize,Eok=this }.ShowDialog();
+        }
+
+        private void CountClr()
+        {
+            for (int i = 0; !evokDevice.SetDValue(cutDoneOutInPs, 0) && (i < 2); i++)
+            {
+                Application.DoEvents();
+            }
+        }
+
+        public void currentIdUpdate(DataGridView dgv, int doorId, int deviceid, int startrow, OptSize op)
+        {
+            if ((((deviceid != 0) || getXialiaoJuStatus().Equals(xialiaojuStatus0[0])) && ((doorId >= 1) && (doorId <= dgv.Rows.Count))) && (currentDoorSizeCount != xialiaoDoorCntInPs.ShowValue))
+            {
+                if ((xialiaoDoorCntInPs.ShowValue < 1) || (xialiaoDoorCntInPs.ShowValue > 5))
+                {
+                    currentDoorSizeCount = 0;
+                }
+                else
+                {
+                    currentDoorSizeCount = xialiaoDoorCntInPs.ShowValue;
+                    int num = 0;
+                    foreach (DataRow row in op.DtData.Rows)
+                    {
+                        int result = 0;
+                        if ((row[13] != null) && int.TryParse(row[13].ToString(), out result))
+                        {
+                            string str = row[2].ToString();
+                            string str2 = row[1].ToString();
+                            if ((result == doorId) && !str.Equals(str2))
+                            {
+                                row[2] = row[1];
+                                dgv.Rows[num].DefaultCellStyle.BackColor = Color.Green;
+                                if ((num + 4) < dgv.Rows.Count)
+                                {
+                                    dgv.CurrentCell = dgv.Rows[num + 4].Cells[0];
+                                }
+                                else
+                                {
+                                    dgv.CurrentCell = dgv.Rows[num].Cells[0];
+                                }
+                                break;
+                            }
+                        }
+                        num++;
+                    }
+                }
+            }
+        }
+
+        public void currentIdUpdateBanAndShell(DataGridView dgv, int doorId, int deviceid, int idcount, OptSize op)
+        {
+            if ((((deviceid != 1) || getDoorBanStatus().Equals(xialiaojuStatus0[0])) && ((deviceid != 2) || getDoorShellStatus().Equals(xialiaojuStatus0[0]))) && (((deviceid != 0) || getXialiaoJuStatus().Equals(xialiaojuStatus0[0])) && ((doorId >= 1) && (doorId <= dgv.Rows.Count))))
+            {
+                int num = 0;
+                foreach (DataRow row in op.DtData.Rows)
+                {
+                    int result = 0;
+                    if ((row[13] != null) && int.TryParse(row[13].ToString(), out result))
+                    {
+                        string str = row[2].ToString();
+                        string str2 = row[1].ToString();
+                        if ((result <= doorId) && !str.Equals(str2))
+                        {
+                            row[2] = row[1];
+                            dgv.Rows[num].DefaultCellStyle.BackColor = Color.Green;
+                            if ((num + 4) < dgv.Rows.Count)
+                            {
+                                dgv.CurrentCell = dgv.Rows[num + 4].Cells[0];
+                            }
+                            else
+                            {
+                                dgv.CurrentCell = dgv.Rows[num].Cells[0];
+                            }
+                        }
+                        else if (result > doorId)
+                        {
+                            break;
+                        }
+                    }
+                    num++;
+                }
+            }
+        }
+
+        public void CutDoorBanThread()
+        {
+            showWorkInfo("øÌ∂» ˝æ›œ¬∑¢!");
+            DownLoadDataWithDoorBanWidth(0);
+            if (!startCutDoor(0))
+            {
+                MessageBox.Show(DeviceName + Constant.DeviceStartFailed);
+            }
+            else
+            {
+                showWorkInfo(" ∆Ù∂Ø≥…π¶!");
+                if ((optSize.ProdInfoLst.Count > 0) && (CutProCnt < optSize.ProdInfoLst.Count))
+                {
+                    for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                    {
+                        SaveProdDataLog(optSize.ProdInfoLst[i], i);
+                        ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                        DownLoadDataNormal(i);
+                        CountClr();
+                        CutLoop(i);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(Constant.noData);
+                }
+            }
+        }
+
+        public void CutDoorShellThread()
+        {
+            showWorkInfo("◊º±∏ ˝æ›œ¬∑¢£°");
+            if ((optSize.ProdInfoLst.Count > 0) && (CutProCnt < optSize.ProdInfoLst.Count))
+            {
+                int cutProCnt = CutProCnt;
+                while (cutProCnt < optSize.ProdInfoLst.Count)
+                {
+                    SaveProdDataLog(optSize.ProdInfoLst[cutProCnt], cutProCnt);
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((cutProCnt + 1)).ToString() + Constant.startTips4);
+                    DownLoadDataWithDoorShell(cutProCnt);
+                    showWorkInfo(Constant.startTips3);
+                    if (!startCutDoor(0))
+                    {
+                        MessageBox.Show(DeviceName + Constant.DeviceStartFailed);
+                    }
+                    else
+                    {
+                        CountClr();
+                        CutLoop(cutProCnt);
+                    }
+                    break;
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+        }
+
+        public bool CutDoorStartNormal(int cutid)
+        {
+            if (IsInNoSafe)
+            {
+                MessageBox.Show(DeviceName + Constant.emgStopTip);
+                return false;
+            }
+            if (errorList.Count > 0)
+            {
+                MessageBox.Show(DeviceName + Constant.Alarm);
+                return false;
+            }
+            if (optSize.ProdInfoLst.Count < 1)
+            {
+                MessageBox.Show(DeviceName + Constant.noData);
+                return false;
+            }
+            string[] logs = new string[] { DeviceName + Constant.NormalMode };
+            LogManager.WriteProgramLog(logs);
+            try
+            {
+                SelectCutThread(cutid);
+                if (!CutThread.IsAlive)
+                {
+                    CutThread.Start();
+                }
+                while (CutThread.IsAlive)
+                {
+                    Application.DoEvents();
+                }
+            }
+            finally
+            {
+                CutThread = null;
+                CutThreadStart = null;
+                stopOperation();
+                MessageBox.Show(DeviceName + Constant.CutEnd);
+            }
+            return true;
+        }
+
+        private int CutLoop(int i)
+        {
+            if (optSize.SingleSizeLst[i].Count > 0)
+            {
+                PrintBarCheck(optSize.SingleSizeLst[i][0]);
+            }
+            int num = 0;
+            while (RunFlag)
+            {
+                Application.DoEvents();
+                Thread.Sleep(10);
+                int showValue = cutDoneOutInPs.ShowValue;
+                if (!RunFlag || IsInNoSafe)
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.emgStopTip);
+                    string[] logs = new string[] { DeviceName + Constant.emgStopTip };
+                    LogManager.WriteProgramLog(logs);
+                    stopOperation();
+                    return -1;
+                }
+                if (ErrorList.Count > 0)
+                {
+                    RunFlag = false;
+                    stopOperation();
+                    return -2;
+                }
+                if ((showValue != num) && (num < optSize.ProdInfoLst[i].Cut.Count))
+                {
+                    int num5;
+                    int result = 0;
+                    if (!optSize.SingleSizeLst[i][num].Barc.Equals(Constant.ScarId) && int.TryParse(optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2].ToString(), out result))
+                    {
+                        result++;
+                        optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2] = result;
+                        Point point = new Point(optSize.SingleSizeLst[i][num].Xuhao, 2);
+                        optSize.checkIsDone(optSize.SingleSizeLst[i][num].Xuhao);
+                    }
+                    if (optSize.ProdInfoLst[i].Param1.Count > 0)
+                    {
+                        string[] textArray2 = new string[7];
+                        textArray2[0] = Constant.resultTip5;
+                        num5 = num + 1;
+                        textArray2[1] = num5.ToString();
+                        textArray2[2] = Constant.size;
+                        num5 = optSize.ProdInfoLst[i].Cut[num];
+                        textArray2[3] = num5.ToString();
+                        textArray2[4] = Constant.startTips6;
+                        textArray2[5] = optSize.ProdInfoLst[i].Param1[num].ToString();
+                        textArray2[6] = Constant.startTips5;
+                        ConstantMethod.ShowInfo(rtbWork, string.Concat(textArray2));
+                    }
+                    else
+                    {
+                        string[] textArray3 = new string[5];
+                        textArray3[0] = Constant.resultTip5;
+                        num5 = num + 1;
+                        textArray3[1] = num5.ToString();
+                        textArray3[2] = Constant.size;
+                        textArray3[3] = optSize.ProdInfoLst[i].Cut[num].ToString();
+                        textArray3[4] = Constant.startTips5;
+                        ConstantMethod.ShowInfo(rtbWork, string.Concat(textArray3));
+                    }
+                    num = showValue;
+                    if (showValue < optSize.SingleSizeLst[i].Count)
+                    {
+                        PrintBarCheck(optSize.SingleSizeLst[i][showValue]);
+                    }
+                }
+                if (showValue >= optSize.ProdInfoLst[i].Cut.Count)
+                {
+                    break;
+                }
+            }
+            return 0;
+        }
+
+        private void CutLoop(int i, int printdMode)
+        {
+            if ((optSize.SingleSizeLst[i].Count > 0) && !CurrentDoorType.Equals(optSize.SingleSizeLst[i][0].ParamStrLst[10]))
+            {
+                CurrentDoorType = optSize.SingleSizeLst[i][0].ParamStrLst[10];
+                PrintBarCheck(optSize.SingleSizeLst[i][0]);
+                if (!DeviceName.Equals(Constant.scjDeivceName))
+                {
+                    List<string> list = new List<string>();
+                    for (int j = i; j < optSize.ProdInfoLst.Count<ProdInfo>(); j++)
+                    {
+                        list.AddRange(optSize.ProdInfoLst[j].Param10);
+                    }
+                    int num2 = DoorTypeCount(CurrentDoorType, list.ToArray());
+                    if (num2 > 0)
+                    {
+                        SetDoorTypeCutCount(num2);
+                    }
+                }
+            }
+            int num = 0;
+            while (RunFlag)
+            {
+                Application.DoEvents();
+                Thread.Sleep(10);
+                int showValue = cutDoneOutInPs.ShowValue;
+                if ((!RunFlag || IsInNoSafe) || (errorList.Count > 0))
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.emgStopTip);
+                    string[] logs = new string[] { DeviceName + Constant.emgStopTip };
+                    LogManager.WriteProgramLog(logs);
+                    stopOperation();
+                    break;
+                }
+                if ((showValue != num) && (num < optSize.ProdInfoLst[i].Cut.Count))
+                {
+                    int result = 0;
+                    if (!optSize.SingleSizeLst[i][num].Barc.Equals(Constant.ScarId) && int.TryParse(optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2].ToString(), out result))
+                    {
+                        result++;
+                        if ((DeviceProperty == Constant.scjDeivceId) && (plcHandlebarCodeOutInPs !=null))
+                        {
+                            evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
+                        }
+                        optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2] = result;
+                        optSize.checkIsDone(optSize.SingleSizeLst[i][num].Xuhao);
+                    }
+                    string[] textArray2 = new string[5];
+                    textArray2[0] = Constant.resultTip5;
+                    int num6 = num + 1;
+                    textArray2[1] = num6.ToString();
+                    textArray2[2] = Constant.size;
+                    textArray2[3] = optSize.ProdInfoLst[i].Cut[num].ToString();
+                    textArray2[4] = Constant.startTips5;
+                    ConstantMethod.ShowInfo(rtbWork, string.Concat(textArray2));
+                    ConstantMethod.ShowInfo(rtbWork, CurrentDoorType);
+                    num = showValue;
+                    if ((showValue < optSize.SingleSizeLst[i].Count) && !CurrentDoorType.Equals(optSize.SingleSizeLst[i][showValue].ParamStrLst[10]))
+                    {
+                        CurrentDoorType = optSize.SingleSizeLst[i][showValue].ParamStrLst[10];
+                        if (showValue < optSize.SingleSizeLst[i].Count)
+                        {
+                            PrintBarCheck(optSize.SingleSizeLst[i][showValue]);
+                        }
+                        if (!DeviceName.Equals(Constant.scjDeivceName))
+                        {
+                            List<string> list2 = new List<string>();
+                            list2.AddRange(optSize.ProdInfoLst[i].Param10.Skip<string>(showValue).Take<string>(optSize.ProdInfoLst[i].Param10.Count - showValue));
+                            for (int k = i + 1; k < optSize.ProdInfoLst.Count<ProdInfo>(); k++)
+                            {
+                                list2.AddRange(optSize.ProdInfoLst[k].Param10);
+                            }
+                            int num7 = DoorTypeCount(CurrentDoorType, list2.ToArray());
+
+                            if (num7 > 0)
+                            {
+                                SetDoorTypeCutCount(num7);
+                            }
+                        }
+                    }
+                }
+                if (showValue >= optSize.ProdInfoLst[i].Cut.Count)
+                {
+                    break;
+                }
+            }
+        }
+
+        private int CutLoopWithDevice(int i)
+        {
+            printBarcode(printReport, optSize.SingleSizeLst[i][0].ParamStrLst.ToArray());
+            int num = 0;
+            while (RunFlag)
+            {
+                Application.DoEvents();
+                ConstantMethod.Delay(0xbb8);
+              
+                printBarcode(printReport, optSize.SingleSizeLst[i][num].ParamStrLst.ToArray());
+                int result = 0;
+                if (!optSize.SingleSizeLst[i][num].Barc.Equals(Constant.ScarId) && int.TryParse(optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2].ToString(), out result))
+                {
+                    result++;
+                    optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2] = result;
+                    Point point = new Point(optSize.SingleSizeLst[i][num].Xuhao, 2);
+                    optSize.checkIsDone(optSize.SingleSizeLst[i][num].Xuhao);
+                }
+                string[] textArray1 = new string[7];
+                textArray1[0] = Constant.resultTip5;
+                int num2 = num + 1;
+                textArray1[1] = num2.ToString();
+                textArray1[2] = Constant.size;
+                textArray1[3] = optSize.ProdInfoLst[i].Cut[num].ToString();
+                textArray1[4] = Constant.startTips6;
+                textArray1[5] = optSize.ProdInfoLst[i].Param1[num].ToString();
+                textArray1[6] = Constant.startTips5;
+                ConstantMethod.ShowInfo(rtbWork, string.Concat(textArray1));
+
+                num++;
+                if (num >= optSize.ProdInfoLst[i].Cut.Count)
+                {
+                    break;
+                }
+            }
+            return 0;
+        }
+
+        public void CutReady()
+        {
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+        }
+
+        public void CutRotateWithHoleThread()
+        {
+            if ((optSize.ProdInfoLst.Count > 0) && (CutProCnt < optSize.ProdInfoLst.Count))
+            {
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                    CountClr();
+                    DownLoadDataWithHoleAngle(i);
+                    CutLoop(i);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+        }
+
+        private void CutSimenSiPlcThread()
+        {
+            showWorkInfo(optSize.ProdInfoLst.Count.ToString());
+            if (optSize.ProdInfoLst.Count > 0)
+            {
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                    CountClr();
+                    DownLoadDataNormalWithSimenSiPlc(i);
+                    CutLoop(i);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+        }
+
+        public int CutStartMeasure(bool split, int cutid)
+        {
+            int showValue = ltbcDefaultOutInPs.ShowValue;
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+            if (wlMiniSizeOutInPs !=null)
+            {
+                optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            }
+            if (IsInNoSafe)
+            {
+                MessageBox.Show(Constant.emgStopTip);
+                return -1;
+            }
+            string[] logs = new string[] { DeviceName + Constant.AutoMeasureMode };
+            LogManager.WriteProgramLog(logs);
+            start(cutid);
+            while (mRunFlag)
+            {
+                int valueOld = 1;
+                string[] textArray2 = new string[] { DeviceName + Constant.MeasureSt };
+                LogManager.WriteProgramLog(textArray2);
+                if (IsInNoSafe)
+                {
+                    stopOperation();
+                }
+                ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs, ref emgStopInPs, ref mRunFlag);
+                string[] textArray3 = new string[] { DeviceName + Constant.MeasureEd };
+                LogManager.WriteProgramLog(textArray3);
+                if (autoCCInPs.ShowValue == Constant.M_ON)
+                {
+                    evokDevice.SetMValueOFF(autoCCInPs);
+                    optSize.Len = lcOutInPs.ShowValue;
+                    if (scarInPs.ShowValue > 0)
+                    {
+                        if (GetScar(optSize, scarInPs.ShowValue) != 0)
+                        {
+                            MessageBox.Show(Constant.GetScarError);
+                            return -2;
+                        }
+                        optSize.Ltbc = showValue;
+                        if (cutid == 4)
+                        {
+                            optSize.OptMeasureWithScarCheckAndNoSize(split, rtbResult, optSize.DtData);
+                        }
+                        else
+                        {
+                            optSize.OptMeasureWithScarCheck(split, rtbResult, optSize.DtData);
+                        }
+                    }
+                    else
+                    {
+                        optSize.Ltbc = showValue;
+                        optSize.OptMeasure(rtbResult);
+                    }
+                    if (optSize.ProdInfoLst.Count >= 1)
+                    {
+                        goto Label_02B6;
+                    }
+                    if (optSize.ValueAbleRow.Count > 0)
+                    {
+                        noSizeToCut();
+                        goto Label_030F;
+                    }
+                    break;
+                }
+                MessageBox.Show(Constant.measureOutOfTime);
+                return -3;
+                Label_02B6:;
+                try
+                {
+                    SelectCutThread(cutid);
+                    if (!CutThread.IsAlive)
+                    {
+                        CutThread.Start();
+                    }
+                    while (CutThread.IsAlive)
+                    {
+                        Application.DoEvents();
+                    }
+                }
+                finally
+                {
+                    CutThread = null;
+                    CutThreadStart = null;
+                }
+                Label_030F:
+                ConstantMethod.ShowInfo(rtbWork, Constant.NextOpt);
+            }
+            stopOperation();
+            MessageBox.Show(Constant.CutEnd);
+            return 0;
+        }
+
+        public int CutStartMeasure(bool split, int cutid, int cutCount)
+        {
+            int showValue = ltbcDefaultOutInPs.ShowValue;
+            if (IsInNoSafe)
+            {
+                MessageBox.Show(Constant.emgStopTip);
+                return -1;
+            }
+            string[] logs = new string[] { DeviceName + Constant.AutoMeasureMode };
+            LogManager.WriteProgramLog(logs);
+            start(cutid);
+            while (mRunFlag)
+            {
+                int valueOld = 1;
+                string[] textArray2 = new string[] { DeviceName + Constant.MeasureSt };
+                LogManager.WriteProgramLog(textArray2);
+                ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs, ref emgStopInPs, ref mRunFlag);
+                if (IsInNoSafe)
+                {
+                    stopOperation();
+                    MessageBox.Show("º±Õ££°");
+                    return -2;
+                }
+                string[] textArray3 = new string[] { DeviceName + Constant.MeasureEd };
+                LogManager.WriteProgramLog(textArray3);
+                if (autoCCInPs.ShowValue == Constant.M_ON)
+                {
+                    evokDevice.SetMValueOFF(autoCCInPs);
+                    optSize.Len = lcOutInPs.ShowValue;
+                    if (scarInPs.ShowValue > 0)
+                    {
+                        if (GetScar(optSize, scarInPs.ShowValue) != 0)
+                        {
+                            MessageBox.Show(Constant.GetScarError);
+                            return -2;
+                        }
+                        optSize.Ltbc = showValue;
+                        if (cutid == 4)
+                        {
+                            optSize.OptMeasureWithScarCheckAndNoSize(split, rtbResult, optSize.DtData);
+                        }
+                        else
+                        {
+                            optSize.OptMeasureWithScarCheck(split, rtbResult, optSize.DtData);
+                        }
+                    }
+                    else
+                    {
+                        optSize.Ltbc = showValue;
+                        optSize.OptMeasure(rtbResult);
+                    }
+                    if (optSize.ProdInfoLst.Count >= 1)
+                    {
+                        goto Label_0247;
+                    }
+                    if (optSize.ValueAbleRow.Count > 0)
+                    {
+                        noSizeToCut();
+                        goto Label_02A0;
+                    }
+                    break;
+                }
+                MessageBox.Show(Constant.measureOutOfTime);
+                return -3;
+                Label_0247:;
+                try
+                {
+                    SelectCutThread(cutid);
+                    if (!CutThread.IsAlive)
+                    {
+                        CutThread.Start();
+                    }
+                    while (CutThread.IsAlive)
+                    {
+                        Application.DoEvents();
+                    }
+                }
+                finally
+                {
+                    CutThread = null;
+                    CutThreadStart = null;
+                }
+                Label_02A0:
+                ConstantMethod.ShowInfo(rtbWork, Constant.NextOpt);
+            }
+            stopOperation();
+            MessageBox.Show(Constant.CutEnd);
+            return 0;
+        }
+
+        public void CutStartNormal(int cutid)
+        {
+            showWorkInfo(Constant.startTips0);
+            if (RunFlag)
+            {
+                MessageBox.Show(DeviceName + Constant.alreadyStart);
+            }
+            else if (IsInNoSafe)
+            {
+                MessageBox.Show(DeviceName + Constant.emgStopTip);
+            }
+            else if (optSize.ProdInfoLst.Count < 1)
+            {
+                MessageBox.Show(DeviceName + Constant.noData);
+            }
+            else if (errorList.Count > 0)
+            {
+                MessageBox.Show(DeviceName + Constant.Alarm);
+            }
+            else if (!start(cutid))
+            {
+                RunFlag = false;
+                MessageBox.Show(DeviceName + Constant.DeviceStartFailed);
+            }
+            else
+            {
+                showWorkInfo(Constant.startTips1);
+                try
+                {
+                    SelectCutThread(cutid);
+                    if (!CutThread.IsAlive)
+                    {
+                        CutThread.Start();
+                    }
+                    while (CutThread.IsAlive)
+                    {
+                        Application.DoEvents();
+                    }
+                }
+                finally
+                {
+                    CutThread = null;
+                    CutThreadStart = null;
+                    stopOperation();
+                    MessageBox.Show(DeviceName + Constant.CutEnd);
+                }
+            }
+        }
+
+        public void CutStartSimiPatternMode(int cutid)
+        {
+            SetSimiReady();
+            showWorkInfo(Constant.startTips0);
+            if (RunFlag)
+            {
+                MessageBox.Show(DeviceName + Constant.alreadyStart);
+            }
+            else if (IsInNoSafe)
+            {
+                MessageBox.Show(DeviceName + Constant.emgStopTip);
+            }
+            else if (errorList.Count > 0)
+            {
+                MessageBox.Show(DeviceName + Constant.Alarm);
+            }
+            else if (!start(cutid))
+            {
+                RunFlag = false;
+                MessageBox.Show(DeviceName + Constant.DeviceStartFailed);
+            }
+            else
+            {
+                showWorkInfo(Constant.startTips1);
+                int num = 0;
+                double xoffset = 0.0;
+                while (RunFlag)
+                {
+                    double pos = 0.0;
+                    int valueOld = Constant.M_ON;
+                    showWorkInfo(Constant.startTips9);
+                    ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref inspectPatternDoneInOutPs, ref emgStopInPs, ref mRunFlag);
+                    if (IsInNoSafe)
+                    {
+                        stopOperation();
+                        MessageBox.Show("ΩÙº±ÕÀ≥ˆ£¨«ÎºÏ≤È…Ë±∏£°");
+                        return;
+                    }
+                    if (inspectPatternDoneInOutPs.ShowValue == Constant.M_ON)
+                    {
+                        pos = inspectPatternPosInOutPs.ShowValue;
+                        if ((pos > 0.0) && (pos < 100.0))
+                        {
+                            evokDevice.SetMValueOFF(inspectPatternDoneInOutPs);
+                            if (cutid == Constant.patternMode)
+                            {
+                                optSize.OptMeasureWithSimiPattern(rtbResult, optSize.DtData,
+                                    GetPatternAllPos(
+                                        pos, 
+                                        (double)lcOutInPs.ShowValue, 
+                                        pSize), ref xoffset);
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("ª®Œ∆≤‚¡ø¥ÌŒÛ ∑∂Œß0~100");
+                            return;
+                        }
+                    }
+                    if (optSize.ProdInfoLst.Count < 1)
+                    {
+                        MessageBox.Show(DeviceName + Constant.noData);
+                        stopOperation();
+                        return;
+                    }
+                    try
+                    {
+                        SelectCutThread(cutid);
+                        if (!CutThread.IsAlive)
+                        {
+                            CutThread.Start();
+                        }
+                        while (CutThread.IsAlive)
+                        {
+                            Application.DoEvents();
+                        }
+                    }
+                    finally
+                    {
+                        CutThread = null;
+                        CutThreadStart = null;
+                    }
+                    num++;
+                    ConstantMethod.ShowInfo(rtbWork, Constant.NextOpt);
+                }
+                stopOperation();
+                MessageBox.Show(Constant.CutEnd);
+            }
+        }
+
+        private void CutWorkThread()
+        {
+            if (optSize.ProdInfoLst.Count > 0)
+            {
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                    CountClr();
+                    DownLoadDataNormal(i);
+                    CutLoop(i);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+        }
+
+        private void CutWorkThreadWithAngle()
+        {
+            CurrentDoorType = "1----";
+            if (optSize.ProdInfoLst.Count > 0)
+            {
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
+                    CountClr();
+                    DownLoadDataNormalWithAngle(i);
+                    CutLoop(i);
+                    List<string> list = new List<string>();
+                    double num2 = 0.0;
+                    num2 = ((double)optSize.ProdInfoLst[i].WL) / ((double)Constant.dataMultiple);
+                    if ((restMaterialRangeInOutPs.ShowValue > 0) && (num2 > restMaterialRangeInOutPs.ShowValue))
+                    {
+                        list.Add(optSize.MaterialName + "/" + num2.ToString("0.00"));
+                        list.Add(optSize.MaterialName);
+                        list.Add(num2.ToString("0.00"));
+                        printRestMaterial(list.ToArray());
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+        }
+
+        private void CutWorkThreadWithShuchi()
+        {
+            CurrentDoorType = "1----";
+            if (optSize.ProdInfoLst.Count > 0)
+            {
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
+                    CountClr();
+                    DownLoadDataNormalWithShuchi(i);
+                    CutLoop(i, 0);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+        }
+
+        public bool DataJoin() { return optSize.dataGetTogether(); }
+
+
+        public void dataLoad(int[] datavalue, int[] bitvalue)
+        {
+            evokDevice.SetMultiPleDValue(dataOutPs, datavalue);
+            evokDevice.SetMultiPleDValue(muxiaoHoleOutPs, bitvalue);
+        }
+
+        public void DgvInOutEdit(int rowIndex, bool editEnable)
+        {
+            string s = evokDevice.DataForm.Rows[rowIndex]["param1"].ToString();
+            string str2 = evokDevice.DataForm.Rows[rowIndex]["param2"].ToString();
+            string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
+            string area = "D";
+            int addr = 0;
+            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
+            int result = 0;
+            int num3 = 0;
+            if (int.TryParse(s, out result) && int.TryParse(str2, out num3))
+            {
+                if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)
+                {
+                    if (result < evokDevice.DPlcInfo.Count)
+                    {
+                        evokDevice.DPlcInfo[result].IsInEdit = editEnable;
+                    }
+                }
+                else if (result < evokDevice.MPlcInfoAll.Count)
+                {
+                    evokDevice.MPlcInfoAll[result][num3].IsInEdit = editEnable;
+                }
+            }
+        }
+
+        public void dgvParam_CellEndEdit(DataGridView dgvParam, object sender, DataGridViewCellEventArgs e)
+        {
+            string s = dgvParam.SelectedCells[0].Value.ToString();
+            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
+            double dataMultiple = Constant.dataMultiple;
+            if (!double.TryParse(evokDevice.DataForm.Rows[rowIndex][Constant.strParam7].ToString(), out dataMultiple))
+            {
+                dataMultiple = Constant.dataMultiple;
+            }
+            try
+            {
+                double num;
+                if (double.TryParse(s, out num))
+                {
+                    int num4 = (int)(num * dataMultiple);
+                    DgvValueEdit(rowIndex, num4);
+                }
+            }
+            catch
+            {
+            }
+            finally
+            {
+                DgvInOutEdit(rowIndex, false);
+            }
+        }
+
+        public void DgvValueEdit(int rowIndex, int num3)
+        {
+            string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
+            int addr = 0;
+            string area = "D";
+            string mode = evokDevice.DataForm.Rows[rowIndex]["mode"].ToString();
+            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
+            if ((XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) > -1) && (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3))
+            {
+                evokDevice.WriteSingleDData(addr, num3, area, mode);
+            }
+        }
+
+        public void Dispose()
+        {
+            RunFlag = false;
+            ConstantMethod.Delay(100);
+            SaveFile();
+            if (evokDevice !=null)
+            {
+                evokDevice.DeviceShutDown();
+            }
+            if (printReport !=null)
+            {
+                printReport.Dispose();
+            }
+            if ((CutThread != null) && CutThread.IsAlive)
+            {
+                CutThread.Join();
+            }
+            SetOptSizeParam1(optSize.OptParam1);
+            string[] logs = new string[] { DeviceName + Constant.Quit };
+            LogManager.WriteProgramLog(logs);
+        }
+
+        public void doorBanSingleStart(OptSize op)
+        {
+            if (!op.IsDataValueAble)
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[1] + Constant.optResultNoData);
+            }
+            else if (!getDeviceStatusIsReady(1))
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[1] + Constant.errorDeviceStatus);
+            }
+            else
+            {
+                doorBanStart(op);
+            }
+        }
+
+        public void doorBanSingleStop()
+        {
+            runflag_DoorBanKuan = false;
+            runflag_DoorBanChang = false;
+        }
+
+        private void doorBanStart(OptSize op)
+        {
+            string[] logs = new string[] { "ø™ º¥¥Ω®√≈∞Â ˝æ›«Î«Ûœﬂ≥Ã" };
+            LogManager.WriteProgramLog(logs);
+            new Thread(new ParameterizedThreadStart(downLoadDoorBanChang)).Start(op);
+            new Thread(new ParameterizedThreadStart(downLoadDoorBanKuan)).Start(op);
+        }
+
+        public void doorShellSingleStart(OptSize op)
+        {
+            if (!op.IsDataValueAble)
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[2] + Constant.optResultNoData);
+            }
+            else if (!getDeviceStatusIsReady(2))
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[2] + Constant.errorDeviceStatus);
+            }
+            else
+            {
+                doorShellStart(op);
+            }
+        }
+
+        public void doorShellSingleStop()
+        {
+            runflag_DoorShellChang = false;
+            runflag_DoorShellDoorId = false;
+            runflag_DoorShellKuan = false;
+        }
+
+        private void doorShellStart(OptSize op)
+        {
+            string[] logs = new string[] { "ø™ º¥¥Ω®√≈∆§ ˝æ›«Î«Ûœﬂ≥Ã" };
+            LogManager.WriteProgramLog(logs);
+            new Thread(new ParameterizedThreadStart(downLoadDoorShellChang)).Start(op);
+            new Thread(new ParameterizedThreadStart(downLoadDoorShellKuan)).Start(op);
+            new Thread(new ParameterizedThreadStart(downLoadDoorShellDoorId)).Start(op);
+        }
+
+        private int DoorTypeCount(string doorType, string[] doorNextTypeLst)
+        {
+            int num = 0;
+            for (int i = 0; i < doorNextTypeLst.Count<string>(); i++)
+            {
+                if (doorType != doorNextTypeLst[i])
+                {
+                    return num;
+                }
+                num++;
+            }
+            return num;
+        }
+
+        private void DownLoadDataNormal(int i)
+        {
+            List<int> list = new List<int>();
+            int num = 1;
+            list.Add(optSize.ProdInfoLst[i].WL * num);
+            list.Add(optSize.ProdInfoLst[i].Cut.Count);
+            foreach (int num2 in optSize.ProdInfoLst[i].Cut)
+            {
+                list.Add(num2 * num);
+            }
+            string[] logs = new string[] { DeviceName + " ˝æ›œ¬∑¢" };
+            LogManager.WriteProgramLog(logs);
+            for (int j = 0; j < 30; j++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                string[] textArray2 = new string[] { DeviceName + Constant.DataDownLoad + j.ToString() };
+                LogManager.WriteProgramLog(textArray2);
+                if (evokDevice.SetMultiPleDValue(wlInOutPs, list.ToArray()))
+                {
+                    string[] textArray3 = new string[] { DeviceName + Constant.DataDownLoadSuccess };
+                    LogManager.WriteProgramLog(textArray3);
+                    evokDevice.SetMValueON(startCountInOutPs);
+                    break;
+                }
+                if (j == 0x1d)
+                {
+                    string[] textArray4 = new string[] { DeviceName + Constant.DataDownLoadFail };
+                    LogManager.WriteProgramLog(textArray4);
+                }
+            }
+        }
+
+        private void DownLoadDataNormalWithAngle(int i)
+        {
+            List<int> list = new List<int> {
+                optSize.ProdInfoLst[i].Len * 10,
+                optSize.ProdInfoLst[i].WL * 10,
+                optSize.ProdInfoLst[i].Cut.Count,
+                0x15f90
+            };
+            for (int j = 0; j < optSize.ProdInfoLst[i].Cut.Count; j++)
+            {
+                double result = 0.0;
+                double num3 = 0.0;
+                if (double.TryParse(optSize.ProdInfoLst[i].Param5[j], out result) && double.TryParse(optSize.ProdInfoLst[i].Param6[j], out num3))
+                {
+                    if (downLoadSizeId == Constant.downLoadBottomSizeId)
+                    {
+                        list.Add((int)(num3 * 1000.0));
+                    }
+                    else
+                    {
+                        list.Add((int)(result * 1000.0));
+                    }
+                }
+                float num4 = 0f;
+                float num5 = 0f;
+                if (float.TryParse(optSize.ProdInfoLst[i].Param1[j], out num4) && float.TryParse(optSize.ProdInfoLst[i].Param2[j], out num5))
+                {
+                    num4 *= 1000f;
+                    num5 *= 1000f;
+                    if (num4 == 90000f)
+                    {
+                        num4 = 0f;
+                    }
+                    if (num5 == 90000f)
+                    {
+                        num5 = 0f;
+                    }
+                    list.Add((int)num4);
+                    list.Add((int)num5);
+                }
+            }
+            string[] logs = new string[] { DeviceName + " ˝æ›œ¬∑¢" };
+            LogManager.WriteProgramLog(logs);
+            for (int k = 0; k < 30; k++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                string[] textArray2 = new string[] { DeviceName + Constant.DataDownLoad + k.ToString() };
+                LogManager.WriteProgramLog(textArray2);
+                if (evokDevice.SetMultiPleDValue(wlInOutPs, list.ToArray()))
+                {
+                    string[] textArray3 = new string[] { DeviceName + Constant.DataDownLoadSuccess };
+                    LogManager.WriteProgramLog(textArray3);
+                    if (evokDevice.SetMValueON(startCountInOutPs))
+                    {
+                    }
+                    break;
+                }
+                if (k == 0x1d)
+                {
+                    string[] textArray4 = new string[] { DeviceName + Constant.DataDownLoadFail };
+                    LogManager.WriteProgramLog(textArray4);
+                }
+            }
+        }
+
+        private void DownLoadDataNormalWithShuchi(int i)
+        {
+            List<int> list = new List<int>();
+            List<int> source = new List<int>();
+            list.Add(1);
+            list.Add(optSize.ProdInfoLst[i].Cut.Count);
+            if (DeviceName.Equals(Constant.scjDeivceName))
+            {
+                foreach (int num in optSize.ProdInfoLst[i].Cut)
+                {
+                    list.Add(num * 0x3e8);
+                }
+            }
+            else
+            {
+                list.AddRange(optSize.ProdInfoLst[i].Cut);
+            }
+            source.Add(optSize.ProdInfoLst[i].Cut.Count);
+            int[] collection = null;
+            List<int> list3 = new List<int>();
+            try
+            {
+                foreach (string str in optSize.ProdInfoLst[i].Param12)
+                {
+                    int result = 1;
+                    if (list3.Count > 0)
+                    {
+                        result = list3.Last<int>();
+                    }
+                    if (int.TryParse(str, out result))
+                    {
+                    }
+                    list3.Add(result);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            collection = list3.ToArray();
+            if ((collection != null) && (collection.Length > 0))
+            {
+                source.AddRange(collection);
+            }
+            if (DeviceName.Equals(Constant.scjDeivceName) && (source.Count<int>() > 1))
+            {
+                list.Insert(2, source[1]);
+            }
+            for (int j = 0; j < 30; j++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                string[] logs = new string[] { DeviceName + Constant.DataDownLoad + j.ToString() };
+                LogManager.WriteProgramLog(logs);
+                if (evokDevice.SetMultiPleDValue(wlInOutPs, list.ToArray()))
+                {
+                    ConstantMethod.Delay(200);
+                    if (!DeviceName.Equals(Constant.scjDeivceName) && evokDevice.SetMultiPleDValue(GWOutInPs, source.ToArray()))
+                    {
+                        ConstantMethod.Delay(20);
+                        string[] textArray2 = new string[] { DeviceName + Constant.DataDownLoadSuccess };
+                        LogManager.WriteProgramLog(textArray2);
+                    }
+                    if ((wlInOutPs.ShowValue > 0) && evokDevice.SetMValueON(startCountInOutPs))
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        private void DownLoadDataNormalWithSimenSiPlc(int i)
+        {
+            List<int> list = new List<int>();
+            int num = 10;
+            int count = optSize.ProdInfoLst[i].Cut.Count;
+            list.Add(optSize.ProdInfoLst[i].Cut[count - 1] * num);
+            list.Add(optSize.ProdInfoLst[i].Cut.Count);
+            for (int j = 0; j < (optSize.ProdInfoLst[i].Cut.Count - 1); j++)
+            {
+                list.Add(optSize.ProdInfoLst[i].Cut[j] * num);
+            }
+            string[] logs = new string[] { DeviceName + " ˝æ›œ¬∑¢" };
+            LogManager.WriteProgramLog(logs);
+            for (int k = 0; k < 30; k++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                string[] textArray2 = new string[] { DeviceName + Constant.DataDownLoad + k.ToString() };
+                LogManager.WriteProgramLog(textArray2);
+                if (evokDevice.SetMultiPleDValue(wlInOutPs, list.ToArray()))
+                {
+                    string[] textArray3 = new string[] { DeviceName + Constant.DataDownLoadSuccess };
+                    LogManager.WriteProgramLog(textArray3);
+                    evokDevice.SetMValueON(startCountInOutPs);
+                    break;
+                }
+                if (k == 0x1d)
+                {
+                    string[] textArray4 = new string[] { DeviceName + Constant.DataDownLoadFail };
+                    LogManager.WriteProgramLog(textArray4);
+                }
+            }
+        }
+
+        private void DownLoadDataWithDoorBanWidth(int i)
+        {
+            List<List<int>> source = new List<List<int>>();
+            List<int> item = new List<int>();
+            source.Add(item);
+            for (int j = 0; j < optSize.ProdInfoLst.Count; j++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                int num4 = 0;
+                while (num4 < optSize.ProdInfoLst[j].Cut.Count)
+                {
+                    if (!RunFlag)
+                    {
+                        break;
+                    }
+                    if ((source.Count > 0) && (source.Last<List<int>>().Count > 0x31))
+                    {
+                        item = new List<int>();
+                        source.Add(item);
+                    }
+                    int result = 0;
+                    if (!int.TryParse(optSize.ProdInfoLst[j].Param1[num4], out result))
+                    {
+                        MessageBox.Show("øÌ∂» ‰»Î¥ÌŒÛ£°");
+                        break;
+                    }
+                    result *= Constant.dataMultiple;
+                    item.Add(result);
+                    num4++;
+                    Application.DoEvents();
+                }
+            }
+            int addr = widthCountInOutPs.Addr;
+            int num2 = 0;
+            for (int k = 0; k < source.Count; k++)
+            {
+                num2 += source[k].Count;
+            }
+            source[0].Insert(0, num2);
+            for (int m = 0; m < source.Count<List<int>>(); m++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                if (evokDevice.SetMultiPleDValue(widthCountInOutPs, source[m].ToArray()))
+                {
+                    ConstantMethod.Delay(100);
+                    widthCountInOutPs.Addr += 2 * source[m].Count;
+                }
+            }
+            widthCountInOutPs.Addr = addr;
+            if (wlInOutPs.ShowValue > 0)
+            {
+                evokDevice.SetMValueOFF2ON(startCountInOutPs);
+            }
+        }
+
+        private void DownLoadDataWithDoorShell(int i)
+        {
+            List<List<int>> source = new List<List<int>>();
+            List<List<int>> list2 = new List<List<int>>();
+            List<int> item = new List<int>();
+            List<int> list4 = new List<int>();
+            int num = 0;
+            if (optSize.ProdInfoLst.Count == 1)
+            {
+                while (num < optSize.ProdInfoLst[0].Cut.Count)
+                {
+                    if (!RunFlag)
+                    {
+                        break;
+                    }
+                    if ((num % 50) == 0)
+                    {
+                        item = new List<int>();
+                        list4 = new List<int>();
+                        source.Add(item);
+                        list2.Add(list4);
+                    }
+                    item.Add(optSize.ProdInfoLst[0].Cut[num]);
+                    int result = 0;
+                    if (!int.TryParse(optSize.ProdInfoLst[0].Param1[num], out result))
+                    {
+                        MessageBox.Show("øÌ∂» ‰»Î¥ÌŒÛ£°");
+                        break;
+                    }
+                    result *= Constant.dataMultiple;
+                    list4.Add(result);
+                    num++;
+                    Application.DoEvents();
+                }
+            }
+            int addr = heightCountInOutPs.Addr;
+            int num3 = widthCountInOutPs.Addr;
+            source[0].Insert(0, optSize.ProdInfoLst[0].Cut.Count);
+            list2[0].Insert(0, optSize.ProdInfoLst[0].Cut.Count);
+            for (int j = 0; j < source.Count<List<int>>(); j++)
+            {
+                if (evokDevice.SetMultiPleDValue(heightCountInOutPs, source[j].ToArray()) && evokDevice.SetMultiPleDValue(widthCountInOutPs, list2[j].ToArray()))
+                {
+                    ConstantMethod.Delay(200);
+                    heightCountInOutPs.Addr += 2 * source[j].Count;
+                    widthCountInOutPs.Addr += 2 * list2[j].Count;
+                }
+            }
+            heightCountInOutPs.Addr = addr;
+            widthCountInOutPs.Addr = num3;
+        }
+
+        private void DownLoadDataWithHoleAngle(int i)
+        {
+            List<int> list = new List<int>();
+            List<ProdInfo> prodInfoLst = optSize.ProdInfoLst;
+            for (int j = 0; j < optSize.SingleSizeLst[i].Count; j++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                SingleSizeWithHoleAngle angle = new SingleSizeWithHoleAngle(optSize.SingleSizeLst[i][j].DtUser, optSize.SingleSizeLst[i][j].Xuhao);
+                angle = ConstantMethod.Mapper<SingleSizeWithHoleAngle, SingleSize>(optSize.SingleSizeLst[i][j]);
+                optSize.ProdInfoLst[i].hole.Add(angle.Hole);
+                optSize.ProdInfoLst[i].angle.Add(angle.Angle);
+            }
+            for (int k = 0; k < 6; k++)
+            {
+                if (!RunFlag)
+                {
+                    break;
+                }
+                list.Add(optSize.ProdInfoLst[i].Cut.Count);
+                int addr = wlInOutPs.Addr;
+                if ((prodInfoLst[i].hole.Count > 0) && (prodInfoLst[i].angle.Count > 0))
+                {
+                    for (int m = 0; m < prodInfoLst[i].Cut.Count; m++)
+                    {
+                        list.Add(prodInfoLst[i].Cut[m]);
+                        list.Add(1);
+                        int item = 0;
+                        for (int n = 0; n < (prodInfoLst[i].hole[m].Count<int>() / 2); n += 3)
+                        {
+                            if (prodInfoLst[i].hole[m][n] > 0)
+                            {
+                                item++;
+                            }
+                        }
+                        list.Add(prodInfoLst[i].angle[m][0]);
+                        list.Add(item);
+                        for (int num9 = 0; num9 < 30; num9++)
+                        {
+                            list.Add(prodInfoLst[i].hole[m][num9]);
+                        }
+                        int num7 = 0;
+                        for (int num10 = 30; num10 < prodInfoLst[i].hole[m].Count<int>(); num10 += 3)
+                        {
+                            if (prodInfoLst[i].hole[m][num10] > 0)
+                            {
+                                num7++;
+                            }
+                        }
+                        list.Add(prodInfoLst[i].angle[m][1]);
+                        list.Add(num7);
+                        for (int num11 = 30; num11 < (30 + (num7 * 3)); num11++)
+                        {
+                            list.Add(prodInfoLst[i].hole[m][num11]);
+                        }
+                        evokDevice.SetMultiPleDValue(wlInOutPs, list.ToArray());
+                        string[] logs = new string[] { DeviceName + Constant.DataDownLoad + wlInOutPs.Addr.ToString() };
+                        LogManager.WriteProgramLog(logs);
+                        list.Clear();
+                        if (m == 0)
+                        {
+                            wlInOutPs.Addr += 0x86;
+                        }
+                        else
+                        {
+                            wlInOutPs.Addr += 0x84;
+                        }
+                    }
+                }
+                wlInOutPs.Addr = addr;
+                if ((wlInOutPs.ShowValue == prodInfoLst[i].Cut.Count) && evokDevice.SetMValueON(startCountInOutPs))
+                {
+                    break;
+                }
+            }
+            int valueOld = 0;
+            ConstantMethod.DelayMeasure(Constant.PlcCountTimeOut, ref valueOld, ref startCountInOutPs, ref emgStopInPs, ref mRunFlag);
+            if (startCountInOutPs.ShowValue != valueOld)
+            {
+                MessageBox.Show(Constant.PlcReadDataError);
+                string[] textArray2 = new string[] { DeviceName + Constant.PlcReadDataError };
+                LogManager.WriteProgramLog(textArray2);
+                RunFlag = false;
+            }
+        }
+
+        private void downLoadDoorBanChang(object opt)
+        {
+            if (opt != null)
+            {
+                OptSize op = (OptSize)opt;
+                int pos = 0;
+                int perCount = 10;
+                string[] logs = new string[] { "√≈∞Â≥§«Î«Û ˝æ›ø™ º£°" };
+                LogManager.WriteProgramLog(logs);
+                if (doorDownLoadCountInOutPs.ShowValue > 0)
+                {
+                    perCount = doorDownLoadCountInOutPs.ShowValue;
+                }
+                runflag_DoorBanChang = true;
+                downThread(2, op, pos, perCount, ref runflag_DoorBanChang, doorbanDataChangRequestInPs, doorbanLenthChangInOutPs, doorbanDataChangDownLoadSuccessOutPs, doorbanDoorCountInOutPs);
+                runflag_DoorBanChang = false;
+            }
+        }
+
+        private void downLoadDoorBanKuan(object opt)
+        {
+            if (opt != null)
+            {
+                OptSize op = (OptSize)opt;
+                int pos = 0;
+                int perCount = 10;
+                if (doorDownLoadCountInOutPs.ShowValue > 0)
+                {
+                    perCount = doorDownLoadCountInOutPs.ShowValue;
+                }
+                string[] logs = new string[] { "√≈∞ÂøÌ«Î«Û ˝æ›ø™ º£°" };
+                LogManager.WriteProgramLog(logs);
+                runflag_DoorBanKuan = true;
+                downThread(3, op, pos, perCount, ref runflag_DoorBanKuan, doorbanDataKuanRequestInPs, doorbanLenthKuanInOutPs, doorbanDataKuanDownLoadSuccessOutPs, null);
+                runflag_DoorBanKuan = false;
+            }
+        }
+
+        private void downLoadDoorShellChang(object opt)
+        {
+            if (opt != null)
+            {
+                OptSize op = (OptSize)opt;
+                int pos = 0;
+                int perCount = 10;
+                string[] logs = new string[] { "√≈∆§≥§«Î«Û ˝æ›ø™ º£°" };
+                LogManager.WriteProgramLog(logs);
+                if (doorDownLoadCountInOutPs.ShowValue > 0)
+                {
+                    perCount = doorDownLoadCountInOutPs.ShowValue;
+                }
+                runflag_DoorShellChang = true;
+                downThread(4, op, pos, perCount, ref runflag_DoorShellChang, doorshellDataChangRequestInPs, doorshellLenthChangInOutPs, doorshellDataChangDownLoadSuccessOutPs, doorshellDoorCountInOutPs);
+                runflag_DoorShellChang = false;
+            }
+        }
+
+        private void downLoadDoorShellDoorId(object opt)
+        {
+            if (opt != null)
+            {
+                OptSize op = (OptSize)opt;
+                int pos = 0;
+                int perCount = 10;
+                string[] logs = new string[] { "√≈∆§ID«Î«Û ˝æ›ø™ º£°" };
+                LogManager.WriteProgramLog(logs);
+                if (doorDownLoadCountInOutPs.ShowValue > 0)
+                {
+                    perCount = doorDownLoadCountInOutPs.ShowValue;
+                }
+                runflag_DoorShellDoorId = true;
+                downThread(6, op, pos, perCount, ref runflag_DoorShellDoorId, doorshellDataDoorIdRequestInPs, doorshellDoorIdInOutPs, doorshellDataDoorIdDownLoadSuccessOutPs, null);
+                runflag_DoorShellDoorId = false;
+            }
+        }
+
+        private void downLoadDoorShellKuan(object opt)
+        {
+            if (opt != null)
+            {
+                OptSize op = (OptSize)opt;
+                int pos = 0;
+                int perCount = 10;
+                string[] logs = new string[] { "√≈∆§øÌ«Î«Û ˝æ›ø™ º£°" };
+                LogManager.WriteProgramLog(logs);
+                if (doorDownLoadCountInOutPs.ShowValue > 0)
+                {
+                    perCount = doorDownLoadCountInOutPs.ShowValue;
+                }
+                runflag_DoorShellKuan = true;
+                downThread(5, op, pos, perCount, ref runflag_DoorShellKuan, doorshellDataKuanRequestInPs, doorshellLenthKuanInOutPs, doorshellDataKuanDownLoadSuccessOutPs, null);
+                runflag_DoorShellKuan = false;
+            }
+        }
+
+        public void downLoadTest(List<int> devLst, OptSize op, OptSize op1, OptSize op2)
+        {
+            string[] logs = new string[] { "ø™ º¥¥Ω® ˝æ›«Î«Ûœﬂ≥Ã" };
+            LogManager.WriteProgramLog(logs);
+            List<bool> list = new List<bool>();
+            RunFlag = true;
+            if (devLst.Contains(0))
+            {
+                list.Add(runflag_XialiaoJu);
+                xialiaoStart(op);
+            }
+            if (devLst.Contains(1))
+            {
+                list.Add(runflag_DoorBanChang);
+                list.Add(runflag_DoorBanKuan);
+                doorBanStart(op1);
+            }
+            if (devLst.Contains(2))
+            {
+                list.Add(runflag_DoorShellChang);
+                list.Add(runflag_DoorShellKuan);
+                doorShellStart(op2);
+            }
+            LineStart();
+            while ((((runflag_XialiaoJu || runflag_DoorBanChang) || (runflag_DoorBanKuan || runflag_DoorShellChang)) || runflag_DoorShellKuan) || runflag_DoorShellDoorId)
+            {
+                Application.DoEvents();
+                Thread.Sleep(100);
+            }
+            RunFlag = false;
+        }
+
+        private void downLoadXiaLiaoju(object opt)
+        {
+            if (opt != null)
+            {
+                OptSize op = (OptSize)opt;
+                int pos = 0;
+                int num2 = Constant.M_OFF;
+                int perCount = 10;
+                string[] logs = new string[] { "œ¬¡œæ‚«Î«Û ˝æ›ø™ º£°" };
+                LogManager.WriteProgramLog(logs);
+                if (doorDownLoadCountInOutPs.ShowValue > 0)
+                {
+                    perCount = doorDownLoadCountInOutPs.ShowValue;
+                }
+                runflag_XialiaoJu = true;
+                downThread(1, op, pos, perCount, ref runflag_XialiaoJu, xialiaoDataRequestInPs, xialiaojuOutPs, xialiaoDataDownLoadSuccessOutPs, xialiaoDoorCountInOutPs);
+                runflag_XialiaoJu = false;
+            }
+        }
+
+        private bool downThread(int id, OptSize op, int pos, int perCount, ref bool runflag_temp, PlcInfoSimple reqPs, PlcInfoSimple stp, PlcInfoSimple downLoadSuccess, PlcInfoSimple finishPs)
+        {
+            int showValue = Constant.M_OFF;
+            while (runflag_temp)
+            {
+                Thread.Sleep(100);
+                if (needBreak(id))
+                {
+                    runflag_temp = false;
+                    break;
+                }
+                if ((pos == op.ProdInfoLst.Count) || (lineEmgStopInPs.ShowValue == Constant.M_ON))
+                {
+                    if (finishPs !=null)
+                    {
+                        while (comIsDownLoading)
+                        {
+                            Application.DoEvents();
+                        }
+                        comIsDownLoading = true;
+                        string[] logs = new string[] { id.ToString() + "…Ë±∏«Î«Û ˝æ›Ω· ¯£¨–¥-1£°" };
+                        LogManager.WriteProgramLog(logs);
+                        evokDevice.SetDValue(finishPs, -1);
+                        comIsDownLoading = false;
+                    }
+                    break;
+                }
+                if ((showValue == Constant.M_OFF) && (reqPs.ShowValue == Constant.M_ON))
+                {
+                    if (comIsDownLoading)
+                    {
+                        string[] textArray2 = new string[] { id.ToString() + "«Î«Û ˝æ›–≈∫≈÷–£¨«ÎŒ÷ÿ∏¥«Î«ÛªÚ’ﬂµ»¥˝£°" };
+                        LogManager.WriteProgramLog(textArray2);
+                    }
+                    while (comIsDownLoading)
+                    {
+                        Application.DoEvents();
+                    }
+                    comIsDownLoading = true;
+                    string[] textArray3 = new string[] { id.ToString() + "«Î«Û ˝æ›–≈∫≈”––ß" };
+                    LogManager.WriteProgramLog(textArray3);
+                    if ((pos >= op.ProdInfoLst.Count) || (op.ProdInfoLst.Count <= 0))
+                    {
+                        break;
+                    }
+                    if (LinedownLoadData(stp, op, ref pos, perCount, id))
+                    {
+                        ConstantMethod.Delay(100);
+                        evokDevice.SetMValueON(downLoadSuccess);
+                    }
+                    comIsDownLoading = false;
+                }
+                showValue = reqPs.ShowValue;
+                Application.DoEvents();
+            }
+            return true;
+        }
+
+        public bool emgStop()
+        {
+            int num = 0;
+            if (emgStopOutPs.Area !=null)
+            {
+                while (!evokDevice.SetMValueON(emgStopOutPs))
+                {
+                    num++;
+                    Application.DoEvents();
+                    if (num > 5)
+                    {
+                        break;
+                    }
+                }
+            }
+            int valueOld = 1;
+            ConstantMethod.DelayWriteCmdOk(500, ref valueOld, ref emgStopInPs);
+            try
+            {
+                if (emgStopInPs.ShowValue == valueOld)
+                {
+                    showWorkInfo(Constant.emgstopOk);
+                    return true;
+                }
+                showWorkInfo(Constant.emgstopWrong);
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                stopOperation();
+                string[] logs = new string[] { DeviceName + Constant.DeviceEmgStop };
+                LogManager.WriteProgramLog(logs);
+            }
+            return false;
+        }
+
+        private void enterRunning()
+        {
+            int showValue = -1;
+            CountClr();
+            while (IsRuninng)
+            {
+                Application.DoEvents();
+                if ((showValue != cutDoneOutInPs.ShowValue) && (cutDoneOutInPs.ShowValue < HoleDataLst.Count))
+                {
+                    showValue = cutDoneOutInPs.ShowValue;
+                    if (updateData !=null)
+                    {
+                        updateData(HoleDataLst[showValue].TableName);
+                    }
+                }
+                if (cutDoneOutInPs.ShowValue == HoleDataLst.Count)
+                {
+                    IsRuninng = false;
+                    if (updateData !=null)
+                    {
+                        updateData("");
+                    }
+                    break;
+                }
+            }
+        }
+
+        private bool errorStatus(string str) { return (str.Contains(xialiaojuStatus0[4]) || str.Contains(xialiaojuStatus0[3])); } 
+
+
+        private string FindBarCodeFile(string barcode)
+        {
+            string path = ReadBarCodeSourceFolder();
+            if (!Directory.Exists(path))
+            {
+                MessageBox.Show(Constant.barCodeError);
+                return null;
+            }
+            string[] files = Directory.GetFiles(path, "*.nc");
+            foreach (string str3 in files)
+            {
+                if (str3.Contains(barcode))
+                {
+                    return str3;
+                }
+            }
+            MessageBox.Show(Constant.barCodeError);
+            return "";
+        }
+
+        private void FindPlcInfo(PlcInfoSimple p, List<XJPlcInfo> dplc, List<List<XJPlcInfo>> mplc)
+        {
+            if ((p.Area != null) && ((dplc != null) && (mplc != null)))
+            {
+                foreach (XJPlcInfo info in dplc)
+                {
+                    if ((info.RelAddr == p.Addr) && info.StrArea.Equals(p.Area.Trim()))
+                    {
+                        p.SetPlcInfo(info);
+                        return;
+                    }
+                }
+                for (int i = 0; i < mplc.Count; i++)
+                {
+                    for (int j = 0; j < mplc[i].Count; j++)
+                    {
+                        if ((mplc[i][j].RelAddr == p.Addr) && mplc[i][j].StrArea.Equals(p.Area.Trim()))
+                        {
+                            p.SetPlcInfo(mplc[i][j]);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private void FindPlcSimpleInPlcInfoLst(int m)
+        {
+            foreach (List<PlcInfoSimple> list in AllPlcSimpleLst)
+            {
+                foreach (PlcInfoSimple simple in list)
+                {
+                    FindPlcInfo(simple, evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
+                }
+            }
+        }
+
+        public DataTable GetDataForm(int id)
+        {
+            if (id < DataFormCount)
+            {
+                return evokDevice.DataForm;
+            }
+            return null;
+        }
+
+        private bool getDeviceStatusIsReady(int id)
+        {
+            switch (id)
+            {
+                case 0:
+                    return (getXialiaoJuStatus().Equals(xialiaojuStatus0[1]) && !isDownLoading(id));
+
+                case 1:
+                    return (getDoorBanStatus().Equals(xialiaojuStatus0[1]) && !isDownLoading(id));
+
+                case 2:
+                    return (getDoorShellStatus().Equals(xialiaojuStatus0[1]) && !isDownLoading(id));
+            }
+            return false;
+        }
+
+        public string getDoorBanStatus() { return GetStatus(doorbanCurrentStatusInPs, doorBanStatus0); }
+
+
+        public string getDoorShellStatus() { return GetStatus(doorshellCurrentStatusInPs, doorShellStatus0); }
+     
+
+        public OptSize getOptSize() { return optSize; }
+    
+
+        private List<SimiPatternPoint> GetPatternAllPos(double pos, double len, patternSize pS)
+        {
+            List<SimiPatternPoint> list = new List<SimiPatternPoint>();
+
+            double xiepoWidth = pS.xiepoWidth;
+            double patternWith = pS.patternWith;
+            double patternHeight = pS.patternHeight;
+            double xBottomMargin = pS.XBottomMargin;
+            double yBottomMargin = pS.YBottomMargin;
+            double xNOPatternWidth = pS.XNOPatternWidth;
+            PointDouble num7 = new PointDouble {
+                X = pos - xiepoWidth,
+                Y = yBottomMargin
+            };
+            while (true)
+            {
+                SimiPatternPoint item = new SimiPatternPoint {
+                    leftDown = {
+                        X = num7.X,
+                        Y = num7.Y
+                    }
+                };
+                item.leftUp.X = item.leftDown.X;
+                item.leftUp.Y = (item.leftDown.Y + patternHeight) + (xiepoWidth * 2.0);
+                item.rightUp.X = (item.leftUp.X + patternWith) + (xiepoWidth * 2.0);
+                item.rightUp.Y = item.leftUp.Y;
+                item.rightDown.X = item.rightUp.X;
+                item.rightDown.Y = item.leftDown.Y;
+                if (item.rightDown.X >= len)
+                {
+                    return list;
+                }
+                list.Add(item);
+                num7.X = xNOPatternWidth + item.rightDown.X;
+            }
+        }
+
+        private PlcInfoSimple getPsFromPslLst(string tag0, string str0, List<PlcInfoSimple> pslLst)
+        {
+            foreach (PlcInfoSimple simple in pslLst)
+            {
+                string str = tag0;
+                string name = simple.Name;
+                if (name.Contains(str0))
+                {
+                    name = name.Replace(Constant.Write, "").Replace(Constant.Read, "");
+                    if (str.Equals(name))
+                    {
+                        return simple;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private int GetScar(OptSize op, int scarCount)
+        {
+            if (rtbResult !=null)
+            {
+                rtbResult.Clear();
+            }
+            if (!testGetScarData(evokDevice.DataFormLst[Constant.ScarPage]))
+            {
+                return 1;
+            }
+            if (scarCount == evokDevice.DataFormLst[Constant.ScarPage].Rows.Count)
+            {
+                op.ScarLst.Clear();
+                ConstantMethod.ShowInfo(rtbResult, Constant.ScarName + Constant.sumStr + ":  " + ((scarCount / 2)).ToString());
+                foreach (DataRow row in evokDevice.DataFormLst[Constant.ScarPage].Rows)
+                {
+                    string s = row[4].ToString();
+                    int result = 0;
+                    if (int.TryParse(s, out result))
+                    {
+                        if (result <= 0)
+                        {
+                            return 1;
+                        }
+                        ConstantMethod.ShowInfo(rtbResult, Constant.ScarName + Constant.posStr + ":  " + result.ToString());
+                        op.ScarLst.Insert(0, result);
+                    }
+                    else
+                    {
+                        return 1;
+                    }
+                }
+            }
+            return 0;
+        }
+
+        public bool GetStartStatus()
+        {
+            if (startInPs !=null)
+            {
+                int valueOld = Constant.M_ON;
+                ConstantMethod.DelayWriteCmdOk(Constant.StartWaitMaxTime, ref valueOld, ref startInPs, ref emgStopInPs);
+                return (startInPs.ShowValue == Constant.M_ON);
+            }
+            return true;
+        }
+
+        public string GetStatus(PlcInfoSimple ps, string[] statusLst)
+        {
+            BitArray array = ConstantMethod.getBitValueInByteLst(ps.ShowValue, 0, 0);
+            if (array.Count >= statusLst.Count<string>())
+            {
+                for (int i = 0; i < statusLst.Count<string>(); i++)
+                {
+                    if (array[i])
+                    {
+                        return statusLst[i];
+                    }
+                }
+            }
+            return Constant.noData;
+        }
+
+        public string getXialiaoJuStatus() { return GetStatus(xialiaoCurrentStatusInPs, xialiaojuStatus0); }
+
+
+        public bool HandParamTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                if (double.TryParse(((TextBox)sender).Text, out num) && (num > -1.0))
+                {
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstHand, ((TextBox)sender).Text);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        private void InitBarCodeTimer()
+        {
+            new EnvironmentSettings().ReportSettings.ShowProgress = false;
+            tCheckPrint = new System.Timers.Timer(200.0);
+            tCheckPrint.Enabled = false;
+            tCheckPrint.AutoReset = true;
+           // tCheckPrint.Elapsed += new ElapsedEventHandler(printTimerCheck);
+        }
+
+        public void InitControl()
+        {
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[0] !=null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[0], PsLstAuto);
+            }
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[1] !=null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[1], PsLstHand);
+            }
+            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[2] !=null))
+            {
+                ConstantMethod.FindPos(evokDevice.DataFormLst[2], PsLstParam);
+            }
+        }
+
+        public void InitDgvIO(DataGridView dgvIO0)
+        {
+            DgvIO = dgvIO0;
+            if (evokDevice.DataFormLst.Count > 3)
+            {
+                dgvIO.AutoGenerateColumns = false;
+                dgvIO.DataSource = evokDevice.DataFormLst[3];
+                dgvIO.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.Bin].ToString();
+                dgvIO.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.strValue].ToString();
+                dgvIO.ReadOnly = true;
+            }
+        }
+
+        public void InitDgvParam(DataGridView dgvParam)
+        {
+            if (evokDevice.DataFormLst.Count > 2)
+            {
+                dgvParam.AutoGenerateColumns = false;
+                dgvParam.DataSource = evokDevice.DataFormLst[2];
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.Bin].ToString();
+                dgvParam.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.strParam6].ToString();
+            }
+        }
+
         public void InitUsualTest()
         {
-
             PsLstAuto = new List<PlcInfoSimple>();
-
             PsLstHand = new List<PlcInfoSimple>();
-
             PsLstParam = new List<PlcInfoSimple>();
-
             PsLstIO = new List<PlcInfoSimple>();
-      
             UserDataTable = new DataTable();
-
             AllPlcSimpleLst = new List<List<PlcInfoSimple>>();
-
             AllPlcSimpleLst.Add(psLstAuto);
             AllPlcSimpleLst.Add(psLstHand);
             AllPlcSimpleLst.Add(psLstParam);
             AllPlcSimpleLst.Add(PsLstIO);
-
-            
-
-            #region Ëá™Âä®
-            SetPage(Constant.AutoPage);
-           
+            SetPage(0);
             printMiniSizeOutInPs = ConstantMethod.getPlcSimple(printMiniSizeOutInPs.Name, psLstAuto);
             wlMiniSizeOutInPs = ConstantMethod.getPlcSimple(wlMiniSizeOutInPs.Name, psLstAuto);
             autoMesOutInPs = ConstantMethod.getPlcSimple(autoMesOutInPs.Name, psLstAuto);
@@ -788,7 +3026,6 @@ namespace xjplc
             safeOutInPs = ConstantMethod.getPlcSimple(safeOutInPs.Name, psLstAuto);
             prodOutInPs = ConstantMethod.getPlcSimple(prodOutInPs.Name, psLstAuto);
             prodOutInPs.IsParam = false;
-
             noSizeToCutOutInPs = ConstantMethod.getPlcSimple(noSizeToCutOutInPs.Name, psLstAuto);
             ldsOutInPs = ConstantMethod.getPlcSimple(ldsOutInPs.Name, psLstAuto);
             lcOutInPs = ConstantMethod.getPlcSimple(lcOutInPs.Name, psLstAuto);
@@ -808,11 +3045,81 @@ namespace xjplc
             heightCountInOutPs = ConstantMethod.getPlcSimple(heightCountInOutPs.Name, psLstAuto);
             modeSelectOutInPs = ConstantMethod.getPlcSimple(modeSelectOutInPs.Name, psLstAuto);
             deviceStatusOutInPs = ConstantMethod.getPlcSimple(deviceStatusOutInPs.Name, psLstAuto);
-
+            widht1InOutPs = ConstantMethod.getPlcSimple(widht1InOutPs.Name, psLstAuto);
+            widht2InOutPs = ConstantMethod.getPlcSimple(widht2InOutPs.Name, psLstAuto);
+            restMaterialRangeInOutPs = ConstantMethod.getPlcSimple(restMaterialRangeInOutPs.Name, psLstAuto);
+            inspectPatternModeInOutPs = ConstantMethod.getPlcSimple(inspectPatternModeInOutPs.Name, psLstAuto);
+            inspectPatternPosInOutPs = ConstantMethod.getPlcSimple(inspectPatternPosInOutPs.Name, psLstAuto);
+            inspectPatternDoneInOutPs = ConstantMethod.getPlcSimple(inspectPatternDoneInOutPs.Name, psLstAuto);
+            materialSetEnInOutPs = ConstantMethod.getPlcSimple(materialSetEnInOutPs.Name, psLstAuto);
+            materialIdInOutPs = ConstantMethod.getPlcSimple(materialIdInOutPs.Name, psLstAuto);
             lineStartTipInPs = ConstantMethod.getPlcSimple(lineStartTipInPs.Name, psLstAuto);
             lineStartOutPs = ConstantMethod.getPlcSimple(lineStartOutPs.Name, psLstAuto);
             lineStartInPs = ConstantMethod.getPlcSimple(lineStartInPs.Name, psLstAuto);
-      
+            xialiaoCurrentDoorIdInPs = ConstantMethod.getPlcSimple(xialiaoCurrentDoorIdInPs.Name, psLstAuto);
+            xialiaoCurrentStatusInPs = ConstantMethod.getPlcSimple(xialiaoCurrentStatusInPs.Name, psLstAuto);
+            xialiaoDoorCntInPs = ConstantMethod.getPlcSimple(xialiaoDoorCntInPs.Name, psLstAuto);
+            doorSize = ConstantMethod.getPlcSimple(doorSize.Name, psLstAuto);
+            doorBanLen = ConstantMethod.getPlcSimple(doorBanLen.Name, psLstAuto);
+            doorBanWidth = ConstantMethod.getPlcSimple(doorBanWidth.Name, psLstAuto);
+            doorShellLen = ConstantMethod.getPlcSimple(doorShellLen.Name, psLstAuto);
+            doorShellWidth = ConstantMethod.getPlcSimple(doorShellWidth.Name, psLstAuto);
+            lineResetOutPs = ConstantMethod.getPlcSimple(lineResetOutPs.Name, psLstAuto);
+            lineResetInPs = ConstantMethod.getPlcSimple(lineResetInPs.Name, psLstAuto);
+            lineStopOutPs = ConstantMethod.getPlcSimple(lineStopOutPs.Name, psLstAuto);
+            lineStopInPs = ConstantMethod.getPlcSimple(lineStopInPs.Name, psLstAuto);
+            linePauseOutPs = ConstantMethod.getPlcSimple(linePauseOutPs.Name, psLstAuto);
+            linePauseInPs = ConstantMethod.getPlcSimple(linePauseInPs.Name, psLstAuto);
+            lineEmgStopInPs = ConstantMethod.getPlcSimple(lineEmgStopInPs.Name, psLstAuto);
+            lineEmgStopOutPs = ConstantMethod.getPlcSimple(lineEmgStopOutPs.Name, psLstAuto);
+            dataOutPs = ConstantMethod.getPlcSimple(dataOutPs.Name, psLstAuto);
+            muxiaoHoleOutPs = ConstantMethod.getPlcSimple(muxiaoHoleOutPs.Name, psLstAuto);
+            mxkStringShowInPs = ConstantMethod.getPlcSimple(mxkStringShowInPs.Name, psLstAuto);
+            zxShowInPs = ConstantMethod.getPlcSimple(zxShowInPs.Name, psLstAuto);
+            zkShowInPs = ConstantMethod.getPlcSimple(zkShowInPs.Name, psLstAuto);
+            mxkShowInPs = ConstantMethod.getPlcSimple(mxkShowInPs.Name, psLstAuto);
+            smxShowInPs = ConstantMethod.getPlcSimple(smxShowInPs.Name, psLstAuto);
+            leftRightShowInPs = ConstantMethod.getPlcSimple(leftRightShowInPs.Name, psLstAuto);
+            liWaiInPs = ConstantMethod.getPlcSimple(liWaiInPs.Name, psLstAuto);
+            zxShowOutPs = ConstantMethod.getPlcSimple(zxShowOutPs.Name, psLstAuto);
+            zkShowOutPs = ConstantMethod.getPlcSimple(zkShowOutPs.Name, psLstAuto);
+            mxkShowOutPs = ConstantMethod.getPlcSimple(mxkShowOutPs.Name, psLstAuto);
+            smxShowOutPs = ConstantMethod.getPlcSimple(smxShowOutPs.Name, psLstAuto);
+            leftRightShowOutPs = ConstantMethod.getPlcSimple(leftRightShowOutPs.Name, psLstAuto);
+            liWaiOutPs = ConstantMethod.getPlcSimple(liWaiOutPs.Name, psLstAuto);
+            doorDownLoadCountInOutPs = ConstantMethod.getPlcSimple(doorDownLoadCountInOutPs.Name, psLstAuto);
+            xialiaojuOutPs = ConstantMethod.getPlcSimple(xialiaojuOutPs.Name, psLstAuto);
+            xialiaoDataRequestInPs = ConstantMethod.getPlcSimple(xialiaoDataRequestInPs.Name, psLstAuto);
+            xialiaoDataDownLoadSuccessOutPs = ConstantMethod.getPlcSimple(xialiaoDataDownLoadSuccessOutPs.Name, psLstAuto);
+            xialiaoDoorCountInOutPs = ConstantMethod.getPlcSimple(xialiaoDoorCountInOutPs.Name, psLstAuto);
+            doorbanLenthChangInOutPs = ConstantMethod.getPlcSimple(doorbanLenthChangInOutPs.Name, psLstAuto);
+            doorbanLenthKuanInOutPs = ConstantMethod.getPlcSimple(doorbanLenthKuanInOutPs.Name, psLstAuto);
+            doorbanDataChangRequestInPs = ConstantMethod.getPlcSimple(doorbanDataChangRequestInPs.Name, psLstAuto);
+            doorbanDataKuanRequestInPs = ConstantMethod.getPlcSimple(doorbanDataKuanRequestInPs.Name, psLstAuto);
+            doorbanDataChangDownLoadSuccessOutPs = ConstantMethod.getPlcSimple(doorbanDataChangDownLoadSuccessOutPs.Name, psLstAuto);
+            doorbanDataKuanDownLoadSuccessOutPs = ConstantMethod.getPlcSimple(doorbanDataKuanDownLoadSuccessOutPs.Name, psLstAuto);
+            doorbanCurrentStatusInPs = ConstantMethod.getPlcSimple(doorbanCurrentStatusInPs.Name, psLstAuto);
+            doorbanCurrentDoorIdInPs = ConstantMethod.getPlcSimple(doorbanCurrentDoorIdInPs.Name, psLstAuto);
+            doorbanDoorCountInOutPs = ConstantMethod.getPlcSimple(doorbanDoorCountInOutPs.Name, psLstAuto);
+            doorshellLenthChangInOutPs = ConstantMethod.getPlcSimple(doorshellLenthChangInOutPs.Name, psLstAuto);
+            doorshellLenthKuanInOutPs = ConstantMethod.getPlcSimple(doorshellLenthKuanInOutPs.Name, psLstAuto);
+            doorshellDataChangRequestInPs = ConstantMethod.getPlcSimple(doorshellDataChangRequestInPs.Name, psLstAuto);
+            doorshellDataKuanRequestInPs = ConstantMethod.getPlcSimple(doorshellDataKuanRequestInPs.Name, psLstAuto);
+            doorshellDataChangDownLoadSuccessOutPs = ConstantMethod.getPlcSimple(doorshellDataChangDownLoadSuccessOutPs.Name, psLstAuto);
+            doorshellDataKuanDownLoadSuccessOutPs = ConstantMethod.getPlcSimple(doorshellDataKuanDownLoadSuccessOutPs.Name, psLstAuto);
+            doorshellCurrentDoorIdInPs = ConstantMethod.getPlcSimple(doorshellCurrentDoorIdInPs.Name, psLstAuto);
+            doorshellCurrentStatusInPs = ConstantMethod.getPlcSimple(doorshellCurrentStatusInPs.Name, psLstAuto);
+            doorshellDoorIdInOutPs = ConstantMethod.getPlcSimple(doorshellDoorIdInOutPs.Name, psLstAuto);
+            doorshellDataDoorIdRequestInPs = ConstantMethod.getPlcSimple(doorshellDataDoorIdRequestInPs.Name, psLstAuto);
+            doorshellDataDoorIdDownLoadSuccessOutPs = ConstantMethod.getPlcSimple(doorshellDataDoorIdDownLoadSuccessOutPs.Name, psLstAuto);
+            doorshellDoorCountInOutPs = ConstantMethod.getPlcSimple(doorshellDoorCountInOutPs.Name, psLstAuto);
+            pos1OutInPs = ConstantMethod.getPlcSimple(pos1OutInPs.Name, psLstAuto);
+            pos2OutInPs = ConstantMethod.getPlcSimple(pos2OutInPs.Name, psLstAuto);
+            pos1EnOutPs = ConstantMethod.getPlcSimple(pos1EnOutPs.Name, psLstAuto);
+            pos2EnOutPs = ConstantMethod.getPlcSimple(pos2EnOutPs.Name, psLstAuto);
+            pos1EnInPs = ConstantMethod.getPlcSimple(pos1EnInPs.Name, psLstAuto);
+            pos2EnInPs = ConstantMethod.getPlcSimple(pos2EnInPs.Name, psLstAuto);
+            posMode = ConstantMethod.getPlcSimple(posMode.Name, psLstAuto);
             pauseOutPs = ConstantMethod.getPlcSimple(pauseOutPs.Name, psLstAuto);
             startOutPs = ConstantMethod.getPlcSimple(startOutPs.Name, psLstAuto);
             resetOutPs = ConstantMethod.getPlcSimple(resetOutPs.Name, psLstAuto);
@@ -842,602 +3149,797 @@ namespace xjplc
             autoCCInPs = ConstantMethod.getPlcSimple(autoCCInPs.Name, psLstAuto);
             clInPs = ConstantMethod.getPlcSimple(clInPs.Name, psLstAuto);
             slInPs = ConstantMethod.getPlcSimple(slInPs.Name, psLstAuto);
-
-            #endregion
-            #region Hand
-            SetPage(Constant.HandPage);
-            #endregion
-            #region ÂèÇÊï∞
-            SetPage(Constant.ParamPage);
-            #endregion
-            #region IOÁõëÊéß
-
-            #endregion
-
-            paramFile =  ConstantMethod.configFileBak(Constant.ConfigParamFilePath);          
-
-            if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
-               {
-                    
-                    MessageBox.Show(Constant.ErrorParamConfigFile);
-
-                    Application.Exit();
-
-                    System.Environment.Exit(0);
-
-               }
-            #region ÊâìÂç∞Êú∫ÂíåË¥¥Á†ÅÂ∞∫ÂØ∏ËÆæÁΩÆ
-                       
-            minPrinterName = paramFile.ReadConfig(Constant.minPrinterName);
-             #endregion
-            LogManager.WriteProgramLog(DeviceName + Constant.Start);
-
-            InitControl();
-
-            ShiftPage(Constant.AutoPage);
-
-            if (!evokDevice.getDeviceData())
+            SetPage(1);
+            SetPage(2);
+            SetPage(3);
+            ParamFile = ConstantMethod.configFileBak(Constant.ConfigParamFilePath);
+            if (!int.TryParse(ParamFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
             {
-
-                MessageBox.Show(DeviceName + Constant.ConnectMachineFail);
+                MessageBox.Show(Constant.ErrorParamConfigFile);
+                Application.Exit();
                 Environment.Exit(0);
             }
-
-            ErrorList = new List<string>();
-
-            optSize = new OptSize();
-
-
-            //Êù°Á†ÅÊµãËØï Á∫øÁ®ã ÂÆöÊó∂Ê£ÄÊµãÂÆöÊó∂Âô®
-            InitBarCodeTimer();
-
-        }
-        public void SetSmallSizePrinter(string printerName)
-        {
-            List<string> printerLst = ConstantMethod.GetLocalPrinter();
-            if (printerLst.Contains(printerName))
+            CutSelMode = ReadCutMode();
+            minPrinterName = ParamFile.ReadConfig(Constant.minPrinterName);
+            string[] logs = new string[] { DeviceName + Constant.Start };
+            LogManager.WriteProgramLog(logs);
+            InitControl();
+            if (!evokDevice.getDeviceData())
             {
-                paramFile.WriteConfig(Constant.minPrinterName, printerName);
-                minPrinterName = printerName;
+                MessageBox.Show(DeviceName + Constant.ConnectMachineFail);
             }
-
+            ShiftPage(0);
+            ErrorList = new List<string>();
+            optSize = new OptSize();
+            if (DeviceName.Equals(Constant.simiDeivceName))
+            {
+                pSize = new patternSize();
+                pSize.xiepoWidth = 4.0;
+                pSize.patternWith = 12.0;
+                pSize.patternHeight = 12.0;
+                pSize.XBottomMargin = 2.5;
+                pSize.YBottomMargin = 2.5;
+                pSize.XNOPatternWidth = 8.5;
+                optSize.PsSize = pSize;
+            }
+            InitBarCodeTimer();
         }
-        public void ListSmallSizePrinter(ComboBox cb)
-        {
-            List<string> printerLst = ConstantMethod.GetLocalPrinter();
-            cb.DataSource = printerLst;// ConstantMethod.GetLocalPrinter();
-            if (printerLst.Contains(minPrinterName))
-            cb.Text = minPrinterName;
-            else cb.Text = ConstantMethod.DefaultPrinter;
 
-        }
-        public bool SaveOptParam1(string id)
+        public bool isDownLoading(int id)
         {
-            int x = 0;
-            if (int.TryParse(id, out x))
-                if (x > -1)
-                {
-                    try
-                    {
-                        paramFile.WriteConfig(Constant.optParam1, id);
-                    }
-                    catch (Exception ex)
-                    { }
-                    return true;
-                }
+            switch (id)
+            {
+                case 0:
+                    return (runflag_XialiaoJu || getXialiaoJuStatus().Equals(xialiaojuStatus0[0]));
+
+                case 1:
+                    return ((runflag_DoorBanKuan || runflag_DoorBanChang) || getDoorBanStatus().Equals(xialiaojuStatus0[0]));
+
+                case 2:
+                    return (((runflag_DoorShellChang || runflag_DoorShellDoorId) || runflag_DoorShellKuan) || getDoorShellStatus().Equals(xialiaojuStatus0[0]));
+            }
             return false;
         }
 
-        //ÈªòËÆ§Ëá™Âä®ËØªÂèñËÆæÂ§áÁ´ØÂè£
-        public EvokXJWork()
+        public bool IsLineReady(List<int> deviceIdLst)
         {
-            //ÂàùÂßãÂåñËÆæÂ§á
-            List<string> strDataFormPath = new List<string>();
-
-            strDataFormPath.Add(Constant.PlcDataFilePathAuto);
-            strDataFormPath.Add(Constant.PlcDataFilePathHand);
-            strDataFormPath.Add(Constant.PlcDataFilePathParam);
-            strDataFormPath.Add(Constant.PlcDataFilePathIO);
-         
-
-            if (File.Exists(Constant.PlcDataFilePathScar))
-                strDataFormPath.Add(Constant.PlcDataFilePathScar);
-
-            for (int i = strDataFormPath.Count - 1; i >= 0; i--)
+            if (deviceIdLst.Contains(0) && !getDeviceStatusIsReady(0))
             {
-                if (!File.Exists(strDataFormPath[i]))
+                MessageBox.Show(Constant.tataLineDeviceName[0] + Constant.errorDeviceStatus);
+                return false;
+            }
+            if (deviceIdLst.Contains(1) && !getDeviceStatusIsReady(1))
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[1] + Constant.errorDeviceStatus);
+                return false;
+            }
+            if (deviceIdLst.Contains(2) && !getDeviceStatusIsReady(2))
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[2] + Constant.errorDeviceStatus);
+                return false;
+            }
+            return true;
+        }
+
+        public bool IsMaterialExist() { return (optSize.MaterialId > 0); } 
+          
+
+        public bool IsPause()
+        { 
+               
+                   return  (pauseInPs.ShowValue == 1);             
+        } 
+           
+
+        public void IsShow(Label lbl)
+        {
+            showMxkSel(lbl);
+            mxkShowInPs.visibleControl();
+            zxShowInPs.visibleControl();
+            zkShowInPs.visibleControl();
+            smxShowInPs.visibleControl();
+            mxkShowInPs.visibleControl();
+            leftRightShowInPs.visibleControl();
+            liWaiInPs.visibleControl();
+            showDataWith2Ps(zxShowInPs, zxShowOutPs);
+            showDataWith2Ps(zkShowInPs, zkShowOutPs);
+            showDataWith2Ps(smxShowInPs, smxShowOutPs);
+            showDataWith2Ps(leftRightShowInPs, leftRightShowOutPs);
+            showDataWith2Ps(liWaiInPs, liWaiOutPs);
+        }
+
+        public bool LinedownLoadData(PlcInfoSimple stp, OptSize op, ref int pos, int count, int id)
+        {
+            if (pos >= op.ProdInfoLst.Count)
+            {
+                return false;
+            }
+            List<int> list = new List<int>();
+            int addr = stp.Addr;
+            int num2 = op.ProdInfoLst.Count - pos;
+            int num3 = (num2 > count) ? count : num2;
+            if ((id == 1) || (id == 2))
+            {
+                string[] logs = new string[] { "œ¬¡œæ‚/√≈–æ∞Â≥§ ˝æ›¥Ú∞¸£¨◊‹π≤" + ((int)(pos + num3)).ToString() + "∏ˆ ˝æ›«¯" };
+                LogManager.WriteProgramLog(logs);
+                for (int i = pos; i < (pos + num3); i++)
                 {
-                    strDataFormPath.RemoveAt(i);
-                    MessageBox.Show(strDataFormPath[i] + Constant.ErrorPlcFile);
-                    Environment.Exit(0);
+                    list.Clear();
+                    list.Add(op.ProdInfoLst[i].WL);
+                    list.Add(op.ProdInfoLst[i].Cut.Count);
+                    list.AddRange(op.ProdInfoLst[i].Cut);
+                    if (op.ProdInfoLst[i].Cut.Count > 13)
+                    {
+                        string[] textArray2 = new string[] { "œ¬¡œæ‚/√≈–æ∞Â≥§ ˝æ›π˝∂‡£¨»°œ˚∑¢ÀÕ" };
+                        LogManager.WriteProgramLog(textArray2);
+                        return false;
+                    }
+                    if (!evokDevice.SetMultiPleDValue(stp, list.ToArray()))
+                    {
+                        evokDevice.SetMultiPleDValue(stp, list.ToArray());
+                    }
+                    string[] textArray3 = new string[] { "œ¬¡œæ‚/√≈–æ∞Â≥§ ˝æ›∑¢ÀÕÕÍ±œ" + i.ToString() };
+                    LogManager.WriteProgramLog(textArray3);
+                    stp.Addr = addr + (((i - pos) + 1) * 30);
+                    stp.Addr -= 2;
+                    int result = 0;
+                    if (int.TryParse(op.ProdInfoLst[i].Param10[0].ToString(), out result))
+                    {
+                        evokDevice.SetDValue(stp, result);
+                        string[] textArray4 = new string[] { "œ¬¡œæ‚/√≈–æ∞Â≥§√≈–ÕID∑¢ÀÕÕÍ±œ" + i.ToString() };
+                        LogManager.WriteProgramLog(textArray4);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                    stp.Addr += 2;
                 }
+                stp.Addr = addr + 400;
+                evokDevice.SetDValue(stp, num3);
             }
-
-            evokDevice = new EvokXJDevice(strDataFormPath);
-            evokDevice.setDeviceId(DeviceName);
-            InitUsualTest();
-
-        }
-
-        #region Ê¢≥ÈΩøÊú∫
-        public void addDataForm(List<string> filestr)
-        {
-            if (DeviceName.Equals(Constant.scjDeivceName))
+            if ((id == 3) || (id == 5))
             {
-                PsLstEx1 = new List<PlcInfoSimple>();
-                PsLstEx2 = new List<PlcInfoSimple>();
-                PsLstEx3 = new List<PlcInfoSimple>();
-                PsLstEx4 = new List<PlcInfoSimple>();
-                PsLstEx5 = new List<PlcInfoSimple>();
-                PsLstEx6 = new List<PlcInfoSimple>();
-                PsLstEx7 = new List<PlcInfoSimple>();
-                PsLstEx8 = new List<PlcInfoSimple>();
-                PsLstEx9 = new List<PlcInfoSimple>();
-                AllPlcSimpleLst.Add(PsLstEx1);
-                AllPlcSimpleLst.Add(PsLstEx2);
-                AllPlcSimpleLst.Add(PsLstEx3);
-                AllPlcSimpleLst.Add(PsLstEx4);
-                AllPlcSimpleLst.Add(PsLstEx5);
-                AllPlcSimpleLst.Add(PsLstEx6);
-                AllPlcSimpleLst.Add(PsLstEx7);
-                AllPlcSimpleLst.Add(PsLstEx8);
-                AllPlcSimpleLst.Add(PsLstEx9);
-
-            }
-
-            if ( filestr.Count > 0 )
-            evokDevice.GetPlcDataTableFromFile(filestr);
-            for (int i =  4; i < evokDevice.DataFormLst.Count; i++)
-            {
-                
-                SetPage(i);
-                psLstHand.AddRange(AllPlcSimpleLst[i]);
-            }
-        }
-
-        private void DownLoadDataNormalWithShuchi(int i)
-        {
-
-            List<int> DataList = new List<int>();
-            List<int> DataListGW = new List<int>();
-            DataList.Add(1);
-            //Ê∑ªÂä†ÊÆµÊï∞
-            DataList.Add(optSize.ProdInfoLst[i].Cut.Count);
-
-            //ÈááÁî®‰ø°Êç∑XG2 Á≤æÂ∫¶ÊèêÈ´òÂêéÈúÄË¶ÅÂ¢ûÂä†‰∏Ä‰∏™ÊØîÁéá 201901142054
-            if (DeviceName.Equals(Constant.scjDeivceName))
-            {
-                
-                foreach (int s in optSize.ProdInfoLst[i].Cut)
+                string[] textArray5 = new string[] { "√≈∞Â/√≈∆§ ˝æ›¥Ú∞¸£¨“ª¥Œ–‘œ¬∑¢" };
+                LogManager.WriteProgramLog(textArray5);
+                list.Clear();
+                list.Add(num3);
+                for (int j = pos; j < (pos + num3); j++)
                 {
-                    DataList.Add(s * 1000);
+                    if (op.ProdInfoLst[j].Cut.Count != 1)
+                    {
+                        return false;
+                    }
+                    int num8 = 0;
+                    if ((op.ProdInfoLst[pos].Param1.Count > 0) && !int.TryParse(op.ProdInfoLst[j].Param1[0], out num8))
+                    {
+                        string[] textArray6 = new string[] { "√≈∞Â/√≈∆§øÌ∂» ‰»Î¥ÌŒÛ" };
+                        LogManager.WriteProgramLog(textArray6);
+                        return false;
+                    }
+                    list.Add(num8 * Constant.dataMultiple);
+                }
+                if (!evokDevice.SetMultiPleDValue(stp, list.ToArray()))
+                {
+                    evokDevice.SetMultiPleDValue(stp, list.ToArray());
+                }
+                string[] textArray7 = new string[] { "√≈∞Â/√≈∆§øÌ∂»  ˝æ›∑¢ÀÕÕÍ±œ" };
+                LogManager.WriteProgramLog(textArray7);
+            }
+            if (id == 4)
+            {
+                string[] textArray8 = new string[] { "√≈∆§≥§ ˝æ›¥Ú∞¸,“ª¥Œ–‘œ¬∑¢" };
+                LogManager.WriteProgramLog(textArray8);
+                list.Clear();
+                list.Add(num3);
+                for (int k = pos; k < (pos + num3); k++)
+                {
+                    list.AddRange(op.ProdInfoLst[k].Cut);
+                }
+                if (!evokDevice.SetMultiPleDValue(stp, list.ToArray()))
+                {
+                    evokDevice.SetMultiPleDValue(stp, list.ToArray());
+                }
+                string[] textArray9 = new string[] { "√≈∆§≥§ ˝æ›∑¢ÀÕÕÍ±œ" };
+                LogManager.WriteProgramLog(textArray9);
+            }
+            if (id == 6)
+            {
+                list.Clear();
+                list.Add(num3);
+                string[] textArray10 = new string[] { "√≈∆§ID ˝æ›¥Ú∞¸£¨“ª¥Œ–‘œ¬∑¢" };
+                LogManager.WriteProgramLog(textArray10);
+                for (int m = pos; m < (pos + num3); m++)
+                {
+                    if (op.ProdInfoLst[m].Cut.Count != 1)
+                    {
+                        return false;
+                    }
+                    int num11 = 0;
+                    if ((op.ProdInfoLst[pos].Param1.Count > 0) && !int.TryParse(op.ProdInfoLst[m].Param10[0], out num11))
+                    {
+                        MessageBox.Show("øÌ∂» ‰»Î¥ÌŒÛ£°");
+                        return false;
+                    }
+                    list.Add(num11);
+                }
+                if (!evokDevice.SetMultiPleDValue(stp, list.ToArray()))
+                {
+                    evokDevice.SetMultiPleDValue(stp, list.ToArray());
+                }
+                string[] textArray11 = new string[] { "√≈∆§ID ˝æ›∑¢ÀÕÕÍ±œ" };
+                LogManager.WriteProgramLog(textArray11);
+            }
+            Thread.Sleep(100);
+            stp.Addr = addr;
+            pos += num3;
+            return true;
+        }
+
+        public void LineEmgStop()
+        {
+            evokDevice.SetMValueON2OFF(lineEmgStopOutPs);
+            string[] logs = new string[] { "œﬂº±Õ£–≈∫≈∑¢ÀÕ£°" };
+            LogManager.WriteProgramLog(logs);
+        }
+
+        public void LinePause()
+        {
+            evokDevice.SetMValueON2OFF(linePauseOutPs);
+            string[] logs = new string[] { "œﬂ‘›Õ£–≈∫≈∑¢ÀÕ£°" };
+            LogManager.WriteProgramLog(logs);
+        }
+
+        public void LineReset()
+        {
+            evokDevice.SetMValueON2OFF(lineResetOutPs);
+            string[] logs = new string[] { "œﬂ∏¥Œª–≈∫≈∑¢ÀÕ£°" };
+            LogManager.WriteProgramLog(logs);
+        }
+
+        public void LineStart()
+        {
+            ConstantMethod.Delay(0xbb8);
+            evokDevice.SetMValueON2OFF(lineStartOutPs);
+            string[] logs = new string[] { "œÚPLC∑¢ÀÕ∆Ù∂Ø√¸¡Ó" };
+            LogManager.WriteProgramLog(logs);
+        }
+
+        public void LineStop()
+        {
+            evokDevice.SetMValueON2OFF(lineStopOutPs);
+            string[] logs = new string[] { "œﬂÕ£÷π–≈∫≈∑¢ÀÕ£°" };
+            LogManager.WriteProgramLog(logs);
+            RunFlag = false;
+            xialiaoSingleStop();
+            doorBanSingleStop();
+            doorShellSingleStop();
+        }
+
+        public void ListSmallSizePrinter(ComboBox cb)
+        {
+            List<string> localPrinter = ConstantMethod.GetLocalPrinter();
+            cb.DataSource = localPrinter;
+            if (localPrinter.Contains(minPrinterName))
+            {
+                cb.Text = minPrinterName;
+            }
+            else
+            {
+                cb.Text = ConstantMethod.DefaultPrinter;
+            }
+        }
+
+        public void lliaoOFF()
+        {
+            evokDevice.SetMValueOFF(lliaoOutInPs);
+        }
+
+        public void lliaoON()
+        {
+            evokDevice.SetMValueON(lliaoOutInPs);
+        }
+
+        public bool LoadCsvData(string filename)
+        {
+            if (lcOutInPs !=null)
+            {
+                optSize.Len = lcOutInPs.ShowValue;
+            }
+            if (dbcOutInPs !=null)
+            {
+                optSize.Dbc = dbcOutInPs.ShowValue;
+            }
+            if (ltbcOutInPs !=null)
+            {
+                optSize.Ltbc = ltbcOutInPs.ShowValue;
+            }
+            if (safeOutInPs !=null)
+            {
+                optSize.Safe = safeOutInPs.ShowValue;
+            }
+            optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            showPath(filename);
+            return optSize.LoadCsvData(filename);
+        }
+
+        public bool LoadCsvData(string filename, int id)
+        {
+            if (lcOutInPs !=null)
+            {
+                optSize.Len = lcOutInPs.ShowValue;
+            }
+            if (dbcOutInPs !=null)
+            {
+                optSize.Dbc = dbcOutInPs.ShowValue;
+            }
+            if (ltbcOutInPs !=null)
+            {
+                optSize.Ltbc = ltbcOutInPs.ShowValue;
+            }
+            if (safeOutInPs !=null)
+            {
+                optSize.Safe = safeOutInPs.ShowValue;
+            }
+            optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            showPath(filename);
+            if (id == Constant.OpenCsvWithOutCheck)
+            {
+                return optSize.LoadCsvDataWithOutCheck(filename);
+            }
+            return optSize.LoadCsvData(filename);
+        }
+
+        public void LoadCsvData0(string filename)
+        {
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+            optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            showPath(filename);
+            optSize.LoadCsvData0(filename);
+        }
+
+        public void LoadExcelData(string filename)
+        {
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+            if (wlMiniSizeOutInPs !=null)
+            {
+                optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            }
+            showPath(filename);
+            optSize.LoadExcelData(filename);
+        }
+
+        public void LoadSimiData(string filename)
+        {
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+            if (wlMiniSizeOutInPs !=null)
+            {
+                optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            }
+            showPath(filename);
+            optSize.LoadSimiData(filename);
+            SetPLCMaterialWidth();
+        }
+
+        public void LoadSimiData(string[] filenames)
+        {
+            optSize.Len = lcOutInPs.ShowValue;
+            optSize.Dbc = dbcOutInPs.ShowValue;
+            optSize.Ltbc = ltbcOutInPs.ShowValue;
+            optSize.Safe = safeOutInPs.ShowValue;
+            if (wlMiniSizeOutInPs !=null)
+            {
+                optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+            }
+            optSize.LoadSimiData(filenames);
+            SetPLCMaterialWidth();
+        }
+
+        private bool needBreak(int id)
+        {
+            switch (id)
+            {
+                case 1:
+                    return errorStatus(getXialiaoJuStatus());
+
+                case 2:
+                    return errorStatus(getDoorBanStatus());
+
+                case 3:
+                    return errorStatus(getDoorBanStatus());
+
+                case 4:
+                    return errorStatus(getDoorShellStatus());
+
+                case 5:
+                    return errorStatus(getDoorShellStatus());
+
+                case 6:
+                    return errorStatus(getDoorShellStatus());
+            }
+            return false;
+        }
+
+        public void noSizeToCut()
+        {
+            evokDevice.SetMValueON(noSizeToCutOutInPs);
+        }
+
+        public void OpenDataNotEnough()
+        {
+            if (dataNotEnoughOutInPs !=null)
+            {
+                evokDevice.SetMValueON(dataNotEnoughOutInPs);
+            }
+        }
+
+        public void oppositeBitClick(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p !=null)
+            {
+                if (p.ShowValue > 0)
+                {
+                    evokDevice.SetMValueOFF(p);
+                }
+                else
+                {
+                    evokDevice.SetMValueON(p);
                 }
             }
             else
-                DataList.AddRange(optSize.ProdInfoLst[i].Cut);
-
-            //Ê∑ªÂä†Â∑•‰ΩçÂè∑
-            DataListGW.Add(optSize.ProdInfoLst[i].Cut.Count);
-
-            int[] intArray = null;
-            List<int> intGW = new List<int>();
-            //C# 3.0‰∏ãÁî®Ê≠§Âè•
-            try
             {
-                foreach (string param12 in optSize.ProdInfoLst[i].Param12)
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+
+        public void oppositeBitClick(string str1, string str2, int id)
+        {
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
+            {
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple p = getPsFromPslLst(str1, str2, pslLst);
+                if (p !=null)
                 {
-                    int value = 1;
-                    if (intGW.Count > 0)
-                        value = intGW.Last();
-                    if (int.TryParse(param12, out value))
+                    if (p.ShowValue > 0)
                     {
-
+                        evokDevice.SetMValueOFF(p);
                     }
-                    intGW.Add(value);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            intArray = intGW.ToArray();
-            //if(DataListGW.Count == DataList.Count)
-            if (intArray != null && intArray.Length > 0)
-                DataListGW.AddRange(intArray);
-            //Êï∞ÊçÆ‰∏ãÂèë Á°Æ‰øùÊ≠£Á°Æ ‰∏ã‰ΩçÊú∫ÈúÄË¶ÅÁªô‰∏Ä‰∏™M16 È´òÁîµÂπ≥ ÊàëËøôËæπÊù•ÁΩÆOFF
-            //ÂèëÊï∞ÊçÆ‰∏âÊ¨° M16 Â¶ÇÊûúËøòÊ≤°ÊúâÁªôÈ´òÁîµÂπ≥
-
-            if (DeviceName.Equals(Constant.scjDeivceName))
-            {
-                if (DataListGW.Count() > 1)
-                    DataList.Insert(2, DataListGW[1]);
-            }
-
-            for (int m = 0; m < 30; m++)
-            {
-                if (!RunFlag) break;   
-                LogManager.WriteProgramLog(DeviceName + Constant.DataDownLoad + m.ToString());
-
-               
-                if (evokDevice.SetMultiPleDValue(wlInOutPs, DataList.ToArray()))
-                {
-                    //ÂèëÈÄÅÊòØÊñôÈïø‰ΩÜÊñôÈïø‰∏çÊ∏ÖÈõ∂Ë¶ÅËØªÂèñÊ∏ÖÈõ∂ÁöÑD5000Êï∞ÊçÆ ÊâÄ‰ª•Âè™ËÉΩÂä†Âª∂Êó∂
-                    //20190108 Ê†πÊçÆËÄÅËÉ°ÁöÑÂª∫ËÆÆ Â¢ûÂä†‰∏Ä‰∏™ÁÇπ‰ΩçÂëäËØâ‰∏ã‰ΩçÊú∫ Êï∞ÊçÆÂèëÂ•Ω‰∫Ü
-                    ConstantMethod.Delay(200);
-                    //Â¶ÇÊûú‰∏çÊòØ‰ª•ÂâçÁöÑÊú∫Âô® Â∞±‰∏çÂèëÂ∑•‰ΩçÂè∑‰∫Ü
-                    if(!DeviceName.Equals(Constant.scjDeivceName))
-                    if (evokDevice.SetMultiPleDValue(GWOutInPs, DataListGW.ToArray()))
+                    else
                     {
-                        ConstantMethod.Delay(20);
-
-                        LogManager.WriteProgramLog(DeviceName + Constant.DataDownLoadSuccess);
-                    }
-                    // ÊñôÊÆµÊï∞Â§ß‰∫é0  ‰ª£Ë°®ÂÜôÊàêÂäü‰∫Ü 
-                    if (wlInOutPs.ShowValue != 0)
-                    {
-                        //ÁÑ∂ÂêéËÆæÁΩÆM16‰∏∫È´ò ÂÜôÊàêÂäü‰∫Ü Â∞±ÈÄÄÂá∫Êù•
-                        if (evokDevice.SetMValueON(startCountInOutPs)) break;
+                        evokDevice.SetMValueON(p);
                     }
                 }
-            }         
-        }
-
-
-        #endregion
-        public void pressShift()
-        {
-            evokDevice.opposite(pressOutInPs);
-        }
-        public bool RestartDevice(int id)
-        {
-           
-            evokDevice.RestartConneect(evokDevice.DataFormLst[id]);
-            //Âú®ÈáçÊñ∞ÂêØÂä®Âêé plcsimple ÂíåPLCinfoLst ÈáçÊñ∞ÂØªÊâæ Âõ†‰∏∫ÈáçÂêØÂêé plcinfolstÈáçÊñ∞ÁîüÊàê‰∫Ü
-            FindPlcSimpleInPlcInfoLst(id);
-            return evokDevice.getDeviceData();
-
-        }
-        #region ËøêË°åÈÉ®ÂàÜ
-
-
-        public bool testGetScarData(DataTable scarTable)
-        {
-            int scarCount = scarInPs.ShowValue;
-
-            if (scarCount % 2 != 0 || scarCount < 1 || scarCount > Constant.MaxScarCount) return false;
-
-            scarCount = scarCount / 2;
-
-            scarTable.Rows.Clear();
-
-            int srAddress = Constant.ScarStartAddress;
-
-            for (int i = 0; i < scarCount; i++)
-            {
-                srAddress += 2;
-
-                DataRow dr = scarTable.NewRow();
-                dr[0] = Constant.strDMArea[0] + srAddress.ToString();
-                dr[1] = Constant.DoubleMode;
-                dr[2] = Constant.ScarName + i.ToString() + "-0";
-                dr[3] = "1";
-
-                srAddress += 2;
-                DataRow dr0 = scarTable.NewRow();
-                dr0[0] = Constant.strDMArea[0] + srAddress.ToString();
-                dr0[1] = Constant.DoubleMode;
-                dr0[2] = Constant.ScarName + i.ToString() + "-1";
-                dr0[3] = "1";
-
-                scarTable.Rows.Add(dr);
-                scarTable.Rows.Add(dr0);
+                else
+                {
+                    MessageBox.Show(Constant.SetDataFail);
+                }
             }
-
-            ShiftPage(Constant.ScarPage);
-
-            ConstantMethod.Delay(1000);
-
-            ShiftPage(Constant.AutoPage);
-
-            return true;
-
-        }
-        public void ProClr()
-        {
-            evokDevice.SetDValue(prodOutInPs, 0);
-           
-            optSize.prodClear();
-        }
-        public void SetLtbc()
-        {
-            evokDevice.SetDValue(ltbcOutInPs, optSize.Ltbc);
-        }
-        /// <summary>
-        /// Èó®Áîü‰∫ßÁ∫ø ÂêØÂä®‰ΩøÁî®
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public bool startCutDoor(int id)
-        {
-            ConstantMethod.Delay(300);  
-            evokDevice.SetMValueOFF2ON(startOutPs);
-            CutReady(); //‰∏¥Êó∂ ‰ª•ÂêéË¶ÅÊîπÂà∞ÈÄöÁî®ÁöÑÂú∞ÊñπÂéª
-            OldPrintBarCodeMode = PrintBarCodeMode;
-            RunFlag = true;                      
-
-            LogManager.WriteProgramLog(DeviceName + Constant.DeviceStartCut);
-
-            return GetStartStatus();
-
-        }
-        public bool GetStartStatus()
-        {
-            int valueold = Constant.M_ON;
-            ConstantMethod.DelayWriteCmdOk(Constant.StartWaitMaxTime, ref valueold, ref startInPs,ref emgStopInPs);
-
-            return startInPs.ShowValue == Constant.M_ON ? true : false;
-        }
-        //ÂêØÂä®
-        public bool start(int id)
-        {
-            evokDevice.SetMValueOFF2ON2OFF(startOutPs);
-            ConstantMethod.Delay(200);
-            CutReady(); //‰∏¥Êó∂‰ª•ÂêéË¶ÅÊîπÂà∞ÈÄöÁî®ÁöÑÂú∞ÊñπÂéª
-            OldPrintBarCodeMode = PrintBarCodeMode;  //ÁôªËÆ∞‰∏ãÁî®Êà∑ÊâìÂç∞ÂàùÂßãÂÄº      
-            RunFlag = true;           
-
-            LogManager.WriteProgramLog(DeviceName + Constant.DeviceStartCut);
-            tCheckPrint.Enabled = true;
-
-            return GetStartStatus();
         }
 
-        void stopOperation()
+        public void optReady(int OPTID)
         {
-            RunFlag = false;
-            CloseDataNotEnough();
-            ConstantMethod.Delay(200);
-            if (CutThread != null && CutThread.IsAlive)
+            if (!DeviceStatus)
             {
-                CutThread.Abort();
+                collectUserInputData();
             }
-            optSize.SingleSizeLst.Clear();
-            optSize.ProdInfoLst.Clear();
-
-            tCheckPrint.Enabled = false;
-
-        }
-        public bool stop()
-        {
-        
-            // Â¶ÇÊûúÂ∑≤ÂÅúÊ≠¢ ÈÇ£Â∞±‰∏çÈúÄË¶ÅÂÅúÊ≠¢‰∫Ü
-            if (deviceStatusId == Constant.constantStatusId[1]
-                ||
-                deviceStatusId == Constant.constantStatusId[3] ||
-                deviceStatusId == Constant.constantStatusId[4] ||
-                deviceStatusId == Constant.constantStatusId[6] ||
-                deviceStatusId == Constant.constantStatusId[7]
-                )
+            else
             {
-                stopOperation();              
-                showWorkInfo();
+                collectDeviceData();
+            }
+            if (optSize.Len < 100)
+            {
+                MessageBox.Show(Constant.optFail);
+            }
+            else
+            {
+                optSize.Safe += optSize.Dbc * 2;
+                int num = OPTID;
+                switch (num)
+                {
+                    case 0:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                        return;
+
+                    case 1:
+                        return;
+
+                    case 2:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 2));
+                        return;
+
+                    case 3:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 3));
+                        return;
+
+                    case 4:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 4));
+                        return;
+                }
+                if (num == 10)
+                {
+                    ConstantMethod.ShowInfo(rtbResult, optSize.OptSimi(rtbResult, 10));
+                }
+            }
+        }
+
+        public bool ParamParamTxt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == '\r')
+            {
+                double num;
+                if (double.TryParse(((TextBox)sender).Text, out num) && (num > -1.0))
+                {
+                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstParam, ((TextBox)sender).Text);
+                }
                 return true;
             }
-
-            int id = 0;
-            while (!evokDevice.SetMValueON(stopOutPs))
-            {
-                id++;
-                Application.DoEvents();
-                if (id > 30) break;
-            }
-            int old = 1;
-            ConstantMethod.DelayWriteCmdOk(3000, ref old, ref stopInPs);
-            LogManager.WriteProgramLog(DeviceName + Constant.DeviceStop);
-            try
-            {
-                if (stopInPs.ShowValue == old)
-                {
-                    showWorkInfo(Constant.stopOk);
-                    return true;
-                }
-                else
-                {
-                    showWorkInfo(Constant.stopWrong);
-                    
-                }
-            }
-
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                stopOperation();
-                LogManager.WriteProgramLog(DeviceName + Constant.DeviceStop);
-            }
-            return false;
-        }
-        public bool emgStop()
-        {
-
-            int id = 0;
-            //Êìç‰Ωú30Ê¨° Â¶ÇÊûúÂèëÈÄÅÈîôËØØ Â∞±‰∏ÄÁõ¥ÂèëÈÄÅ
-            while (!evokDevice.SetMValueON(emgStopOutPs))
-            {
-                id++;
-                Application.DoEvents();
-                if (id > 5) break;
-            }
-
-            int old = 1;
-            ConstantMethod.DelayWriteCmdOk(500, ref old, ref emgStopInPs);
-            try
-            {
-                if (emgStopInPs.ShowValue == old)
-                {
-                    showWorkInfo(Constant.emgstopOk);
-                    return true;
-                }
-                else
-                {
-                    showWorkInfo(Constant.emgstopWrong);
-
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            finally
-            {
-                stopOperation();
-
-                LogManager.WriteProgramLog(DeviceName + Constant.DeviceEmgStop);
-            }
             return false;
         }
 
-        public bool IsInEmg {
-            get
-            {
-                if (emgStopInPs.ShowValue == Constant.M_ON)
-                {
-                    return true;
-                }
-                else return false;
-            }
-        }
-
-
-
-        //ÂÅúÊ≠¢ 
         public bool pause()
-        {           
-            //Â¶ÇÊûúÊòØÂú®Êä•Ë≠¶‰∏≠ Â§ç‰Ωç‰∏≠ ÂÅúÊ≠¢‰∏≠  
-            if (deviceStatusId   == Constant.constantStatusId[1]
-               || deviceStatusId == Constant.constantStatusId[3]
-               || deviceStatusId == Constant.constantStatusId[4]
-               || deviceStatusId == Constant.constantStatusId[6]
-               || deviceStatusId == Constant.constantStatusId[7]
-                && deviceStatusId< Constant.constantStatusStr.Count())
-            {                
-                showWorkInfo(); return false;
+        {
+            if ((((deviceStatusId == Constant.constantStatusId[1]) || (deviceStatusId == Constant.constantStatusId[3])) || ((deviceStatusId == Constant.constantStatusId[4]) || (deviceStatusId == Constant.constantStatusId[6]))) || ((deviceStatusId == Constant.constantStatusId[7]) && (deviceStatusId < Constant.constantStatusStr.Count<string>())))
+            {
+                showWorkInfo();
+                return false;
             }
-
             if (!RunFlag)
             {
                 showWorkInfo(Constant.IsWorking);
                 return false;
             }
-
             if (pauseOutPs.ShowValue == 0)
             {
-
                 evokDevice.opposite(pauseOutPs);
-                int old = 1;
-                ConstantMethod.DelayWriteCmdOk(10000,ref old,ref pauseInPs,ref emgStopInPs);
-                LogManager.WriteProgramLog(DeviceName + Constant.DevicePause);
-
-                if (pauseInPs.ShowValue == old)
+                int num = 1;
+                ConstantMethod.DelayWriteCmdOk(0x2710, ref num, ref pauseInPs, ref emgStopInPs);
+                string[] logs = new string[] { DeviceName + Constant.DevicePause };
+                LogManager.WriteProgramLog(logs);
+                if (pauseInPs.ShowValue == num)
                 {
                     showWorkInfo(Constant.pauseOk);
                     return true;
                 }
-                else
-                {
-                    showWorkInfo(Constant.pauseWrong);
-                    return false;
-                } 
-                                                            
-            }
-            else
-            {
-                int old = 0;
-               
-                evokDevice.opposite(pauseOutPs);
-
-                ConstantMethod.DelayWriteCmdOk(10000, ref old, ref pauseInPs);
-
-                if (pauseInPs.ShowValue == old)
-                {
-                    showWorkInfo(Constant.contiOk);
-                    return true;
-                }
-                else
-                {
-                    showWorkInfo(Constant.contiWrong);
-                    return false;
-                }
-            }
-        }
-        //Ëá™Âä®‰∏äÊñô
-        public void autoSL()
-        {
-            evokDevice.SetMValueOFF2ON(scarModeOutPs);
-        }
-         
-        //Â§ç‰Ωç
-        public bool reset()
-        {
-           
-            if (
-                   deviceStatusId == Constant.constantStatusId[1]
-                || deviceStatusId == Constant.constantStatusId[2]
-                || deviceStatusId == Constant.constantStatusId[3]
-                || deviceStatusId == Constant.constantStatusId[4]
-                || deviceStatusId == Constant.constantStatusId[5]
-        
-               && deviceStatusId < Constant.constantStatusStr.Count())
-            {
-                
-                showWorkInfo();
+                showWorkInfo(Constant.pauseWrong);
                 return false;
             }
-
-            int id = 0;
-            evokDevice.SetMValueOFF2ON2OFF(resetOutPs);
-            //Â§ç‰ΩçÁ≠âÂæÖ2Áßí
-            ConstantMethod.Delay(1000);
-            int old = 0;
-            ConstantMethod.DelayWriteCmdOk(60000, ref old, ref resetInPs,ref emgStopInPs);
-
-            LogManager.WriteProgramLog(DeviceName+Constant.DeviceReset);
-
-
-            if (resetInPs.ShowValue == old)
+            int valueOld = 0;
+            evokDevice.opposite(pauseOutPs);
+            ConstantMethod.DelayWriteCmdOk(0x2710, ref valueOld, ref pauseInPs);
+            if (pauseInPs.ShowValue == valueOld)
             {
-                showWorkInfo(Constant.resetOk);
-                stopOperation();
+                showWorkInfo(Constant.contiOk);
                 return true;
             }
-            else
-            {
-                showWorkInfo(Constant.resetWrong);
-                return false;
-            }
-
-           
-        }
-
-
-        #endregion
-        public void SaveFile()
-        {
-         
-            optSize.SaveCsv();
-            optSize.SaveExcel();
-        }
-        public bool SetOptSizeData(DataTable dtSize)
-        {
-            if (dtSize != null && dtSize.Rows.Count > 0)
-            {
-                optSize.DtData = dtSize;
-                return true;
-            }
+            showWorkInfo(Constant.contiWrong);
             return false;
         }
+
+        public void plcHandleBarCodeOFF()
+        {
+            evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
+        }
+
+        public void plcHandleBarCodeON()
+        {
+            evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
+        }
+
+        public void pressShift()
+        {
+            evokDevice.opposite(pressOutInPs);
+        }
+
+        private void PrintBarCheck(SingleSize ss)
+        {
+            if (((printMiniSizeOutInPs != null) && (printMiniSizeOutInPs.ShowValue > ss.Cut)) && (PrintBarCodeMode == Constant.AutoBarCode))
+            {
+                if (((minPrinterName != "") && (printMiniSizeOutInPs.ShowValue > ss.Cut)) && ConstantMethod.GetLocalPrinter().Contains(minPrinterName))
+                {
+                    printReport.PrintSettings.Printer = minPrinterName;
+                    printBarcode(printReport, ss.ParamStrLst.ToArray());
+                }
+                else
+                {
+                    printReport.PrintSettings.Printer = ConstantMethod.DefaultPrinter;
+                }
+                evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
+            }
+            else if ((ss.ParamStrLst.ToArray().Length != 0) && ss.ParamStrLst.ToArray()[0].ToString().Equals(Constant.ScarId))
+            {
+                evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
+            }
+            else
+            {
+                if (OldPrintBarCodeMode == Constant.AutoBarCode)
+                {
+                    evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
+                }
+                printBarcode(printReport, ss.ParamStrLst.ToArray());
+            }
+        }
+
+        public void printBarcode(Report rp1, object s2)
+        {
+            string[] strArray = (string[])s2;
+            string str = "";
+            foreach (string str2 in strArray)
+            {
+                str = str + str2 + "/";
+            }
+            if (strArray.Length >= 1)
+            {
+                try
+                {
+                    if (((strArray != null) && (printReport != null)) && IsPrintBarCode)
+                    {
+                        Application.DoEvents();
+                        if (rp1.FindObject("Barcode1") !=null)
+                        {
+                            (rp1.FindObject("Barcode1") as BarcodeObject).Text = strArray[0];
+                        }
+                        for (int i = 1; i < strArray.Length; i++)
+                        {
+                            if ((rp1.FindObject("Text" + i.ToString()) != null) && string.IsNullOrWhiteSpace(strArray[i]))
+                            {
+                                (rp1.FindObject("Text" + i.ToString()) as TextObject).Text = "";
+                            }
+                            else if ((rp1.FindObject("Text" + i.ToString()) != null) && !string.IsNullOrWhiteSpace(strArray[i]))
+                            {
+                                strArray[i] = ConstantMethod.ShiftString(strArray[i]);
+                                (rp1.FindObject("Text" + i.ToString()) as TextObject).Text = strArray[i];
+                            }
+                        }
+                        rp1.SetParameterValue("Parameter", strArray);
+                        rp1.Prepare();
+                        rp1.Print();
+                    }
+                }
+                catch (Exception)
+                {
+                    RunFlag = false;
+                }
+                if (!printReport.PrintSettings.Printer.Equals(ConstantMethod.DefaultPrinter))
+                {
+                    printReport.PrintSettings.Printer = ConstantMethod.DefaultPrinter;
+                }
+            }
+        }
+
+        public void printBarcodeOffline(Report rp1, object s2)
+        {
+            string[] strArray = (string[])s2;
+            string str = "";
+            foreach (string str2 in strArray)
+            {
+                str = str + str2 + "/";
+            }
+            if (strArray.Length >= 1)
+            {
+                try
+                {
+                    if (((strArray != null) && (printReport != null)) && IsPrintBarCode)
+                    {
+                        Application.DoEvents();
+                        if (rp1.FindObject("Barcode1") != null)
+                        {
+                            (rp1.FindObject("Barcode1") as BarcodeObject).Text = strArray[0];
+                        }
+                        for (int i = 1; i < strArray.Length; i++)
+                        {
+                            if ((rp1.FindObject("Text" + i.ToString()) != null) && string.IsNullOrWhiteSpace(strArray[i]))
+                            {
+                                (rp1.FindObject("Text" + i.ToString()) as TextObject).Text = "";
+                            }
+                            else if ((rp1.FindObject("Text" + i.ToString()) != null) && !string.IsNullOrWhiteSpace(strArray[i]))
+                            {
+                                strArray[i] = ConstantMethod.ShiftString(strArray[i]);
+                                (rp1.FindObject("Text" + i.ToString()) as TextObject).Text = strArray[i];
+                            }
+                        }
+                        rp1.SetParameterValue("Parameter", strArray);
+                        rp1.Prepare();
+                        rp1.Print();
+                    }
+                }
+                catch (Exception)
+                {
+                    RunFlag = false;
+                }
+                if (!printReport.PrintSettings.Printer.Equals(ConstantMethod.DefaultPrinter))
+                {
+                    printReport.PrintSettings.Printer = ConstantMethod.DefaultPrinter;
+                }
+            }
+        }
+
+
+        public void printBarcode(Report rp1, object s2, int show)
+        {
+            string[] strArray = (string[])s2;
+            if ((strArray != null) && (printReport !=null))
+            {
+                try
+                {
+                    OldPrintBarCodeMode = PrintBarCodeMode;
+                    Application.DoEvents();
+                    if (rp1.FindObject("Barcode1") !=null)
+                    {
+                        (rp1.FindObject("Barcode1") as BarcodeObject).Text = strArray[0];
+                    }
+                    for (int i = 1; i < strArray.Length; i++)
+                    {
+                        if ((rp1.FindObject("Text" + i.ToString()) != null) && string.IsNullOrWhiteSpace(strArray[i]))
+                        {
+                            (rp1.FindObject("Text" + i.ToString()) as TextObject).Text = "";
+                        }
+                        else if ((rp1.FindObject("Text" + i.ToString()) != null) && !string.IsNullOrWhiteSpace(strArray[i]))
+                        {
+                            strArray[i] = ConstantMethod.ShiftString(strArray[i]);
+                            (rp1.FindObject("Text" + i.ToString()) as TextObject).Text = strArray[i];
+                        }
+                    }
+                    rp1.SetParameterValue("Parameter", strArray);
+                    rp1.Prepare();
+                    rp1.Show();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                }
+            }
+        }
+
+       
+
+        private void printRestMaterial(string[] s)
+        {
+            if (DeviceName.Equals(Constant.simiDeivceName))
+            {
+                SetPrintReport(Constant.BarCode2);
+                printBarcode(printReport, s);
+            }
+            SetPrintReport(Constant.BarCode1);
+        }
+
+        private void printTimerCheck(object sender, EventArgs e)
+        {
+            /***
+            if (printThreadLst.Count > 0)
+            {
+                List<Thread> list = new List<Thread>(printThreadLst.Keys);
+                if (list[0].ThreadState == ThreadState.Unstarted)
+                {
+                    list[0].Start(printThreadLst[list[0]]);
+                }
+                else if ((list[0].ThreadState == ThreadState.Aborted) || !list[0].IsAlive)
+                {
+                    printThreadLst.Remove(list[0]);
+                }
+            }
+            ***/
+        }
+
+        public void ProClr()
+        {
+            evokDevice.SetDValue(prodOutInPs, 0);
+            optSize.prodClear();
+        }
+
+        private string ReadBarCodeSourceFolder() { return ParamFile.ReadConfig(Constant.barCodePath); }
+        
+
         public int ReadCSVDataDefault()
         {
             if (!LoadCsvData(Constant.userdata))
@@ -1447,242 +3949,316 @@ namespace xjplc
             }
             return 0;
         }
-        public void ShowBarCode(int rowindex)
+
+        public int ReadCutMode()
         {
-            if (printReport != null)
+            int result = 0;
+            if (int.TryParse(ParamFile.ReadConfig(Constant.cutSelMode), out result))
             {
-                List<string> valuestr = new List<string>();
+                return result;
+            }
+            return 0;
+        }
 
-                if (optSize.DtData != null && optSize.DtData.Rows.Count > 0)
+        private bool readData(string fileName)
+        {
+            DataTable table = new DataTable();
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default);
+            string source = "";
+            Dictionary<string, List<double>> dictionary = new Dictionary<string, List<double>>();
+            List<double> list = new List<double>();
+            string str2 = "";
+            while ((source = reader.ReadLine()) !=null)
+            {
+                if (source.Contains<char>('M'))
                 {
-
-
-                    DataRow dr = optSize.DtData.Rows[rowindex];
-                    for (int j = 3; j < optSize.DtData.Columns.Count; j++)
+                    str2 = source.Trim();
+                    if (!dictionary.Keys.Contains<string>(str2))
                     {
-                        valuestr.Add(dr[j].ToString());
+                        list = new List<double>();
+                        dictionary.Add(str2, list);
                     }
-
-
-                    printBarcode(printReport, valuestr.ToArray(), 0);
+                }
+                if (source.Contains<char>('X'))
+                {
+                    double result = 0.0;
+                    char[] separator = new char[] { 'X' };
+                    string[] strArray2 = source.Split(separator);
+                    if ((strArray2.Length == 2) && double.TryParse(strArray2[1], out result))
+                    {
+                        double num2 = 0.0;
+                        if (double.TryParse(strArray2[1], out num2) && !dictionary[str2].Contains(num2))
+                        {
+                            dictionary[str2].Add(num2);
+                        }
+                    }
+                }
+            }
+            foreach (string str3 in dictionary.Keys.ToList<string>())
+            {
+                if (dictionary[str3].Count == 0)
+                {
+                    dictionary.Remove(str3);
                 }
                 else
                 {
-                    MessageBox.Show("Êó†Êï∞ÊçÆÔºåËØ∑ÂÖàÂØºÂá∫Êï∞ÊçÆÔºÅ");
+                    dictionary[str3].Sort();
+                    string[] valueCol = new string[] { "Œª÷√", "≤€≥§", "ƒæ–ºø◊" };
+                    DataTable item = ConstantMethod.getDataTableByString(valueCol);
+                    item.TableName = str3;
+                    for (int i = 0; i < dictionary[str3].Count; i++)
+                    {
+                        DataRow row = item.NewRow();
+                        row[0] = dictionary[str3][i];
+                        row[1] = "0";
+                        row[2] = "0";
+                        item.Rows.Add(row);
+                    }
+                    HoleDataLst.Add(item);
                 }
             }
-            else
-            {
-                MessageBox.Show("Êù°Á†ÅÂä†ËΩΩÈîôËØØ");
-            }
+            return true;
         }
-        public void ShowBarCode(Report rp1,int rowindex)
+
+        public bool reset()
         {
-            List<string> valuestr = new List<string>();
-
-            if (optSize.DtData != null && optSize.DtData.Rows.Count > 0)
+            if (!DeviceStatus)
             {
-
-             
-                DataRow dr = optSize.DtData.Rows[rowindex];
-                for (int j = 3; j < optSize.DtData.Columns.Count; j++)
-                {
-                    valuestr.Add(dr[j].ToString());
-                }
-
-             
-
-                printBarcode(rp1, valuestr.ToArray(),0);
+                RunFlag = false;
+                return true;
             }
-            else
+            if ((((deviceStatusId == Constant.constantStatusId[1]) || (deviceStatusId == Constant.constantStatusId[2])) || ((deviceStatusId == Constant.constantStatusId[3]) || (deviceStatusId == Constant.constantStatusId[4]))) || ((deviceStatusId == Constant.constantStatusId[5]) && (deviceStatusId < Constant.constantStatusStr.Count<string>())))
             {
-                MessageBox.Show("Êó†Êï∞ÊçÆÔºåËØ∑ÂÖàÂØºÂá∫Êï∞ÊçÆÔºÅ");
+                showWorkInfo();
+                return false;
             }
+            evokDevice.SetMValueOFF2ON2OFF(resetOutPs);
+            ConstantMethod.Delay(0x3e8);
+            int valueOld = 0;
+            ConstantMethod.DelayWriteCmdOk(0xea60, ref valueOld, ref resetInPs, ref emgStopInPs);
+            string[] logs = new string[] { DeviceName + Constant.DeviceReset };
+            LogManager.WriteProgramLog(logs);
+            if (resetInPs.ShowValue == valueOld)
+            {
+                showWorkInfo(Constant.resetOk);
+                stopOperation();
+                return true;
+            }
+            showWorkInfo(Constant.resetWrong);
+            return false;
         }
-        //ÊòæÁ§∫Êù°Á†Å ‰∏çÊâìÂç∞
-        public void printBarcode(Report rp1, object s2,int show)
-        {
 
-            string[] s1 = (string[])s2;
-            if (s1 != null && printReport != null)
+        public bool RestartDevice(int id)
+        {
+            evokDevice.RestartConneect(evokDevice.DataFormLst[id]);
+            FindPlcSimpleInPlcInfoLst(id);
+            return evokDevice.getDeviceData();
+        }
+
+        public void SaveFile()
+        {
+            optSize.SaveCsv();
+            optSize.SaveExcel();
+        }
+
+        public void SaveFileToUserData()
+        {
+            optSize.SaveCsv(Constant.SaveCsvToUserData);
+        }
+
+        public bool SaveOptParam1(string id)
+        {
+            int result = 0;
+            if (int.TryParse(id, out result) && (result > -1))
             {
                 try
                 {
+                    ParamFile.WriteConfig(Constant.optParam1, id);
+                }
+                catch (Exception)
+                {
+                }
+                return true;
+            }
+            return false;
+        }
 
-                    //Âú®ÈÅáÂà∞ÁªìÂ∑¥ÁöÑÊÉÖÂÜµ‰∏ã ‰øùÂ≠ò‰∏ãÂΩìÂâçÊâìÂç∞Ê®°Âºè
-                    OldPrintBarCodeMode = PrintBarCodeMode;         
+        public void SaveProdDataLog(ProdInfo p, int id)
+        {
+            if (IsSaveProdLog && (optSize.ProdInfoLst.Count > 0))
+            {
+                string str = "";
+                string str2 = $"¡œ≥§:{optSize.Len}  ¡œÕ∑≤π≥•:{optSize.Ltbc}  µ∂≤π≥•:{optSize.Dbc}  ∞≤»´æ‡¿Î:{optSize.Safe} Œ≤¡œ:{p.WL}";
+                int num = id + 1;
+                str = str + "  µ⁄" + num.ToString() + "∏˘:";
+                for (int i = 0; i < p.Cut.Count; i++)
+                {
+                    string[] textArray1 = new string[6];
+                    textArray1[0] = str;
+                    textArray1[1] = "  µ⁄";
+                    num = i + 1;
+                    textArray1[2] = num.ToString();
+                    textArray1[3] = "µ∂≥ﬂ¥Á";
+                    textArray1[4] = p.Cut[i].ToString();
+                    textArray1[5] = "\n";
+                    str = string.Concat(textArray1);
+                }
+                string[] logs = new string[] { str2 + str };
+                LogManager.WriteProgramLogProdData(logs);
+            }
+        }
 
-                    Application.DoEvents();
+        public void ScanCode(string barcode)
+        {
+            string path = FindBarCodeFile(barcode);
+            if (File.Exists(path))
+            {
+                if (HoleDataLst == null)
+                {
+                    HoleDataLst = new List<DataTable>();
+                }
+                HoleDataLst.Clear();
+                if (!readData(path))
+                {
+                    MessageBox.Show(Constant.dataConvertError);
+                }
+                IsRuninng = true;
+                enterRunning();
+            }
+            StopRunning();
+        }
 
-                    if (rp1.FindObject("Barcode1") != null)
-                        (rp1.FindObject("Barcode1") as BarcodeObject).Text = s1[0];
+        public void scarModeSelect()
+        {
+            evokDevice.SetMValueOFF2ON(scarModeOutPs);
+        }
 
-
-                    for (int i = 1; i < s1.Length; i++)
+        private void SelectCutThread(int cutid)
+        {
+            switch (cutid)
+            {
+                case 0:
+                    if (CutThreadStart == null)
                     {
-                        if (rp1.FindObject("Text" + (i).ToString()) != null && string.IsNullOrWhiteSpace(s1[i]))
-                        {
-                            (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = "";
-
-                            continue;
-                        }
-                        //ÂÖ∂‰ªñÂèÇÊï∞Âè¶Â§ñÈÄâ
-
-                        if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
-                        {
-                            /***
-                             if (s1[i].Contains('['))
-                             {
-                                 s1[i] = s1[i].Replace('[', ' ');
-                             }
-                             if (s1[i].Contains(']'))
-                             {
-                                 s1[i] = s1[i].Replace(']', ' ');
-                             }
-                           ***/
-                            s1[i] = ConstantMethod.ShiftString(s1[i]);
-                            (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
-                        }
+                        CutThreadStart = new ThreadStart(CutWorkThread);
                     }
-                    
-                    rp1.Prepare();
-                    rp1.Show();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-
-            }
-        }
-              
-        #region Êù°Á†ÅÈÉ®ÂàÜ
-
-
-        #region Êù°Á†ÅÁ∫øÁ®ãÊµãËØï
-        // List<Thread> printThreadLst = new List<Thread>();
-        Dictionary<Thread, barCodeManger> printThreadLst;
-        System.Timers.Timer tCheckPrint = new System.Timers.Timer(1000);
-
-        
-        private void InitBarCodeTimer()
-        {
-            (new FastReport.EnvironmentSettings()).ReportSettings.ShowProgress = false;
-
-            tCheckPrint = new System.Timers.Timer(200);  //ËøôÈáå0.2 ÁßíÂà´Êîπ Âä†Âà∞Â∏∏ÈáèÈáå Â∑•ÊéßÊú∫ÊÄßËÉΩ‰∏çË°å 
-
-            tCheckPrint.Enabled = false;
-
-            tCheckPrint.AutoReset = true;
-
-            tCheckPrint.Elapsed += new System.Timers.ElapsedEventHandler(printTimerCheck);
-
-            printThreadLst = new Dictionary<Thread, barCodeManger>();
-        }
-        //ÈááÁî®Á∫øÁ®ãÂêØÂä®
-        private void printBarCode(object obj)
-        {
-            barCodeManger cm = (barCodeManger)obj;
-            string[] s1 = cm.ParamCode;
-            Report rp1 =ConstantMethod. GetPrintReport(); //ËøôÈáåÊØèÊ¨°Âä†ËΩΩ‰∏Ä‰∏™fasreport ÊñáÊ°£ ‰πãÂâç‰ΩøÁî®Âêå‰∏Ä‰∏™report ‰ºöÊä•Èîô Á∫øÁ®ãÈó¥ÂáèÂ∞ëËÆøÈóÆÂêå‰∏Ä‰∏™report
-            if (s1.Length < 1) return;
-            printBarcode(rp1, s1);//
-          
-        }
-       //ËøôÈáå‰ΩøÁî®Á∫øÁ®ãÈõÜÂêàÊù•ÊéßÂà∂ ÊâìÂç∞ËøõÂ∫¶  ÂÆöÊó∂ÊØèÈöî‰∏ÄÂÆöÊó∂Èó¥Êù•Êü•Áúã ËÆ©ÊúÄÂâçÈù¢ÁöÑÁ∫øÁ®ãÂÖàÊâìÂç∞Êéâ ÂÖàËµ∞
-        private void printTimerCheck(object sender, EventArgs e)
-        {
-
-            if (printThreadLst.Count >0)
-            {
-                List<Thread> tLst = new List<Thread>(printThreadLst.Keys);
-                if (tLst[0].ThreadState == ThreadState.Unstarted)
-                {
-                    tLst[0].Start(printThreadLst[tLst[0]]);
-                }
-                else
-                if (tLst[0].ThreadState == ThreadState.Aborted || (!tLst[0].IsAlive))
-                {
-                    printThreadLst.Remove(tLst[0]);
-                }
-              
-            }
-        }
-   
-       //ÁîüÊàê‰∏Ä‰∏™Á∫øÁ®ã ÊîæÂà∞ÊâìÂç∞ÈõÜÂêàÈáåÁ≠âÂæÖÂÆöÊó∂Âô®‰∫ã‰ª∂ÂéªÂà§Êñ≠
-        public void printBarcode(Report rp1, object s2, bool threadStart)
-        {          
-                barCodeManger
-                bCodeManager = new barCodeManger(); 
-                bCodeManager.ParamCode = (string[])s2;
-
-                Thread printThread;
-
-                printThread = new Thread(new ParameterizedThreadStart(printBarCode));
-    
-                printThreadLst.Add(printThread, bCodeManager);
-
-        }
-        #endregion
-
-        public void printBarcode(Report rp1, object s2)
-        {
-            string[] s1 = (string[])s2;
-            if (s1.Length < 1) return;
-            try
-            {
-                if (s1 != null && printReport != null && IsPrintBarCode)
-                {
-                    
-                    Application.DoEvents();
-
-                    if (rp1.FindObject("Barcode1") != null)
-                        (rp1.FindObject("Barcode1") as BarcodeObject).Text = s1[0];
-
-
-                    for (int i = 1; i < s1.Length; i++)
+                    if (CutThread == null)
                     {
-                        if (rp1.FindObject("Text" + (i).ToString()) != null && string.IsNullOrWhiteSpace(s1[i]))
-                        {
-                            (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = "";
-                            continue;
-                        }
-                        //ÂÖ∂‰ªñÂèÇÊï∞Âè¶Â§ñÈÄâ
-                        if (rp1.FindObject("Text" + (i).ToString()) != null && (!string.IsNullOrWhiteSpace(s1[i])))
-                        {
-                            s1[i] = ConstantMethod.ShiftString(s1[i]);
-                            (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
-                        }
+                        CutThread = new Thread(CutThreadStart);
                     }
-                   
-                    //ConstantMethod.ShowInfo(rtbResult, "ÂèÇÊï∞3Ôºö" + s1[3].ToString()+ "ÂèÇÊï∞4Ôºö" + s1[4].ToString()+"ÂèÇÊï∞8Ôºö" + s1[8].ToString());
-                    rp1.Prepare();                                       
-                    //ConstantMethod.ShowInfo(rtbWork, "ÊâìÂç∞ÂèëÈÄÅÔºÅ");
-                    rp1.Print();
-                    
-                }
+                    break;
+
+                case 1:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutWorkThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 2:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutRotateWithHoleThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 3:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutRotateWithHoleThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 4:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutWorkThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 5:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutDoorShellThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 6:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutWorkThreadWithShuchi);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 7:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutDoorBanThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 8:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutWorkThreadWithAngle);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
+
+                case 9:
+                    if (CutThreadStart == null)
+                    {
+                        CutThreadStart = new ThreadStart(CutSimenSiPlcThread);
+                    }
+                    if (CutThread == null)
+                    {
+                        CutThread = new Thread(CutThreadStart);
+                    }
+                    break;
             }
-            catch (Exception ex)
-            {
-                RunFlag = false;
-                //MessageBox.Show(Constant.startTips8+ ex.Message);
-            }
-            if(!printReport.PrintSettings.Printer.Equals(ConstantMethod.DefaultPrinter))
-            printReport.PrintSettings.Printer = ConstantMethod.DefaultPrinter;
-        }
-        //ÊâìÂç∞Êù°Á†ÅÊâìÂºÄ
-        public void plcHandleBarCodeON()
-        {
-            evokDevice.SetMValueON(plcHandlebarCodeOutInPs);
-        }
-        public void plcHandleBarCodeOFF()
-        {
-            evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
         }
 
-        #endregion
-        #region ÂàáÂâ≤ËøáÁ®ã
-        int CutProCnt = 0; //ÂàáÂâ≤ÁöÑËµ∑ÂßãÊ†πÊï∞
+        public bool SetBarCodeSourceFolder(string folderName)
+        {
+            if (!Directory.Exists(folderName))
+            {
+                return false;
+            }
+            ParamFile.WriteConfig(Constant.barCodePath, folderName);
+            return true;
+        }
 
         public bool SetCutProCnt(int cnt)
         {
@@ -1690,1522 +4266,205 @@ namespace xjplc
             {
                 CutProCnt = 0;
             }
-            
-            if (cnt <= optSize.ProdInfoLst.Count)
+            if (cnt == 0)
             {
-                CutProCnt = cnt-1;
+                CutProCnt = 0;
                 return true;
             }
-            else
+            if ((cnt <= optSize.ProdInfoLst.Count) && (cnt >= 1))
             {
-                MessageBox.Show(Constant.startTips7);
+                CutProCnt = cnt - 1;
+                return true;
             }
-
+            MessageBox.Show(Constant.startTips7);
             return false;
         }
-        //ÊöÇÊó∂Ê≤°ÊúâÂèçÈ¶à ÂÖàÊåâÁÖßÂõûÂ§çÈîôËØØËøêË°å‰∏ãÂéª
-     
-      
-       
 
-        public bool DataJoin()
+        public void SetDataShow(int id)
         {
-            return optSize.dataGetTogether();
-        }
-        //ÂÖàÊääÂÆΩÁöÑÂèëÂÆå
-        public void CutDoorBanThread()
-        {
-            //‰ªéÂì™‰∏ÄÊ†πÂºÄÂßãÂàá ÊöÇÂÆö ‰ªéÁ¨¨‰∏ÄÊ†π ÂºÄÂßã
-            showWorkInfo("ÂÆΩÂ∫¶Êï∞ÊçÆ‰∏ãÂèë!");
-
-            DownLoadDataWithDoorBanWidth(0);
-            //Êï∞ÊçÆ‰∏ãÂèëÂêé ÂêØÂä® 
-            if (!startCutDoor(0))
+            optSize.ChooseDataLst();
+            if (DeviceName.Equals(Constant.simiDeivceName))
             {
-                MessageBox.Show(DeviceName+Constant.DeviceStartFailed);
-                return;
-            }
-            showWorkInfo(" ÂêØÂä®ÊàêÂäü!");
-            if (optSize.ProdInfoLst.Count > 0 && CutProCnt < optSize.ProdInfoLst.Count)
-            {
-                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                if (optSize.SetSimiMaterial())
                 {
-
-                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
-                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (i + 1).ToString() + Constant.startTips4);
-
-                    // ÊØèÊ†πÊï∞ÊçÆ‰∏ãÂèë                   
-                    DownLoadDataNormal(i);
-                   
-                    //plc ËÆ°Êï∞Âô® Ê∏ÖÈõ∂
-                    CountClr();
-                    //ÂºÄÂßãÂàáÂâ≤ËøõÁ®ã
-                    CutLoop(i);
-
+                    SetSimiReady();
+                }
+                else
+                {
+                    MessageBox.Show("≤ƒ¡œ…Ë÷√ ß∞‹£°");
                 }
             }
-            else
-            {
-                MessageBox.Show(Constant.noData);
-            }
         }
-        public void CutDoorShellThread()
+
+        public void SetDataShowCb(ListBox cb)
         {
-            //‰ªéÂì™‰∏ÄÊ†πÂºÄÂßãÂàá ÊöÇÂÆö ‰ªéÁ¨¨‰∏ÄÊ†π ÂºÄÂßã         
-            showWorkInfo("ÂáÜÂ§áÊï∞ÊçÆ‰∏ãÂèëÔºÅ");
-            if (optSize.ProdInfoLst.Count > 0 && CutProCnt< optSize.ProdInfoLst.Count)
+            if (cb !=null)
             {
-                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
-                {
-
-                    SaveProdDataLog(optSize.ProdInfoLst[i],i);
-
-                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (i + 1).ToString() + Constant.startTips4);
-                               
-                    DownLoadDataWithDoorShell(i);
-                    //ÊØèÊ†πÊï∞ÊçÆ‰∏ãÂèë
-                    showWorkInfo(Constant.startTips3);
-                    //Êï∞ÊçÆ‰∏ãÂèëÂêéÂêØÂä® 
-                    if (!startCutDoor(0))
-                    {
-                        MessageBox.Show(DeviceName+Constant.DeviceStartFailed);
-                        return ;
-                    }
-                    //plc ËÆ°Êï∞Âô® Ê∏ÖÈõ∂
-                    CountClr();
-                    //ÂºÄÂßãÂàáÂâ≤ËøõÁ®ã
-                    CutLoop(i);
-
-                    break;
-
-                }
-            }
-            else
-            {
-                MessageBox.Show(Constant.noData);
+                optSize.DataShowCb = cb;
             }
         }
 
-        public void CutRotateWithHoleThread()
+        public void SetDataShowLbl(Label lbl1)
         {
-            //‰ªéÂì™‰∏ÄÊ†πÂºÄÂßãÂàá ÊöÇÂÆö ‰ªéÁ¨¨‰∏ÄÊ†π ÂºÄÂßã
-         
-            if (optSize.ProdInfoLst.Count > 0 && CutProCnt < optSize.ProdInfoLst.Count)
+            if (lbl1 !=null)
             {
-                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
-                {
-                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (i + 1).ToString() + Constant.startTips4);
-
-                    //plc ËÆ°Êï∞Âô® Ê∏ÖÈõ∂
-                    CountClr();
-                    // ÊØèÊ†πÊï∞ÊçÆ‰∏ãÂèë                   
-                    DownLoadDataWithHoleAngle(i);
-                    //ÂºÄÂßãÂàáÂâ≤ËøõÁ®ã
-                    CutLoop(i);
-
-                }
-            }
-            else
-            {
-                MessageBox.Show(Constant.noData);
+                optSize.DataShowLbl = lbl1;
             }
         }
-         private void DownLoadDataNormal(int i)
-        {
 
-            SetLtbc();
-
-            List<int> DataList = new List<int>();
-            //Ê∑ªÂä†ÊñôÈïø 20170727 ÊñôÈïø‰∏çÂèëÈÄÅ‰∫Ü
-            // DataList.Add(optSize.ProdInfoLst[i].Len);
-            //D4998-„Äã0
-            // int value = 1;
-            //DataList.Add(value);
-            DataList.Add(optSize.ProdInfoLst[i].WL);
-            //Ê∑ªÂä†ÊÆµÊï∞
-            DataList.Add(optSize.ProdInfoLst[i].Cut.Count);
-
-            DataList.AddRange(optSize.ProdInfoLst[i].Cut);
-
-
-            //Êï∞ÊçÆ‰∏ãÂèë Á°Æ‰øùÊ≠£Á°Æ ‰∏ã‰ΩçÊú∫ÈúÄË¶ÅÁªô‰∏Ä‰∏™M16 È´òÁîµÂπ≥ ÊàëËøôËæπÊù•ÁΩÆOFF
-            //ÂèëÊï∞ÊçÆ‰∏âÊ¨° M16 Â¶ÇÊûúËøòÊ≤°ÊúâÁªôÈ´òÁîµÂπ≥
-            LogManager.WriteProgramLog(DeviceName + "Êï∞ÊçÆ‰∏ãÂèë");
-            for (int m = 0; m < 30; m++)
-            {
-                if (!RunFlag) break;
-                // ÊñôÊÆµÊï∞‰∏∫0 ‰∏ãÂèë
-                //if (wlInOutPs.ShowValue == 0)
-                //{                
-                LogManager.WriteProgramLog(DeviceName + Constant.DataDownLoad + m.ToString());
-
-                    if (evokDevice.SetMultiPleDValue(wlInOutPs, DataList.ToArray()))
-                    {
-                        LogManager.WriteProgramLog(DeviceName + Constant.DataDownLoadSuccess);
-                        //ÂèëÈÄÅÊòØÊñôÈïø ‰ΩÜÊñôÈïø‰∏çÊ∏ÖÈõ∂ Ë¶ÅËØªÂèñÊ∏ÖÈõ∂ÁöÑD5000Êï∞ÊçÆ ÊâÄ‰ª•Âè™ËÉΩÂä†Âª∂Êó∂
-                        //ConstantMethod.Delay(200);
-                        break;
-                        /****
-                        //ÊñôÊÆµÊï∞Â§ß‰∫é0  ‰ª£Ë°®ÂÜôÊàêÂäü‰∫Ü 
-                        if (wlInOutPs.ShowValue > 0)
-                        {
-                            //ÁÑ∂Âêé ËÆæÁΩÆM16 ‰∏∫È´ò ÂÜôÊàêÂäü‰∫Ü Â∞±ÈÄÄÂá∫Êù•
-                            if (evokDevice.SetMValueON(startCountInOutPs)) break;
-                        }
-                        ****/
-                   }
-               // }
-                if (m == 29)
-                {
-                    LogManager.WriteProgramLog(DeviceName + Constant.DataDownLoadFail);
-                }
-            }          
-        }
-
-        private void DownLoadDataWithHoleAngle(int i)
-        {
-            List<int> DataList = new List<int>();
-            List<ProdInfo> prod = optSize.ProdInfoLst;
-
-
-            //ÂÖàÊèêÂèñÂ≠îÂèÇÊï∞  ÂΩìÂâçËøôÊ†πÊñôÁöÑÊï∞ÊçÆ ÊèêÂèñÂ≠îÂèÇÊï∞ ËßíÂ∫¶ÂèÇÊï∞ ËßíÂ∫¶Ê≤°ÊúâÈªòËÆ§‰∏∫90Â∫¶          
-            for (int n = 0; n < optSize.SingleSizeLst[i].Count; n++)
-            {
-                if (!RunFlag) break;
-                SingleSizeWithHoleAngle p = new SingleSizeWithHoleAngle(
-                    optSize.SingleSizeLst[i][n].DtUser, optSize.SingleSizeLst[i][n].Xuhao
-                    );
-
-                p = ConstantMethod.Mapper<SingleSizeWithHoleAngle, SingleSize>(optSize.SingleSizeLst[i][n]);
-
-                optSize.ProdInfoLst[i].hole.Add(p.Hole);
-                optSize.ProdInfoLst[i].angle.Add(p.Angle);
-            }
-
-            for (int m = 0; m < 6; m++)
-            {
-                if (!RunFlag) break;
-                #region Â∏¶Â≠îÁöÑÂèÇÊï∞‰∏ãÂèë
-
-                //ÊÆµÊï∞‰∏∫Ëµ∑ÂßãÂú∞ÂùÄ ÔºöÊï∞ÊçÆÊ†ºÂºè D3000ÊÆµÊï∞	D3002ÊÆµÈïø	D3004ÊòØÂê¶ÊâìÂç∞	ÂâçËßíÂ∫¶	Â≠îÊï∞	Â≠î‰ΩçÁΩÆ	ËæπÈïø	Ê∑±Â∫¶
-                DataList.Add(optSize.ProdInfoLst[i].Cut.Count);  //ÊÆµÊï∞
-                                                                 //‰øùÂ≠ò‰∏ãÂú∞ÂùÄ
-                int ldsCountInOutPsAddr = wlInOutPs.Addr;
-                #region ÂºÄÂßã‰∏ãÂèëÂ≠îÂíåËßíÂ∫¶ Â∞∫ÂØ∏Á≠âÊï∞ÊçÆ
-                if (prod[i].hole.Count > 0 && prod[i].angle.Count > 0)
-                    for (int sizeid = 0; sizeid < prod[i].Cut.Count; sizeid++)
-                    {
-                        DataList.Add(prod[i].Cut[sizeid]);  //ÊÆµÈïø
-                        DataList.Add(1);  //Êù°Á†ÅÊâìÂç∞Ê†áÂøó
-                        int holecount0 = 0;
-                        //ÊÄªÂÖ±10‰∏™Â≠î ÂèñÂâçÈù¢ 5‰∏™
-                        //ÂâçËßíÂ∫¶ ÂâçËßíÂ∫¶ÂíåÂ≠îÊï∞30 Ë¶ÅÂ°´Êª°
-                        for (int holecount = 0; holecount < prod[i].hole[sizeid].Count() / 2; holecount = holecount + 3)
-                        {
-                            if (prod[i].hole[sizeid][holecount] > 0)
-                                holecount0++;
-                        }
-                        DataList.Add(prod[i].angle[sizeid][0]);
-                        DataList.Add(holecount0);
-
-                        for (int addhole = 0; addhole < 10 * 3; addhole++)
-                        {
-                           
-                            DataList.Add(prod[i].hole[sizeid][addhole]);
-                        }
-                        //ÂêéËßíÂ∫¶ Á¨¨‰∏âÂçÅ‰∏™Êï∞ÊçÆÊâçÊòØÂêéËßíÂ∫¶Â≠îÁöÑÂºÄÂßã ÂêéÈù¢‰∏çÈúÄË¶ÅÂ°´Êª°
-                        int holecount1 = 0;
-                        for (int holecount = 30; holecount < prod[i].hole[sizeid].Count(); holecount = holecount + 3)
-                        {
-                            if (prod[i].hole[sizeid][holecount] > 0)
-                                holecount1++;
-                        }
-
-                        DataList.Add(prod[i].angle[sizeid][1]);
-                        DataList.Add(holecount1);
-                        //ÈªòËÆ§ÂèñÂêéÈù¢‰∏â‰∏™‰∏™Êï∞ÊçÆ
-                        for (int addhole = 30; addhole < 30 + holecount1 * 3; addhole++)
-                        {
-                            DataList.Add(prod[i].hole[sizeid][addhole]);
-
-                        }                                         
-                        evokDevice.SetMultiPleDValue(wlInOutPs, DataList.ToArray());
-                                              
-                        LogManager.WriteProgramLog(DeviceName + Constant.DataDownLoad + wlInOutPs.Addr.ToString());                       
-
-                        DataList.Clear();
-
-                        //Âú∞ÂùÄÂÅèÁßª ÊåâÁÖßÁ∫¶ÂÆöÁöÑË°®Ê†ºÂçèËÆÆÊù•
-                        if (sizeid == 0)
-                        {
-                            wlInOutPs.Addr += 134;
-                        }
-                        else
-                            wlInOutPs.Addr += 132;
-
-                    }
-
-                //ÊÅ¢Â§çÂú∞ÂùÄ
-                wlInOutPs.Addr = ldsCountInOutPsAddr;
-                //Ê£ÄÈ™å‰∏Ä‰∏ãÁ¨¨‰∏ÄÁªÑÊï∞ÊçÆÂ∞±Âæó‰∫Ü Âõ†‰∏∫ÂÖ∂‰ªñÂú∞ÂùÄÂú®Âèò Ê†πÊú¨Ê≤°Ê≥ïËØªÂèñ
-                if (wlInOutPs.ShowValue == prod[i].Cut.Count)
-                {
-                    if (evokDevice.SetMValueON(startCountInOutPs)) break;
-                }               
-            }
-            #endregion
-
-            #endregion
-
-                //Êï∞ÊçÆ‰∏ãÂèë Á°Æ‰øùÊ≠£Á°Æ ‰∏ã‰ΩçÊú∫ÈúÄË¶ÅÁªô‰∏Ä‰∏™M16 È´òÁîµÂπ≥ ÊàëËøôËæπÊù•ÁΩÆOFF
-                //ÂèëÊï∞ÊçÆ‰∏âÊ¨° M16 Â¶ÇÊûúËøòÊ≤°ÊúâÁªôÈ´òÁîµÂπ≥ Â∞±ÈÄÄÂá∫
-                int valueWriteOk = 0;
-                //‰ΩøÁî®‰∏ãÊµãÈïøÁöÑÂª∂Êó∂ÂáΩÊï∞ Ëµ∑ÂßãÂíåÊµãÈïøÂ∑Æ‰∏çÂ§öÁöÑ Â∞±ÊòØÊï∞ÊçÆ‰∏ãÂèë Á≠âÊú∫Âô®Á°ÆËÆ§
-                ConstantMethod.DelayMeasure(Constant.PlcCountTimeOut,
-                         ref valueWriteOk,
-                         ref startCountInOutPs,
-                         ref emgStopInPs, ref mRunFlag);
-
-                if (startCountInOutPs.ShowValue != valueWriteOk)
-                {
-                    MessageBox.Show(Constant.PlcReadDataError);
-                    LogManager.WriteProgramLog(DeviceName + Constant.PlcReadDataError);
-                    RunFlag = false;
-                    //Environment.Exit(0);
-                    return;
-                }            
-        }
-        private void DownLoadDataWithDoorShell(int i)
-        {
-
-            //Êï∞ÊçÆÂÖàÂàÜÁªÑ
-            List<List<int>> DataList = new List<List<int>>();
-            List<List<int>> DataWidth = new List<List<int>>();
-            List<int> sizeInt = new List<int>();
-            List<int> sizeIntWidth = new List<int>();
-            int ptr = 0;
-            if (optSize.ProdInfoLst.Count == 1)
-            {
-
-                while (ptr < optSize.ProdInfoLst[0].Cut.Count)
-                {
-                    if (!RunFlag) break;
-                    if (ptr % 50 == 0)
-                    {
-                        sizeInt = new List<int>();
-                        sizeIntWidth = new List<int>();
-                        DataList.Add(sizeInt);
-                        DataWidth.Add(sizeIntWidth);
-                    }
-
-                    sizeInt.Add(optSize.ProdInfoLst[0].Cut[ptr]);
-                    int width = 0;
-                    if (!int.TryParse(optSize.ProdInfoLst[0].Param1[ptr], out width))
-                    {
-                        MessageBox.Show("ÂÆΩÂ∫¶ËæìÂÖ•ÈîôËØØÔºÅ");
-                        break;
-                    }
-
-                    width = width * Constant.dataMultiple;
-
-                    sizeIntWidth.Add(width);
-                    ptr++;
-                    Application.DoEvents();
-                }
-            }
-
-
-            int wlAddr = heightCountInOutPs.Addr;
-            int widthAddr = widthCountInOutPs.Addr;
-            DataList[0].Insert(0, optSize.ProdInfoLst[0].Cut.Count);
-            DataWidth[0].Insert(0, optSize.ProdInfoLst[0].Cut.Count);
-            //ÂàÜÊÆµ‰∏ãÂèëÊï∞ÊçÆ        
-            for (int j = 0; j < DataList.Count(); j++)
-            {
-               
-                if (evokDevice.SetMultiPleDValue(heightCountInOutPs, DataList[j].ToArray()) &&
-                evokDevice.SetMultiPleDValue(widthCountInOutPs, DataWidth[j].ToArray()))
-                {
-                    //ÂèëÈÄÅÊòØÊñôÈïø ‰ΩÜÊñôÈïø‰∏çÊ∏ÖÈõ∂ Ë¶ÅËØªÂèñÊ∏ÖÈõ∂ÁöÑD5000Êï∞ÊçÆ ÊâÄ‰ª•Âè™ËÉΩÂä†Âª∂Êó∂
-                    ConstantMethod.Delay(200);
-                    heightCountInOutPs.Addr = heightCountInOutPs.Addr + 2 * DataList[j].Count;
-                    //ÊñôÊÆµÊï∞Â§ß‰∫é0  ‰ª£Ë°®ÂÜôÊàêÂäü‰∫Ü 
-                    widthCountInOutPs.Addr = widthCountInOutPs.Addr + 2 * DataWidth[j].Count;
-
-                }
-
-            }
-            heightCountInOutPs.Addr = wlAddr;
-            widthCountInOutPs.Addr = widthAddr;
-            
-            //ÊúÄÂêéÁªô‰∏™ÂêØÂä®‰ø°Âè∑
-           // evokDevice.SetMValueOFF2ON(startCountInOutPs);
-            
-        }
-        private void DownLoadDataWithDoorBanWidth(int i)
-        {
-          
-            //Êï∞ÊçÆÂÖàÂàÜÁªÑ
-            List<List<int>> DataWidth = new List<List<int>>();
-            List<int> sizeIntWidth = new List<int>();
-            DataWidth.Add(sizeIntWidth);
-            for (int j = 0; j < optSize.ProdInfoLst.Count; j++)
-            {
-                if (!RunFlag) break;
-                int ptr = 0;
-                while (ptr < optSize.ProdInfoLst[j].Cut.Count)
-                {
-                    if (!RunFlag) break;
-                    if (DataWidth.Count>0 && DataWidth.Last().Count>49 )
-                    {
-
-                        sizeIntWidth = new List<int>();
-
-                        DataWidth.Add(sizeIntWidth);
-                    }
-
-                    int width = 0;
-                    if (!int.TryParse(optSize.ProdInfoLst[j].Param1[ptr], out width))
-                    {
-                        MessageBox.Show("ÂÆΩÂ∫¶ËæìÂÖ•ÈîôËØØÔºÅ");
-                        break;
-                    }
-
-                    width = width * Constant.dataMultiple;
-                    sizeIntWidth.Add(width);
-                    ptr++;
-                    Application.DoEvents();
-                }
-            }
-            
-            int widthAddr = widthCountInOutPs.Addr;
-            int widthCnt = 0;
-            for (int m = 0; m < DataWidth.Count; m++)
-            {
-                widthCnt = widthCnt + DataWidth[m].Count;
-            }    
-                
-            DataWidth[0].Insert(0, widthCnt);
-            //ÂàÜÊÆµ‰∏ãÂèëÊï∞ÊçÆ        
-            for (int j = 0; j < DataWidth.Count(); j++)
-            {
-                if (!RunFlag) break;
-                if (evokDevice.SetMultiPleDValue(widthCountInOutPs, DataWidth[j].ToArray()))
-                {
-                    //ÂèëÈÄÅÊòØÊñôÈïø ‰ΩÜÊñôÈïø‰∏çÊ∏ÖÈõ∂ Ë¶ÅËØªÂèñÊ∏ÖÈõ∂ÁöÑD5000Êï∞ÊçÆ ÊâÄ‰ª•Âè™ËÉΩÂä†Âª∂Êó∂
-                    ConstantMethod.Delay(100);                 
-                    //ÊñôÊÆµÊï∞Â§ß‰∫é0  ‰ª£Ë°®ÂÜôÊàêÂäü‰∫Ü 
-                    widthCountInOutPs.Addr = widthCountInOutPs.Addr + 2 * DataWidth[j].Count;
-
-                }
-
-            }
-            widthCountInOutPs.Addr=  widthAddr;
-            if (wlInOutPs.ShowValue > 0)
-            {
-                //ÊúÄÂêéÁªô‰∏™ÂêØÂä®‰ø°Âè∑
-                evokDevice.SetMValueOFF2ON(startCountInOutPs);
-            }          
-        }
-         
-        string CurrentDoorType = "123456789";
-        private int DoorTypeCount(string doorType,string[] doorNextTypeLst)
-        {
-            int sum = 0;
-            for (int i = 0; i < doorNextTypeLst.Count(); i++)
-            {
-                if (doorType != doorNextTypeLst[i]) break;
-                sum = sum + 1;
-            }
-
-            return sum;
-
-        }
         private void SetDoorTypeCutCount(int value)
         {
-            List<int> valLst = new List<int>();
-            
-            valLst.Add(value);
-            valLst.Add(1);
-            valLst.Add(1);
-            evokDevice.SetMultiPleDValue(doorTypeCutCountOutInPs, valLst.ToArray());
+            evokDevice.SetMultiPleDValue(doorTypeCutCountOutInPs, new List<int> {
+                value,
+                1,
+                1
+            }.ToArray());
         }
-        //Èó®ÂûãÂàÄÊï∞‰∏∫ËÆ¢ÂçïÂè∑ ÂèÇÊï∞11 201212231358 ‰øÆÊîπ
-        private void CutLoop(int i,int printdMode)
+
+        public bool SetDValue(PlcInfoSimple p, string num)
         {
-            //ÊâìÁ¨¨‰∏ÄÊù°Êù°Á†Å ÂèÇÊï∞10 ÊòØÈó®Âûã
-            if (optSize.SingleSizeLst[i].Count > 0 && !CurrentDoorType.Equals(optSize.SingleSizeLst[i][0].ParamStrLst[Constant.doorId]))
+            double result = 0.0;
+            if (double.TryParse(num, out result))
             {
-                //20181015ÊâìÂç∞Á¨¨‰∏Ä‰∏™Â∞∫ÂØ∏ ‰ΩÜÊòØÂ∞è‰∫éÊúÄÂ∞èÂ∞∫ÂØ∏ ‰πü‰∏çÊâìÂç∞
-                /****
-                ChangePrintMode(Constant.AutoBarCode);               
-                printBarcode(printReport, optSize.SingleSizeLst[i][0].ParamStrLst.ToArray());
-                ****/
-                CurrentDoorType = optSize.SingleSizeLst[i][0].ParamStrLst[Constant.doorId];
-                PrintBarCheck(optSize.SingleSizeLst[i][0]);
-                //‰∏ãÂèëÈó®ÂûãË¶ÅÂàáÁöÑÂàÄÊï∞
-                if (!DeviceName.Equals(Constant.scjDeivceName))
+                if ((result > p.MaxValue) || (result < p.MinValue))
                 {
-                    List<string> nextDoorType = new List<string>();
-                    for (int m = i; m < optSize.ProdInfoLst.Count(); m++) //ÊääÂêéÈù¢ÁöÑÈó®Âûã ÈÉΩÊ∑ªÂä†ËøõÊù•
-                    {
-                        nextDoorType.AddRange(optSize.ProdInfoLst[m].Param10);
-                    }
-                    int cutCntDoorType = DoorTypeCount(CurrentDoorType, nextDoorType.ToArray());
-                    if (cutCntDoorType > 0) SetDoorTypeCutCount(cutCntDoorType);
+                    MessageBox.Show(Constant.dataOutOfRange + p.MinValue.ToString() + "--" + p.MaxValue.ToString());
+                    return false;
                 }
+                result *= p.Ration;
             }
-        
-          
-            int oldcCount = 0;//‰øùÂ≠òÁöÑËÄÅËÆ°Êï∞ÂÄº        
-
-            while (RunFlag)
+            if (p !=null)
             {
-                Application.DoEvents();
-
-                Thread.Sleep(10);
-                int newCount = cutDoneOutInPs.ShowValue;
-
-                //ËøôÈáåÊï¥ÁêÜÊàêÂáΩÊï∞ ÊÄ•ÂÅú Êä•Èîô ÊàñËÄÖÊúâÈîôËØØ
-                if ((!RunFlag || IsInEmg || errorList.Count>0))
-                {
-                    ConstantMethod.ShowInfo(rtbWork, Constant.emgStopTip);
-                    LogManager.WriteProgramLog(DeviceName + Constant.emgStopTip);
-                    stopOperation();
-                   //stop();
-                    return;
-                }
-
-                if (newCount != oldcCount && oldcCount < optSize.ProdInfoLst[i].Cut.Count)
-                {
-                    int oldCutCount = 0;
-                    if (!optSize.SingleSizeLst[i][oldcCount].Barc.Equals(Constant.ScarId))
-                        if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2].ToString(), out oldCutCount))
-                        {
-                            oldCutCount++;
-                            //Ê¢≥ÈΩøÊú∫ÊúâË¶ÅÊ±Ç Âú®ÂèëÁé∞Èó®ÂûãÂèòÂåñÊó∂ ÊâìÂç∞‰∏Ä‰∏ã ÂêéÈù¢‰∏çÂÜçËøõÂÖ•Âà∞ËøôÈáå ÂÖ≥ÊéâPLC‰ø°Âè∑
-                            if (DeviceProperty == Constant.scjDeivceId)
-                            {
-                                if (plcHandlebarCodeOutInPs != null)
-                                    evokDevice.SetMValueOFF(plcHandlebarCodeOutInPs);
-                                // ChangePrintMode(Constant.AutoBarCode);
-                            }
-                            optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2] = oldCutCount;
-                            optSize.checkIsDone(optSize.SingleSizeLst[i][oldcCount].Xuhao);
-                        }
-
-                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (oldcCount + 1).ToString() + Constant.size + optSize.ProdInfoLst[i].Cut[oldcCount].ToString() + Constant.startTips5);
-                    ConstantMethod.ShowInfo(rtbWork, CurrentDoorType);
-                    oldcCount = newCount;
-                    if (newCount < optSize.SingleSizeLst[i].Count)
-                    {
-                        if (!CurrentDoorType.Equals(optSize.SingleSizeLst[i][newCount].ParamStrLst[Constant.doorId]))
-                        {
-                   
-                            CurrentDoorType = optSize.SingleSizeLst[i][newCount].ParamStrLst[Constant.doorId];
-                            if (newCount < optSize.SingleSizeLst[i].Count)
-                            PrintBarCheck(optSize.SingleSizeLst[i][newCount]);
-
-                            //‰∏ãÂèëÈó®ÂûãË¶ÅÂàáÁöÑÂàÄÊï∞
-                            if (!DeviceName.Equals(Constant.scjDeivceName))
-                            {
-                                List<string> nextDoorType = new List<string>();
-                                nextDoorType.AddRange(optSize.ProdInfoLst[i].Param10.Skip(newCount).Take(optSize.ProdInfoLst[i].Param10.Count - newCount));
-                                for (int m = i + 1; m < optSize.ProdInfoLst.Count(); m++) //ÊääÂêéÈù¢ÁöÑÈó®Âûã ÈÉΩÊ∑ªÂä†ËøõÊù•
-                                {
-                                    nextDoorType.AddRange(optSize.ProdInfoLst[m].Param10);
-                                }
-                                int cutCntDoorType = DoorTypeCount(CurrentDoorType, nextDoorType.ToArray());
-                                if (cutCntDoorType > 0) SetDoorTypeCutCount(cutCntDoorType);
-                            }
-                        }
-                    }
-                }
-                if (newCount >= optSize.ProdInfoLst[i].Cut.Count)
-                {
-                    break;
-                }
+                return evokDevice.SetDValue(p, (int)result);
             }
-            
-        }
-        
-        //Â¶ÇÊûúÂ∞∫ÂØ∏Â∞è‰∫éÊúÄÂ∞èÊâìÂç∞Â∞∫ÂØ∏ ‰∏îÊòØËá™Âä®ÊâìÂç∞Ê®°Âºè  ÈÇ£Â∞±‰∏çÊâìÂç∞
-        private void PrintBarCheck(SingleSize ss) //ËØ¥Êòé‰∏ã Ëøô‰∏™Âú®ÂèÇÊï∞ËÆæÁΩÆÈáåÊúâ‰øùÂ≠òÊâìÂç∞‰∏é‰∏çÊâìÂç∞ÁöÑÊ†áÂøó‰Ωç ‰ªÖÁî®‰∫éË¶ÅÊâìÂç∞ÁöÑÊÉÖÂÜµ‰∏ã ‰∏çÊâìÂç∞
-        {
-           // ConstantMethod.ShowInfo(rtbWork, "debug" + minPrinterName+""+printMiniSizeOutInPs.ShowValue+"  "+ss.Cut+"  "+PrintBarCodeMode.ToString()+"\n");
-
-            if (printMiniSizeOutInPs!=null && printMiniSizeOutInPs.ShowValue > ss.Cut && PrintBarCodeMode == Constant.AutoBarCode)
-            {
-               // ConstantMethod.ShowInfo(rtbWork, "debug ENTER  ");
-
-                //Â¶ÇÊûúÈÄâÊã©‰∫Ü Ëá™Âä®ÊâìÂç∞Êù°Á†Å ÂÆ¢Êà∑ÂèàÊåáÂÆö‰∫ÜÁ¨¨‰∫åÂè∞ÊâìÂç∞Êú∫ ÈÇ£Â∞±ÊâìÂç∞Âëó
-                if (minPrinterName != "" && printMiniSizeOutInPs.ShowValue > ss.Cut && ConstantMethod.GetLocalPrinter().Contains(minPrinterName))
-                {
-                    printReport.PrintSettings.Printer = minPrinterName;
-                    printBarcode(printReport, ss.ParamStrLst.ToArray());
-                }
-                else printReport.PrintSettings.Printer = ConstantMethod.DefaultPrinter;
-
-                evokDevice.SetMValueOFF
-                (plcHandlebarCodeOutInPs);
-                //‰∏çÊâìÂç∞ ÂÖ≥ÊéâHM4
-                return;
-            }
-            if (ss.ParamStrLst.ToArray().Length > 0 && ss.ParamStrLst.ToArray()[0].ToString().Equals(Constant.ScarId))
-            {
-                evokDevice.SetMValueOFF
-               (plcHandlebarCodeOutInPs);
-                //‰∏çÊâìÂç∞ ÂÖ≥ÊéâHM4
-                return;
-            }
-            //Â¶ÇÊûú‰πãÂâçÊòØÈúÄË¶ÅÊâìÂç∞ÁöÑ ÊÅ¢Â§çPLC ËæìÂá∫
-            if ( OldPrintBarCodeMode == Constant.AutoBarCode)
-            {
-               evokDevice.SetMValueON
-              (plcHandlebarCodeOutInPs);
-            }
-
-            //1.ÊâìÂç∞ÊµãËØï
-            //Âú®D4880 ËÆ°Êï∞ËøáÂø´ÁöÑÂú∞Êñπ ÂÆπÊòìÁªüËÆ°Â∑≤ÂàáÊï∞Èáè‰∏çÂáÜ ÊîπÁî®Á∫øÁ®ãÁöÑÊñπÂºè
-            //printBarcode(printReport, ss.ParamStrLst.ToArray(), true);
-
-            //2.
-            //‰ΩøÁî®‰∏ãÈù¢Ëøô‰∏™ÊâìÂç∞ Âú®D4880 ËÆ°Êï∞Â§™Âø´Êó∂ ÂÆπÊòìÁªüËÆ°ÊºèÊéâÂ∑≤ÂàáÊï∞Èáè 
-            //‰ΩÜÂú®ÂÆûÈôÖÂΩì‰∏≠‰∏ç‰ºöÈÇ£‰πàÂø´ ÊµãËØïÊó∂Âú® ÊâìÂç∞Èó¥ÈöîÂåÖÂê´3Áßí‰ª•‰∏äÂ∞±ÂèØ‰ª•
-           
-
-            printBarcode(printReport, ss.ParamStrLst.ToArray());
-        }
-        private int CutLoop(int i)
-        {
-            //ÊâìÁ¨¨‰∏ÄÊù°Êù°Á†Å
-            if (optSize.SingleSizeLst[i].Count > 0)
-            {
-                PrintBarCheck(optSize.SingleSizeLst[i][0]);
-            }              
-
-            int oldcCount = 0;//‰øùÂ≠òÁöÑËÄÅËÆ°Êï∞ÂÄº
-            while (RunFlag)
-            {
-                Application.DoEvents();
-
-                Thread.Sleep(10);
-
-                int newCount  = cutDoneOutInPs.ShowValue;
-                
-                //ËøôÈáåÊï¥ÁêÜÊàêÂáΩÊï∞
-                if ((!RunFlag || IsInEmg))
-                {
-                    ConstantMethod.ShowInfo(rtbWork, Constant.emgStopTip);
-                    LogManager.WriteProgramLog(DeviceName + Constant.emgStopTip);
-                    //  stop();
-                    stopOperation();
-                    return -1;
-                }
-
-                if (ErrorList.Count > 0)
-                {
-                    RunFlag = false;
-                    //stop();
-                    stopOperation();
-                    return -2;
-                }
-                if (newCount != oldcCount && oldcCount < optSize.ProdInfoLst[i].Cut.Count)
-                {
-                    int oldCutCount = 0;
-                    if(!optSize.SingleSizeLst[i][oldcCount].Barc.Equals(Constant.ScarId))
-                    if (int.TryParse(optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2].ToString(), out oldCutCount))
-                    {
-                        oldCutCount++;
-                        optSize.SingleSizeLst[i][oldcCount].DtUser.Rows[optSize.SingleSizeLst[i][oldcCount].Xuhao][2] = oldCutCount;
-                        optSize.checkIsDone(optSize.SingleSizeLst[i][oldcCount].Xuhao);
-                    }
-                    if (optSize.ProdInfoLst[i].Param1.Count > 0)
-                        ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (oldcCount + 1).ToString() + Constant.size + optSize.ProdInfoLst[i].Cut[oldcCount].ToString() +
-                            Constant.startTips6 + optSize.ProdInfoLst[i].Param1[oldcCount].ToString() + Constant.startTips5);
-                    else
-                    {
-                        ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (oldcCount + 1).ToString() + Constant.size + optSize.ProdInfoLst[i].Cut[oldcCount].ToString() +
-                              Constant.startTips5);
-                    }
-                    oldcCount = newCount;
-
-                    
-                    //Â∞∫ÂØ∏Â§™Áü≠ Â∞±‰∏çÊâìÂç∞ Á¥¢Ëè≤‰∫öÂ¢ûÂä† 20181015 ÈÄÇÁî®‰∫éÂÖ®ÈÉ®ÁâàÊú¨ 
-                    if(newCount<optSize.SingleSizeLst[i].Count)
-                    PrintBarCheck(optSize.SingleSizeLst[i][newCount]);
-                                               
-                    
-                } 
-                              
-                if (newCount >= optSize.ProdInfoLst[i].Cut.Count) break;
-            }
-
-            return 0;
-        }
-        private void  CountClr()
-        {
-            int i = 0;
-            while ((!evokDevice.SetDValue(cutDoneOutInPs, 0)&&(i<10)))
-            {
-                i++;
-            }               
+            MessageBox.Show(Constant.SetDataFail);
+            return false;
         }
 
-        private void CutWorkThreadWithShuchi()
-        {
-            //‰ªéÂì™‰∏ÄÊ†πÂºÄÂßãÂàá ÊöÇÂÆö ‰ªéÁ¨¨‰∏ÄÊ†π ÂºÄÂßã           
-            CurrentDoorType = "1----";
-            if (optSize.ProdInfoLst.Count > 0)
-            {
-                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
-                {
-                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (i + 1).ToString() + Constant.startTips4);
-                    //plc ËÆ°Êï∞Âô® Ê∏ÖÈõ∂
-                    CountClr();
-                    // ÊØèÊ†πÊï∞ÊçÆ‰∏ãÂèë                   
-                    DownLoadDataNormalWithShuchi(i);
-                    //ÂºÄÂßãÂàáÂâ≤ËøõÁ®ã
-                    CutLoop(i,0);
-
-                }
-            }
-            else
-            {
-                MessageBox.Show(Constant.noData);
-            }
-
-        }
-        //ÂΩìÊï∞ÊçÆÊï∞ÈáèÂ∞è‰∫éÊüê‰∏™Êï∞Êó∂ ÂºÄÁÅØÊèêÈÜí 20181019 Á¥¢Ëè≤‰∫öÂª∫ËÆÆ
-        void CheckIsDataNotEnough(int id)
-        {
-            int count = 0;
-
-            //ÊµãÈïøÊ®°Âºè ËÄÉËôësizeleft  Âê¶ÂàôÊòØÊâãÂä®ÊéíÁâàÁöÑ
-            if (AutoMes)
-            {
-                if (optSize.SizeLeft < dataNotEnoughValueOutInPs.ShowValue)
-                {
-                    OpenDataNotEnough();
-                }
-            }
-            else
-            {
-                if (id < optSize.ProdInfoLst.Count)
-                {
-                    for (int i = id; i < optSize.ProdInfoLst.Count; i++)
-                    {
-                        count = count+optSize.ProdInfoLst[i].Cut.Count;
-                    }
-                }
-                if (count < dataNotEnoughValueOutInPs.ShowValue)
-                    OpenDataNotEnough();
-                else
-                    CloseDataNotEnough();
-            }
-        }
-        /// <summary>
-        /// Ê≠£Â∏∏ÊµãÈïøÂàáÂâ≤
-        /// </summary>
-        private void CutWorkThread()
-        {
-            //‰ªéÂì™‰∏ÄÊ†πÂºÄÂßãÂàá ÊöÇÂÆö ‰ªéÁ¨¨‰∏ÄÊ†π ÂºÄÂßã                   
-            if (optSize.ProdInfoLst.Count > 0)
-            {             
-                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
-                {
-                   
-                    CheckIsDataNotEnough(i);
-                    //Á¥¢Ëè≤‰∫öË¶ÅÊ±Ç Â¢ûÂä†Áîü‰∫ßËÆ∞ÂΩï Ê†πÊçÆÁî®Êà∑ÈÖçÁΩÆÂèÇÊï∞Êù•Êîπ
-                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
-                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + (i + 1).ToString() + Constant.startTips4);                                      
-                    //plc ËÆ°Êï∞Âô® Ê∏ÖÈõ∂
-                    CountClr();
-                    
-                    // ÊØèÊ†πÊï∞ÊçÆ‰∏ãÂèë                   
-                    DownLoadDataNormal(i);
-                    //ÂºÄÂßãÂàáÂâ≤ËøõÁ®ã                   
-                    CutLoop(i);
-
-                }                
-            }
-            else
-            {
-                MessageBox.Show(Constant.noData);
-            }
-
-        }
-
-        /// <summary>
-        /// Êï∞ÊçÆÂèëÈÄÅÂÆåÊàê  ÂèØ‰ª•‰∏ÄËµ∑ÂêåÊ≠•ËÆ°Êï∞‰∫ÜÂì¶
-        /// </summary>
-        public void StartCountClr()
-        {
-            if (!evokDevice.SetMValueOFF(startCountInOutPs))
-            {
-                ConstantMethod.Delay(100);  //Âª∂Êó∂‰∏Ä‰∏ã Âà§Êñ≠ÊòØÂê¶Ê≤°ËØªÂà∞
-            }
-        }
-        #endregion
-        #region ‰ºòÂåñ
-        public bool LoadCsvData(string filename)
-        {
-            if(lcOutInPs!=null)
-            optSize.Len = lcOutInPs.ShowValue;
-            if (dbcOutInPs != null)
-                optSize.Dbc = dbcOutInPs.ShowValue;
-            if (ltbcOutInPs != null)
-                optSize.Ltbc = ltbcOutInPs.ShowValue;
-
-            if (safeOutInPs != null)
-                optSize.Safe = safeOutInPs.ShowValue;
-
-            optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
-            return optSize.LoadCsvData(filename);
-        }
-        //ÂàÜÂè∑ÂàÜÈöîÁ¨¶
-        public void LoadCsvData0(string filename)
-        {
-            optSize.Len = lcOutInPs.ShowValue;
-            optSize.Dbc = dbcOutInPs.ShowValue;
-            optSize.Ltbc = ltbcOutInPs.ShowValue;
-            optSize.Safe = safeOutInPs.ShowValue;
-            
-            optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
-            optSize.LoadCsvData0(filename);
-        }
-        public void LoadExcelData(string filename)
-        {
-            optSize.Len = lcOutInPs.ShowValue;
-            optSize.Dbc = dbcOutInPs.ShowValue;
-            optSize.Ltbc = ltbcOutInPs.ShowValue;
-            optSize.Safe = safeOutInPs.ShowValue;
-            if (wlMiniSizeOutInPs != null)
-                optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
-            optSize.LoadExcelData(filename);
-        }
-        #endregion
-
-        #region Ëá™Âä®ÊµãÈïø
-
-        private void SelectCutThread(int cutid)
-        {
-            switch (cutid)
-            {
-                case Constant.CutNormalMode:
-                    {
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutWorkThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥                 
-                        break;
-                    }
-                case Constant.CutMeasureWithScarSplitNoSize:
-                    {
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutWorkThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥                 
-                        break;
-                    }
-                case Constant.CutMeasureMode:
-                    {
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutWorkThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥                
-                        break;
-                    }
-                case Constant.CutMeasureRotateWithHoleMode:
-                    {
-
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutRotateWithHoleThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥
-
-                        break;
-                    }
-                case Constant.CutNormalWithHoleMode:
-                    {
-
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutRotateWithHoleThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥
-
-              
-                        break;
-                    }
-                case Constant.CutNormalDoorShellMode:
-                    {
-
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutDoorShellThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥
-
-
-                        break;
-                    }
-                case Constant.CutNormalDoorBanMode:
-                    {
-
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutDoorBanThread);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥
-
-
-                        break;
-                    }
-                case Constant.CutNormalWithShuChiMode:
-                    {
-
-                        if (CutThreadStart == null)
-                            CutThreadStart = new ThreadStart(CutWorkThreadWithShuchi);
-                        //ÂàùÂßãÂåñThreadÁöÑÊñ∞ÂÆû‰æãÔºåÂπ∂ÈÄöËøáÊûÑÈÄ†ÊñπÊ≥ïÂ∞ÜÂßîÊâòtsÂÅö‰∏∫ÂèÇÊï∞ËµãÂàùÂßãÂÄº„ÄÇ
-                        if (CutThread == null)
-                            CutThread = new Thread(CutThreadStart);   //ÈúÄË¶ÅÂºïÂÖ•System.ThreadingÂëΩÂêçÁ©∫Èó¥
-
-
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
-        }
-        //Á¥¢Ëè≤‰∫öÂ∞∫ÂØ∏ ‰ºòÂåñÂá∫Êù• ÊúÄÂ•Ω‰∏çË¶Å‰∏ÄÂàÄ ÂèØ‰ª•ËÆæÁΩÆÂ§öÂàÄ
-        public int CutStartMeasure(bool split, int cutid,int cutCount)
-        {
-            //ÂÖàËé∑ÂèñÈªòËÆ§Ë°•ÂÅø
-            int defaultLtbc = ltbcDefaultOutInPs.ShowValue;
-
-            if (IsInEmg)
-            {
-                MessageBox.Show(Constant.emgStopTip);
-                return -1;
-            }
-            LogManager.WriteProgramLog(DeviceName + Constant.AutoMeasureMode);
-
-            //ÂêØÂä®
-            start(cutid);
-
-            //Á≠âÂæÖ ÊµãÈáè
-            while (mRunFlag)
-            {
-                int valueOld = 1;
-
-                LogManager.WriteProgramLog(DeviceName + Constant.MeasureSt);
-
-                ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs, ref emgStopInPs, ref mRunFlag);
-
-                if (IsInEmg)
-                {
-                    //  stop();
-                    stopOperation();
-                    MessageBox.Show("ÊÄ•ÂÅúÔºÅ");
-                    return -2;
-                }
-
-                LogManager.WriteProgramLog(DeviceName + Constant.MeasureEd);
-
-                if (autoCCInPs.ShowValue == Constant.M_ON)
-                {
-
-                    evokDevice.SetMValueOFF(autoCCInPs);
-
-                    optSize.Len = lcOutInPs.ShowValue;
-
-                    if (scarInPs.ShowValue > 0)
-                    {
-
-                        //ÂºÄÂßã‰ºòÂåñ ÁªìÂ∑¥ ËøòÊòØÊµãÈïø   
-                        if (GetScar(optSize, scarInPs.ShowValue) == Constant.GetScarSuccess)
-                        {
-                            optSize.Ltbc = defaultLtbc;
-                            //ËøõË°åÈÄâÊã© Â∞∫ÂØ∏‰∏éÁªìÁñ§ÂàÜÁ¶ª ËøòÊòØÂçïÁã¨ÂéªÈô§ÁªìÁñ§
-                            if (cutid == Constant.CutMeasureWithScarSplitNoSize)
-                            {
-                                optSize.OptMeasureWithScarCheckAndNoSize(split, rtbResult, optSize.DtData);
-                            }
-                            else //ÂºÄÂßã‰ºòÂåñËøõË°å          
-                                optSize.OptMeasureWithScarCheck(split, rtbResult, optSize.DtData);
-                        }
-                        else
-                        {
-                            MessageBox.Show(Constant.GetScarError);
-                            return -2;
-                        }
-                    }
-                    else
-                    {
-                        optSize.Ltbc = defaultLtbc;
-                        optSize.OptMeasure(rtbResult);
-                    }
-
-                    if (optSize.ProdInfoLst.Count < 1)
-                    {
-                        //20180922ÂΩìÊúâÊï∞ÊçÆÁöÑÊó∂ÂÄô Ê≤°ÊúâÂêàÈÄÇÁöÑÊñôÈïø ÂàôË¶ÅÂëäËØâPLC ËøõË°åÂ§ÑÁêÜ ÁÑ∂ÂêéÁªßÁª≠Á≠âÂæÖ‰∏ã‰∏ÄÊ†πÊñô
-                        if (optSize.ValueAbleRow.Count > 0)
-                        {
-                            noSizeToCut();
-                            goto NEXTOPT;
-                        }
-                        else
-                        {
-                            //MessageBox.Show(Constant.noData);
-                            break;
-                        }
-
-                    }
-                }
-                else
-                {
-                    MessageBox.Show(Constant.measureOutOfTime);
-                    return -3;
-                }
-
-                try
-                {
-
-                    SelectCutThread(cutid);
-
-                    if (!CutThread.IsAlive)
-                        CutThread.Start();
-                    while (CutThread.IsAlive)
-                    {
-                        Application.DoEvents();
-                    }
-                }
-                finally
-                {
-                    CutThread = null;
-                    CutThreadStart = null;
-                }
-
-                NEXTOPT:
-                ConstantMethod.ShowInfo(rtbWork, Constant.NextOpt);
-
-
-            }
-
-            stopOperation();
-            //ÊµãËØïÂÖàÈöêËóè
-            MessageBox.Show(Constant.CutEnd);
-            return 0;
-        }
-        public void SetOptSizeParam1(string value1)
-        {
-
-            if (SaveOptParam1(value1.ToString()))
-            {
-                optSize.OptParam1 = int.Parse(value1);
-            }           
-        }      
-        public void SetOptSizeParam1(int value1)
-        {
-            if (value1 > -1)
-            {
-                SaveOptParam1(value1.ToString());
-                optSize.OptParam1 = value1;
-            }
-        }
-        /// <summary>
-        /// ËøõË°åÁªìÂ∑¥Êï∞ÊçÆÁöÑËé∑Âèñ ÈúÄË¶ÅÂÆûÈôÖË∞ÉËØï Ê£ÄÊü•ÁªìÂ∑¥Êï∞ÈáèÊòØÂê¶Ê≠£Á°Æ
-        /// </summary>
-        /// <returns></returns>
-        private int GetScar(OptSize op,int scarCount)
-        {
-            if (rtbResult != null) rtbResult.Clear();
-
-            if (!testGetScarData(evokDevice.DataFormLst[Constant.ScarPage])) return Constant.GetScarWrongScar;
-
-            if (scarCount == evokDevice.DataFormLst[Constant.ScarPage].Rows.Count)
-            {
-                //Ê∏ÖÁ©∫Êï∞ÊçÆ
-                op.ScarLst.Clear();
-
-                ConstantMethod.ShowInfo(rtbResult,Constant.ScarName+"Êï∞ÈáèÔºö"+(scarCount/2).ToString());
-
-                foreach (DataRow dr in evokDevice.DataFormLst[Constant.ScarPage].Rows)
-                {
-                    string scarvalueStr = dr[4].ToString();
-
-                    int scarValue = 0;
-
-                    if (int.TryParse(scarvalueStr, out scarValue))
-                    {
-                        if (scarValue > 0)
-                        {
-                            ConstantMethod.ShowInfo(rtbResult, Constant.ScarName+"‰ΩçÁΩÆÔºö" + scarValue.ToString());
-                            op.ScarLst.Insert(0, scarValue);
-                        }
-                        else
-                        {
-                            return Constant.GetScarWrongScar;
-                        }
-                    }
-                    else
-                    {
-                        return Constant.GetScarWrongScar;
-                    }
-                }                                               
-            }
-          // ConstantMethod.ShowInfo(rtbResult, "\n");
-
-            return Constant.GetScarSuccess;
-        }
-        /// <summary>
-        /// Âú®ÊµãÈïøËøáÁ®ã‰∏≠ ÈúÄË¶ÅÊ£ÄÊµãÁªìÂ∑¥
-        /// </summary>
-        /// <param name="cutid"></param>
-        /// 
-        //Â¢ûÂä†ÂèçÈ¶à‰ø°Âè∑ ‰æø‰∫éÂæ™ÁéØÂÆûÊñΩ
-        public int CutStartMeasure(bool split,int cutid)
-        {
-            //ÂÖàËé∑ÂèñÈªòËÆ§Ë°•ÂÅø
-            int defaultLtbc = ltbcDefaultOutInPs.ShowValue;
-            optSize.Len = lcOutInPs.ShowValue;
-            optSize.Dbc = dbcOutInPs.ShowValue;
-            optSize.Ltbc = ltbcOutInPs.ShowValue;
-            optSize.Safe = safeOutInPs.ShowValue;
-            if (wlMiniSizeOutInPs != null)
-                optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
-
-            if (IsInEmg)
-            {
-                MessageBox.Show(Constant.emgStopTip);
-                return -1;
-            }
-            LogManager.WriteProgramLog(DeviceName + Constant.AutoMeasureMode);
-
-            //ÂêØÂä®
-            start(cutid);
-
-            //Á≠âÂæÖ ÊµãÈáè
-            while (mRunFlag)
-            {                               
-                int valueOld = 1;
-
-                LogManager.WriteProgramLog(DeviceName + Constant.MeasureSt);
-
-                ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs,ref emgStopInPs,ref mRunFlag);
-               
-                if (IsInEmg)
-                {
-                    stopOperation();
-
-                }
-
-                LogManager.WriteProgramLog(DeviceName + Constant.MeasureEd);
-
-                if (autoCCInPs.ShowValue ==Constant.M_ON)
-                {
-
-                    evokDevice.SetMValueOFF(autoCCInPs);
-
-                    optSize.Len = lcOutInPs.ShowValue;
-                   
-                    if (scarInPs.ShowValue > 0)
-                    {
-                        
-                        //ÂºÄÂßã‰ºòÂåñ ÁªìÂ∑¥ ËøòÊòØÊµãÈïø   
-                        if (GetScar(optSize, scarInPs.ShowValue) == Constant.GetScarSuccess)
-                        {
-                            optSize.Ltbc = defaultLtbc;
-                            //ËøõË°åÈÄâÊã© Â∞∫ÂØ∏‰∏éÁªìÁñ§ÂàÜÁ¶ª ËøòÊòØÂçïÁã¨ÂéªÈô§ÁªìÁñ§
-                            if (cutid == Constant.CutMeasureWithScarSplitNoSize)
-                            {
-                                optSize.OptMeasureWithScarCheckAndNoSize(split, rtbResult, optSize.DtData);
-                            }
-                            else //ÂºÄÂßã‰ºòÂåñËøõË°å          
-                                optSize.OptMeasureWithScarCheck(split, rtbResult, optSize.DtData);
-                        }
-                        else
-                        {
-                            MessageBox.Show(Constant.GetScarError);
-                            return -2;
-                        }
-                    }
-                    else
-                    {
-                        optSize.Ltbc = defaultLtbc;
-                        optSize.OptMeasure(rtbResult);                        
-                    }
-                                                       
-                    if (optSize.ProdInfoLst.Count < 1)
-                    {
-                        //20180922ÂΩìÊúâÊï∞ÊçÆÁöÑÊó∂ÂÄô Ê≤°ÊúâÂêàÈÄÇÁöÑÊñôÈïø ÂàôË¶ÅÂëäËØâPLC ËøõË°åÂ§ÑÁêÜ ÁÑ∂ÂêéÁªßÁª≠Á≠âÂæÖ‰∏ã‰∏ÄÊ†πÊñô
-                        if (optSize.ValueAbleRow.Count>0)
-                        {                          
-                            noSizeToCut();
-                            goto NEXTOPT;
-                        }
-                        else
-                        {
-                            //MessageBox.Show(Constant.noData);
-                            break;
-                        }
-                       
-                    }                 
-                }
-                else
-                {
-                    MessageBox.Show(Constant.measureOutOfTime);
-                    return -3;
-                }
-
-                try
-                {
-
-                    SelectCutThread(cutid);
-
-                    if (!CutThread.IsAlive)
-                        CutThread.Start();
-                    while (CutThread.IsAlive)
-                    {
-                        Application.DoEvents();
-                    }
-                }
-                finally
-                {
-                    CutThread = null;
-                    CutThreadStart = null;
-                }
-
-               NEXTOPT:
-               ConstantMethod.ShowInfo(rtbWork,Constant.NextOpt);
-               
-                                                           
-            }
-
-           // stop();
-            stopOperation();
-           // emgStop();
-            //ÊµãËØïÂÖàÈöêËóè
-           MessageBox.Show(Constant.CutEnd);
-           return 0;
-        }
-        //ÊúâÂ∞∫ÂØ∏ ‰ΩÜÊòØÂíåÈïøÊñôÂåπÈÖç‰∏ç‰∏ä
-        public void noSizeToCut()
-        {
-            evokDevice.SetMValueON(noSizeToCutOutInPs);
-            //20180922 Ê†πÊçÆPLC Ë¶ÅÊ±Ç ÁªôÊñôÊÆµÊï∞ËøôÈáåÂèë‰∏™1
-            evokDevice.SetDValue(ldsOutInPs, 1);
-        }
-        //ÂàáÂâ≤Ââç Ëé∑ÂèñÊâÄÊúâÂéüÊñô‰ø°ÊÅØ
-        public void CutReady()
-        {
-            optSize.Len = lcOutInPs.ShowValue;
-            optSize.Dbc = dbcOutInPs.ShowValue;
-            optSize.Ltbc = ltbcOutInPs.ShowValue;
-            optSize.Safe = safeOutInPs.ShowValue;
-        }
-        //ÂêØÂä®
-        public bool CutDoorStartNormal(int cutid)
-        {
-            //ÂêØÂä®ÂèçÈ¶à //Êï∞ÊçÆÁõëÊéß //ÂÆåÊàêÂèçÈ¶à
-            if (IsInEmg)
-            {
-                MessageBox.Show(DeviceName + Constant.emgStopTip);
-                return false;
-            }
-            //Êä•Èîô‰πü‰∏çÂêØÂä®
-            if (errorList.Count > 0)
-            {
-                MessageBox.Show(DeviceName + Constant.Alarm);
-                return false;
-            }
-            //Ê≠£Â∏∏Ê®°ÂºèÈúÄË¶Å‰ºòÂåñ
-            if (optSize.ProdInfoLst.Count < 1)
-            {
-                MessageBox.Show(DeviceName + Constant.noData);
-                return false;
-            }
-            LogManager.WriteProgramLog(DeviceName + Constant.NormalMode);
-            
-
-            try
-            {
-                SelectCutThread(cutid);
-
-                if (!CutThread.IsAlive)
-                    CutThread.Start();
-                
-                while (CutThread.IsAlive)
-                {
-                    Application.DoEvents();
-                }
-               
-            }
-            finally
-            {
-                CutThread = null;
-                CutThreadStart = null;
-                //ÁªìÊùü‰∫Ü PLC Ë¶ÅÊ±Ç‰∏çÂèë‰ø°Âè∑           
-                // stop();
-                stopOperation();
-                MessageBox.Show(DeviceName+Constant.CutEnd);
-            }
-
-            return true;
-
-        }
-        public void showWorkInfo()
-        {
-            if(deviceStatusId<Constant.constantStatusStr.Count())
-            ConstantMethod.ShowInfo(rtbWork, DeviceName + Constant.constantStatusStr[deviceStatusId]);
-        }
-        public void showWorkInfo(string str)
-        {
-            ConstantMethod.ShowInfo(rtbWork, DeviceName +str);
-        }
-        public void CutStartNormal(int cutid)
-        {
-            showWorkInfo(Constant.startTips0);
-            if (RunFlag)
-            {
-                MessageBox.Show(DeviceName + Constant.alreadyStart);
-                return;
-         
-            }
-            if (IsInEmg)
-            {
-                MessageBox.Show(DeviceName + Constant.emgStopTip);
-                return;
-            }
-
-            //Ê≠£Â∏∏Ê®°ÂºèÈúÄË¶Å‰ºòÂåñ
-            if (optSize.ProdInfoLst.Count < 1)
-            {
-                MessageBox.Show(DeviceName + Constant.noData);
-                return;
-            }
-
-            if (errorList.Count > 0)
-            {
-                MessageBox.Show(DeviceName + Constant.Alarm);
-                return ;
-            }
-
-            LogManager.WriteProgramLog(DeviceName + Constant.ShuChiMode);
-
-            if (!start(cutid))
-            {
-               
-                MessageBox.Show(DeviceName+Constant.DeviceStartFailed);
-                return;
-            }
-           showWorkInfo(Constant.startTips1);
-            try
-            {
-
-                SelectCutThread(cutid);
-
-                if (!CutThread.IsAlive)
-                    CutThread.Start();
-
-                while (CutThread.IsAlive)
-                {
-                    Application.DoEvents();
-                  
-                }               
-            }
-            finally
-            {
-                CutThread = null;
-                CutThreadStart = null;
-                stopOperation();
-                //ÁªìÊùü‰∫Ü PLC Ë¶ÅÊ±Ç‰∏çÂèë‰ø°Âè∑ 
-                //20190227 Á¥¢Ëè≤‰∫öË¶ÅÊ±ÇÊ∑ªÂä† 
-               // emgStop();
-                //stop();
-                MessageBox.Show(DeviceName + Constant.CutEnd);
-            }
-        }
-        //Ëá™Âä®ÊµãÈïøÂºÄ
-        public void autoMesON()
-        {
-            evokDevice.SetMValueOFF(autoMesOutInPs);
-        }
-
-        public void autoMesOFF()
-        {
-            evokDevice.SetMValueON(autoMesOutInPs);
-        }
-        public void lliaoON()
-        {
-            evokDevice.SetMValueON(lliaoOutInPs);
-        }
-
-        public void lliaoOFF()
-        {
-            evokDevice.SetMValueOFF(lliaoOutInPs);
-        }
-        #endregion      
-        public void Dispose()
-        {
-            RunFlag = false;
-            ConstantMethod.Delay(100);
-            //‰øùÂ≠òÊñá‰ª∂
-            SaveFile();
-            if (evokDevice != null)
-                evokDevice.DeviceShutDown();
-            if(printReport != null)
-            printReport.Dispose();
-            if (CutThread != null && CutThread.IsAlive)
-            {
-                CutThread.Join();
-            }
-            SetOptSizeParam1(optSize.OptParam1);
-            LogManager.WriteProgramLog(DeviceName + Constant.Quit);
-        }
-        //Êï∞ÊçÆ‰∏çÂ§üÁöÑÊó∂ÂÄô Â∞±Êä•Ë≠¶
-        public void OpenDataNotEnough()
-        {
-            if(dataNotEnoughOutInPs!=null)
-            evokDevice.SetMValueON(dataNotEnoughOutInPs);
-        }
-        public void CloseDataNotEnough()
-        {
-            if(dataNotEnoughOutInPs!=null)
-            evokDevice.SetMValueOFF(dataNotEnoughOutInPs);
-        }
-        public void InitControl()
-        {
-
-
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[Constant.AutoPage] != null))
-            {
-                ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.AutoPage], PsLstAuto);
-            }
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[Constant.HandPage] != null))
-            {
-                ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.HandPage], PsLstHand);
-            }
-            if ((evokDevice.DataFormLst.Count > 0) && (evokDevice.DataFormLst[Constant.ParamPage] != null))
-            {
-                ConstantMethod.FindPos(evokDevice.DataFormLst[Constant.ParamPage], PsLstParam);
-            }
-        }
-
-        public int deviceStatusId
-        {
-            get {
-                if (deviceStatusOutInPs == null) return 0;
-                return deviceStatusOutInPs.ShowValue; }
-        }
-        public void ChangtToAuto()
-        {
-            evokDevice.SetDValue(pageShiftOutPs, Constant.AutoPageID);
-        }
-        public bool ShiftPage(int pageid)
-        {
-            if (CurrentPageId == pageid)
-            {              
-                return true;
-            }
-            if (evokDevice.Status == Constant.DeviceConnected)
-            {
-                //È°µÈù¢ÂàáÊç¢ÈúÄË¶ÅÂëäËØâ‰∏ã‰ΩçÊú∫
-                if (pageid == Constant.AutoPage)
-                {
-                    evokDevice.SetDValue(pageShiftOutPs, Constant.AutoPageID);
-                }
-
-                if (pageid == Constant.HandPage)
-                {
-                    evokDevice.SetDValue(pageShiftOutPs, Constant.HandPageID);
-                }
-                                              
-                if (pageid == Constant.ParamPage)
-                {
-                    if (!ConstantMethod.UserPassWd()) return false;
-                }
-
-                evokDevice.shiftDataForm(pageid);
-
-                FindPlcSimpleInPlcInfoLst(pageid);
-
-                CurrentPageId = pageid;
-
-                ConstantMethod.Delay(50);
-
-                return true;
-
-            }
-                     
-           return false;       
-        }
-
-        public bool shiftDataFormSplit(int formid, int rowSt, int count)
-        {
-            //20180905 Ê∂àÈô§datagridview Ëá™Â¢ûÂêé ÔºåÂú®countËøôÈáåÂä†‰∫Ü1          
-            evokDevice.shiftDataFormSplit(formid, rowSt, count+1);
-            return true;
-        }
-
-        #region ÂØÑÂ≠òÂô®Êìç‰ΩúÈÉ®ÂàÜ
-        private PlcInfoSimple getPsFromPslLst(string tag0, string str0, List<PlcInfoSimple> pslLst)
-        {
-
-            foreach (PlcInfoSimple simple in pslLst)
-            {
-                string str1 = tag0;
-                string str2 = simple.Name;
-                if (str2.Contains(str0))
-                {
-                    str2 = str2.Replace(Constant.Write, "");
-                    str2 = str2.Replace(Constant.Read, "");
-
-                    if (str1.Equals(str2))
-                    {
-                        return simple;
-                    }
-                }
-            }
-            return null;
-
-        
-        }
-        public void oppositeBit(PlcInfoSimple p)
-        {
-            if (p.ShowValue > 0)
-            {
-                evokDevice.SetMValueOFF(p);
-            }
-            else
-            {
-                evokDevice.SetMValueON(p);
-            }
-        }
-        public void oppositeBitClick(string str1, string str2, List<PlcInfoSimple> pLst)
+        public void SetDValue(string str1, string str2, List<PlcInfoSimple> pLst, int num)
         {
             PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-            if (p != null)
+            if ((num > p.MaxValue) || (num < p.MinValue))
             {
-                oppositeBit(p);
+                MessageBox.Show(Constant.dataOutOfRange + p.MinValue.ToString() + "--" + p.MaxValue.ToString());
+            }
+            else if (p !=null)
+            {
+                evokDevice.SetDValue(p, num);
             }
             else
             {
                 MessageBox.Show(Constant.SetDataFail);
             }
-
         }
-        public void  SetMPsOFFToOn(string str1,string str2 ,List<PlcInfoSimple> pLst)
+
+        public bool SetDValue(string str1, string str2, List<PlcInfoSimple> pLst, string num)
         {
-            PlcInfoSimple p = getPsFromPslLst(str1,str2, pLst);
-            if (p != null)
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            double result = 0.0;
+            if (double.TryParse(num, out result))
+            {
+                if ((result > p.MaxValue) || (result < p.MinValue))
+                {
+                    MessageBox.Show(Constant.dataOutOfRange + p.MinValue.ToString() + "--" + p.MaxValue.ToString());
+                    return false;
+                }
+                result *= p.Ration;
+            }
+            if (p !=null)
+            {
+                return evokDevice.SetDValue(p, (int)result);
+            }
+            MessageBox.Show(Constant.SetDataFail);
+            return false;
+        }
+
+        public void SetEvokDevice(EvokXJDevice evokDevice0)
+        {
+            evokDevice = evokDevice0;
+        }
+
+        public void SetInEdit(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple simple = getPsFromPslLst(str1, str2, pLst);
+            if (simple !=null)
+            {
+                simple.IsInEdit = true;
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+
+        public void SetInEdit(string str1, string str2, int id)
+        {
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
+            {
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple simple = getPsFromPslLst(str1, str2, pslLst);
+                if (simple !=null)
+                {
+                    simple.IsInEdit = true;
+                }
+                else
+                {
+                    MessageBox.Show(Constant.SetDataFail);
+                }
+            }
+        }
+
+        public void SetLblStatus(Label lblstatus0)
+        {
+            lblStatus = lblstatus0;
+        }
+
+        public void SetLtbc()
+        {
+            evokDevice.SetDValue(ltbcOutInPs, optSize.Ltbc);
+        }
+
+        public void SetMode(int index)
+        {
+            evokDevice.SetDValue(posMode, index);
+        }
+
+        public void SetMPsOff(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p !=null)
+            {
+                evokDevice.SetMValueOFF(p);
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+
+        public void SetMPsOff(string str1, string str2, int id)
+        {
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
+            {
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple p = getPsFromPslLst(str1, str2, pslLst);
+                if (p !=null)
+                {
+                    evokDevice.SetMValueOFF(p);
+                }
+                else
+                {
+                    MessageBox.Show(Constant.SetDataFail);
+                }
+            }
+        }
+
+        public void SetMPsOFFToOn(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
+            if (p !=null)
             {
                 evokDevice.SetMValueOFF2ON(p);
             }
@@ -3214,10 +4473,29 @@ namespace xjplc
                 MessageBox.Show(Constant.SetDataFail);
             }
         }
+
+        public void SetMPsOFFToOn(string str1, string str2, int id)
+        {
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
+            {
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple p = getPsFromPslLst(str1, str2, pslLst);
+                if (p !=null)
+                {
+                    evokDevice.SetMValueOFF2ON(p);
+                }
+                else
+                {
+                    MessageBox.Show(Constant.SetDataFail);
+                }
+            }
+        }
+
         public void SetMPsOn(string str1, string str2, List<PlcInfoSimple> pLst)
         {
             PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-            if (p != null)
+            if (p !=null)
             {
                 evokDevice.SetMValueON(p);
             }
@@ -3227,362 +4505,1113 @@ namespace xjplc
             }
         }
 
-        public bool ParamParamTxt_KeyPress(object sender, KeyPressEventArgs e)
+        public void SetMPsOn(string str1, string str2, int id)
         {
-            if (e.KeyChar == '\r')
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
             {
-                double num;
-
-                if (double.TryParse(((TextBox)sender).Text, out num) && num > -1)
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple p = getPsFromPslLst(str1, str2, pslLst);
+                if (p !=null)
                 {
-                    //  num = num * Constant.dataMultiple;
-                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstParam, ((TextBox)sender).Text);
-                }
-
-                return true;
-            }
-            return false;
-        }
-
-
-        public void SetInEdit(string str1, string str2, List<PlcInfoSimple> pLst)
-        {
-            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-            if (p != null)
-            {
-                p.IsInEdit = true;
-            }
-            else
-            {
-                MessageBox.Show(Constant.SetDataFail);
-            }
-        }
-        public void SetOutEdit(string str1, string str2, List<PlcInfoSimple> pLst)
-        {
-            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-            if (p != null)
-            {
-                p.IsInEdit = false;
-            }
-            else
-            {
-                MessageBox.Show(Constant.SetDataFail);
-            }
-        }
-        public bool KeyPressSetValue(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                return SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, ((TextBox)sender).Text); 
-            }
-            return false;
-        }
-        public bool HandParamTxt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                double num;
-
-                if (double.TryParse(((TextBox)sender).Text, out num) && num > -1)
-                {
-                  //  num = num * Constant.dataMultiple;
-                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstHand, ((TextBox)sender).Text);
-                }
-                return true;
-            }
-            return false;
-        }
-        public bool AutoParamTxt_KeyPress0(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                double num;
-
-                if (double.TryParse(((TextBox)sender).Text, out num) && num > -1)
-                {
-                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, ((TextBox)sender).Text);
-                }
-                return true;
-            }
-            return false;
-        }
-
-        public bool AutoParamTxt_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar == '\r')
-            {
-                double num;
-
-                if (double.TryParse(((TextBox)sender).Text, out num) && num > -1)
-                {
-                    num = num * Constant.dataMultiple;
-                    
-                    SetDValue(((TextBox)sender).Tag.ToString(), Constant.Write, PsLstAuto, (int)num);
-                }
-                return true;              
-            }
-            return false;
-        }
-        //ËÆæÁΩÆÈÄÇÁî®‰∫é ‰∫∫Â∑•ËÆæÁΩÆ ÊØî‰æãÂÖ≥Á≥ª
-        public bool SetDValue(string str1, string str2, List<PlcInfoSimple> pLst, string num)
-        {
-            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-
-            double valueShift = 0;
-
-            if (double.TryParse(num, out valueShift))
-            {
-
-                if (!(valueShift <= p.MaxValue && valueShift >= p.MinValue))
-                {
-                    MessageBox.Show(Constant.dataOutOfRange + p.MinValue.ToString() + "--" + p.MaxValue.ToString());
-                    return false;
-                }
-                valueShift = valueShift * p.Ration;
-                                                             
-            }
-
-         
-
-            if (p != null)
-            {
-
-                return evokDevice.SetDValue(p, (int)valueShift);
-
-            }
-            else
-            {
-                MessageBox.Show(Constant.SetDataFail);
-             
-            }
-            return false;
-        }
-        public void SetDValue(string str1, string str2, List<PlcInfoSimple> pLst,int num)
-        {
-            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-
-            if (!(num <= p.MaxValue && num >= p.MinValue))
-            {
-                MessageBox.Show(Constant.dataOutOfRange + p.MinValue.ToString() + "--" + p.MaxValue.ToString());
-                return;
-            }
-            if (p != null)
-            {
-              
-              evokDevice.SetDValue(p, num);
-                
-            }
-            else
-            {
-                MessageBox.Show(Constant.SetDataFail);
-            }
-
-        }
-        public void SetMPsOff(string str1, string str2, List<PlcInfoSimple> pLst)
-        {
-            PlcInfoSimple p = getPsFromPslLst(str1, str2, pLst);
-            if (p != null)
-            {
-                evokDevice.SetMValueOFF(p);
-            }
-            else
-            {
-                MessageBox.Show(Constant.SetDataFail);
-            }
-        }
-        #endregion
-
-        #region ÂÖ≥‰∫éÂèÇÊï∞ËÆæÁΩÆË°®Ê†ºÁöÑËÆæÂÆö
-        public void DgvValueEdit(int rowIndex,int num3)
-        {
-            string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
-            int addr = 0;
-            string area = "D";
-            string mode = evokDevice.DataForm.Rows[rowIndex]["mode"].ToString();
-            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
-            if ( ((XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) > -1) && (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)))
-            {
-                evokDevice.WriteSingleDData(addr, num3, area, mode);
-            }
-        }
-
-        public void dgvParam_CellEndEdit(DataGridView dgvParam,object sender, DataGridViewCellEventArgs e)
-        {
-            double num3;
-
-            string s = dgvParam.SelectedCells[0].Value.ToString();
-
-            int rowIndex = dgvParam.SelectedCells[0].RowIndex;
-
-            try
-            {
-                if (double.TryParse(s, out num3))
-                {
-                    int value = (int)(num3 * Constant.dataMultiple);
-                    DgvValueEdit(rowIndex, value);
-                }
-            }
-            catch { }
-            finally { DgvInOutEdit(rowIndex, false); }
-
-
-        }
-        public void ShiftDgvParamLang(DataGridView dgvParam,int id)
-        {
-            if(id == Constant.idChinese)
-            dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.Bin].ToString();
-            else
-            dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.strParam10].ToString();
-        }
-        public void InitDgvParam(DataGridView dgvParam)
-        {
-            if (evokDevice.DataFormLst.Count > 2)
-            {
-                dgvParam.AutoGenerateColumns = false;
-                dgvParam.DataSource = evokDevice.DataFormLst[2];
-
-                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.Bin].ToString();
-                dgvParam.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.strParam6].ToString();
-            }
-        }
-        DataGridView dgvIO;
-        public System.Windows.Forms.DataGridView DgvIO
-        {
-            get { return dgvIO; }
-            set { dgvIO = value; }
-        }
-        public void InitDgvIO(DataGridView dgvIO0)
-        {
-            DgvIO = dgvIO0;
-            if (evokDevice.DataFormLst.Count > 3)
-            {
-                dgvIO.AutoGenerateColumns = false;
-                dgvIO.DataSource = evokDevice.DataFormLst[3];
-                dgvIO.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.Bin].ToString();
-                dgvIO.Columns[1].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.strValue].ToString();
-                dgvIO.ReadOnly = true;
-            }
-        }
-
-        public void DgvInOutEdit(int rowIndex,bool editEnable)
-        {        
-            string s = evokDevice.DataForm.Rows[rowIndex]["param1"].ToString();
-            string str2 = evokDevice.DataForm.Rows[rowIndex]["param2"].ToString();
-            string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
-            string area = "D";
-            int addr = 0;
-            ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
-            int result = 0;
-            int num4 = 0;
-            if (int.TryParse(s, out result) && int.TryParse(str2, out num4))
-            {
-                
-                if (XJPLCPackCmdAndDataUnpack.AreaGetFromStr(area) < 3)
-                {
-                    if (result < evokDevice.DPlcInfo.Count)
-                    evokDevice.DPlcInfo[result].IsInEdit = editEnable;
+                    evokDevice.SetMValueON(p);
                 }
                 else
                 {
-                    if (result < evokDevice.MPlcInfoAll.Count)
-                        evokDevice.MPlcInfoAll[result][num4].IsInEdit = editEnable;
+                    MessageBox.Show(Constant.SetDataFail);
                 }
             }
         }
-        #endregion;
 
-        #region ÁºìÂÜ≤Âå∫‰∏≠Êúâ‰∏™plcinfoÁ±ª Â≠òÂÇ®‰∫Ü PLC ÁöÑÂÆûÊó∂Êï∞ÊçÆ PlcInfoSimple ÂàôÊòØÁî®Êà∑ËøõË°åÂØπÊé•ÁöÑÊìç‰ΩúÂØπË±° ‰∏§ËÄÖËøõË°åËøûÊé•
-        /// <summary>
-        /// plcsimple ‰∏éÁºìÂÜ≤Âå∫‰∏≠ÁöÑÁ±ªÁªëÂÆö ‰æø‰∫éÂêéÁª≠ËØªÂèñÂÄº ÁºìÂÜ≤Âå∫ÁöÑÁ±ª ÂÆûÊó∂Êõ¥Êñ∞Êï∞ÊçÆ 
-        /// plcsimpele ËøõË°å‰∏éÁî®Êà∑ÁöÑÊìç‰ΩúÁªëÂÆö
-        /// </summary>
-        /// <param name="m"></param>
-        private void FindPlcSimpleInPlcInfoLst(int m)
+        public void SetMPsONToOFF(PlcInfoSimple p)
         {
-
-            foreach (List<PlcInfoSimple> pLst in AllPlcSimpleLst)
+            if (p !=null)
             {
-                foreach (PlcInfoSimple p in pLst)
-                {
-                    FindPlcInfo(p, evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
+                evokDevice.SetMValueON2OFF(p);
             }
-            /****
-            if (m == 0)
-                for (int i = 0; i <  PsLstAuto.Count; i++)
-                {
-                    FindPlcInfo( PsLstAuto[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
-            if (m == 1)
-                for (int i = 0; i <  PsLstHand.Count; i++)
-                {
-                    FindPlcInfo(PsLstHand[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
-            if (m == 2)
-                for (int i = 0; i <  PsLstParam.Count; i++)
-                {
-                    FindPlcInfo(PsLstParam[i], evokDevice.DPlcInfo, evokDevice.MPlcInfoAll);
-                }
-                ***/
-
+            else
+            {
+                ConstantMethod.ShowInfo(rtbWork, Constant.SetDataFail);
+            }
         }
-        private void FindPlcInfo(PlcInfoSimple p, List<XJPlcInfo> dplc, List<List<XJPlcInfo>> mplc)
+
+        public void SetMPsONToOFF(string str1, string str2, int id)
         {
-            if (p.Area == null) return;
-            if (dplc == null || 
-                mplc == null || 
-                dplc.Count == 0 || 
-                mplc.Count == 0  
-                ) return;
-            foreach (XJPlcInfo p0 in dplc)
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
             {
-                if ((p0.RelAddr == p.Addr) && (p0.StrArea.Equals(p.Area.Trim())))
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple p = getPsFromPslLst(str1, str2, pslLst);
+                if (p !=null)
                 {
-                    p.SetPlcInfo(p0);
-                    return;
+                    evokDevice.SetMValueON2OFF(p);
+                }
+                else
+                {
+                    ConstantMethod.ShowInfo(rtbWork, Constant.SetDataFail);
                 }
             }
-                    
-            for (int i = 0; i < mplc.Count; i++)
+        }
+
+        public void SetOptParamShowCombox(ComboBox cbOptParam0)
+        {
+            cbOptParam1 = cbOptParam0;
+            int result = 0;
+            try
             {
-                for (int j = 0; j < mplc[i].Count; j++)
+                if (!int.TryParse(ParamFile.ReadConfig(Constant.optParam1), out result))
                 {
-                    
-                    if ((mplc[i][j].RelAddr == p.Addr) && (mplc[i][j].StrArea.Equals(p.Area.Trim())))
+                    MessageBox.Show(Constant.ErrorParamConfigFile);
+                    Application.Exit();
+                    Environment.Exit(0);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            if ((cbOptParam1 != null) && (result > -1))
+            {
+                cbOptParam1.Text = result.ToString();
+            }
+        }
+
+        public void SetOptSize(OptSize optSize0)
+        {
+            optSize = optSize0;
+        }
+
+        public bool SetOptSizeData(DataTable dtSize)
+        {
+            if ((dtSize != null) && (dtSize.Rows.Count > 0))
+            {
+                optSize.DtData = dtSize;
+                return true;
+            }
+            return false;
+        }
+
+        public void SetOptSizeParam1(int value1)
+        {
+            if (value1 > -1)
+            {
+                SaveOptParam1(value1.ToString());
+                optSize.OptParam1 = value1;
+            }
+        }
+
+        public void SetOptSizeParam1(string value1)
+        {
+            if (SaveOptParam1(value1.ToString()))
+            {
+                optSize.OptParam1 = int.Parse(value1);
+            }
+        }
+
+        public void SetOutEdit(string str1, string str2, List<PlcInfoSimple> pLst)
+        {
+            PlcInfoSimple simple = getPsFromPslLst(str1, str2, pLst);
+            if (simple !=null)
+            {
+                simple.IsInEdit = false;
+            }
+            else
+            {
+                MessageBox.Show(Constant.SetDataFail);
+            }
+        }
+
+        public void SetOutEdit(string str1, string str2, int id)
+        {
+            List<PlcInfoSimple> pslLst = new List<PlcInfoSimple>();
+            if ((id < AllPlcSimpleLst.Count<List<PlcInfoSimple>>()) && (id >= 0))
+            {
+                pslLst = AllPlcSimpleLst[id];
+                PlcInfoSimple simple = getPsFromPslLst(str1, str2, pslLst);
+                if (simple !=null)
+                {
+                    simple.IsInEdit = false;
+                }
+                else
+                {
+                    MessageBox.Show(Constant.SetDataFail);
+                }
+            }
+        }
+
+        public void SetPage(int id)
+        {
+            if ((evokDevice.DataFormLst.Count > 1) && (evokDevice.DataFormLst[id].Rows.Count > 0))
+            {
+                AllPlcSimpleLst[id].Clear();
+                foreach (DataRow row in evokDevice.DataFormLst[id].Rows)
+                {
+                    if (row != null)
                     {
-                        p.SetPlcInfo(mplc[i][j]);
-                        return;
+                        string str = row["bin"].ToString();
+                        if (!string.IsNullOrWhiteSpace(str))
+                        {
+                            PlcInfoSimple item = new PlcInfoSimple(str);
+                            try
+                            {
+                                item.Mode = row["mode"].ToString();
+                                item.RowIndex = evokDevice.DataFormLst[id].Rows.IndexOf(row);
+                                item.BelongToDataform = evokDevice.DataFormLst[id];
+                                int addr = 0;
+                                string area = "D";
+                                string userdata = row["addr"].ToString();
+                                string str4 = row["param3"].ToString();
+                                string str5 = row["param4"].ToString();
+                                if (!string.IsNullOrWhiteSpace(str4))
+                                {
+                                    item.ShowStr.Add(str4);
+                                }
+                                if (!string.IsNullOrWhiteSpace(str5))
+                                {
+                                    item.ShowStr.Add(str5);
+                                }
+                                ConstantMethod.SplitAreaAndAddr(userdata, ref addr, ref area);
+                                item.Area = area;
+                                item.Addr = addr;
+                                if (row.Table.Columns.Contains("param7"))
+                                {
+                                    string str6 = row["param7"].ToString();
+                                    if (!string.IsNullOrWhiteSpace(str6))
+                                    {
+                                        item.Ration = int.Parse(str6);
+                                    }
+                                }
+                                if (row.Table.Columns.Contains("param8"))
+                                {
+                                    string str7 = row["param8"].ToString();
+                                    if (!string.IsNullOrWhiteSpace(str7))
+                                    {
+                                        item.MaxValue = int.Parse(str7);
+                                    }
+                                }
+                                if (row.Table.Columns.Contains("param9"))
+                                {
+                                    string str8 = row["param9"].ToString();
+                                    if (!string.IsNullOrWhiteSpace(str8))
+                                    {
+                                        item.MinValue = int.Parse(str8);
+                                    }
+                                }
+                                AllPlcSimpleLst[id].Add(item);
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
                     }
-
                 }
             }
         }
-        #endregion
+
+        private bool SetPLCMaterialWidth()
+        {
+            if (optSize.DownSizeMaterialWidth == 0.0)
+            {
+                evokDevice.SetDValue(widht1InOutPs, (int)(optSize.MaterialWidth * widht1InOutPs.Ration));
+                ConstantMethod.Delay(200);
+                evokDevice.SetDValue(widht2InOutPs, 0);
+                ConstantMethod.Delay(200);
+                evokDevice.SetDValue(materialIdInOutPs, optSize.MaterialId);
+                ConstantMethod.Delay(200);
+                return evokDevice.SetMValueON(materialSetEnInOutPs);
+            }
+            return (((optSize.DownSizeMaterialWidth > 0.0) && (optSize.UpSizeMaterialWidth > 0.0)) && (((evokDevice.SetDValue(widht1InOutPs, (int)(optSize.DownSizeMaterialWidth * widht1InOutPs.Ration)) && evokDevice.SetDValue(widht2InOutPs, (int)(optSize.UpSizeMaterialWidth * widht2InOutPs.Ration))) && evokDevice.SetDValue(materialIdInOutPs, optSize.MaterialId)) && evokDevice.SetMValueON(materialSetEnInOutPs)));
+        }
+
+        public bool SetPos(string s)
+        {
+            double result = 0.0;
+            if ((double.TryParse(s, out result) && !SetPos1(s)) && !SetPos2(s))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public bool SetPos1(string index)
+        {
+            if (pos1EnInPs.ShowValue == Constant.M_OFF)
+            {
+                if (SetDValue(pos1OutInPs, index))
+                {
+                    ConstantMethod.Delay(500);
+                    SetMPsONToOFF(pos1EnOutPs);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public bool SetPos2(string index)
+        {
+            if (pos2EnInPs.ShowValue == Constant.M_OFF)
+            {
+                if (SetDValue(pos2OutInPs, index))
+                {
+                    ConstantMethod.Delay(500);
+                    SetMPsONToOFF(pos2EnOutPs);
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public void SetPrintReport()
+        {
+            if (printReport == null)
+            {
+                printReport = new Report();
+            }
+            string searchPattern = "*.frx";
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            string[] files = Directory.GetFiles(baseDirectory, searchPattern);
+            if (Directory.GetFiles(baseDirectory, searchPattern).Length == 0)
+            {
+                MessageBox.Show(Constant.barCodeError);
+            }
+            else
+            {
+                if (Directory.GetFiles(baseDirectory, searchPattern).Length > 1)
+                {
+                    MessageBox.Show(Constant.barCodeError1);
+                }
+                if (Directory.GetFiles(baseDirectory, searchPattern).Length == 1)
+                {
+                    printReport.Load(files[0]);
+                    printReport.PrintSettings.ShowDialog = false;
+                }
+            }
+        }
+
+        public void SetPrintReport(string fileName)
+        {
+            if (printReport == null)
+            {
+                printReport = new Report();
+            }
+            if (File.Exists(fileName))
+            {
+                printReport.Load(fileName);
+                printReport.PrintSettings.ShowDialog = false;
+            }
+        }
+
+        public void SetRtbResult(RichTextBox richrtbWork0)
+        {
+            rtbResult = richrtbWork0;
+        }
+
+        public void SetRtbWork(RichTextBox richrtbWork0)
+        {
+            rtbWork = richrtbWork0;
+            if (MainForm !=null)
+            {
+                ConstantMethod.ChangeIco(MainForm);
+            }
+        }
+
+        public void SetShowCnt(ComboBox cb1)
+        {
+            if (cb1 !=null)
+            {
+                optSize.CbResultCnt = cb1;
+            }
+        }
+
+        private void SetSimiPLCMode()
+        {
+            if (optSize.MaterialId == Constant.patternMaterialId)
+            {
+                evokDevice.SetMValueON(inspectPatternModeInOutPs);
+            }
+            else
+            {
+                evokDevice.SetMValueOFF(inspectPatternModeInOutPs);
+            }
+        }
+
+        private void SetSimiReady()
+        {
+            if (DeviceName.Equals(Constant.simiDeivceName))
+            {
+                SetPLCMaterialWidth();
+                SetSimiPLCMode();
+            }
+        }
+
+        public void SetSmallSizePrinter(string printerName)
+        {
+            if (ConstantMethod.GetLocalPrinter().Contains(printerName))
+            {
+                ParamFile.WriteConfig(Constant.minPrinterName, printerName);
+                minPrinterName = printerName;
+            }
+        }
+
+        public void SetUserDataGridView(DataGridView dgv1)
+        {
+            optSize.UserDataView = dgv1;
+        }
+
+        private void shiftColor()
+        {
+            ComboBox box = new ComboBox();
+        }
+
+        public bool shiftDataFormSplit(int formid, int rowSt, int count)
+        {
+            evokDevice.shiftDataFormSplit(formid, rowSt, count + 1);
+            return true;
+        }
+
+        public void ShiftDgvParamLang(DataGridView dgvParam, int id)
+        {
+            if (id == 0)
+            {
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.Bin].ToString();
+            }
+            else
+            {
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[2].Columns[Constant.strParam10].ToString();
+                dgvParam.Columns[0].HeaderText = "";
+            }
+        }
+
+        public bool ShiftPage(int pageid)
+        {
+            if (CurrentPageId == pageid)
+            {
+                return true;
+            }
+            if (evokDevice.Status == 0)
+            {
+                if (pageid == 0)
+                {
+                    evokDevice.SetDValue(pageShiftOutPs, Constant.AutoPageID);
+                }
+                if (pageid == 1)
+                {
+                    evokDevice.SetDValue(pageShiftOutPs, Constant.HandPageID);
+                }
+                if (((pageid == 2) && (CurrentPageId < 4)) && !ConstantMethod.UserPassWd(Constant.PwdNoOffSet))
+                {
+                    return false;
+                }
+                evokDevice.shiftDataForm(pageid);
+                FindPlcSimpleInPlcInfoLst(pageid);
+                CurrentPageId = pageid;
+                return true;
+            }
+            return false;
+        }
+
+        public void shiftToLine()
+        {
+            PlcInfoSimple startOutPs = new PlcInfoSimple(0, "D");
+            startOutPs = startOutPs;
+            startOutPs = lineStartOutPs;
+            lineStartOutPs = startOutPs;
+            startOutPs = startInPs;
+            startInPs = lineStartInPs;
+            lineStartInPs = startOutPs;
+        }
+
+        public void ShowBarCode(int rowindex)
+        {
+            if (printReport !=null)
+            {
+                List<string> list = new List<string>();
+                if ((optSize.DtData != null) && (optSize.DtData.Rows.Count > 0))
+                {
+                    DataRow row = optSize.DtData.Rows[rowindex];
+                    for (int i = 3; i < optSize.DtData.Columns.Count; i++)
+                    {
+                        list.Add(row[i].ToString());
+                    }
+                    printBarcode(printReport, list.ToArray(), 0);
+                }
+                else
+                {
+                    MessageBox.Show("Œﬁ ˝æ›£¨«Îœ»µº≥ˆ ˝æ›£°");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ãı¬Îº”‘ÿ¥ÌŒÛ");
+            }
+        }
+
+        public void ShowBarCode(Report rp1, int rowindex)
+        {
+            List<string> list = new List<string>();
+            if ((optSize.DtData != null) && (optSize.DtData.Rows.Count > 0))
+            {
+                DataRow row = optSize.DtData.Rows[rowindex];
+                for (int i = 3; i < optSize.DtData.Columns.Count; i++)
+                {
+                    list.Add(row[i].ToString());
+                }
+                printBarcode(rp1, list.ToArray(), 0);
+            }
+            else
+            {
+                MessageBox.Show("Œﬁ ˝æ›£¨«Îœ»µº≥ˆ ˝æ›£°");
+            }
+        }
+
+        private void showDataWith2Ps(PlcInfoSimple psIn, PlcInfoSimple psOut)
+        {
+            if (((psOut.ShowValue > -1) && (psOut.ShowValue < psOut.ShowStr.Count)) && (psIn.ShowControl !=null))
+            {
+                ((Button)psIn.ShowControl).Text = psOut.ShowStr[psOut.ShowValue];
+            }
+        }
+
+        public void ShowLblStatus()
+        {
+            if ((lblStatus !=null) && (deviceStatusId < Constant.constantStatusStr.Count<string>()))
+            {
+                lblStatus.Text = Constant.constantStatusStr[deviceStatusId];
+                lblStatus.BackColor = Constant.colorRgb[deviceStatusId];
+            }
+        }
+
+        public void showMxkSel(Label lbl)
+        {
+            if ((((lbl != null) && (mxkStringShowInPs.ShowStr != null)) && (mxkStringShowInPs.ShowStr.Count != 0)) && ((mxkStringShowInPs.ShowStr.Count > 0) && !string.IsNullOrWhiteSpace(mxkStringShowInPs.ShowStr[0])))
+            {
+                char[] separator = new char[] { '/' };
+                string[] source = mxkStringShowInPs.ShowStr[0].Split(separator);
+                if ((mxkStringShowInPs.ShowValue < source.Count<string>()) && (mxkStringShowInPs.ShowValue > -1))
+                {
+                    lbl.Text = source[mxkStringShowInPs.ShowValue];
+                }
+                else
+                {
+                    lbl.Text = Constant.prodLstNoData;
+                }
+            }
+        }
+
+        public void ShowNowLog(string filename0)
+        {
+            if (!File.Exists(filename0))
+            {
+                MessageBox.Show(Constant.DeviceNoLogFile);
+            }
+            else
+            {
+                LogForm form = new LogForm {
+                    fileName = filename0
+                };
+                form.LoadData();
+                form.ShowDialog();
+            }
+        }
+
+        private void showPath(string pathname)
+        {
+            if (showFilePathLabel !=null)
+            {              
+                showFilePathLabel.Text = Path.GetFileName(pathname);
+            }
+        }
+
+        public void showWorkInfo()
+        {
+            if (deviceStatusId < Constant.constantStatusStr.Count<string>())
+            {
+                ConstantMethod.ShowInfo(rtbWork, DeviceName + Constant.constantStatusStr[deviceStatusId]);
+            }
+        }
+
+        public void showWorkInfo(string str)
+        {
+            ConstantMethod.ShowInfo(rtbWork, DeviceName + str);
+        }
+
+        public void SimiDataDownLoadSel(int id)
+        {
+            downLoadSizeId = id;
+            optSize.simiDownLoadSizeId = id;
+        }
+
+        public bool start(int id)
+        {
+            evokDevice.SetMValueOFF2ON2OFF(startOutPs);
+            ConstantMethod.Delay(200);
+            CutReady();
+            OldPrintBarCodeMode = PrintBarCodeMode;
+            RunFlag = true;
+            string[] logs = new string[] { DeviceName + Constant.DeviceStartCut };
+            LogManager.WriteProgramLog(logs);
+            return GetStartStatus();
+        }
+
+        public void StartCountClr()
+        {
+            if (!evokDevice.SetMValueOFF(startCountInOutPs))
+            {
+                ConstantMethod.Delay(100);
+            }
+        }
+
+        public bool startCutDoor(int id)
+        {
+            ConstantMethod.Delay(300);
+            evokDevice.SetMValueOFF2ON(startOutPs);
+            CutReady();
+            OldPrintBarCodeMode = PrintBarCodeMode;
+            RunFlag = true;
+            string[] logs = new string[] { DeviceName + Constant.DeviceStartCut };
+            LogManager.WriteProgramLog(logs);
+            return GetStartStatus();
+        }
+
+        public void StartWithOutDevice()
+        {
+            showWorkInfo("–Èƒ‚∆Ù∂Ø");
+            RunFlag = true;
+            if (optSize.ProdInfoLst.Count > 0)
+            {
+                for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
+                {
+                    if (!RunFlag) break;
+                    SaveProdDataLog(optSize.ProdInfoLst[i], i);
+                    ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
+                    showWorkInfo("«Â≥˝PLCº∆ ˝∆˜");
+                    ConstantMethod.Delay(0x3e8);
+                    showWorkInfo(" ˝æ›œ¬‘ÿ÷¡ª˙∆˜");
+                    CutLoopWithDevice(i);
+                }
+            }
+            else
+            {
+                MessageBox.Show(Constant.noData);
+            }
+            RunFlag = false;
+        }
+
+        public bool stop()
+        {
+            if ((((deviceStatusId == Constant.constantStatusId[1]) || (deviceStatusId == Constant.constantStatusId[3])) || ((deviceStatusId == Constant.constantStatusId[4]) || (deviceStatusId == Constant.constantStatusId[6]))) || (deviceStatusId == Constant.constantStatusId[7]))
+            {
+                stopOperation();
+                showWorkInfo();
+                return true;
+            }
+            int num = 0;
+            if (!string.IsNullOrWhiteSpace(stopOutPs.Area))
+            {
+                while (!evokDevice.SetMValueON(stopOutPs))
+                {
+                    num++;
+                    Application.DoEvents();
+                    if (num > 5)
+                    {
+                        break;
+                    }
+                }
+            }
+            int valueOld = 1;
+            if (deviceStatusId != Constant.constantStatusId[0])
+            {
+                ConstantMethod.DelayWriteCmdOk(0xbb8, ref valueOld, ref stopInPs);
+            }
+            string[] logs = new string[] { DeviceName + Constant.DeviceStop };
+            LogManager.WriteProgramLog(logs);
+            try
+            {
+                if (deviceStatusId != Constant.constantStatusId[0])
+                {
+                    if (stopInPs.ShowValue == valueOld)
+                    {
+                        showWorkInfo(Constant.stopOk);
+                        return true;
+                    }
+                    showWorkInfo(Constant.stopWrong);
+                }
+            }
+            catch (Exception)
+            {
+            }
+            finally
+            {
+                stopOperation();
+                string[] textArray2 = new string[] { DeviceName + Constant.DeviceStop };
+                LogManager.WriteProgramLog(textArray2);
+            }
+            return false;
+        }
+
+        private void stopOperation()
+        {
+            RunFlag = false;
+            CloseDataNotEnough();
+            ConstantMethod.Delay(200);
+            if ((CutThread != null) && CutThread.IsAlive)
+            {
+                CutThread.Abort();
+            }
+            optSize.SingleSizeLst.Clear();
+            optSize.ProdInfoLst.Clear();
+            tCheckPrint.Enabled = false;
+        }
+
+        public void StopRunning()
+        {
+            IsRuninng = false;
+            if (updateData !=null)
+            {
+                updateData("");
+            }
+        }
+
+        public bool testGetScarData(DataTable scarTable)
+        {
+            int showValue = scarInPs.ShowValue;
+            if ((((showValue % 2) != 0) || (showValue < 1)) || (showValue > Constant.MaxScarCount))
+            {
+                return false;
+            }
+            showValue /= 2;
+            scarTable.Rows.Clear();
+            int scarStartAddress = Constant.ScarStartAddress;
+            for (int i = 0; i < showValue; i++)
+            {
+                scarStartAddress += 2;
+                DataRow row = scarTable.NewRow();
+                row[0] = Constant.strDMArea[0] + scarStartAddress.ToString();
+                row[1] = Constant.DoubleMode;
+                row[2] = Constant.ScarName + i.ToString() + "-0";
+                row[3] = "1";
+                scarStartAddress += 2;
+                DataRow row2 = scarTable.NewRow();
+                row2[0] = Constant.strDMArea[0] + scarStartAddress.ToString();
+                row2[1] = Constant.DoubleMode;
+                row2[2] = Constant.ScarName + i.ToString() + "-1";
+                row2[3] = "1";
+                scarTable.Rows.Add(row);
+                scarTable.Rows.Add(row2);
+            }
+            ShiftPage(Constant.ScarPage);
+            ConstantMethod.Delay(0x3e8);
+            ShiftPage(0);
+            return true;
+        }
+
+        public void updateColName(DataGridView dgvParam)
+        {
+            dgvParam.Columns[0].HeaderText = Constant.paramHeader1;
+            dgvParam.Columns[1].HeaderText = Constant.paramHeader2;
+        }
+
+        public void xialiaoSingleStart(OptSize op)
+        {
+            if (!op.IsDataValueAble)
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[0] + Constant.optResultNoData);
+            }
+            else if (!getDeviceStatusIsReady(0))
+            {
+                MessageBox.Show(Constant.tataLineDeviceName[0] + Constant.errorDeviceStatus);
+            }
+            else
+            {
+                xialiaoStart(op);
+            }
+        }
+
+        public void xialiaoSingleStop()
+        {
+            runflag_XialiaoJu = false;
+        }
+
+        private void xialiaoStart(OptSize op)
+        {
+            string[] logs = new string[] { "ø™ º¥¥Ω®œ¬¡œæ‚ ˝æ›«Î«Ûœﬂ≥Ã" };
+            LogManager.WriteProgramLog(logs);
+            new Thread(new ParameterizedThreadStart(downLoadXiaLiaoju)).Start(op);
+        }
+
+        public List<List<PlcInfoSimple>> AllPlcSimpleLst
+        {
+            get
+            {
+                return allPlcSimpleLst;
+            }
+            set
+            {
+                allPlcSimpleLst = value;
+            }
+        }
+
+        public bool AutoMes
+        {
+            get
+            {
+                if (autoMesOutInPs.Area == null)
+                {
+                    return false;
+                }
+                return (autoMesOutInPs.ShowValue == Constant.M_OFF);
+            }
+        }
+
+        public int CurrentPageId
+        {
+            get { return currentPageId; }
+         
+            set
+            {
+                currentPageId = value;
+            }
+        }
+
+        public int CutSelMode
+        {
+            get { return cutSelMode; }
+        
+            set
+            {
+                cutSelMode = value;
+            }
+        }
+
+        public int DataFormCount { get { return evokDevice.DataFormLst.Count; } }
+  
+
+        public int DeviceMode
+        {
+            get
+            {
+                if (modeSelectOutInPs !=null)
+                {
+                    return modeSelectOutInPs.ShowValue;
+                }
+                return 0;
+            }
+        }
+
+        public string DeviceName
+        {
+            get { return deviceName; }
+        
+            set
+            {
+                evokDevice.setDeviceId(value);
+                deviceName = value;
+            }
+        }
+
+        public int DeviceProperty
+        {
+            get { return deviceProperty; }
+         
+            set
+            {
+                deviceProperty = value;
+            }
+        }
+
+        public bool DeviceStatus { get { return (evokDevice.Status == 0); } }
+           
+
+        public int deviceStatusId
+        {
+            get
+            {
+                if (deviceStatusOutInPs == null)
+                {
+                    return 0;
+                }
+                return deviceStatusOutInPs.ShowValue;
+            }
+        }
+
+        public DataGridView DgvIO
+        {
+            get { return dgvIO; }
+       
+            set
+            {
+                dgvIO = value;
+            }
+        }
+
+        public int doorbanCurrentId { get { return doorbanCurrentDoorIdInPs.ShowValue; } }
+       
+
+        public int doorshellCurrentId { get { return doorshellCurrentDoorIdInPs.ShowValue; } }
+       
+
+        public List<string> ErrorList
+        {
+            get { return errorList; }
+
+            set
+            {
+                errorList = value;
+            }
+        }
+
+        public List<DataTable> HoleDataLst
+        {
+            get { return holeDataLst; }
+           
+            set
+            {
+                holeDataLst = value;
+            }
+        }
+
+        public bool IsInNoSafe
+        {
+            get { return ((emgStopInPs.ShowValue == Constant.M_ON) || (ErrorList.Count > 0)); }
+        }
+
+        public bool IsPrintBarCode { get { return (PrintBarCodeMode != Constant.NoPrintBarCode); } }
+          
+
+        public bool IsSaveProdLog
+        {
+            get { return isSaveProdLog; }
+
+            set
+            {
+                isSaveProdLog = value;
+            }
+        }
+
+        public bool lliao
+        {
+            get
+            {
+                return
+                    (lliaoOutInPs.ShowValue == Constant.M_ON);
+            }
+        }
+
+        public Form MainForm
+        {
+            get { return mainForm; }
+
+            set
+            {
+                mainForm = value;
+            }
+        }
+
+        public int OldPrintBarCodeMode
+        {
+            get { return oldPrintBarCodeMode; }
+
+            set
+            {
+                oldPrintBarCodeMode = value;
+            }
+        }
+
+        public ConfigFileManager ParamFile
+        {
+            get { return paramFile; }
+
+            set
+            {
+                paramFile = value;
+            }
+        }
+
+        public int PrintBarCodeMode
+        {
+            get { return printBarCodeMode; }
+
+            set
+            {
+                printBarCodeMode = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstAuto
+        {
+            get { return psLstAuto; }
+
+            set
+            {
+                psLstAuto = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx1
+        {
+            get { return psLstEx1; }
+
+            set
+            {
+                psLstEx1 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx2
+        {
+            get { return psLstEx2; }
+           
+            set
+            {
+                psLstEx2 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx3
+        {
+            get { return psLstEx3; }
+           
+            set
+            {
+                psLstEx3 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx4
+        {
+            get { return psLstEx4; }
+           
+            set
+            {
+                psLstEx4 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx5
+        {
+            get { return psLstEx5; }
+          
+            set
+            {
+                psLstEx5 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx6
+        {
+            get { return psLstEx6; }
+            
+            set
+            {
+                psLstEx6 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx7
+        {
+            get { return psLstEx7; }
+           
+            set
+            {
+                psLstEx7 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx8
+        {
+            get { return psLstEx8; }
+            
+            set
+            {
+                psLstEx8 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstEx9
+        {
+            get { return psLstEx9; }
+
+            set
+            {
+                psLstEx9 = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstHand
+        {
+            get { return psLstHand; }
+
+            set
+            {
+                psLstHand = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstIO
+        {
+            get { return psLstIO; }
+
+            set
+            {
+                psLstIO = value;
+            }
+        }
+
+        public List<PlcInfoSimple> PsLstParam
+        {
+            get { return psLstParam; }
+
+            set
+            {
+                psLstParam = value;
+            }
+        }
+
+        public bool RunFlag
+        {
+            get { return mRunFlag; }
+
+            set
+            {
+                mRunFlag = value;
+            }
+        }
+
+        public bool ScarMode
+        {
+            get 
+            {
+                return (scarInPs.ShowValue > 0);
+            }
+        }
+           
+
+        public int SimimaterialId
+        {
+            get { return optSize.MaterialId; }
+            
+        }
+        
+
+        public bool startTip {
+            get
+            {
+                return ((lineStartTipInPs !=null) && (lineStartTipInPs.ShowValue == 1));
+            }
+        }
+           
+
+        public DataTable UserDataTable
+        {
+            get { return userDataTable; }
+            
+            set
+            {
+                userDataTable = value;
+            }
+        }
+
+        public int xialiaoCurrentId { get { return xialiaoCurrentDoorIdInPs.ShowValue; } }
+       
     }
 
-
-    public class barCodeManger
-    {
-        public barCodeManger()
-        {
-
-        }
-        public barCodeManger(FastReport.Report rp0)
-        {
-            Rp1 = rp0;
-        }
-
-        private Report rp1;
-        public FastReport.Report Rp1
-        {
-            get { return rp1; }
-            set { rp1 = value; }
-        }
-        private string[] paramCode;
-        public string[] ParamCode
-        {
-            get { return paramCode; }
-            set { paramCode = value; }
-        }
-    }
-}
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              

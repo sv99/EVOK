@@ -31,6 +31,7 @@ namespace xjplc
         
         private void Form1_Load(object sender, EventArgs e)
         {
+            ConstantMethod.AppExit();
             strDataFormPath = new List<string>();
             strDataFormPath.Add(Constant.PlcDataFilePathAuto);
             strDataFormPath.Add(Constant.PlcDataFilePathHand);
@@ -44,7 +45,7 @@ namespace xjplc
         {
             portparam = new PortParam();
                    
-            if (!ConstantMethod.XJFindPort())
+            if (!ConstantMethod.XJFindPort(1))
             {
                 MessageBox.Show( Constant.ConnectMachineFail);
                 Application.Exit();

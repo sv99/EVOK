@@ -31,6 +31,7 @@ namespace xjplc.delta
             cmdIn0.Clear();
             cmdOut.AddRange(ASPLCPackReadByteCmd(addrLst.ToArray(), idLst.ToArray(), addrcount.ToArray(), cmdIn0));
 
+
         }
         static byte[] ASPLCPackReadByteCmd(int[] addr, int[] addressid, int[] count, List<byte> cmdInLst)
         {
