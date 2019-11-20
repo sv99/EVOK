@@ -177,7 +177,7 @@ namespace xjplc
                
                 MessageBox.Show(DeviceId+Constant.ConnectMachineFail);
                 //报错 在外面调试 需要隐藏
-                ConstantMethod.AppExit();
+                //ConstantMethod.AppExit();
             }
 
             portParam = ConstantMethod.LoadPortParam(Constant.ConfigSerialportFilePath);          

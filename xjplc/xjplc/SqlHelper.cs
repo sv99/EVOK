@@ -70,7 +70,8 @@ namespace xjplc
                     }
                 }
             }
-            /// <summary>
+
+        /// <summary>
             /// 执行sql 返回一个DataTable
             /// </summary>
             /// <param name="sqlText">执行的sql脚本</param>
@@ -348,169 +349,170 @@ namespace xjplc
 
             return bExist;
         }
-    
-
-    /// <summary>
-    /// 执行sql脚本
-    /// </summary>
-    /// <param name="sqlText">执行的sql脚本</param>
-    /// <param name="parameters">参数集合</param>
-    /// <returns>返回一个SqlDataReader</returns>
-    public static SqlDataReader ExecuteReader(string sqlText, params SqlParameter[] parameters)
-            {
-                //SqlDataReader要求，它读取数据的时候有，它独占它的SqlConnection对象，而且SqlConnection必须是Open状态
-                SqlConnection conn = new SqlConnection(GetSqlConnectionString());//不要释放连接，因为后面还需要连接打开状态
-                SqlCommand cmd = conn.CreateCommand();
-                conn.Open();
-                cmd.CommandText = sqlText;
-                cmd.Parameters.AddRange(parameters);
-                //CommandBehavior.CloseConnection当SqlDataReader释放的时候，顺便把SqlConnection对象也释放掉
-                return cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            }
-        public static void UpdateFromDtByName(string tableName,DataTable dt)
-        {
-            SqlConnection conn = new SqlConnection(GetSqlConnectionString());
-            string sql = "SELECT * FROM " + tableName.Trim();
-            SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
-            SqlCommandBuilder thisBuilder = new SqlCommandBuilder(adapter);
             
-            DataTable table = new DataTable();
-            adapter.Fill(table);
-            table = dt.Copy();
-            try 
-            {
-                adapter.Update(table);
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
         /// <summary>
-        /// 适合插入表结构相同或者包含的情况
+        /// 执行sql脚本
         /// </summary>
-        /// <param name="dt"></param>
-    public static void UpdateFromDeviceInfo(DataTable dt)
-        {
-            SqlConnection conn = new SqlConnection(GetSqlConnectionString());
-            SqlDataAdapter adapter = new SqlDataAdapter(Constant.sqlGetDataTable, conn);
-            SqlCommandBuilder thisBuilder = new SqlCommandBuilder(adapter);
-            DataTable table = new DataTable();
-            adapter.Fill(table);
+        /// <param name="sqlText">执行的sql脚本</param>
+        /// <param name="parameters">参数集合</param>
+        /// <returns>返回一个SqlDataReader</returns>
+        public static SqlDataReader ExecuteReader(string sqlText, params SqlParameter[] parameters)
+                {
+                    //SqlDataReader要求，它读取数据的时候有，它独占它的SqlConnection对象，而且SqlConnection必须是Open状态
+                    SqlConnection conn = new SqlConnection(GetSqlConnectionString());//不要释放连接，因为后面还需要连接打开状态
+                    SqlCommand cmd = conn.CreateCommand();
+                    conn.Open();
+                    cmd.CommandText = sqlText;
+                    cmd.Parameters.AddRange(parameters);
+                    //CommandBehavior.CloseConnection当SqlDataReader释放的时候，顺便把SqlConnection对象也释放掉
+                    return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                }
+        public static void UpdateFromDtByName(string tableName,DataTable dt)
+            {
+                SqlConnection conn = new SqlConnection(GetSqlConnectionString());
+                string sql = "SELECT * FROM " + tableName.Trim();
+                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
+                SqlCommandBuilder thisBuilder = new SqlCommandBuilder(adapter);
+            
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+                table = dt.Copy();
+                try 
+                {
+                    adapter.Update(table);
+                }
+                catch (Exception ex)
+                {
 
-            //已经有的给我删了
-            for (int i = table.Rows.Count - 1; i >= 0; i--)
-            {            
-                   try
-                   {
-                    string s = table.Rows[i][Constant.sqlDeviceIp].ToString().Trim();
-                    DataRow[] dr =
-                    dt.Select(Constant.sqlDeviceIp + "=" + "'" + s + "'");
+                }
+            }
+            /// <summary>
+            /// 适合插入表结构相同或者包含的情况
+            /// </summary>
+            /// <param name="dt"></param>
+        public static void UpdateFromDeviceInfo(DataTable dt)
+            {
+                SqlConnection conn = new SqlConnection(GetSqlConnectionString());
+                SqlDataAdapter adapter = new SqlDataAdapter(Constant.sqlGetDataTable, conn);
+                SqlCommandBuilder thisBuilder = new SqlCommandBuilder(adapter);
+                DataTable table = new DataTable();
+                adapter.Fill(table);
+
+                //已经有的给我删了
+                for (int i = table.Rows.Count - 1; i >= 0; i--)
+                {            
+                       try
+                       {
+                        string s = table.Rows[i][Constant.sqlDeviceIp].ToString().Trim();
+                        DataRow[] dr =
+                        dt.Select(Constant.sqlDeviceIp + "=" + "'" + s + "'");
                                        
-                    if (dr.Length > 0)
-                    {
-                        for (int colcount = 0; colcount < table.Rows[i].ItemArray.Length; colcount++)
+                        if (dr.Length > 0)
                         {
-                            if(colcount< dr[0].ItemArray.Length)
-                             table.Rows[i][colcount] = dr[0][colcount];
+                            for (int colcount = 0; colcount < table.Rows[i].ItemArray.Length; colcount++)
+                            {
+                                if(colcount< dr[0].ItemArray.Length)
+                                 table.Rows[i][colcount] = dr[0][colcount];
+                            }
                         }
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
-            //没有的给我加上
-            for (int i = dt.Rows.Count - 1; i >= 0; i--)
-            {
-                try
-                {
-                    string s = dt.Rows[i][Constant.sqlDeviceIp].ToString().Trim();
-                    DataRow[] dr =
-                    table.Select(Constant.sqlDeviceIp + "=" + "'" + s + "'");
-
-                    if (dr.Length > 0)
-                    {
-                        
-                       
-                    }
-                    else
-                    {
-                        DataRow drNew = table.NewRow();
-                        drNew.ItemArray = (object[])dt.Rows[i].ItemArray.Clone();
-                        table.Rows.Add(drNew);
-                                               
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                }
-            }
-
-            try
-            {
-                adapter.Update(table);
-            }
-            catch (Exception ex)
-            {
-                
-            }
-
-
-        }
-        public static void DataTableToSQLServer(DataTable dt)
-        {
-
-            using (SqlConnection destinationConnection = new SqlConnection(GetSqlConnectionString()))
-            {
-                destinationConnection.Open();
-
-                using (SqlBulkCopy bulkCopy = new SqlBulkCopy(destinationConnection))
-                {
-                    try
-                    {
-                        bulkCopy.DestinationTableName = "deviceinfo";//要插入的表的表名
-                        bulkCopy.BatchSize = dt.Rows.Count;
-                        bulkCopy.ColumnMappings.Add("日计划单号", "日计划单号");
-                       
-                        bulkCopy.ColumnMappings.Add("日期", "日期");
-                     
-                        bulkCopy.ColumnMappings.Add("车间", "车间");
-                        bulkCopy.ColumnMappings.Add("图号", "图号");//映射字段名 DataTable列名 ,数据库 对应的列名  
-                        bulkCopy.ColumnMappings.Add("名称", "名称");
-                        bulkCopy.ColumnMappings.Add("工序", "工序");
-                        bulkCopy.ColumnMappings.Add("工艺特性", "工艺特性");
-                        bulkCopy.ColumnMappings.Add("姓名", "姓名");
-                        bulkCopy.ColumnMappings.Add("人员特性", "人员特性");
-                        bulkCopy.ColumnMappings.Add("设备大类", "设备大类");
-                        bulkCopy.ColumnMappings.Add("设备编号", "设备编号");
-                        bulkCopy.ColumnMappings.Add("设备地址", "设备地址");
-                        bulkCopy.ColumnMappings.Add("设备特性", "设备特性");
-                        bulkCopy.ColumnMappings.Add("图纸链接", "图纸链接");
-                        bulkCopy.ColumnMappings.Add("调度说明", "调度说明");
-                        bulkCopy.ColumnMappings.Add("排产量", "排产量");
-                        bulkCopy.ColumnMappings.Add("节拍", "节拍");
-                        bulkCopy.ColumnMappings.Add("机数", "机数");
-                        bulkCopy.ColumnMappings.Add("工模具", "工模具");                                        
-                        bulkCopy.WriteToServer(dt);
-                        
                     }
                     catch (Exception ex)
                     {
-                        System.Windows.Forms.MessageBox.Show(ex.Message);
+
                     }
-                    finally
+                }
+                //没有的给我加上
+                for (int i = dt.Rows.Count - 1; i >= 0; i--)
+                {
+                    try
+                    {
+                        string s = dt.Rows[i][Constant.sqlDeviceIp].ToString().Trim();
+                        DataRow[] dr =
+                        table.Select(Constant.sqlDeviceIp + "=" + "'" + s + "'");
+
+                        if (dr.Length > 0)
+                        {
+                        
+                       
+                        }
+                        else
+                        {
+                            DataRow drNew = table.NewRow();
+                            drNew.ItemArray = (object[])dt.Rows[i].ItemArray.Clone();
+                            table.Rows.Add(drNew);
+                                               
+                        }
+                    }
+                    catch (Exception ex)
                     {
 
                     }
                 }
 
+                try
+                {
+                    adapter.Update(table);
+                }
+                catch (Exception ex)
+                {
+                
+                }
+
+
+            }
+        public static void DataTableToSQLServer(DataTable dt)
+            {
+
+                using (SqlConnection destinationConnection = new SqlConnection(GetSqlConnectionString()))
+                {
+                    destinationConnection.Open();
+
+                    using (SqlBulkCopy bulkCopy = new SqlBulkCopy(destinationConnection))
+                    {
+                        try
+                        {
+                            bulkCopy.DestinationTableName = "deviceinfo";//要插入的表的表名
+                            bulkCopy.BatchSize = dt.Rows.Count;
+                            bulkCopy.ColumnMappings.Add("日计划单号", "日计划单号");
+                       
+                            bulkCopy.ColumnMappings.Add("日期", "日期");
+                     
+                            bulkCopy.ColumnMappings.Add("车间", "车间");
+                            bulkCopy.ColumnMappings.Add("图号", "图号");//映射字段名 DataTable列名 ,数据库 对应的列名  
+                            bulkCopy.ColumnMappings.Add("名称", "名称");
+                            bulkCopy.ColumnMappings.Add("工序", "工序");
+                            bulkCopy.ColumnMappings.Add("工艺特性", "工艺特性");
+                            bulkCopy.ColumnMappings.Add("姓名", "姓名");
+                            bulkCopy.ColumnMappings.Add("人员特性", "人员特性");
+                            bulkCopy.ColumnMappings.Add("设备大类", "设备大类");
+                            bulkCopy.ColumnMappings.Add("设备编号", "设备编号");
+                            bulkCopy.ColumnMappings.Add("设备地址", "设备地址");
+                            bulkCopy.ColumnMappings.Add("设备特性", "设备特性");
+                            bulkCopy.ColumnMappings.Add("图纸链接", "图纸链接");
+                            bulkCopy.ColumnMappings.Add("调度说明", "调度说明");
+                            bulkCopy.ColumnMappings.Add("排产量", "排产量");
+                            bulkCopy.ColumnMappings.Add("节拍", "节拍");
+                            bulkCopy.ColumnMappings.Add("机数", "机数");
+                            bulkCopy.ColumnMappings.Add("工模具", "工模具");                                        
+                            bulkCopy.WriteToServer(dt);
+                        
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Windows.Forms.MessageBox.Show(ex.Message);
+                        }
+                        finally
+                        {
+
+                        }
+                    }
+
+
+                }
 
             }
 
-        }
+
     }
     
 }

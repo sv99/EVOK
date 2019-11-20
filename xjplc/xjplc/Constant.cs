@@ -358,7 +358,8 @@ namespace xjplc
 
         public static string paramHeader1 = "参数名";
         public static string paramHeader2 = "值";
-
+        public static string DeviceUser = "DeviceUser";
+        public static string DeviceUserJingPai = "金牌";
         #endregion
 
         public static readonly string CsvSplitComma = ",";
@@ -622,7 +623,14 @@ namespace xjplc
         public static int downLoadBottomSizeId = 1;
         public static readonly string simiDeivceName = "司米下料机";
         public static int patternMode = 1;
-        public static int patternMaterialId = 100;
+        public static int patternMaterialId = 4;
+        public static string SQL_ServerName = "SQL_ServerName";
+        public static string SQL_DatabaseName = "SQL_DatabaseName";
+        public static string SQL_UserName = "SQL_UserName";
+        public static string SQL_Passwd = "SQL_Passwd";
+        public static string SQL_Tablename = "SQL_Tablename";
+
+
         #endregion
         #region 梳齿机
         public static readonly int scjDeivceId = 3;

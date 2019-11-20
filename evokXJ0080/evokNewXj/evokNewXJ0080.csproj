@@ -83,6 +83,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="userInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="userInputForm.Designer.cs">
+      <DependentUpon>userInputForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="WorkForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="userInputForm.resx">
+      <DependentUpon>userInputForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WatchForm.resx">
       <DependentUpon>WatchForm.cs</DependentUpon>
     </EmbeddedResource>

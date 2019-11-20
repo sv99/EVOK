@@ -176,6 +176,7 @@
     <Compile Include="ky\DeviceManager.cs" />
     <Compile Include="MultiLanguage.cs" />
     <Compile Include="Permutation.cs" />
+    <Compile Include="simi\RestMaterial.cs" />
     <Compile Include="simi\simiMaterial.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="tanuo\Camera.cs" />

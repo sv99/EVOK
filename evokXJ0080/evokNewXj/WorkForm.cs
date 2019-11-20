@@ -80,7 +80,6 @@ namespace evokNew0080
            // evokWork = new EvokXJWork(Constant.evokGetTcp);
             evokWork = ConstantMethod.GetWork();
             evokWork.DeviceName = Constant.simiDeivceName;
-
             evokWork.MainForm = this;
             evokWork.SetUserDataGridView(UserData);
             evokWork.SetRtbWork(rtbWork);
@@ -106,7 +105,7 @@ namespace evokNew0080
             //comboBox1.SelectedIndex = evokWork.CutSelMode;
             errorTimer.Enabled = true;
 
-            evokWork.ReadCSVDataDefault();
+            evokWork.ReadCSVDataDefault(Constant.simiDeivceId);
                     
         }
         #endregion
@@ -200,13 +199,14 @@ namespace evokNew0080
             optBtn.Enabled = false;
             optBtn.BackColor = Color.Red;
             rtbResult.Clear();
-            rtbWork.Clear();
-            startOptShow();
+              rtbWork.Clear();
+               startOptShow();
             if (evokWork.IsMaterialExist())
             {
                 if (evokWork.getOptSize().MaterialId != Constant.patternMaterialId)
-               
-                evokWork.optReady(Constant.optNormal);
+                {
+                    evokWork.optReady(Constant.optNormal);
+                }
                 else
                     MessageBox.Show("花纹材料请直接启动程序！");
 
@@ -249,11 +249,21 @@ namespace evokNew0080
                 if (evokWork.SimimaterialId != Constant.patternMaterialId)
                     evokWork.CutStartNormal(Constant.CutNormalWithAngle);
                 else
-                    evokWork.CutStartSimiPatternMode(Constant.patternMode);
+                {
+                    
+                    evokWork.CutStartSimiPatternMode(Constant.CutNormalWithAngle);
+                }
             }
             else
             {
-                evokWork.StartWithOutDevice();
+                if (evokWork.SimimaterialId != Constant.patternMaterialId)
+                {
+                    evokWork.StartWithOutDevice();
+                }
+                else
+                {
+                    evokWork.StartWithOutDeviceWithPattern(5);
+                }
             }
                    
             stopBtnShow();
@@ -858,7 +868,15 @@ namespace evokNew0080
 
         private void button1_Click_1(object sender, EventArgs e)
         {
+            evokNewXJ.userInputForm ud =new evokNewXJ.userInputForm();
+            ud.Wk = evokWork;
+            ud.ShowDialog();
+        }
 
+        private void button36_Click(object sender, EventArgs e)
+        {
+           
+                    
         }
     }   
 }

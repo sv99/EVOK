@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nettest", "..\..\..\司米�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "全排列", "..\..\..\..\个人库\关于编程\C#\排列组合\全排列\全排列.csproj", "{79344B42-58E3-4A80-B929-9C4E5346FEE2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sqlConnectModule", "..\..\..\..\个人库\关于编程\C#\数据库远程测试\sqlConnectModule\sqlConnectModule.csproj", "{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -211,6 +213,14 @@ Global
 		{79344B42-58E3-4A80-B929-9C4E5346FEE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79344B42-58E3-4A80-B929-9C4E5346FEE2}.Release|x86.ActiveCfg = Release|Any CPU
 		{79344B42-58E3-4A80-B929-9C4E5346FEE2}.Release|x86.Build.0 = Release|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Release|x86.ActiveCfg = Release|Any CPU
+		{0BDDC440-D0F6-4CA8-8BB2-86DFBF44D975}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

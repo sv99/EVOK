@@ -81,9 +81,9 @@ namespace evokNew0066
             evokWork.SetRtbResult(rtbResult);
             evokWork.SetPrintReport();
             evokWork.InitDgvParam(dgvParam);
-            evokWork.InitDgvIO(dgvIO);
-            evokWork.SetOptParamShowCombox(comboBox2);
-            
+            evokWork.InitDgvIO(dgvIO);    
+            evokWork.SetShowCnt(comboBox2);
+
             errorList = evokWork.ErrorList;
             UpdateTimer.Enabled = true;
 
@@ -197,8 +197,8 @@ namespace evokNew0066
            // }
            ****/
 
-            if (!evokWork.AutoMes)
-            {
+            //if (!evokWork.AutoMes)
+            //{
                 //测试用 EXCEL
                 // evokWork.optReady(Constant.optNormalExcel);
                 //ConstantMethod.Delay(2000);
@@ -210,7 +210,7 @@ namespace evokNew0066
                 optSize.Safe = evokWork.safeOutInPs.ShowValue;
                 ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                 ****/
-            }
+           // }
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
@@ -285,7 +285,8 @@ namespace evokNew0066
             }
             else
             {
-                evokWork.CutStartNormal(Constant.CutNormalMode);
+                if(evokWork.SetCutProCnt(int.Parse(comboBox2.Text)))
+                   evokWork.CutStartNormal(Constant.CutNormalMode);
                 //测试代码 后续回复弹窗
                 /***
                 qClr_Click(sender, e);
@@ -369,7 +370,7 @@ namespace evokNew0066
         {
             if (tc1.SelectedIndex == 0)
             {
-                IsoptBtnShow(evokWork.AutoMes);
+               IsoptBtnShow(evokWork.AutoMes);
                 foreach (PlcInfoSimple simple in evokWork.PsLstAuto)
                 {
                     int showValue = simple.ShowValue;
@@ -547,7 +548,7 @@ namespace evokNew0066
 
                 if (evokWork.showFilePathLabel == null) evokWork.showFilePathLabel = label8;
                 evokWork.SetDataShowCb(listBox1);
-                evokWork.SetDataShowLbl(label9);
+               // evokWork.SetDataShowLbl(label9);
                 ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)

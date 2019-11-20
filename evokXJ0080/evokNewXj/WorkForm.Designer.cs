@@ -182,7 +182,6 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackgroundImage = global::evokNewXJ.Properties.Resources.bk;
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileMenuItem,
@@ -319,7 +318,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.BackColor = System.Drawing.Color.SkyBlue;
+            this.tabPage1.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.rtbResult);
@@ -352,15 +351,14 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(20, 687);
+            this.button1.Location = new System.Drawing.Point(20, 682);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(184, 62);
             this.button1.TabIndex = 127;
             this.button1.Tag = "加载文件夹";
-            this.button1.Text = "Folder";
+            this.button1.Text = "手动添加";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // rtbResult
@@ -399,7 +397,7 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button11.Location = new System.Drawing.Point(19, 555);
+            this.button11.Location = new System.Drawing.Point(19, 550);
             this.button11.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(184, 62);
@@ -700,7 +698,7 @@
             // loadDataBtn
             // 
             this.loadDataBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.loadDataBtn.Location = new System.Drawing.Point(19, 621);
+            this.loadDataBtn.Location = new System.Drawing.Point(19, 616);
             this.loadDataBtn.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.loadDataBtn.Name = "loadDataBtn";
             this.loadDataBtn.Size = new System.Drawing.Size(184, 62);
@@ -1830,7 +1828,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+            this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(2051, 1078);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tc1);

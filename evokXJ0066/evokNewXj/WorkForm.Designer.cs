@@ -49,13 +49,10 @@
             this.aboutEvokMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.listBox2 = new System.Windows.Forms.ListBox();
             this.label8 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button11 = new System.Windows.Forms.Button();
@@ -65,11 +62,8 @@
             this.rtbWork = new System.Windows.Forms.RichTextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.qClr = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.rtbResult = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
@@ -148,7 +142,6 @@
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UserData)).BeginInit();
             this.tabPage2.SuspendLayout();
@@ -297,14 +290,10 @@
             // tabPage1
             // 
             this.tabPage1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tabPage1.Controls.Add(this.rtbResult);
             this.tabPage1.Controls.Add(this.label12);
             this.tabPage1.Controls.Add(this.comboBox2);
-            this.tabPage1.Controls.Add(this.label15);
-            this.tabPage1.Controls.Add(this.label11);
-            this.tabPage1.Controls.Add(this.label14);
             this.tabPage1.Controls.Add(this.label13);
-            this.tabPage1.Controls.Add(this.label9);
-            this.tabPage1.Controls.Add(this.listBox2);
             this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.listBox1);
             this.tabPage1.Controls.Add(this.button11);
@@ -314,7 +303,6 @@
             this.tabPage1.Controls.Add(this.rtbWork);
             this.tabPage1.Controls.Add(this.button1);
             this.tabPage1.Controls.Add(this.qClr);
-            this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.UserData);
             this.tabPage1.Controls.Add(this.loadDataBtn);
@@ -334,6 +322,16 @@
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // rtbResult
+            // 
+            this.rtbResult.Location = new System.Drawing.Point(256, 601);
+            this.rtbResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.rtbResult.Name = "rtbResult";
+            this.rtbResult.ReadOnly = true;
+            this.rtbResult.Size = new System.Drawing.Size(1280, 292);
+            this.rtbResult.TabIndex = 126;
+            this.rtbResult.Text = "";
+            // 
             // label12
             // 
             this.label12.AutoSize = true;
@@ -344,35 +342,30 @@
             this.label12.TabIndex = 116;
             this.label12.Text = "运行信息";
             // 
-            // label15
+            // comboBox2
             // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(1145, 256);
-            this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(124, 28);
-            this.label15.TabIndex = 116;
-            this.label15.Text = "排版结果";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(1145, 256);
-            this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(124, 28);
-            this.label11.TabIndex = 116;
-            this.label11.Text = "排版结果";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(501, 256);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(152, 28);
-            this.label14.TabIndex = 116;
-            this.label14.Text = "当前文档名";
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "0",
+            "1",
+            "2",
+            "3",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14"});
+            this.comboBox2.Location = new System.Drawing.Point(499, 173);
+            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(154, 36);
+            this.comboBox2.TabIndex = 114;
+            this.comboBox2.Text = "0";
             // 
             // label13
             // 
@@ -383,29 +376,6 @@
             this.label13.Size = new System.Drawing.Size(82, 28);
             this.label13.TabIndex = 116;
             this.label13.Text = "文件:";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(501, 256);
-            this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(152, 28);
-            this.label9.TabIndex = 116;
-            this.label9.Text = "当前文档名";
-            // 
-            // listBox2
-            // 
-            this.listBox2.Font = new System.Drawing.Font("宋体", 8.898876F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.ItemHeight = 18;
-            this.listBox2.Location = new System.Drawing.Point(53, 295);
-            this.listBox2.Margin = new System.Windows.Forms.Padding(2);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(199, 562);
-            this.listBox2.TabIndex = 125;
-            this.listBox2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
-            this.listBox2.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // label8
             // 
@@ -425,7 +395,8 @@
             this.listBox1.Location = new System.Drawing.Point(53, 295);
             this.listBox1.Margin = new System.Windows.Forms.Padding(2);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(199, 562);
+            this.listBox1.ScrollAlwaysVisible = true;
+            this.listBox1.Size = new System.Drawing.Size(199, 598);
             this.listBox1.TabIndex = 125;
             this.listBox1.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.listBox1_DrawItem);
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
@@ -507,7 +478,7 @@
             // qClr
             // 
             this.qClr.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.qClr.Location = new System.Drawing.Point(267, 163);
+            this.qClr.Location = new System.Drawing.Point(45, 156);
             this.qClr.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.qClr.Name = "qClr";
             this.qClr.Size = new System.Drawing.Size(184, 62);
@@ -516,29 +487,6 @@
             this.qClr.Text = "产量清零";
             this.qClr.UseVisualStyleBackColor = true;
             this.qClr.Click += new System.EventHandler(this.qClr_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.AutoScrollMargin = new System.Drawing.Size(10, 10);
-            this.panel1.AutoScrollMinSize = new System.Drawing.Size(10, 10);
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.rtbResult);
-            this.panel1.Location = new System.Drawing.Point(904, 294);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(640, 608);
-            this.panel1.TabIndex = 118;
-            // 
-            // rtbResult
-            // 
-            this.rtbResult.Location = new System.Drawing.Point(3, 2);
-            this.rtbResult.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.rtbResult.Name = "rtbResult";
-            this.rtbResult.ReadOnly = true;
-            this.rtbResult.Size = new System.Drawing.Size(626, 592);
-            this.rtbResult.TabIndex = 5;
-            this.rtbResult.Text = "";
             // 
             // groupBox1
             // 
@@ -572,32 +520,6 @@
             this.label7.Size = new System.Drawing.Size(0, 28);
             this.label7.TabIndex = 115;
             // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "0",
-            "1",
-            "2",
-            "3",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14"});
-            this.comboBox2.Location = new System.Drawing.Point(325, 248);
-            this.comboBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(154, 36);
-            this.comboBox2.TabIndex = 114;
-            this.comboBox2.Text = "0";
-            this.comboBox2.Visible = false;
-            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
@@ -623,6 +545,7 @@
             this.textBox1.TabIndex = 111;
             this.textBox1.Tag = "料头补偿";
             this.textBox1.Text = "100";
+            this.textBox1.Visible = false;
             this.textBox1.Enter += new System.EventHandler(this.AutoTextBox_Enter);
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.lcTxt_KeyPress);
             this.textBox1.Leave += new System.EventHandler(this.AutoTxt_Leave);
@@ -651,6 +574,7 @@
             this.label2.Size = new System.Drawing.Size(180, 33);
             this.label2.TabIndex = 110;
             this.label2.Text = "料头补偿：";
+            this.label2.Visible = false;
             // 
             // label10
             // 
@@ -746,13 +670,13 @@
             // 
             // UserData
             // 
-            this.UserData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            this.UserData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.UserData.Location = new System.Drawing.Point(259, 294);
             this.UserData.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.UserData.Name = "UserData";
             this.UserData.RowTemplate.Height = 23;
-            this.UserData.Size = new System.Drawing.Size(638, 605);
+            this.UserData.Size = new System.Drawing.Size(1279, 285);
             this.UserData.TabIndex = 116;
             this.UserData.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dgvParam_DataError);
             // 
@@ -772,7 +696,7 @@
             // autoSLBtn
             // 
             this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(45, 157);
+            this.autoSLBtn.Location = new System.Drawing.Point(845, 227);
             this.autoSLBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.autoSLBtn.Name = "autoSLBtn";
             this.autoSLBtn.Size = new System.Drawing.Size(184, 62);
@@ -825,7 +749,7 @@
             // ccBtn
             // 
             this.ccBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ccBtn.Location = new System.Drawing.Point(483, 163);
+            this.ccBtn.Location = new System.Drawing.Point(267, 157);
             this.ccBtn.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.ccBtn.Name = "ccBtn";
             this.ccBtn.Size = new System.Drawing.Size(184, 62);
@@ -1538,7 +1462,6 @@
             this.tc1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UserData)).EndInit();
@@ -1588,7 +1511,6 @@
         private System.Windows.Forms.Label clLbl1;
         private System.Windows.Forms.Label prodlbl;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dgvParam;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
@@ -1596,7 +1518,6 @@
         private System.Windows.Forms.OpenFileDialog DialogExcelDataLoad;
         private System.Windows.Forms.DataGridViewTextBoxColumn bin;
         private System.Windows.Forms.DataGridViewTextBoxColumn value;
-        private System.Windows.Forms.RichTextBox rtbResult;
         private System.Windows.Forms.RichTextBox rtbWork;
    
         private System.Windows.Forms.ToolStripMenuItem showCurrentDataForm;
@@ -1665,13 +1586,9 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.RichTextBox rtbResult;
     }
 }
 
