@@ -83,6 +83,7 @@ namespace evokNew0082
             evokWork.InitDgvParam(dgvParam);
             evokWork.InitDgvIO(dgvIO);
             evokWork.SetShowCnt(comboBox1);
+            evokWork.SetDataShowCb(listBox1);
             errorList = evokWork.ErrorList;
             UpdateTimer.Enabled = true;
 
@@ -499,9 +500,9 @@ namespace evokNew0082
             if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
             {
 
-                if (evokWork.showFilePathLabel == null) evokWork.showFilePathLabel = label8;
-                //evokWork.SetDataShowCb(listBox1);
-                evokWork.SetDataShowLbl(label9);
+                if (evokWork.showFilePathLabel == null) evokWork.showFilePathLabel = label13;
+                evokWork.SetDataShowCb(listBox1);
+                evokWork.SetDataShowLbl(label13);
                 ConstantMethod.SaveDirectoryByFileDialog(DialogExcelDataLoad);
                 int num = ConstantMethod.IsWhichFile( DialogExcelDataLoad.FileName);
                 if (num == Constant.CsvFile)
@@ -763,6 +764,16 @@ namespace evokNew0082
         private void tabPage2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            evokWork.SetDataShow(listBox1.SelectedIndex);
         }
     }   
 }

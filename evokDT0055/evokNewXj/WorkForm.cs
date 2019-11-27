@@ -527,11 +527,7 @@ namespace evokNew0055
                 foreach (DTPlcInfoSimple p in evokWork.PsLstAuto)
                 {
                     if (p.Name.Contains(Constant.Alarm) && p.ShowStr != null && p.ShowStr.Count > 0)
-                    {
-                        if (p.Addr == 1004)
-                        {
-                            p.Addr = 1004;
-                        }
+                    {                         
                         for (int i = 0; i < p.ShowStr.Count; i++)
                         {
                             int index = errorList.IndexOf(p.ShowStr[i]);

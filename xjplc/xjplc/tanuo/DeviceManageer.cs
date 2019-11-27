@@ -294,8 +294,7 @@ namespace xjplc
             get
             {
                 if (this != null
-                    && HKCam != null
-                    && HKCam.IsOnLine
+                    && handCam != null
                     && Zd != null
                     && Zd.Status
                     //&& Jxp!=null
@@ -323,7 +322,9 @@ namespace xjplc
 
             config = new ConfigFileManager(Constant.ConfigParamFilePath);
 
-            InitHKCamera();
+            // InitHKCamera();
+
+            InitHankCam();
 
             InitZd();
 
@@ -346,6 +347,11 @@ namespace xjplc
                 HKCam.dispose();
             if (camxm != null)
                 camxm.dispose();
+
+            if (handCam != null)
+            {
+                handCam.dispose();
+            }
         }
         public DeviceManageer(Action<string> s, PictureBox phk, PictureBox pxm)
         {
@@ -900,6 +906,7 @@ namespace xjplc
         
         public void ShowHKInfo()
         {
+            if (HKCam == null) return;
 
             if (PrjName != prj.PrjName)
             {
@@ -927,6 +934,32 @@ namespace xjplc
         {
             if (HKCam != null && HKCam.Status !=0)
                 HKCam.StartAdjust(id);
+        }
+
+        #endregion
+        #region hankVIsion
+        HankCamera handCam;
+
+        //初始化
+        void InitHankCam()
+        {
+            handCam = new HankCamera();
+
+            string ip = config.ReadConfig(ParamStr, configStr, sysInfo.param[4]);
+            string port = config.ReadConfig(ParamStr, configStr, sysInfo.param[5]);
+            string userName = config.ReadConfig(ParamStr, configStr, sysInfo.param[6]);
+            string pwd = config.ReadConfig(ParamStr, configStr, sysInfo.param[7]);
+
+            ServerInfo sr = new ServerInfo();
+
+            sr.server_Ip = ip;
+            sr.server_Port = port;
+            sr.userName = userName;
+            sr.userPwd = pwd;
+            handCam.ShowhWnd =hkCamRealPlayWnd.Handle;
+            handCam.OpenDevice(sr);
+
+
         }
 
         #endregion

@@ -16,6 +16,9 @@ namespace xjplc
 
     public struct ServerInfo
     {
+
+        public string userPwd;
+        public string userName;
         //服务器地址
         public string server_Ip;
 
@@ -400,8 +403,8 @@ namespace xjplc
         public const int ParamPage = 2;
         public const int IOPage = 3;
         public const int Param1Page = 4;
-        public static readonly int AutoPageID = 0;//2; //2  普通  //双切刀下料锯 11   //0 西门子下料锯
-        public static readonly int HandPageID = 1;//5; //3   普通  //双切刀 5         //1 西门子下料锯
+        public static readonly int AutoPageID = 2;//2; //2  普通  //双切刀下料锯 11   //0 西门子下料锯
+        public static readonly int HandPageID = 3;//5; //3   普通  //双切刀 5         //1 西门子下料锯
         public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
         public static readonly string[] plcDataFile = { "addr", "mode", "bin", "count", "value", "param1", "param2", "param3", "param4", "param5", "param6" };
         public static readonly string sqlChar10 = "char(10)";
@@ -496,6 +499,8 @@ namespace xjplc
         public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
         public static readonly string ConfigPassWdFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configPwd__Bak.xml";
         public static readonly string ConfigSimiMaterialFile = ConstantMethod.GetAppPath() + "config\\Material List.csv";
+        public static readonly string ConfigSimiRestMaterialFile = ConstantMethod.GetAppPath() + "config\\Rest Material List.csv";
+
 
         public static readonly string strValue = "value";
         public static readonly string strParam = "param";
@@ -562,7 +567,10 @@ namespace xjplc
         public static readonly int PwdOffSet = 1000;
         public static readonly int PwdNoOffSet = 6666;
         public static readonly int dataMultiple = 100;
+        public static readonly int simiyuliaoId = 1000;
         public static readonly int MaxShowCount = 2000;
+
+
         public static readonly string ScarId = "-1";
         public static readonly string barCodeDemo = ConstantMethod.GetAppPath() + "零部件打印.frx";
         public static readonly string SplitTypeFile = ConstantMethod.GetAppPath() + "config\\SplitType.xls";
@@ -623,14 +631,20 @@ namespace xjplc
         public static int downLoadBottomSizeId = 1;
         public static readonly string simiDeivceName = "司米下料机";
         public static int patternMode = 1;
-        public static int patternMaterialId = 4;
+        public static int patternMaterialId = 1000;
         public static string SQL_ServerName = "SQL_ServerName";
         public static string SQL_DatabaseName = "SQL_DatabaseName";
         public static string SQL_UserName = "SQL_UserName";
         public static string SQL_Passwd = "SQL_Passwd";
         public static string SQL_Tablename = "SQL_Tablename";
+        public static string WlNear1Str = "WlNear";
+        public static int MaxWlNearCount = 20;//最大
+        public static int MaxWlNearSize = 500;//最大
 
+        public static int SplitMinTaskCount= 5;//多少个订单最小
 
+        public static string SplitCount = "SplitCount";
+        public static int  RestMaterialId = 10000;
         #endregion
         #region 梳齿机
         public static readonly int scjDeivceId = 3;

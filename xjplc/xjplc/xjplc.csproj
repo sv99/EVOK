@@ -176,6 +176,7 @@
     <Compile Include="ky\DeviceManager.cs" />
     <Compile Include="MultiLanguage.cs" />
     <Compile Include="Permutation.cs" />
+    <Compile Include="simi\PaintRect.cs" />
     <Compile Include="simi\RestMaterial.cs" />
     <Compile Include="simi\simiMaterial.cs" />
     <Compile Include="SqlHelper.cs" />
@@ -185,6 +186,9 @@
     <Compile Include="tanuo\DeviceManageer.cs" />
     <Compile Include="tanuo\easyCom.cs" />
     <Compile Include="tanuo\handControl.cs" />
+    <Compile Include="tanuo\HankCamera.cs" />
+    <Compile Include="tanuo\HankVisionSDK.cs" />
+    <Compile Include="tanuo\HDVPLAYSDK.cs" />
     <Compile Include="tanuo\NetSDK.cs" />
     <Compile Include="tanuo\prjCfg.cs">
       <SubType>Form</SubType>

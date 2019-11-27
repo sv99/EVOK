@@ -7,6 +7,7 @@ using xjplc;
 using System.IO;
 using imagepb;
 using simiDataOpt;
+using xjplc.simi;
 
 namespace evokNew0080
 {
@@ -25,11 +26,12 @@ namespace evokNew0080
 
         private WatchForm wForm;
 
+        public RestMaterial restM;
 
         public WorkForm()
         {     
             //需要密码的时候     
-          //ConstantMethod.InitPassWd();
+            //ConstantMethod.InitPassWd();
             InitializeComponent();
         }
         #region 初始化
@@ -41,6 +43,11 @@ namespace evokNew0080
             evokWork.ShiftDgvParamLang(dgvParam, MultiLanguage.getLangId());
             evokWork.updateColName(dgvParam);
             evokWork.updateColName(dgvIO);
+            restM = new RestMaterial();
+            restM.Dgv = dataGridView1;
+            evokWork.ShowCutPictureBox = pictureBox1;
+            evokWork.Rsm = restM;
+            restM.updateDgv();
             //一些控件的库需要更换
             string[] s = Constant.cutMode.Split('/');
            // comboBox1.Items.Clear();
@@ -88,7 +95,7 @@ namespace evokNew0080
             evokWork.InitDgvParam(dgvParam);
             evokWork.InitDgvIO(dgvIO);
             evokWork.SetOptParamShowCombox(comboBox2);
-            
+            evokWork.getOptSize().Simi_Split_Combox = comboBox1;
             errorList = evokWork.ErrorList;
             UpdateTimer.Enabled = true;
 
@@ -167,18 +174,11 @@ namespace evokNew0080
             loadDataBtn.Enabled = true;
             
         }
-
+        
         private void ccBtn_Click(object sender, EventArgs e)
         {
-            if ( evokWork.AutoMes)
-            {
-                 evokWork.autoMesOFF();
-            }
-            else
-            {
-                 evokWork.autoMesON();
-            }
-        }
+           
+    }
         private void connectMachine_Click(object sender, EventArgs e)
         {
 
@@ -199,11 +199,11 @@ namespace evokNew0080
             optBtn.Enabled = false;
             optBtn.BackColor = Color.Red;
             rtbResult.Clear();
-              rtbWork.Clear();
-               startOptShow();
+            rtbWork.Clear();
+            startOptShow();
             if (evokWork.IsMaterialExist())
             {
-                if (evokWork.getOptSize().MaterialId != Constant.patternMaterialId)
+                if (evokWork.getOptSize().MaterialId <= Constant.patternMaterialId)
                 {
                     evokWork.optReady(Constant.optNormal);
                 }
@@ -246,17 +246,18 @@ namespace evokNew0080
             startBtnShow();
             if (evokWork.DeviceStatus)
             {
-                if (evokWork.SimimaterialId != Constant.patternMaterialId)
+                if (evokWork.SimimaterialId < Constant.patternMaterialId)
+                {
                     evokWork.CutStartNormal(Constant.CutNormalWithAngle);
+                }
                 else
                 {
-                    
                     evokWork.CutStartSimiPatternMode(Constant.CutNormalWithAngle);
                 }
             }
             else
             {
-                if (evokWork.SimimaterialId != Constant.patternMaterialId)
+                if (evokWork.SimimaterialId < Constant.patternMaterialId)
                 {
                     evokWork.StartWithOutDevice();
                 }
@@ -270,18 +271,31 @@ namespace evokNew0080
         }
 
         Dictionary<string, List<string>> taskLst
-                  = new Dictionary<string, List<string>>();
+         = new Dictionary<string, List<string>>();
+
+       
         private void stopBtn_Click(object sender, EventArgs e)
         {
 
             OpenFileDialog op = new OpenFileDialog();
-            string datafile = DateTime.Now.ToString("yyyyMMdd");
-            datafile = "\\20190928";
+
+            string datafile = "\\"+DateTime.Now.ToString("yyyyMMdd");
+
             string RootPath = "\\\\10.18.101.61\\OptimizationBatchesProduction\\WoodProfile\\Normal"+datafile;
             //string RootPath = "E:\\project\\2018\\中意木工\\司米橱柜\\网络对接\\"+ datafile;
+
             if (!Directory.Exists(RootPath))
             {
-                MessageBox.Show("文件夹不存在！");
+                MessageBox.Show("文件夹不存在,路径:"+ RootPath);
+
+                FolderBrowserDialog fp = new FolderBrowserDialog();
+
+
+                if (fp.ShowDialog() == DialogResult.OK)
+                {
+                    RootPath = fp.SelectedPath;
+                }
+                else
                 return;
             }
 
@@ -323,6 +337,7 @@ namespace evokNew0080
             
             ShowMaterialLst();
         }
+
 
         void ShowMaterialLst()
         {
@@ -664,7 +679,7 @@ namespace evokNew0080
              button10.Enabled = false;
              qClr.Enabled = false;
              btn1.Enabled = false;
-             ccBtn.Enabled = false;
+          
              UserData.ReadOnly = true;
              printcb.Enabled = false;
             deviceMenuItem.Enabled = false;
@@ -677,7 +692,7 @@ namespace evokNew0080
             button10.Enabled = false;
             qClr.Enabled = false;
             btn1.Enabled = false;
-            ccBtn.Enabled = false;
+         
             
             stopBtn.Enabled = false;
             pauseBtn.Enabled = false;
@@ -697,7 +712,7 @@ namespace evokNew0080
             button10.Enabled = true;
             qClr.Enabled = true;
             btn1.Enabled = true;
-            ccBtn.Enabled = true;
+      
             stopBtn.Enabled = true;
             pauseBtn.Enabled = true;
             resetBtn.Enabled = true;
@@ -713,7 +728,7 @@ namespace evokNew0080
              button10.Enabled = true;
              qClr.Enabled = true;
              btn1.Enabled = true;
-             ccBtn.Enabled = true;
+         
              UserData.ReadOnly = false;
              printcb.Enabled = true;
             deviceMenuItem.Enabled = true;
@@ -728,6 +743,9 @@ namespace evokNew0080
         }
         private void tc1_Selecting(object sender, TabControlCancelEventArgs e)
         {
+
+            if (tc1.SelectedIndex >= evokWork.DataFormCount) return;
+
             if ( evokWork.RunFlag)
             {
                 MessageBox.Show(Constant.IsWorking);
@@ -852,9 +870,8 @@ namespace evokNew0080
         private void autoSLBtn_Click_1(object sender, EventArgs e)
         {
             evokWork.angleModify();
-            DrawSizeForm drForm = new DrawSizeForm();
-            if(listBox2.SelectedItem!=null)
-            drForm.SetMaterial(listBox2.SelectedItem.ToString());
+           
+            DrawSizeForm drForm = new DrawSizeForm();                 
             drForm.showdata(evokWork.getOptSize());
             drForm.Show();
         }
@@ -873,10 +890,56 @@ namespace evokNew0080
             ud.ShowDialog();
         }
 
-        private void button36_Click(object sender, EventArgs e)
+
+        private void button37_Click(object sender, EventArgs e)
         {
-           
-                    
+            restM.DeleteMaterial((dataGridView1.CurrentCell.RowIndex));
+        }
+
+
+        private void button38_Click(object sender, EventArgs e)
+        {
+            restM.DeleteAllMaterial() ;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            evokWork.SetUseRest(checkBox1.Checked);
+            if (checkBox1.Checked)
+            {
+                MessageBox.Show("请堆放材料相同的余料，并扫码加入！");
+            }
+        }
+
+        private void button39_Click(object sender, EventArgs e)
+        {
+            restM.updateDgv();
+        }
+
+        private void printcb_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (evokWork.DeviceStatus)
+            {
+                evokWork.ChangePrintMode(printcb.SelectedIndex);
+            }
+
+            optBtn.Focus();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           if(listBox2.SelectedItem !=null && comboBox1.SelectedItem !=null)
+            evokWork.getOptSize().Simi_SelectData(listBox2.SelectedItem.ToString(),int.Parse(comboBox1.SelectedItem.ToString()),false);
+        }
+
+        private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+
+        }
+
+        private void button40_Click(object sender, EventArgs e)
+        {
+
         }
     }   
 }

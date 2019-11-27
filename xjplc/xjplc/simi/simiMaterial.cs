@@ -49,6 +49,11 @@ namespace xjplc.simi
 
 
         CsvStreamReader csvop;
+
+        void Init()
+        {
+            paramLst = new List<string>();
+        }
         void Init(string name)
         {
             paramLst = new List<string>();
@@ -220,12 +225,102 @@ namespace xjplc.simi
 
             return sized;
         }
-                
+
+
+        public double calculateSize0(string topsize, string leftAngle, string rightAngle, ref string oppositeSize, ref string usersize)
+        {
+            double sized = 0;
+            double leftAngled = 45;
+            double rightAngled = 45;
+
+            double widthDown = 1;
+            double id = 2;
+
+
+            if (double.TryParse(topsize, out sized))
+            {
+
+            }
+            else
+                return 0;
+
+            if (double.TryParse(leftAngle, out leftAngled))
+            {
+
+            }
+            else
+                return 0;
+
+            if (double.TryParse(rightAngle, out rightAngled))
+            {
+
+            }
+            else
+                return 0;
+
+
+            if (paramLst.Count < 2) return 0;
+
+            if (double.TryParse(paramLst[0], out id))
+            {
+
+            }
+            else
+                return 0;
+
+            if (double.TryParse(paramLst[1], out widthDown))
+            {
+
+            }
+            else
+                return 0;
+
+            if (leftAngled == 90 && rightAngled == 90)
+            {
+                usersize = sized.ToString();
+                oppositeSize = sized.ToString();
+            }
+            if (leftAngled == 90 || rightAngled == 90)
+            {
+                if (leftAngled != 90)
+                {
+                    oppositeSize =
+                   (sized + (int)((Width / Math.Tan(leftAngled / 180 * Math.PI)))).ToString();
+                    usersize = (sized + (int)((Width  - widthDown) / Math.Tan(leftAngled / 180 * Math.PI))).ToString();
+                }
+                if (rightAngled != 90)
+                {
+                    oppositeSize =
+                   (sized - (int)((Width / Math.Tan(leftAngled / 180 * Math.PI)))).ToString();
+                    usersize = 
+                   (sized - (int)((Width  - widthDown) / Math.Tan(leftAngled / 180 * Math.PI))).ToString();
+                }
+            }
+            else
+            {
+                oppositeSize =
+                  (sized +
+                   Width/ Math.Tan(leftAngled / 180 * Math.PI)-Width / Math.Tan(leftAngled / 180 * Math.PI)
+                   ).ToString();
+                usersize =
+               (sized +
+                  ( Width-widthDown) / Math.Tan(leftAngled / 180 * Math.PI) - (Width - widthDown) / Math.Tan(leftAngled / 180 * Math.PI)
+                   ).ToString();
+            }
+
+         
+
+            return sized;
+        }
+
         public simiMaterial(string filename)
         {
             Init(filename);
         }
-
+        public simiMaterial()
+        {
+            Init();
+        }
 
     }
 }

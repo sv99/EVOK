@@ -724,7 +724,7 @@ namespace xjplc
                         int lbc0 = LBC;
                         double width0;
 
-                        if (!double.TryParse(Param15[0].ToString(), out width0))
+                        if (!double.TryParse(Param16[0].ToString(), out width0))
                             return 0;
 
                         width0 = width0 * Constant.dataMultiple;
@@ -737,11 +737,12 @@ namespace xjplc
                             }
                             else
                             {
+                                if(i==0)
                                 jfbc0 += lbc0;
                                 //顶边
                                 if (simiDownLoadSizeId == Constant.downLoadTopSizeId)
                                 {
-                                    if (leftAngle[i] > 0 && leftAngle[i] < 90)
+                                    if (leftAngle[i] > 0 && leftAngle[i] < 90 )
                                     {
                                         if ((i - 1) < leftAngle.Count && (i - 1) >= 0)
                                         {
@@ -756,8 +757,12 @@ namespace xjplc
                                             }
                                             else
                                             {
-
+                                                if (leftAngle[i] != rightAngle[i - 1])
                                                 jfbc0 += (int)(Math.Abs((dbc0 / Math.Sin(leftAngle[i] / 180 * Math.PI))) + Math.Abs((width0 / Math.Tan(leftAngle[i] / 180 * Math.PI))));
+                                                else
+                                                jfbc0 += Math.Abs((int)(dbc0 / Math.Sin(leftAngle[i] / 180 * Math.PI)));
+
+
                                             }
                                         }
                                         else
@@ -784,7 +789,7 @@ namespace xjplc
 
                             }
 
-
+                            //计算左右角度 是否匹配
                             if ((i + 1) < (leftAngle.Count))
                                 if (rightAngle[i] != leftAngle[i + 1])
                                 {
@@ -820,7 +825,8 @@ namespace xjplc
                         if (rightAngle[rightAngle.Count - 1] != 90)
                         {
                             jfbc0 += (int)Math.Abs((dbc0 / Math.Sin(rightAngle[rightAngle.Count - 1] / 180 * Math.PI)));
-
+                            //去掉一个角 PLC 要求
+                            //jfbc0 += (int)Math.Abs((width0 / Math.Tan(rightAngle[rightAngle.Count - 1] / 180 * Math.PI)));
                         }
                         else
                             jfbc0 += dbc0;
@@ -1396,7 +1402,15 @@ namespace xjplc
             get { return cbResultCnt; }
             set { cbResultCnt = value; }
         }
+
         public int simiDownLoadSizeId = 0;
+
+         bool useRestMaterial;
+        public bool UseRestMaterial
+        {
+            get { return useRestMaterial; }
+            set { useRestMaterial = value; }
+        }
 
         //司米的还要数据重排 左右角度互换下
         void simiOpt(ref List<SingleSize>  sLst)
@@ -1484,6 +1498,110 @@ namespace xjplc
             }
             sLst = sLstCuurent;
         }
+
+        //给定一个尺寸 左右角度 计算出上下角度
+        void simiDataShift()
+        {
+
+        }
+        
+        int getWlNear(int w)
+        {
+            int minSize = 0;
+            int margin = 10000000;
+            foreach (int swl in wlLst)
+            {
+                double swldouble = swl * Constant.dataMultiple;
+                if (w > swldouble)
+                {                   
+                    if (margin > (w - swldouble))
+                    {
+                        minSize = (int)swldouble;
+                        margin = (int)(w - swldouble);
+                    }
+                };
+            }
+
+            return minSize;
+        }
+        bool simiReArrange(ref ProdInfo prodInfo,ref List<SingleSize> ssLst)
+        {
+            int wl = prodInfo.WL;
+            int realwl = wl;
+
+
+           SingleSize sizedata = new SingleSize();
+
+            SingleSize sizedataLast = ssLst.Last();
+            if (sizedataLast.rightAngle < 0)
+            {
+                realwl -= (int)Math.Abs(SimiM.Width*Constant.dataMultiple / Math.Tan(sizedataLast.rightAngle / 180 * Math.PI));
+            }
+            if(realwl<0) return false;
+            string oppositeSize = "";
+            string usersize = "";
+            double sized = 0;
+            if (simiM != null && wlLst != null && wlLst.Count > 0)
+            {
+
+
+                int wldata = getWlNear(realwl);
+
+                if (wldata == 0) return false;
+
+                if (wl > wldata)
+                    {
+                        sizedata.Cut = (int)((prodInfo.WL-wldata- Dbc)/Constant.dataMultiple);
+
+                        sizedata.ParamStrLst.Clear();
+                        sizedata.ParamStrLst.AddRange
+                        (
+                        sizedataLast.ParamStrLst.ToArray());
+                        sizedata.Barc = "尾料裁剪";
+                        sizedata.ParamStrLst[1] = sizedataLast.ParamStrLst[2];
+                        sizedata.ParamStrLst[2] = "90";
+                        
+                         double rightA = 0;
+                         if (!double.TryParse(sizedata.ParamStrLst[1], out rightA)) return false;
+                                                  
+                          
+                         sized = SimiM.calculateSize0
+                           (
+                           sizedata.Cut.ToString(),
+
+                           sizedata.ParamStrLst[1].ToString(),
+
+                           sizedata.ParamStrLst[2].ToString(),
+
+                           ref oppositeSize,
+
+                           ref usersize
+
+                           );
+                        if (sized > 0 && int.Parse(oppositeSize)>0)
+                        {
+                            sizedata.ParamStrLst[4] = usersize;
+
+                            sizedata.Cut = (int)(double.Parse(usersize)*Constant.dataMultiple);
+
+                            sizedata.ParamStrLst[5] = sized.ToString();
+
+                            sizedata.ParamStrLst[6] = oppositeSize;                      
+
+                        ssLst.Add(sizedata);
+                        prodInfo = new ProdInfo(ssLst);
+                        prodInfo.DBC = dbc;
+                        prodInfo.LBC = ltbc;
+                        prodInfo.Len = len;
+                        prodInfo.simiDownLoadSizeId = simiDownLoadSizeId;
+                        return true;
+                      }
+                }                              
+            }
+            return false;
+        }
+
+
         /// <summary>
         /// 测量结果显示
         /// </summary>
@@ -1492,7 +1610,7 @@ namespace xjplc
         /// <param name="rt1"></param>
         private void ShowNormalResult(List<List<int>> resultOpt, List<SingleSize> prodLst, RichTextBox rt1,int id)
         {
-            ConstantMethod.ShowInfo(rt1, "--------------");
+            ConstantMethod.ShowInfo(rt1, "使用常规料：--------------");
 
             if (resultOpt.Count > Constant.MaxShowCount)
             {
@@ -1523,23 +1641,7 @@ namespace xjplc
                             
                             sizeShow = (double)resultOpt[i][j] / Constant.dataMultiple;
                             resultSingleSizeLst.Add(prodLst[k]);
-                            if (prodLst[k].ParamStrLst.Count > 0)
-                            {
-                                ConstantMethod.ShowInfoNoScrollEnd(rt1, 
-                                    Constant.resultTip5       + 
-                                    (j + 1).ToString()        + 
-                                    Constant.resultTip7       + 
-                                    sizeShow.ToString("0.00") +
-                                    "---------" + 
-                                    Constant.barCodestr + 
-                                    prodLst[k].ParamStrLst[0] +
-                                    "--"+
-                                    prodLst[k].ParamStrLst[1]+
-                                     "--" +
-                                    prodLst[k].ParamStrLst[2] 
-                                    );
-                               
-                            }
+                           
                             prodLst.RemoveAt(k);
                             break;
                         }
@@ -1550,21 +1652,60 @@ namespace xjplc
                 if (resultSingleSizeLst.Count > 0)
                 {
                     simiOpt(ref resultSingleSizeLst);
+
+
+                    for (int m = 0; m < resultSingleSizeLst.Count; m++)
+                    {
+                        double sizeShow = 0;
+                        sizeShow = (double)(resultSingleSizeLst[m].Cut / Constant.dataMultiple);
+                        ConstantMethod.ShowInfoNoScrollEnd(rt1,
+                            Constant.resultTip5 +
+                            (m + 1).ToString() +
+                            Constant.resultTip7 +
+                            sizeShow.ToString("0.00") +
+                            "---------" +
+                            Constant.barCodestr +
+                            resultSingleSizeLst[m].Barc +
+                            "--" +
+                            resultSingleSizeLst[m].ParamStr1 +
+                             "--" +
+                            resultSingleSizeLst[m].ParamStr2
+                            );
+
+                    }
+
                     ProdInfo prodInfo = new ProdInfo(resultSingleSizeLst);
+
                     prodInfo.DBC = dbc;
                     prodInfo.LBC = ltbc;
                     prodInfo.Len = len;
                     prodInfo.simiDownLoadSizeId = simiDownLoadSizeId;
-                    ProdInfoLst.Add(prodInfo);
-                    singleSizeLst.Add(resultSingleSizeLst);
-                                    
+
+                                                    
                     int wl = prodInfo.WL;
+
                     double wlShow = (double)wl/Constant.dataMultiple;
+                   
                     if (wl > 0)
-                    {                      
+                    {
+                        if (simiReArrange(ref prodInfo, ref resultSingleSizeLst))
+                        {
+                            wl = prodInfo.WL;
+                            wlShow = (double)wl / Constant.dataMultiple;
+                            double sizeShow0 = (double)(prodInfo.Cut.Last()/Constant.dataMultiple);
+                            ConstantMethod.ShowInfoNoScrollEnd(rt1,                                   
+                                   "尾料裁剪：" +
+                                    sizeShow0.ToString("0.00")+
+                                   "L--" + prodInfo.leftAngle.Last()+
+                                   "R--" +prodInfo.rightAngle.Last()
+                                    );
+                        }
                         ConstantMethod.ShowInfoNoScrollEnd(rt1, Constant.resultTip4 + wlShow.ToString("0.00"));
                     }
                     else ConstantMethod.ShowInfoNoScrollEnd(rt1, Constant.resultTip4 + Constant.optFail);
+
+                    ProdInfoLst.Add(prodInfo);
+                    singleSizeLst.Add(resultSingleSizeLst);
 
                     ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
                     ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
@@ -1633,6 +1774,7 @@ namespace xjplc
 
 
         }
+
 
         #endregion
         private string ration(List<List<int>> valueLst)
@@ -2081,9 +2223,49 @@ namespace xjplc
             if (File.Exists(Constant.ConfigSimiMaterialFile))
             {
                 SimiM = new simiMaterial(Constant.ConfigSimiMaterialFile);
+                wlLst.Add(80000);
+                wlLst.Add(120000);
+                wlLst.Add(150000);
             }
         }
-        #region 司米
+       
+
+
+        bool GetSimidata(SingleSize ss,
+           ref double leftAngle,
+           ref double rightAngle,
+           ref double upSize,
+           ref double downSize,
+           ref double userSize
+
+           )
+        {
+
+            if (!double.TryParse(ss.ParamStrLst[1], out leftAngle))
+            {
+                return false;
+            }
+            if (!double.TryParse(ss.ParamStrLst[2], out rightAngle))
+            {
+                return false;
+            }
+            if (!double.TryParse(ss.ParamStrLst[4], out userSize))
+            {
+                return false;
+            }
+            if (!double.TryParse(ss.ParamStrLst[5], out upSize))
+            {
+                return false;
+            }
+            if (!double.TryParse(ss.ParamStrLst[6], out downSize))
+            {
+                return false;
+            }
+            userSize *= Constant.dataMultiple;
+            upSize *= Constant.dataMultiple;
+            downSize *= Constant.dataMultiple;
+            return true;
+        }
         public int MaterialId
         {
             get
@@ -2153,8 +2335,7 @@ namespace xjplc
 
             if (DtLst != null) DtLst.Clear();
             else DtLst = new List<DataTable>();
-
-            
+           
             while (IsSaving)
             {
                 Application.DoEvents();
@@ -2178,7 +2359,7 @@ namespace xjplc
 
                 //第一个datatble
                 DataTable dtResult = new DataTable();
-            
+                
                 int rowindex = 1;
                 if (dtTemp.Rows.Count > 0)
                 {
@@ -2226,6 +2407,11 @@ namespace xjplc
                         drt[Constant.strformatZh[6]] = dr[3];
                         drt[Constant.strformatZh[7]] = dr[0].ToString();
 
+                        if (angleStr.Count()==4)
+                        drt[Constant.strformatZh[10]] = angleStr[2].ToString() + "_" + angleStr[3].ToString();
+                        if (angleStr.Count() == 3)
+                            drt[Constant.strformatZh[10]] = angleStr[2].ToString();
+
                         //计算上下底边的数据 sized 如果是上边 那opposite就是下边 
                         //现在默认给PLC 上边的
                         string oppositeSize = "0";
@@ -2255,7 +2441,7 @@ namespace xjplc
 
                         for (int i = 4; i < dtTemp.Columns.Count; i++)
                         {
-                            drt[Constant.strformatZh[6 + i]] = dr[i];
+                            drt[Constant.strformatZh[7 + i]] = dr[i];
                         }
                         
                         DataTable dt =
@@ -2270,6 +2456,9 @@ namespace xjplc
 
 
             dtData = DtLst[0];
+
+            SplitSimiData();
+
             UserDataView.DataSource = dtData;
             //ShowErrorRow();
             /****
@@ -2291,9 +2480,125 @@ namespace xjplc
             IsLoadData = false;
             return true;
         }
-       
+        private void ShowNormalResultWithRestSimi(List<List<int>> resultOpt, ref List<SingleSize> prodLst, RichTextBox rt1)
+        {
 
-        //这里进行司米数据的加载
+            ConstantMethod.ShowInfo(rt1, "使用余料--------------"+ resultOpt.Count.ToString()+"根");
+
+            if (resultOpt.Count > Constant.MaxShowCount)
+            {
+                ConstantMethod.ShowInfo(rt1, "总料数超出最大显示数值！");
+                goto Next;
+            }
+            for (int i = 0; i < resultOpt.Count; i++)
+            {
+                ConstantMethod.ShowInfoNoScrollEnd(rt1, Constant.resultTip5 + (i + 1).ToString() + Constant.resultTip6);
+                List<SingleSize> resultSingleSizeLst = new List<SingleSize>();
+                //排个序 选择          
+                for (int j = 0; j < resultOpt[i].Count; j++)
+                {
+                    for (int k = 0; k < prodLst.Count; k++)
+                    {
+                        if (prodLst[k].Cut == resultOpt[i][j])
+                        {                                                    
+                            resultSingleSizeLst.Add(prodLst[k]);                          
+                            prodLst.RemoveAt(k);
+                            break;
+                        }
+                    }
+                }
+
+                if (resultSingleSizeLst.Count > 0)
+                {
+
+                    simiOpt(ref resultSingleSizeLst);
+
+                    for(int m=0;m< resultSingleSizeLst.Count;m++)                   
+                    {
+                        double sizeShow = 0;
+                        sizeShow = (double)(resultSingleSizeLst[m].Cut / Constant.dataMultiple);
+                        ConstantMethod.ShowInfoNoScrollEnd(rt1,
+                            Constant.resultTip5 +
+                            (m + 1).ToString() +
+                            Constant.resultTip7 +
+                            sizeShow.ToString("0.00") +
+                            "---------" +
+                            Constant.barCodestr +
+                            resultSingleSizeLst[m].Barc +
+                            "--" +
+                            resultSingleSizeLst[m].ParamStr1 +
+                             "--" +
+                            resultSingleSizeLst[m].ParamStr2
+                            );
+
+                    }
+
+                    ProdInfo prodInfo = new ProdInfo(resultSingleSizeLst);
+
+                    prodInfo.ID = Constant.RestMaterialId;
+                    prodInfo.DBC = dbc;
+                    prodInfo.LBC = ltbc;
+
+                    if (i < Rsm.RestMLst.Count)
+                        prodInfo.Len = (int)
+                        (Rsm.RestMLst[i].Len * Constant.dataMultiple);
+                    else
+                    {
+                        prodInfo.Len = len;
+                    }
+
+                    prodInfo.simiDownLoadSizeId = simiDownLoadSizeId;
+
+
+                    int wl = prodInfo.WL;
+
+                    double wlShow = (double)wl / Constant.dataMultiple;
+
+                    if (wl > 0)
+                    {
+                        if (simiReArrange(ref prodInfo, ref resultSingleSizeLst))
+                        {
+                            wl = prodInfo.WL;
+                            wlShow = (double)wl / Constant.dataMultiple;
+                            double sizeShow0 = (double)(prodInfo.Cut.Last() / Constant.dataMultiple);
+                            ConstantMethod.ShowInfoNoScrollEnd(rt1,
+                                   "尾料裁剪：" +
+                                    sizeShow0.ToString("0.00") +
+                                   "L--" + prodInfo.leftAngle.Last() +
+                                   "R--" + prodInfo.rightAngle.Last()
+                                    );
+                        }
+                        ConstantMethod.ShowInfoNoScrollEnd(rt1, Constant.resultTip4 + wlShow.ToString("0.00"));
+                    }
+                    else ConstantMethod.ShowInfoNoScrollEnd(rt1, Constant.resultTip4 + Constant.optFail);
+
+                    ProdInfoLst.Add(prodInfo);
+
+                    singleSizeLst.Add(resultSingleSizeLst);
+
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+                    ConstantMethod.ShowInfoNoScrollEnd(rt1, "--------------");
+
+                }
+
+            }
+
+            if (CbResultCnt != null)
+            {
+                CbResultCnt.Items.Clear();
+                for (int i = 0; i < resultOpt.Count; i++)
+                {
+                    CbResultCnt.Items.Add((i + 1).ToString());
+                }
+            }
+            Next:
+            {
+                ConstantMethod.ShowInfo(rt1, Constant.resultTip9 + resultOpt.Count.ToString() + Constant.resultTip6);
+                ConstantMethod.ShowInfo(rt1, Constant.resultTip10 + ration(resultOpt));
+            }
+        }
+
+        //这里进行司米数据的加载      4324324
         public bool LoadSimiData(string filename)
         {
             if (UserDataView == null) return false;
@@ -2355,14 +2660,18 @@ namespace xjplc
                     //L|90_R\44.9 
                     string[] angleStr = dr[1].ToString().Split('_');
 
-                    if (angleStr.Count() <4) continue;
+                    if (angleStr.Count() <3) continue;
                      
                     drt[Constant.strformatZh[4]] = getAngleBystr(angleStr[0]);
                     drt[Constant.strformatZh[5]] = getAngleBystr(angleStr[1]);
                     drt[Constant.strformatZh[6]] = dr[3];
                     drt[Constant.strformatZh[7]] = dr[0].ToString();
 
-                    drt[Constant.strformatZh[10]] = angleStr[2].ToString()+"_"+ angleStr[3].ToString();
+                    if (angleStr.Count()==4)
+                      drt[Constant.strformatZh[10]] = angleStr[2].ToString()+"_"+ angleStr[3].ToString();
+                    if (angleStr.Count() == 3)
+                      drt[Constant.strformatZh[10]] = angleStr[2].ToString() ;
+
 
                     //计算上下底边的数据 sized 如果是上边 那opposite就是下边 
                     //现在默认给PLC 上边的
@@ -2389,9 +2698,9 @@ namespace xjplc
                         return false;
                     }
 
-                    for (int i = 5; i < dtTemp.Columns.Count; i++)
+                    for (int i = 4; i < dtTemp.Columns.Count; i++)
                     {
-                       drt[Constant.strformatZh[6 + i]] = dr[i];
+                       drt[Constant.strformatZh[7 + i]] = dr[i];
                     }
 
                     DataTable dt =
@@ -2404,12 +2713,16 @@ namespace xjplc
             }
             if (dtLst != null && DataShowCb != null && dtLst.Count > 0)
             {
+
                 dtData = DtLst[0];
                 DataShowCb.DataSource = tableNameLst;
                 DataShowCb.Visible = true;
                 DataShowCb.SelectedIndex = tableNameLst.IndexOf(dtData.TableName);
 
                 listBoxColor(tableNameLst.IndexOf(dtData.TableName));
+
+
+                SplitSimiData();
 
                 UserDataView.DataSource = dtData;
 
@@ -2420,6 +2733,147 @@ namespace xjplc
             return true;
         }
 
+        void SetDataShowcb(string[] str)
+        {
+            if (dtLst != null && DataShowCb != null && dtLst.Count > 0)
+            {
+
+                dtData = DtLst[0];
+                DataShowCb.DataSource = str;
+                DataShowCb.Visible = true;
+                DataShowCb.SelectedIndex = 0;
+            }
+        }
+        int simi_Splitcount;
+        public int Simi_Splitcount
+        {
+            get { return simi_Splitcount; }
+            set { simi_Splitcount = value; }
+        }
+        Dictionary<DataTable, List<DataTable>> Simi_dataLst;
+
+        ComboBox simi_Split_Combox;
+        public System.Windows.Forms.ComboBox Simi_Split_Combox
+        {
+            get { return simi_Split_Combox; }
+            set { simi_Split_Combox = value; }
+        }
+
+       
+        //更新材料下 指定序号到用户数据这里
+        public void Simi_SelectData(string materialName,int id,bool IsFirst)
+        {
+
+            if (Simi_dataLst.Count < 1) return;
+            if (id < 1) return;
+            id--;      
+            foreach (var v in Simi_dataLst)
+            {
+                if (v.Key.TableName.Equals(materialName) && v.Value.Count > 0)
+                {
+                   
+
+                    if (id >= v.Value.Count) return;
+
+                    DtData = v.Value[id];
+
+                    if (UserDataView != null)
+                    {
+                        UserDataView.DataSource = DtData;
+                    }
+
+                    if(IsFirst)
+                    updataSplitCombox(v.Value.Count);
+
+                    break;
+                }
+            }          
+        }
+        void updataSplitCombox(int count)
+        {
+            if (count < 1) return;
+            if (Simi_Split_Combox != null)
+            {
+                Simi_Split_Combox.Items.Clear();
+
+                for (int i = 1; i <= count; i++)
+                {
+                    Simi_Split_Combox.Items.Add(i.ToString());
+                }
+               
+                Simi_Split_Combox.Text = Simi_Split_Combox.Items[0].ToString();
+
+            }
+        }
+        void SplitSimiData()
+        {
+            if (Simi_Splitcount <0 ) return;
+            if (DtLst == null || DtLst.Count == 0) return;        
+            if (Simi_dataLst == null) Simi_dataLst = new Dictionary<DataTable, List<DataTable>>();
+            Simi_dataLst.Clear();
+            Simi_dataLst = new Dictionary<DataTable, List<DataTable>>();
+            int countId = 0;
+            string taskId = "";
+
+            foreach (DataTable dt in DtLst)
+            {
+
+                if (dt.Rows.Count > 0)
+                {
+                    DataTable dtsplit = dt.Clone();
+                    List<DataTable> dtSplitLst = new List<DataTable>();
+                    Simi_dataLst.Add(dt, dtSplitLst);
+                    dtSplitLst.Add(dtsplit);
+                    countId = 0;
+                    int forcount = 0;
+                    foreach (DataRow dr in dt.Rows)
+                    {
+
+                        if (!taskId.Equals(dr[15].ToString()))
+                        {
+                            countId++;
+                            taskId = dr[15].ToString();
+                        }
+
+                        if (countId > (Simi_Splitcount))
+                        {                           
+                            dtsplit = new DataTable();
+                            dtsplit = dt.Clone();
+                            dtSplitLst.Add(dtsplit);
+                            countId = 1;
+                            DataRow drt = dtsplit.NewRow();
+                            drt.ItemArray = dr.ItemArray.ToArray();
+                            dtsplit.Rows.Add(drt);
+                        }
+                        else
+                        {
+
+                            DataRow drt = dtsplit.NewRow();
+                            drt.ItemArray = dr.ItemArray.ToArray();
+                            dtsplit.Rows.Add(drt);
+                        }
+
+
+                        forcount++;
+                       
+                    }
+                }
+
+
+
+                if (
+                    Simi_dataLst.Count > 0
+                    && Simi_dataLst.First().Value.Count > 0
+                    && Simi_dataLst.First().Value[0].Rows.Count > 0
+                   )
+                    DtData = Simi_dataLst.First().Value[0];
+
+                Simi_SelectData(Simi_dataLst.First().Key.TableName, 1, true);
+
+
+            }
+                       
+        }
         public double MaterialLen
         {
             get
@@ -2456,15 +2910,13 @@ namespace xjplc
 
 
         }
-
-        #endregion
         public static string getAngleBystr(string s1)
-        {           
+        {
             string result = "";
 
             if (string.IsNullOrWhiteSpace(s1)) return result;
 
-            string angleStr= s1.Remove(0,2);
+            string angleStr = s1.Remove(0, 2);
             float angle = 0;
             if (!float.TryParse(angleStr, out angle))
             {
@@ -2472,7 +2924,7 @@ namespace xjplc
             }
 
             if (s1.Contains('|')) result = "90";
-            if (s1.Contains('\\')) result = "-"+angle.ToString();
+            if (s1.Contains('\\')) result = "-" + angle.ToString();
             if (s1.Contains('/')) result = angleStr;
 
 
@@ -2493,9 +2945,10 @@ namespace xjplc
                     result = Angle.ToString();
                 }              
             }
-            ***/         
+            ***/
             return result;
         }
+
 
 
         #endregion
@@ -2557,6 +3010,8 @@ namespace xjplc
             return true;
         }
 
+
+       
         #region 金牌木业
         public bool LoadExcelDataWithJinPai(string filename)
         {
@@ -2773,16 +3228,65 @@ namespace xjplc
             {
                 return false;
             }
+
+            CheckIfSplitData();
+
             Excelop.FileName = null;
             UserDataView.DataSource = dtData;
             ShowErrorRow();
             IsLoadData = false;
             LogManager.WriteProgramLog(Constant.LoadFileEd);
 
+
             return true;
 
         }
 
+        //拆单的几个参数
+        List<string> splitParam;
+        public System.Collections.Generic.List<string> SplitParam
+        {
+            get { return splitParam; }
+            set { splitParam = value; }
+        }
+        private int minRow=30;
+        public int MinRow
+        {
+            get { return minRow; }
+            set { minRow = value; }
+        }
+        void CheckIfSplitData()
+        {
+            if (SplitParam !=null && SplitParam.Count > 0 )
+            {
+                if (DtLst == null) DtLst = new List<DataTable>();
+                ConstantMethod.getDataTableByParam(DtLst, dtData, SplitParam);
+
+                for (int i = DtLst.Count - 1; i>-1; i --)
+                {
+                    if (DtLst[i].Rows.Count < minRow) DtLst.RemoveAt(i);
+                
+                  
+                }
+              
+                if (DtLst.Count > 0 && DtLst[0].Rows.Count > 0)
+                {
+                    dtData = DtLst[0];
+                }
+
+                List<string> tableNameLst = new List<string>();
+
+                foreach (DataTable dt in DtLst)
+                {
+                    tableNameLst.Add(dt.TableName);
+                }
+
+                SetDataShowcb(tableNameLst.ToArray());
+            }
+
+        }
+
+        
         /// <summary>
         /// 加载数据
         /// </summary>
@@ -2822,6 +3326,7 @@ namespace xjplc
                 }
 
                 dtData = CSVop.OpenCSV(filename);
+
             }
 
             Next:
@@ -2829,11 +3334,14 @@ namespace xjplc
             {
                 return false;
             }
+
+            CheckIfSplitData();
             Excelop.FileName = null;
             UserDataView.DataSource = dtData;
             ShowErrorRow();
             IsLoadData = false;
             LogManager.WriteProgramLog(Constant.LoadFileEd);
+
 
             return true;
 
@@ -2898,6 +3406,16 @@ namespace xjplc
         }
         #region 司米
 
+        //司米
+        List<int> wlLst = new List<int>();
+
+        public void SetWl(int[] Lst)
+        {
+            wlLst.Clear();
+            wlLst.AddRange(Lst);
+        }
+
+        #endregion
         //先统一在这个软件里进行测试
         public void showCurrentResult(string FileName0,RichTextBox rt1)
         {
@@ -3089,41 +3607,7 @@ namespace xjplc
                       
             ConstantMethod.ShowInfo(rt1, Constant.size + s);
         }
-        bool  GetSimidata(SingleSize ss ,
-            ref double leftAngle, 
-            ref double rightAngle,
-            ref double  upSize,
-            ref double downSize,
-            ref double userSize
-
-            )
-        {
-            
-            if (!double.TryParse(ss.ParamStrLst[1], out leftAngle))
-            {
-                return false;
-            }
-            if (!double.TryParse(ss.ParamStrLst[2], out rightAngle))
-            {
-                return false;
-            }
-            if (!double.TryParse(ss.ParamStrLst[4], out userSize))
-            {
-                return false;
-            }
-            if (!double.TryParse(ss.ParamStrLst[5], out upSize))
-            {
-                return false;
-            }
-            if (!double.TryParse(ss.ParamStrLst[6], out downSize))
-            {
-                return false;
-            }
-            userSize *= Constant.dataMultiple;
-            upSize *= Constant.dataMultiple;
-            downSize *= Constant.dataMultiple;
-            return true;
-        }
+       
         /// <summary>
         /// 20180305 修改值2239 需要进一步完善
         /// </summary>
@@ -3510,7 +3994,7 @@ namespace xjplc
                 }
                 else
                 {
-                
+                                   
                     if (offLeftDownmargin != 0) //上一次的拼接关系
                     {
                        
@@ -3524,8 +4008,8 @@ namespace xjplc
                         else
                             sawPointerPos += (Math.Abs(upSizeWidth / Math.Tan(la / 180 * Math.PI)) + Math.Abs(dbc0 / Math.Sin(la / 180 * Math.PI)));
                     }
-                }
 
+                }
             }
             #endregion 第一刀左边
             else
@@ -4512,12 +4996,47 @@ namespace xjplc
             SizeLeft = ProdLst.Count();
         }
 
+        RestMaterial rsm;
+        public xjplc.simi.RestMaterial Rsm
+        {
+            get { return rsm; }
+            set { rsm = value; }
+        }
+
+        List<List<int>> getUseRestMaterial(ref List<int> OptDataLst )
+        {
+            List<List<int>> useOptDataLstLst = new List<List<int>>();
+            List < int >    useOptDataLst = new List<int>();
+            foreach (simiMaterial sm in Rsm.RestMLst)
+            {
+                if (!sm.MaterialName.Equals(SimiM.MaterialName))continue;
+                if (Rsm.RestMLst.Count > 0)
+                {
+                    int lens = (int)(sm.Len * Constant.dataMultiple);
+                    useOptDataLst = OptModuleMeasure(OptDataLst.ToList<int>(), lens, dbc, ltbc, safe);
+                }
+
+                foreach (int s0 in useOptDataLst)
+                {
+                    if (OptDataLst.Contains(s0))
+                    {
+                        OptDataLst.Remove(s0);
+                    }
+                    
+                }
+                if (useOptDataLst.Count > 0)
+                {
+                    useOptDataLstLst.Add(useOptDataLst);
+                }
+            }
+            return useOptDataLstLst;
+        }
         public string OptNormal(RichTextBox rt1)
         {
             //干活之前 先清空数据 做好准备工作          
             singleSizeLst.Clear();
             ProdInfoLst.Clear();          
-           
+            
             if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
 
             //检查错误行
@@ -4534,8 +5053,7 @@ namespace xjplc
             //进行优化 变成单个模块
             List<List<int>> resultOpt = new List<List<int>>();
             List<int> dataOpt = new List<int>();
-
-
+            List<List<int>> resultOptCg = new List<List<int>>();
             //进行完整的优化
             if (prodLst.Count > 0)
             foreach (SingleSize sss in prodLst)
@@ -4543,13 +5061,21 @@ namespace xjplc
                dataOpt.Add(sss.Cut);
             }
 
-            //----
-            resultOpt = OptModuleNormal(dataOpt.ToList<int>(),len, dbc, ltbc, safe);
-            
-                    
-            if (resultOpt.Count > 0 )
+            if (UseRestMaterial)
             {
-                ShowNormalResult(resultOpt, prodLst, rt1,Constant.optNormal);              
+                resultOpt.AddRange(getUseRestMaterial(ref dataOpt));
+                ShowNormalResultWithRestSimi(resultOpt, ref prodLst, rt1);
+            }
+
+            //--------------------------------
+            if (dataOpt.Count > 0)
+                resultOptCg = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+            if(resultOptCg.Count>0)
+                resultOpt.AddRange(resultOptCg);
+
+            if (resultOptCg.Count>0)
+            {
+                ShowNormalResult(resultOptCg, prodLst, rt1,Constant.optNormal);              
             }
             else return Constant.optResultNoData;
 
@@ -4932,11 +5458,12 @@ namespace xjplc
         private List<List<int>> OptModuleNormal(List<int> data, int c, int dbc_tmp, int ltbc_tmp, int safe_tmp)
         {        
             double index = 0;//取值是0~1 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
-                                
+         
+                             
             List<int> dataTmp = new List<int>();
             List<int> dataOrgin = new List<int>();
             List<List<int>> dataResult = new List<List<int>>();
-
+            if (data.Count < 1) return dataResult;
             for (int i = 0; i < data.Count; i++)
             {
               
@@ -5056,8 +5583,7 @@ namespace xjplc
         private List<List<int>> NoOptModule(List<int> data, int c, int dbc_tmp, int ltbc_tmp, int safe_tmp)
         {
             double index = 0;//取值是0~1 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
-
-        
+       
             List<List<int>> dataResult = new List<List<int>>();
 
             List<List<int>> dataResultM = new List<List<int>>();
@@ -5127,7 +5653,6 @@ namespace xjplc
             return dataResult.ToList();
 
         }
-
         private List<List<int>> OptModuleByDoorType(List<SingleSize> singleLst)
         {
             List<List<int>> dataResult = new List<List<int>>();
@@ -5218,7 +5743,7 @@ namespace xjplc
             return selectedData.ToArray();                        
                        
         }        
-        #endregion
+     
         
         //主要针对第一列数据进行检查TaT
         /// <summary>

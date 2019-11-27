@@ -209,11 +209,14 @@ namespace evokNew0051
             evokWork.SetPrintReport();
             evokWork.InitDgvParam(dgvParam);
             evokWork.InitDgvIO(dgvIO);
+            errorList = evokWork.ErrorList;
             UpdateTimer.Enabled = true;
+
             if (evokWork.DeviceId == Constant.msjDeivceId)
             {
                 InitMSJ();
             }
+
         }
 
         private void InitView0()
@@ -662,7 +665,7 @@ namespace evokNew0051
                 }
 
                 infoLbl.Text = errorList[errorId];
-
+                LogManager.WriteProgramLog(infoLbl.Text);
                 errorId++;
 
             }

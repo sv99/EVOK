@@ -161,6 +161,72 @@ namespace xjplc
             return resultname;
         }
 
+
+        //传入要取的列名 paramL 和要比较的值 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="dt"></param>  要查询的表格
+        /// <param name="paramL"></param> 要取拿一列 其中的列名
+        /// <param name="value"></param> 这一列的 第一行的值
+        /// <returns></returns>
+        static bool jugeIsParamExist(DataTable dt, List<string> paramL, List<string> value)
+        {
+            List<string> checkStr = new List<string>();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (string s in paramL)
+                {
+                    checkStr.Add(dt.Rows[0][s].ToString());
+                }
+                return ConstantMethod.compareString(checkStr.ToArray(), value.ToArray());
+            }
+            return false;
+        }
+        
+        //拆分表格
+        public static void getDataTableByParam(List<DataTable> dtLst, DataTable res, List<string> paramL)
+        {
+            if (paramL.Count == 0) return;
+            dtLst.Clear();
+            //思路逐行扫描 扫到表格列表没有的样式 就新建表格
+            foreach (DataRow dr in res.Rows)
+            {
+                //获取当前行的值
+                List<string> paramStrLst = new List<string>();
+                foreach (string param in paramL)
+                {
+                    paramStrLst.Add(dr[param].ToString().Trim());
+                }
+
+                //开始判断当前行是否在表格集合里是否存在
+                bool isExit = false;
+                //寻找表格
+                foreach (DataTable dt in dtLst)
+                {
+                    if (ConstantMethod.jugeIsParamExist(dt, paramL, paramStrLst))
+                    {
+                        isExit = true;
+                        DataRow dr0 = dt.NewRow();
+                        dr0.ItemArray = dr.ItemArray;
+                        dt.Rows.Add(dr0);
+                        break;
+                    }
+                }
+                //如果样式没有那就创建表格
+                if (!isExit)
+                {
+                    DataTable dtTemp = res.Clone();
+                    dtTemp.TableName =string.Join("/", paramStrLst.ToArray()); 
+                    DataRow dr0 = dtTemp.NewRow();
+                    dr0.ItemArray = dr.ItemArray;
+                    dtTemp.Rows.Add(dr0);
+                    dtLst.Add(dtTemp);
+                }
+            }
+
+        }
+
         public static string DesktopPath
         {
             get

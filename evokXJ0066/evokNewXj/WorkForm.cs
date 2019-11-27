@@ -732,14 +732,16 @@ namespace evokNew0066
                     errorId = 0;
                 }
                int id = MultiLanguage.getLangId();
-                string[] splitError = errorList[errorId].Split('/');
+               string[] splitError = errorList[errorId].Split('/');
                 if (splitError.Length > 1)
                 {
                      infoLbl.Text = splitError[id];
+                    LogManager.WriteProgramLog(infoLbl.Text);
                 }
                 else
                 {
                     infoLbl.Text = errorList[errorId];
+                    LogManager.WriteProgramLog(infoLbl.Text);
                 }
 
                 errorId++;
@@ -815,6 +817,11 @@ namespace evokNew0066
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
             
+        }
+
+        private void tc1_SizeChanged(object sender, EventArgs e)
+        {
+
         }
     }   
 }

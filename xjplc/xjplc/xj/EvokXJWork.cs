@@ -2,6 +2,7 @@ namespace xjplc
 {
     using FastReport;
     using FastReport.Barcode;
+    using simi;
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -390,6 +391,30 @@ namespace xjplc
             evokDevice.setDeviceId(DeviceName);
             InitUsualTest();
         }
+
+      
+        public void ErrorListSave()
+        {
+
+        }
+        List<string> TipsList = new List<string>();
+        //提示列表
+        public void TipsListShow()
+        {
+
+        }
+
+        RestMaterial rsm;
+        public xjplc.simi.RestMaterial Rsm
+        {
+            get { return rsm; }
+            set
+            {
+                rsm = value;
+                optSize.Rsm = value;
+            }
+        }
+
 
         public EvokXJWork(int id)
         {
@@ -1017,9 +1042,9 @@ namespace xjplc
             {
                 if (safeOutInPs.Ration > 1.0)
                 {
-                    if (DeviceName.Equals(Constant.simiDeivceId))
+                    if (DeviceName.Equals(Constant.simiDeivceName))
                     {
-                        optSize.Safe = ((int)(safeOutInPs.ShowValueDouble * Constant.dataMultiple)) + (optSize.Dbc * 5);
+                        optSize.Safe = ((int)((safeOutInPs.ShowValueDouble * Constant.dataMultiple) + (optSize.Dbc * 15)));
                     }
                     else
                     {
@@ -1267,12 +1292,13 @@ namespace xjplc
                 // com.CommandText = "insert into " +"("+textBox5.Text + " values (2, 3,1,1,1,1,1)";
 
                 com.ExecuteNonQuery();
-                
+                ConstantMethod.ShowInfo(rtbWork,"反馈成功！");
             }
             catch (Exception ex)
             {
-
-            }
+                ConstantMethod.ShowInfo(rtbWork, "反馈失败！");
+            
+             }
             finally
             {
                
@@ -1330,17 +1356,9 @@ namespace xjplc
 
                                     Point point = new Point(optSize.SingleSizeLst[i][num].Xuhao, 2);
                                     optSize.checkIsDone(optSize.SingleSizeLst[i][num].Xuhao);
-                                }
-                        if (lo_conn.State == ConnectionState.Open)
-                        {
-                            SimiUpdateData(
-                                "C", 
-                                optSize.SingleSizeLst[i][num].Barc,
-                                "0210",
-                                "999",
-                                 true  );
-                        }
+                                }                     
                     }
+                        
                     if (optSize.ProdInfoLst[i].Param1.Count > 0)
                     {
                         string[] textArray2 = new string[7];
@@ -1366,11 +1384,17 @@ namespace xjplc
                         textArray3[4] = Constant.startTips5;
                         ConstantMethod.ShowInfo(rtbWork, string.Concat(textArray3));
                     }
+                    //数据库测试
+                    Simi_SQLReturn(optSize.SingleSizeLst[i][num].Barc);
+
                     num = showValue;
-                    if (showValue < optSize.SingleSizeLst[i].Count)
+                    if (showValue < optSize.SingleSizeLst[i].Count )
                     {
+                        
                         PrintBarCheck(optSize.SingleSizeLst[i][showValue]);
                     }
+                    
+
                 }
                 if (showValue >= optSize.ProdInfoLst[i].Cut.Count)
                 {
@@ -1379,7 +1403,22 @@ namespace xjplc
             }
             return 0;
         }
-
+        void Simi_SQLReturn(string barc)
+        {
+            if (DeviceName.Equals(Constant.simiDeivceName))
+            {
+                if (lo_conn.State == ConnectionState.Open)
+                {
+                    SimiUpdateData(
+                        "C",
+                        barc,
+                        "0210",
+                        "999",
+                         true);
+                }
+            }
+            else ConstantMethod.ShowInfo(rtbWork, "数据库未连接！");
+        }
         private void CutLoop(int i, int printdMode)
         {
             if ((optSize.SingleSizeLst[i].Count > 0) && !CurrentDoorType.Equals(optSize.SingleSizeLst[i][0].ParamStrLst[10]))
@@ -1470,14 +1509,14 @@ namespace xjplc
 
         private int CutLoopWithDevice(int i)
         {
-            printBarcode(printReport, optSize.SingleSizeLst[i][0].ParamStrLst.ToArray());
+            if (!optSize.SingleSizeLst[i][0].Barc.Contains("裁剪"))
+                printBarcode(printReport, optSize.SingleSizeLst[i][0].ParamStrLst.ToArray());
             int num = 0;
             while (RunFlag)
             {
                 Application.DoEvents();
                 ConstantMethod.Delay(0xbb8);
               
-                printBarcode(printReport, optSize.SingleSizeLst[i][num].ParamStrLst.ToArray());
                 int result = 0;
                 if(optSize.SingleSizeLst[i][num].DtUser!=null)
                 if (!optSize.SingleSizeLst[i][num].Barc.Equals(Constant.ScarId) && int.TryParse(optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2].ToString(), out result))
@@ -1486,18 +1525,9 @@ namespace xjplc
                     optSize.SingleSizeLst[i][num].DtUser.Rows[optSize.SingleSizeLst[i][num].Xuhao][2] = result;
                     Point point = new Point(optSize.SingleSizeLst[i][num].Xuhao, 2);
                     optSize.checkIsDone(optSize.SingleSizeLst[i][num].Xuhao);
-                    if (lo_conn.State == ConnectionState.Open)
-                    {
-                        SimiUpdateData
-                        (
-                          "C",
-                           optSize.SingleSizeLst[i][num].Barc,
-                           "0210",
-                           "999",
-                            true
-                         );
-                    }
-                    }
+                    
+                 }
+               
                 string[] textArray1 = new string[7];
                 textArray1[0] = Constant.resultTip5;
                 int num2 = num + 1;
@@ -1509,11 +1539,19 @@ namespace xjplc
                 textArray1[6] = Constant.startTips5;
                 ConstantMethod.ShowInfo(rtbWork, string.Concat(textArray1));
 
+                //数据库测试
+                Simi_SQLReturn(optSize.SingleSizeLst[i][num].Barc);
                 num++;
+
+               
                 if (num >= optSize.ProdInfoLst[i].Cut.Count)
                 {
                     break;
                 }
+
+                if (!optSize.SingleSizeLst[i][num].Barc.Contains("裁剪"))
+                    printBarcode(printReport, optSize.SingleSizeLst[i][num].ParamStrLst.ToArray());
+
             }
             return 0;
         }
@@ -1762,9 +1800,10 @@ namespace xjplc
             MessageBox.Show(Constant.CutEnd);
             return 0;
         }
-
+        
         public void CutStartNormal(int cutid)
         {
+          
             showWorkInfo(Constant.startTips0);
             if (RunFlag)
             {
@@ -1863,7 +1902,7 @@ namespace xjplc
                     if (inspectPatternDoneInOutPs.ShowValue == Constant.M_ON)
                     {
                         pos = inspectPatternPosInOutPs.ShowValue;
-                        if ((pos > 0.0) && (pos < 10.0))
+                        if ((pos > 0.0) && (pos < 30.0))
                         {
                             evokDevice.SetMValueOFF(inspectPatternDoneInOutPs);
                             if (cutid == Constant.CutNormalWithAngle)
@@ -1918,6 +1957,8 @@ namespace xjplc
             {
                 for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
                 {
+
+                    Simi_Show(i);
                     SaveProdDataLog(optSize.ProdInfoLst[i], i);
                     ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
                     CountClr();
@@ -1931,6 +1972,56 @@ namespace xjplc
             }
         }
 
+        //打印余料标签 删除已使用余料 ID>1000
+        void SimicutoffProcess(ProdInfo  prod)
+        {
+
+            List<string> list = new List<string>();
+            double num2 = 0.0;
+            num2 = ((double)prod.WL) / ((double)Constant.dataMultiple);
+
+            if ((prod.ID == Constant.RestMaterialId))
+            {
+                Rsm.DeleteMaterial(optSize.SimiM.MaterialName, (prod.Len / Constant.dataMultiple).ToString());
+                ConstantMethod.ShowInfo(rtbWork, "删除已使用余料！");
+
+            }
+            //如果产生废料 那就开始打印条码
+
+            if ((prod.Barc.Last().Contains("裁剪")))
+            {
+
+                ConstantMethod.ShowInfo(rtbWork, "产生可利用尾料！");
+
+                list.Add(optSize.MaterialName);
+                list.Add(num2.ToString("0.00"));
+                list.Add(optSize.SimiM.Width.ToString());
+                list.Add(optSize.SimiM.Height.ToString());
+
+                foreach (string ss in optSize.SimiM.ParamLst)
+                {
+                    if (!string.IsNullOrWhiteSpace(ss))
+                    {
+                        list.Add(ss);
+                    }
+                }
+
+
+                string s = "";
+                foreach (string ss in list)
+                {
+                    s += ss + "/";
+                }
+
+                list.Insert(0, s);
+
+                printRestMaterial(list.ToArray());
+
+
+            }
+
+
+        }
         private void CutWorkThreadWithAngle()
         {
             CurrentDoorType = "1----";
@@ -1938,21 +2029,15 @@ namespace xjplc
             {
                 for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
                 {
+                    Simi_Show(i);
                     ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
                     SaveProdDataLog(optSize.ProdInfoLst[i], i);
                     CountClr();
                     DownLoadDataNormalWithAngle(i);
                     CutLoop(i);
-                    List<string> list = new List<string>();
-                    double num2 = 0.0;
-                    num2 = ((double)optSize.ProdInfoLst[i].WL) / ((double)Constant.dataMultiple);
-                    if ((restMaterialRangeInOutPs.ShowValue > 0) && (num2 > restMaterialRangeInOutPs.ShowValue))
-                    {
-                        list.Add(optSize.MaterialName + "/" + num2.ToString("0.00"));
-                        list.Add(optSize.MaterialName);
-                        list.Add(num2.ToString("0.00"));
-                        printRestMaterial(list.ToArray());
-                    }
+                    SimicutoffProcess(optSize.ProdInfoLst[i]);
+
+
                 }
             }
             else
@@ -1960,7 +2045,10 @@ namespace xjplc
                 MessageBox.Show(Constant.noData);
             }
         }
-
+        public void SetUseRest(bool ok)
+        {
+            optSize.UseRestMaterial = ok;
+        }
         private void CutWorkThreadWithShuchi()
         {
             CurrentDoorType = "1----";
@@ -3283,15 +3371,37 @@ namespace xjplc
             ShiftPage(0);
 
             ErrorList = new List<string>();
-            optSize = new OptSize();
-
-            
+            optSize = new OptSize();          
 
             InitBarCodeTimer();
 
             DeviceUser = ParamFile.ReadConfig(Constant.DeviceUser);
 
-           
+            SetSplitData();
+
+
+
+        }
+        //目前分单的有司米的根据单号 多少来分 根据某一列材料不同进行区分
+        //根据材料要进行分割的 那几列 
+        void SetSplitData()
+        {
+           List<string>  paramStr = new List<string>();
+
+           int i = 1;
+           string s = "";
+           while (!string.IsNullOrWhiteSpace(s = ParamFile.ReadConfig(Constant.strParam + i.ToString())))
+           {
+                string ss = s;
+                paramStr.Add(ss);
+                i++;
+            }
+
+            if(paramStr.Count>0)
+            optSize.SplitParam = paramStr;
+
+
+
 
         }
         public string simi_SQL_DataTableName;
@@ -3318,7 +3428,84 @@ namespace xjplc
 
                 simi_SQL_DataTableName = ParamFile.ReadConfig(Constant.SQL_Tablename);
 
+                InitSimiWlst();
+
+                InitSimiSplit();
+
+                InitPaint();
+
             }
+        }
+        PictureBox showCutPictureBox;
+        public System.Windows.Forms.PictureBox ShowCutPictureBox
+        {
+            get { return showCutPictureBox; }
+            set { showCutPictureBox = value; }
+        }
+        void InitPaint()
+        {
+
+            Point p = new Point(10, 60);
+            Simi_painR = new PaintRect(1000, p);
+            if (optSize.ProdInfoLst.Count > 0)
+            Simi_painR.SetRation(optSize.ProdInfoLst[0]);
+            
+
+        }
+
+        void Simi_Show(int id)
+        {
+            if (DeviceName.Equals(Constant.simiDeivceName)&&optSize.ProdInfoLst.Count > id && id >= 0  && showCutPictureBox !=null)
+            {
+                Bitmap btmap = null;
+                // for (int i = 0; i < op.ProdInfoLst.Count; i++)
+                // {
+                Simi_painR.ProdDrawPloygon(optSize.ProdInfoLst[id], ref btmap,0, showCutPictureBox, id);
+               // }
+
+
+            }
+        }
+
+        void InitSimiSplit()
+        {
+            string splitcount= ParamFile.ReadConfig(Constant.SplitCount);
+            int splitC = 0;
+            if (int.TryParse(splitcount, out splitC))
+            {
+                if(splitC<Constant.SplitMinTaskCount)
+                {
+                    splitC = Constant.SplitMinTaskCount;
+                }
+                optSize.Simi_Splitcount = splitC;
+            }
+        }
+        void InitSimiWlst()
+        {
+           List<int> wldata = new List<int>();
+            for (int i = 0; i < Constant.MaxWlNearCount; i++)
+            {
+
+                int intwl = 0;
+                string s=
+                ParamFile.ReadConfig(Constant.WlNear1Str+i.ToString());
+
+                if (string.IsNullOrWhiteSpace(s))   //遇到空白的 证明就没有了 那就
+                {
+                    break;
+                }
+                if (int.TryParse(s,out intwl))
+                {
+                    if (intwl >= Constant.MaxWlNearSize)
+                    {
+                        wldata.Add(intwl);
+                    }
+                }
+            }
+
+            optSize.SetWl(wldata.ToArray());
+
+
         }
         void InitSql(string serverName,string databaseName,string userName,string passwd)
         {
@@ -3331,8 +3518,8 @@ namespace xjplc
             {
                 lo_conn.Open();
 
-                DataTable dt = lo_conn.GetSchema("Tables");
-
+                 DataTable dt = lo_conn.GetSchema("Tables");
+                ConstantMethod.ShowInfo(rtbWork,"数据库连接成功！");
                 //showInfo(databaseName + "含有以下几个表格");
                 /**
                 foreach (DataRow row in dt.Rows)
@@ -3849,19 +4036,21 @@ namespace xjplc
             }
             else
             {
+
                 optSize.Safe += optSize.Dbc * 2;
+
                 int num = OPTID;
+
                 switch (num)
                 {
                     case 0:
-                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                          ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                         return;
-
                     case 1:
                         return;
 
                     case 2:
-                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 2));
+                          ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 2));
                         return;
 
                     case 3:
@@ -3949,7 +4138,9 @@ namespace xjplc
 
         private void PrintBarCheck(SingleSize ss)
         {
-            if (((printMiniSizeOutInPs != null) && (printMiniSizeOutInPs.ShowValue > ss.Cut)) && (PrintBarCodeMode == Constant.AutoBarCode))
+            if (ss.Barc.Contains("裁剪")) return;
+
+                if (((printMiniSizeOutInPs != null) && (printMiniSizeOutInPs.ShowValue > ss.Cut)) && (PrintBarCodeMode == Constant.AutoBarCode))
             {
                 if (((minPrinterName != "") && (printMiniSizeOutInPs.ShowValue > ss.Cut)) && ConstantMethod.GetLocalPrinter().Contains(minPrinterName))
                 {
@@ -3979,16 +4170,12 @@ namespace xjplc
         public void printBarcode(Report rp1, object s2)
         {
             string[] strArray = (string[])s2;
-            string str = "";
-            foreach (string str2 in strArray)
-            {
-                str = str + str2 + "/";
-            }
+           
             if (strArray.Length >= 1)
             {
                 try
                 {
-                    if (((strArray != null) && (printReport != null)) && IsPrintBarCode)
+                    if (((strArray != null) && IsPrintBarCode &&(printReport != null)))
                     {
                         Application.DoEvents();
                         if (rp1.FindObject("Barcode1") !=null)
@@ -4074,6 +4261,7 @@ namespace xjplc
         public void printBarcode(Report rp1, object s2, int show)
         {
             string[] strArray = (string[])s2;
+           
             if ((strArray != null) && (printReport !=null))
             {
                 try
@@ -4113,9 +4301,13 @@ namespace xjplc
         {
             if (DeviceName.Equals(Constant.simiDeivceName))
             {
+
                 SetPrintReport(Constant.BarCode2);
-                printBarcode(printReport, s);
+
+                printBarcode(printReport, s ,1);
+
             }
+
             SetPrintReport(Constant.BarCode1);
         }
 
@@ -4284,6 +4476,11 @@ namespace xjplc
 
             if(!DeviceUser.Equals(Constant.DeviceUserJingPai))
             optSize.SaveExcel();
+
+            if (Rsm != null)
+            {
+                Rsm.SaveMaterial();
+            }
         }
 
         public void SaveFileToUserData()
@@ -5157,6 +5354,7 @@ namespace xjplc
 
             }
         }
+      
         public void ShowBarCode(int rowindex)
         {
             ReLoadReport();
@@ -5275,8 +5473,10 @@ namespace xjplc
 
         public void SimiDataDownLoadSel(int id)
         {
+
             downLoadSizeId = id;
             optSize.simiDownLoadSizeId = id;
+
         }
 
         public bool start(int id)
@@ -5320,12 +5520,15 @@ namespace xjplc
                 for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
                 {
                     if (!RunFlag) break;
+                    Simi_Show(i);
                     SaveProdDataLog(optSize.ProdInfoLst[i], i);
                     ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
                     showWorkInfo("清除PLC计数器");
                     ConstantMethod.Delay(0x3e8);
                     showWorkInfo("数据下载至机器");
                     CutLoopWithDevice(i);
+                    SimicutoffProcess(optSize.ProdInfoLst[i]);
+
                 }
             }
             else
@@ -5334,6 +5537,15 @@ namespace xjplc
             }
             RunFlag = false;
         }
+
+        PaintRect simi_painR;
+        public xjplc.PaintRect Simi_painR
+        {
+            get { return simi_painR; }
+            set { simi_painR = value; }
+        }
+
+
         public void StartWithOutDeviceWithPattern(double patternDistance)
         {
             showWorkInfo("虚拟启动");
@@ -5365,12 +5577,14 @@ namespace xjplc
                 for (int i = CutProCnt; i < optSize.ProdInfoLst.Count; i++)
                 {
                     if (!RunFlag) break;
+                    Simi_Show(i);
                     SaveProdDataLog(optSize.ProdInfoLst[i], i);
                     ConstantMethod.ShowInfo(rtbWork, Constant.resultTip5 + ((i + 1)).ToString() + Constant.startTips4);
                     showWorkInfo("清除PLC计数器");
                     ConstantMethod.Delay(0x3e8);
                     showWorkInfo("数据下载至机器");
                     CutLoopWithDevice(i);
+                    SimicutoffProcess(optSize.ProdInfoLst[i]);
                 }
             }
             else
