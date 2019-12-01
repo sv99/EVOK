@@ -553,6 +553,7 @@ namespace xjplc
                 CHCNetSDK.NET_DVR_PTZControl_Other(m_lRealHandle, 1, CHCNetSDK.FOCUS_FAR, 0);
             }
         }
+
         public bool StopRecord(string filename)
         {
             //停止录像 Stop recording

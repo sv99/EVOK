@@ -42,6 +42,18 @@ namespace xjplc
             get { return printBarCodeMode; }
             set { printBarCodeMode = value; }
         }
+
+
+        public ConfigFileManager ParamFile
+        {
+            get { return paramFile; }
+
+            set
+            {
+                paramFile = value;
+            }
+        }
+
         //
         List<List<DTPlcInfoSimple>> allPlcSimpleLst;
         public System.Collections.Generic.List<System.Collections.Generic.List<xjplc.DTPlcInfoSimple>> AllPlcSimpleLst
@@ -572,6 +584,8 @@ namespace xjplc
             AllPlcSimpleLst.Add(psLstParam);
             AllPlcSimpleLst.Add(PsLstIO);
 
+            paramFile = ConstantMethod.configFileBak(Constant.ConfigParamFilePath);
+
             #region 自动页面数据处理
 
             SetPage(Constant.AutoPage);
@@ -620,12 +634,29 @@ namespace xjplc
                 DtScHyShow.Columns.Add("步序");
                 DtScHyShow.Columns.Add("锁槽工位");
                 DtScHyShow.Columns.Add("合页工位");
-                for (int i = 0; i < 12; i++)
+
+                string userScHytCount = ParamFile.ReadConfig(Constant.SchyCount);
+
+                int schyCount = 0;
+                if (int.TryParse(userScHytCount, out schyCount))
                 {
-                    DataRow dr = DtScHyShow.NewRow();
-                    dr[0] = (i + 1).ToString();
-                    DtScHyShow.Rows.Add(dr);
+
+                    if(schyCount>12)
+                    for (int i = 0; i < schyCount; i++)
+                    {
+                        DataRow dr = DtScHyShow.NewRow();
+                        dr[0] = (i + 1).ToString();
+                        DtScHyShow.Rows.Add(dr);
+                    }
+
                 }
+                else
+                    for (int i = 0; i < 12; i++)
+                    {
+                        DataRow dr = DtScHyShow.NewRow();
+                        dr[0] = (i + 1).ToString();
+                        DtScHyShow.Rows.Add(dr);
+                    }
 
 
             }
@@ -650,7 +681,6 @@ namespace xjplc
             }
             #endregion
 
-
             #region 双端锯
             if (deviceId == Constant.xzjDeivceId)
             {
@@ -663,12 +693,10 @@ namespace xjplc
                      
            }
             #endregion
+
+
             UserDataTable = new DataTable();        
-
-            paramFile = ConstantMethod.configFileBak(Constant.ConfigParamFilePath);
-
-
-
+          
             if (!int.TryParse(paramFile.ReadConfig(Constant.printBarcodeMode), out printBarCodeMode))
             {
                 MessageBox.Show(Constant.ErrorParamConfigFile);

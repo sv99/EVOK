@@ -68,8 +68,6 @@ namespace evokNew0077
                 textBox50.Visible = false;
                 this.Text = "水平打孔机-左右拉槽改加油";
 
-
-
             }
             if (cfm.ReadConfig(Constant.deviceMode).Equals(putongChiTiao.ToString()))
             {
@@ -99,6 +97,8 @@ namespace evokNew0077
             errorList = evokWork.ErrorList;
 
             UpdateTimer.Enabled = true;
+
+
         }
         private void InitView0()
         {
@@ -126,6 +126,12 @@ namespace evokNew0077
             lightLst.Add(label51);
             lightLst.Add(label52);
             lightLst.Add(label53);
+
+
+            PrevlightLst.Add(label81);
+            PrevlightLst.Add(label89);
+            PrevlightLst.Add(label90);
+            PrevlightLst.Add(label91);
 
             evokWork.updateData = UpdateData;
 
@@ -595,9 +601,13 @@ namespace evokNew0077
             {
                 textBox37.Focus();
                 int i = (int)e.KeyChar;
-                if ((i < 58) && (i >= 47) || (i == 0) || Regex.IsMatch(e.KeyChar.ToString(), "[a-zA-Z]"))
+
+              //  richTextBox1.AppendText(i.ToString()+"\r\n");  
+
+                if ((i < 58) && (i >= 47) || (i == 0) || (i ==95) || Regex.IsMatch(e.KeyChar.ToString(), "[a-zA-Z]"))
                 {
                     textBox37.AppendText(e.KeyChar.ToString());
+
                 }
                 if (e.KeyChar == 13)
                 {
@@ -607,7 +617,8 @@ namespace evokNew0077
 
             }
         }
-        List<Label> lightLst = new List<Label>();
+        List<Label> lightLst = new List<Label>();       //当前显示
+        List<Label> PrevlightLst = new List<Label>(); //预期显示
         public void UpdateData(string name)
         {
           //  if (string.IsNullOrWhiteSpace(name)) evokWork.StopRunning();
@@ -630,10 +641,18 @@ namespace evokNew0077
             }
             //
             if (evokWork.HoleDataLst != null && evokWork.HoleDataLst.Count > 0)
-            {
-                label71.Text = evokWork.HoleDataLst.Count.ToString();
+            {       
+               
                 foreach (DataTable dt in evokWork.HoleDataLst)
                 {
+                    //当前有多少面
+                    foreach (Label l in PrevlightLst)
+                    {
+                        if (dt.TableName.Contains(l.Tag.ToString()))
+                        {
+                            l.BackColor = Color.Green;
+                        }                      
+                    }
                     if (!string.IsNullOrWhiteSpace(name) && dt.TableName.Contains(name))
                     {
                         dgv.Invoke((EventHandler)(delegate
@@ -651,7 +670,13 @@ namespace evokNew0077
             if (string.IsNullOrWhiteSpace(name))
             {
                 dgv.DataSource = null;
-                label71.Text = "0";
+                label94.Text = "NA";
+                foreach (Label l in PrevlightLst)
+                {
+                   
+                   l.BackColor = Color.Gray;
+                    
+                }
             }
 
             
@@ -665,7 +690,9 @@ namespace evokNew0077
             {
                 string s = textBox37.Text;
                 textBox37.Clear();
+                label94.Text = s;
                 evokWork.ScanCode(s);
+
               
             }
         }
@@ -716,6 +743,16 @@ namespace evokNew0077
         }
 
         private void button13_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox51_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
         {
 
         }

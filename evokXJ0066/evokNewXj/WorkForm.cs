@@ -228,7 +228,13 @@ namespace evokNew0066
                 evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write, evokWork.PsLstHand);
             }
         }
-
+        private void Off2On_Click(object sender, EventArgs e)
+        {
+            if (sender != null && ((Control)sender).Tag != null)
+            {
+                evokWork.SetMPsOFFToOn(((Control)sender).Tag.ToString(), Constant.Write,tc1.SelectedIndex);
+            }
+        }
         private void qClr_Click(object sender, EventArgs e)
         {
             evokWork.ProClr();

@@ -47,6 +47,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sqlConnectModule", "..\..\.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fileconvert", "..\evokFileConvert\fileconvert\fileconvert.csproj", "{3C366160-6D02-406B-9834-03D0294965E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "evokNewDT0056", "..\evokDT0056\evokNewXj\evokNewDT0056.csproj", "{5483784A-5DA6-4481-8181-129084EE930A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -231,6 +233,14 @@ Global
 		{3C366160-6D02-406B-9834-03D0294965E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C366160-6D02-406B-9834-03D0294965E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{3C366160-6D02-406B-9834-03D0294965E9}.Release|x86.Build.0 = Release|Any CPU
+		{5483784A-5DA6-4481-8181-129084EE930A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5483784A-5DA6-4481-8181-129084EE930A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5483784A-5DA6-4481-8181-129084EE930A}.Debug|x86.ActiveCfg = Debug|x86
+		{5483784A-5DA6-4481-8181-129084EE930A}.Debug|x86.Build.0 = Debug|x86
+		{5483784A-5DA6-4481-8181-129084EE930A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5483784A-5DA6-4481-8181-129084EE930A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5483784A-5DA6-4481-8181-129084EE930A}.Release|x86.ActiveCfg = Release|x86
+		{5483784A-5DA6-4481-8181-129084EE930A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -363,6 +363,12 @@ namespace xjplc
         public static string paramHeader2 = "值";
         public static string DeviceUser = "DeviceUser";
         public static string DeviceUserJingPai = "金牌";
+
+
+        public static string msjLabel0= "内圈速度";
+        public static string msjLabel1 = "外圈速度";
+        public static string msjLabel2 = "打孔速度";
+        public static string msjLabel3= "回退速度";
         #endregion
 
         public static readonly string CsvSplitComma = ",";
@@ -405,7 +411,7 @@ namespace xjplc
         public const int Param1Page = 4;
         public static readonly int AutoPageID = 2;//2; //2  普通  //双切刀下料锯 11   //0 西门子下料锯
         public static readonly int HandPageID = 3;//5; //3   普通  //双切刀 5         //1 西门子下料锯
-        public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
+        public static readonly int DataRowWatchMax = 35; //监控太多不行 还是少监控一点吧
         public static readonly string[] plcDataFile = { "addr", "mode", "bin", "count", "value", "param1", "param2", "param3", "param4", "param5", "param6" };
         public static readonly string sqlChar10 = "char(10)";
         public static readonly string sqlChar20 = "char(20)";
@@ -678,7 +684,8 @@ namespace xjplc
 
         #region 门锁机
         public static readonly int msjDeivceId = 1;
-
+        public static readonly string SchyCount = "SchyCount";
+        
         #region 锁槽
 
         public static readonly string[] scCutType = {
@@ -716,21 +723,28 @@ namespace xjplc
 
         #region 合页
 
-        public static readonly string[] hyCutType =           {                                                              
+        public static readonly string[] hyCutType =           {    
+                                                                                                                     
                                                                 "合页槽",
                                                                 "上开口合页槽",
-                                                                "下开口合页槽" };
+                                                                "下开口合页槽",
+                                                                  "引孔编辑"
+         };
 
-        public static readonly int[] hyCutTypeShowId = {      
+        public static readonly int[] hyCutTypeShowId = {       
+                                                                
                                                                 22,
                                                                 23,
-                                                                24
+                                                                24,
+                                                                 21
                                                           };
 
-        public static readonly string[] hyCutTypeImage = {     
+        public static readonly string[] hyCutTypeImage = {    
                                                                 "w5",
                                                                 "w6",
-                                                                "w7"
+                                                                "w7",
+                                                                 "w10"
+
                                                           };
 
         #endregion 合页

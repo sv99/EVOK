@@ -294,7 +294,7 @@ namespace xjplc
             get
             {
                 if (this != null
-                    && handCam != null
+                    && HankCam != null
                     && Zd != null
                     && Zd.Status
                     //&& Jxp!=null
@@ -338,7 +338,7 @@ namespace xjplc
 
             InitJsControl();
 
-            //InitXMCam();        
+            InitXMCam();        
 
         }
         public void Dispose()
@@ -348,9 +348,9 @@ namespace xjplc
             if (camxm != null)
                 camxm.dispose();
 
-            if (handCam != null)
+            if (HankCam != null)
             {
-                handCam.dispose();
+                HankCam.dispose();
             }
         }
         public DeviceManageer(Action<string> s, PictureBox phk, PictureBox pxm)
@@ -938,12 +938,16 @@ namespace xjplc
 
         #endregion
         #region hankVIsion
-        HankCamera handCam;
-
+        HankCamera hankCam;
+        public xjplc.tanuo.HankCamera HankCam
+        {
+            get { return hankCam; }
+            set { hankCam = value; }
+        }
         //初始化
         void InitHankCam()
         {
-            handCam = new HankCamera();
+            HankCam = new HankCamera();
 
             string ip = config.ReadConfig(ParamStr, configStr, sysInfo.param[4]);
             string port = config.ReadConfig(ParamStr, configStr, sysInfo.param[5]);
@@ -956,11 +960,17 @@ namespace xjplc
             sr.server_Port = port;
             sr.userName = userName;
             sr.userPwd = pwd;
-            handCam.ShowhWnd =hkCamRealPlayWnd.Handle;
-            handCam.OpenDevice(sr);
+            HankCam.ShowhWnd =hkCamRealPlayWnd.Handle;
+            HankCam.OpenDevice(sr);
 
 
         }
+        public void HankCamStart(int id)
+        {
+            if (HankCam != null && HankCam.Status != 0)
+                HankCam.StartAdjust(id);
+        }
+
 
         #endregion
         #region 卷线盘

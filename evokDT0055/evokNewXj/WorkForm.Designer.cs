@@ -29,22 +29,24 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(WorkForm));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.打开数据文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.成型样式编辑ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.设备ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.connectMachine = new System.Windows.Forms.ToolStripMenuItem();
+            this.fileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openfileMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deviceMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.connectMachineMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCurrentDataForm = new System.Windows.Forms.ToolStripMenuItem();
-            this.查看日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.加载历史日志文件ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.帮助ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.使用说明ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于程序版本ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.关于意利欧机械有限公司ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wathCurrentLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.watchHistoryLogMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.langShiftMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemChinese = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuItemEnglish = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutVersionMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutEvokMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button52 = new System.Windows.Forms.Button();
@@ -293,55 +295,48 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.文件ToolStripMenuItem,
-            this.设备ToolStripMenuItem,
-            this.帮助ToolStripMenuItem});
+            this.fileMenuItem,
+            this.deviceMenuItem,
+            this.helpMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1385, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1406, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // 文件ToolStripMenuItem
+            // fileMenuItem
             // 
-            this.文件ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.打开数据文件ToolStripMenuItem,
-            this.成型样式编辑ToolStripMenuItem});
-            this.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem";
-            this.文件ToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
-            this.文件ToolStripMenuItem.Text = "文件";
+            this.fileMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openfileMenuItem});
+            this.fileMenuItem.Name = "fileMenuItem";
+            this.fileMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.fileMenuItem.Text = "文件";
             // 
-            // 打开数据文件ToolStripMenuItem
+            // openfileMenuItem
             // 
-            this.打开数据文件ToolStripMenuItem.Name = "打开数据文件ToolStripMenuItem";
-            this.打开数据文件ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.打开数据文件ToolStripMenuItem.Text = "打开数据文件";
+            this.openfileMenuItem.Name = "openfileMenuItem";
+            this.openfileMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.openfileMenuItem.Text = "打开数据文件";
             // 
-            // 成型样式编辑ToolStripMenuItem
+            // deviceMenuItem
             // 
-            this.成型样式编辑ToolStripMenuItem.Name = "成型样式编辑ToolStripMenuItem";
-            this.成型样式编辑ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
-            this.成型样式编辑ToolStripMenuItem.Text = "成型样式编辑";
-            // 
-            // 设备ToolStripMenuItem
-            // 
-            this.设备ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.connectMachine,
+            this.deviceMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.connectMachineMenuItem,
             this.showCurrentDataForm,
-            this.查看日志文件ToolStripMenuItem,
-            this.加载历史日志文件ToolStripMenuItem});
-            this.设备ToolStripMenuItem.Name = "设备ToolStripMenuItem";
-            this.设备ToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
-            this.设备ToolStripMenuItem.Text = "设备";
-            this.设备ToolStripMenuItem.Click += new System.EventHandler(this.设备ToolStripMenuItem_Click);
+            this.wathCurrentLogMenuItem,
+            this.watchHistoryLogMenuItem});
+            this.deviceMenuItem.Name = "deviceMenuItem";
+            this.deviceMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.deviceMenuItem.Text = "设备";
+            this.deviceMenuItem.Click += new System.EventHandler(this.设备ToolStripMenuItem_Click);
             // 
-            // connectMachine
+            // connectMachineMenuItem
             // 
-            this.connectMachine.Name = "connectMachine";
-            this.connectMachine.Size = new System.Drawing.Size(172, 22);
-            this.connectMachine.Text = "连接设备";
-            this.connectMachine.Click += new System.EventHandler(this.connectMachine_Click);
+            this.connectMachineMenuItem.Name = "connectMachineMenuItem";
+            this.connectMachineMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.connectMachineMenuItem.Text = "连接设备";
+            this.connectMachineMenuItem.Click += new System.EventHandler(this.connectMachine_Click);
             // 
             // showCurrentDataForm
             // 
@@ -350,47 +345,71 @@
             this.showCurrentDataForm.Text = "监控当前页面数据";
             this.showCurrentDataForm.Click += new System.EventHandler(this.监控当前页面数据ToolStripMenuItem_Click);
             // 
-            // 查看日志文件ToolStripMenuItem
+            // wathCurrentLogMenuItem
             // 
-            this.查看日志文件ToolStripMenuItem.Name = "查看日志文件ToolStripMenuItem";
-            this.查看日志文件ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.查看日志文件ToolStripMenuItem.Text = "查看当前日志文件";
-            this.查看日志文件ToolStripMenuItem.Click += new System.EventHandler(this.查看日志文件ToolStripMenuItem_Click);
+            this.wathCurrentLogMenuItem.Name = "wathCurrentLogMenuItem";
+            this.wathCurrentLogMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.wathCurrentLogMenuItem.Text = "查看当前日志文件";
+            this.wathCurrentLogMenuItem.Click += new System.EventHandler(this.查看日志文件ToolStripMenuItem_Click);
             // 
-            // 加载历史日志文件ToolStripMenuItem
+            // watchHistoryLogMenuItem
             // 
-            this.加载历史日志文件ToolStripMenuItem.Name = "加载历史日志文件ToolStripMenuItem";
-            this.加载历史日志文件ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.加载历史日志文件ToolStripMenuItem.Text = "查看历史日志文件";
-            this.加载历史日志文件ToolStripMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
+            this.watchHistoryLogMenuItem.Name = "watchHistoryLogMenuItem";
+            this.watchHistoryLogMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.watchHistoryLogMenuItem.Text = "查看历史日志文件";
+            this.watchHistoryLogMenuItem.Click += new System.EventHandler(this.加载历史日志文件ToolStripMenuItem_Click);
             // 
-            // 帮助ToolStripMenuItem
+            // helpMenuItem
             // 
-            this.帮助ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.使用说明ToolStripMenuItem,
-            this.关于程序版本ToolStripMenuItem,
-            this.关于意利欧机械有限公司ToolStripMenuItem});
-            this.帮助ToolStripMenuItem.Name = "帮助ToolStripMenuItem";
-            this.帮助ToolStripMenuItem.Size = new System.Drawing.Size(44, 22);
-            this.帮助ToolStripMenuItem.Text = "帮助";
+            this.helpMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.useMenuItem,
+            this.langShiftMenuItem,
+            this.aboutVersionMenuItem,
+            this.aboutEvokMenuItem});
+            this.helpMenuItem.Name = "helpMenuItem";
+            this.helpMenuItem.Size = new System.Drawing.Size(44, 22);
+            this.helpMenuItem.Text = "帮助";
             // 
-            // 使用说明ToolStripMenuItem
+            // useMenuItem
             // 
-            this.使用说明ToolStripMenuItem.Name = "使用说明ToolStripMenuItem";
-            this.使用说明ToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.使用说明ToolStripMenuItem.Text = "使用说明";
+            this.useMenuItem.Name = "useMenuItem";
+            this.useMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.useMenuItem.Text = "使用说明";
             // 
-            // 关于程序版本ToolStripMenuItem
+            // langShiftMenuItem
             // 
-            this.关于程序版本ToolStripMenuItem.Name = "关于程序版本ToolStripMenuItem";
-            this.关于程序版本ToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.关于程序版本ToolStripMenuItem.Text = "关于程序版本";
+            this.langShiftMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuItemChinese,
+            this.menuItemEnglish});
+            this.langShiftMenuItem.Name = "langShiftMenuItem";
+            this.langShiftMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.langShiftMenuItem.Text = "语言切换";
             // 
-            // 关于意利欧机械有限公司ToolStripMenuItem
+            // menuItemChinese
             // 
-            this.关于意利欧机械有限公司ToolStripMenuItem.Name = "关于意利欧机械有限公司ToolStripMenuItem";
-            this.关于意利欧机械有限公司ToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-            this.关于意利欧机械有限公司ToolStripMenuItem.Text = "关于意利欧机械有限公司";
+            this.menuItemChinese.Name = "menuItemChinese";
+            this.menuItemChinese.Size = new System.Drawing.Size(100, 22);
+            this.menuItemChinese.Text = "中文";
+            this.menuItemChinese.Click += new System.EventHandler(this.中文ToolStripMenuItem_Click);
+            // 
+            // menuItemEnglish
+            // 
+            this.menuItemEnglish.Name = "menuItemEnglish";
+            this.menuItemEnglish.Size = new System.Drawing.Size(100, 22);
+            this.menuItemEnglish.Text = "英文";
+            this.menuItemEnglish.Click += new System.EventHandler(this.英文ToolStripMenuItem_Click);
+            // 
+            // aboutVersionMenuItem
+            // 
+            this.aboutVersionMenuItem.Name = "aboutVersionMenuItem";
+            this.aboutVersionMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.aboutVersionMenuItem.Text = "关于程序版本";
+            // 
+            // aboutEvokMenuItem
+            // 
+            this.aboutEvokMenuItem.Name = "aboutEvokMenuItem";
+            this.aboutEvokMenuItem.Size = new System.Drawing.Size(208, 22);
+            this.aboutEvokMenuItem.Text = "关于意利欧机械有限公司";
             // 
             // tc1
             // 
@@ -536,7 +555,7 @@
             // textBox34
             // 
             this.textBox34.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox34.Location = new System.Drawing.Point(570, 368);
+            this.textBox34.Location = new System.Drawing.Point(1182, 370);
             this.textBox34.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.textBox34.Name = "textBox34";
             this.textBox34.Size = new System.Drawing.Size(85, 32);
@@ -669,7 +688,7 @@
             // button58
             // 
             this.button58.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button58.Location = new System.Drawing.Point(1161, 43);
+            this.button58.Location = new System.Drawing.Point(1104, 81);
             this.button58.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button58.Name = "button58";
             this.button58.Size = new System.Drawing.Size(123, 41);
@@ -766,9 +785,9 @@
             this.label10.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label10.Location = new System.Drawing.Point(183, 53);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(109, 22);
+            this.label10.Size = new System.Drawing.Size(65, 22);
             this.label10.TabIndex = 137;
-            this.label10.Text = "门长(mm):";
+            this.label10.Text = "门长:";
             // 
             // lcTxt
             // 
@@ -1027,7 +1046,7 @@
             // textBox33
             // 
             this.textBox33.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox33.Location = new System.Drawing.Point(409, 367);
+            this.textBox33.Location = new System.Drawing.Point(1021, 369);
             this.textBox33.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.textBox33.Name = "textBox33";
             this.textBox33.Size = new System.Drawing.Size(85, 32);
@@ -1084,7 +1103,7 @@
             // 
             this.label62.AutoSize = true;
             this.label62.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label62.Location = new System.Drawing.Point(499, 371);
+            this.label62.Location = new System.Drawing.Point(1111, 373);
             this.label62.Name = "label62";
             this.label62.Size = new System.Drawing.Size(76, 22);
             this.label62.TabIndex = 136;
@@ -1166,7 +1185,7 @@
             // 
             this.label61.AutoSize = true;
             this.label61.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label61.Location = new System.Drawing.Point(338, 373);
+            this.label61.Location = new System.Drawing.Point(950, 375);
             this.label61.Name = "label61";
             this.label61.Size = new System.Drawing.Size(76, 22);
             this.label61.TabIndex = 136;
@@ -1474,7 +1493,7 @@
             this.button15.Size = new System.Drawing.Size(191, 44);
             this.button15.TabIndex = 149;
             this.button15.Tag = "H127";
-            this.button15.Text = "H127";
+            this.button15.Text = "宽度检测";
             this.button15.UseVisualStyleBackColor = true;
             this.button15.Click += new System.EventHandler(this.button12_Click);
             // 
@@ -1612,8 +1631,8 @@
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(183, 39);
             this.button12.TabIndex = 149;
-            this.button12.Tag = "H126";
-            this.button12.Text = "H126";
+            this.button12.Tag = "H136";
+            this.button12.Text = "厚度检测";
             this.button12.UseVisualStyleBackColor = true;
             this.button12.Click += new System.EventHandler(this.button12_Click);
             // 
@@ -1626,14 +1645,14 @@
             this.button16.Size = new System.Drawing.Size(126, 63);
             this.button16.TabIndex = 178;
             this.button16.Tag = "H128";
-            this.button16.Text = "H128";
+            this.button16.Text = "停止检测";
             this.button16.UseVisualStyleBackColor = true;
             this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // textBox32
             // 
             this.textBox32.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox32.Location = new System.Drawing.Point(536, 395);
+            this.textBox32.Location = new System.Drawing.Point(535, 409);
             this.textBox32.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.textBox32.Name = "textBox32";
             this.textBox32.Size = new System.Drawing.Size(110, 32);
@@ -1648,7 +1667,7 @@
             // textBox15
             // 
             this.textBox15.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox15.Location = new System.Drawing.Point(536, 363);
+            this.textBox15.Location = new System.Drawing.Point(535, 377);
             this.textBox15.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.textBox15.Name = "textBox15";
             this.textBox15.Size = new System.Drawing.Size(110, 32);
@@ -1663,7 +1682,7 @@
             // 
             this.label59.AutoSize = true;
             this.label59.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label59.Location = new System.Drawing.Point(654, 395);
+            this.label59.Location = new System.Drawing.Point(653, 409);
             this.label59.Name = "label59";
             this.label59.Size = new System.Drawing.Size(76, 22);
             this.label59.TabIndex = 176;
@@ -1674,7 +1693,7 @@
             // 
             this.label30.AutoSize = true;
             this.label30.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label30.Location = new System.Drawing.Point(654, 363);
+            this.label30.Location = new System.Drawing.Point(653, 377);
             this.label30.Name = "label30";
             this.label30.Size = new System.Drawing.Size(76, 22);
             this.label30.TabIndex = 176;
@@ -1684,7 +1703,7 @@
             // 
             this.label58.AutoSize = true;
             this.label58.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label58.Location = new System.Drawing.Point(419, 397);
+            this.label58.Location = new System.Drawing.Point(418, 411);
             this.label58.Name = "label58";
             this.label58.Size = new System.Drawing.Size(120, 22);
             this.label58.TabIndex = 176;
@@ -1695,7 +1714,7 @@
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label20.Location = new System.Drawing.Point(419, 365);
+            this.label20.Location = new System.Drawing.Point(418, 379);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(120, 22);
             this.label20.TabIndex = 176;
@@ -1857,7 +1876,7 @@
             this.button6.Size = new System.Drawing.Size(126, 63);
             this.button6.TabIndex = 162;
             this.button6.Tag = "H111";
-            this.button6.Text = "H111";
+            this.button6.Text = "合页2阀";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1871,7 +1890,7 @@
             this.button2.Size = new System.Drawing.Size(126, 63);
             this.button2.TabIndex = 161;
             this.button2.Tag = "H100";
-            this.button2.Text = "H100";
+            this.button2.Text = "垂直电机1";
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1885,7 +1904,7 @@
             this.button4.Size = new System.Drawing.Size(126, 63);
             this.button4.TabIndex = 160;
             this.button4.Tag = "H101";
-            this.button4.Text = "H101";
+            this.button4.Text = "垂直电机2";
             this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1899,7 +1918,7 @@
             this.button3.Size = new System.Drawing.Size(126, 63);
             this.button3.TabIndex = 159;
             this.button3.Tag = "H106";
-            this.button3.Text = "H106";
+            this.button3.Text = "垂直1阀";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1912,7 +1931,7 @@
             this.button33.Size = new System.Drawing.Size(126, 63);
             this.button33.TabIndex = 158;
             this.button33.Tag = "H124";
-            this.button33.Text = "H124";
+            this.button33.Text = "出料输送带";
             this.button33.UseVisualStyleBackColor = true;
             this.button33.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1925,7 +1944,7 @@
             this.button19.Size = new System.Drawing.Size(126, 63);
             this.button19.TabIndex = 157;
             this.button19.Tag = "H119";
-            this.button19.Text = "H119";
+            this.button19.Text = "靠山阀";
             this.button19.UseVisualStyleBackColor = true;
             this.button19.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1938,7 +1957,7 @@
             this.button14.Size = new System.Drawing.Size(126, 63);
             this.button14.TabIndex = 156;
             this.button14.Tag = "H107";
-            this.button14.Text = "H107";
+            this.button14.Text = "垂直2阀";
             this.button14.UseVisualStyleBackColor = true;
             this.button14.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1951,7 +1970,7 @@
             this.button13.Size = new System.Drawing.Size(126, 63);
             this.button13.TabIndex = 155;
             this.button13.Tag = "H105";
-            this.button13.Text = "H105";
+            this.button13.Text = "合页电机2";
             this.button13.UseVisualStyleBackColor = true;
             this.button13.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1964,7 +1983,7 @@
             this.lblY14.Size = new System.Drawing.Size(126, 63);
             this.lblY14.TabIndex = 153;
             this.lblY14.Tag = "H108";
-            this.lblY14.Text = "H108";
+            this.lblY14.Text = "水平1阀";
             this.lblY14.UseVisualStyleBackColor = true;
             this.lblY14.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1977,7 +1996,7 @@
             this.lblY25.Size = new System.Drawing.Size(126, 63);
             this.lblY25.TabIndex = 152;
             this.lblY25.Tag = "H114";
-            this.lblY25.Text = "H114";
+            this.lblY25.Text = "输送带慢速";
             this.lblY25.UseVisualStyleBackColor = true;
             this.lblY25.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -1990,7 +2009,7 @@
             this.lblY24.Size = new System.Drawing.Size(126, 63);
             this.lblY24.TabIndex = 154;
             this.lblY24.Tag = "H102";
-            this.lblY24.Text = "H102";
+            this.lblY24.Text = "水平电机1";
             this.lblY24.UseVisualStyleBackColor = true;
             this.lblY24.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2003,7 +2022,7 @@
             this.lblY26.Size = new System.Drawing.Size(126, 63);
             this.lblY26.TabIndex = 151;
             this.lblY26.Tag = "H110";
-            this.lblY26.Text = "H110";
+            this.lblY26.Text = "合页1阀";
             this.lblY26.UseVisualStyleBackColor = true;
             this.lblY26.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2016,7 +2035,7 @@
             this.lblY4.Size = new System.Drawing.Size(126, 63);
             this.lblY4.TabIndex = 150;
             this.lblY4.Tag = "H103";
-            this.lblY4.Text = "H103";
+            this.lblY4.Text = "水平电机2";
             this.lblY4.UseVisualStyleBackColor = true;
             this.lblY4.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2029,7 +2048,7 @@
             this.button32.Size = new System.Drawing.Size(126, 63);
             this.button32.TabIndex = 149;
             this.button32.Tag = "H120";
-            this.button32.Text = "H120";
+            this.button32.Text = "厚度检测阀";
             this.button32.UseVisualStyleBackColor = true;
             this.button32.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2042,7 +2061,7 @@
             this.button31.Size = new System.Drawing.Size(126, 63);
             this.button31.TabIndex = 147;
             this.button31.Tag = "H122";
-            this.button31.Text = "H122";
+            this.button31.Text = "合页靠山阀";
             this.button31.UseVisualStyleBackColor = true;
             this.button31.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2055,7 +2074,7 @@
             this.lblY22.Size = new System.Drawing.Size(126, 63);
             this.lblY22.TabIndex = 148;
             this.lblY22.Tag = "H115";
-            this.lblY22.Text = "H115";
+            this.lblY22.Text = "输送带上升";
             this.lblY22.UseVisualStyleBackColor = true;
             this.lblY22.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2068,7 +2087,7 @@
             this.lblY5.Size = new System.Drawing.Size(126, 63);
             this.lblY5.TabIndex = 146;
             this.lblY5.Tag = "H117";
-            this.lblY5.Text = "H117";
+            this.lblY5.Text = "推料阀";
             this.lblY5.UseVisualStyleBackColor = true;
             this.lblY5.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2081,7 +2100,7 @@
             this.button62.Size = new System.Drawing.Size(126, 63);
             this.button62.TabIndex = 143;
             this.button62.Tag = "H125";
-            this.button62.Text = "H125";
+            this.button62.Text = "侧靠气缸";
             this.button62.UseVisualStyleBackColor = true;
             this.button62.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2094,7 +2113,7 @@
             this.button63.Size = new System.Drawing.Size(126, 63);
             this.button63.TabIndex = 143;
             this.button63.Tag = "H126";
-            this.button63.Text = "H126";
+            this.button63.Text = "进料侧靠";
             this.button63.UseVisualStyleBackColor = true;
             this.button63.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2107,7 +2126,7 @@
             this.button30.Size = new System.Drawing.Size(126, 63);
             this.button30.TabIndex = 143;
             this.button30.Tag = "H123";
-            this.button30.Text = "H123";
+            this.button30.Text = "进料输送带";
             this.button30.UseVisualStyleBackColor = true;
             this.button30.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2120,7 +2139,7 @@
             this.lblY12.Size = new System.Drawing.Size(126, 63);
             this.lblY12.TabIndex = 145;
             this.lblY12.Tag = "H112";
-            this.lblY12.Text = "H112";
+            this.lblY12.Text = "输送带正转";
             this.lblY12.UseVisualStyleBackColor = true;
             this.lblY12.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2133,7 +2152,7 @@
             this.button29.Size = new System.Drawing.Size(126, 63);
             this.button29.TabIndex = 142;
             this.button29.Tag = "H121";
-            this.button29.Text = "H121";
+            this.button29.Text = "宽度检测阀";
             this.button29.UseVisualStyleBackColor = true;
             this.button29.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2146,7 +2165,7 @@
             this.lblY13.Size = new System.Drawing.Size(126, 63);
             this.lblY13.TabIndex = 144;
             this.lblY13.Tag = "H104";
-            this.lblY13.Text = "H104";
+            this.lblY13.Text = "合页电机1";
             this.lblY13.UseVisualStyleBackColor = true;
             this.lblY13.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2159,7 +2178,7 @@
             this.button5.Size = new System.Drawing.Size(126, 63);
             this.button5.TabIndex = 141;
             this.button5.Tag = "H118";
-            this.button5.Text = "H118";
+            this.button5.Text = "侧压阀";
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2172,7 +2191,7 @@
             this.lblY17.Size = new System.Drawing.Size(126, 63);
             this.lblY17.TabIndex = 140;
             this.lblY17.Tag = "H116";
-            this.lblY17.Text = "H116";
+            this.lblY17.Text = "压料阀";
             this.lblY17.UseVisualStyleBackColor = true;
             this.lblY17.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2186,7 +2205,7 @@
             this.button7.Size = new System.Drawing.Size(126, 63);
             this.button7.TabIndex = 139;
             this.button7.Tag = "H113";
-            this.button7.Text = "H113";
+            this.button7.Text = "输送带反转";
             this.button7.UseVisualStyleBackColor = false;
             this.button7.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2200,7 +2219,7 @@
             this.lblY16.Size = new System.Drawing.Size(126, 63);
             this.lblY16.TabIndex = 138;
             this.lblY16.Tag = "H109";
-            this.lblY16.Text = "H109";
+            this.lblY16.Text = "水平2阀";
             this.lblY16.UseVisualStyleBackColor = false;
             this.lblY16.Click += new System.EventHandler(this.Opossite_Click_HandPage);
             // 
@@ -2425,8 +2444,8 @@
             this.dgvParam.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.dgvParam.MultiSelect = false;
             this.dgvParam.Name = "dgvParam";
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvParam.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvParam.RowTemplate.Height = 35;
             this.dgvParam.Size = new System.Drawing.Size(812, 432);
             this.dgvParam.TabIndex = 1;
@@ -2470,8 +2489,8 @@
             this.dgvIO.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.dgvIO.MultiSelect = false;
             this.dgvIO.Name = "dgvIO";
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("宋体", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.dgvIO.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvIO.RowTemplate.Height = 35;
             this.dgvIO.Size = new System.Drawing.Size(821, 432);
             this.dgvIO.TabIndex = 2;
@@ -2541,7 +2560,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(415, 365);
+            this.button1.Location = new System.Drawing.Point(342, 365);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(123, 41);
@@ -2705,7 +2724,7 @@
             // button41
             // 
             this.button41.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button41.Location = new System.Drawing.Point(396, 435);
+            this.button41.Location = new System.Drawing.Point(342, 419);
             this.button41.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button41.Name = "button41";
             this.button41.Size = new System.Drawing.Size(123, 41);
@@ -2747,7 +2766,7 @@
             // 
             this.label54.AutoSize = true;
             this.label54.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label54.Location = new System.Drawing.Point(485, 445);
+            this.label54.Location = new System.Drawing.Point(485, 319);
             this.label54.Name = "label54";
             this.label54.Size = new System.Drawing.Size(120, 22);
             this.label54.TabIndex = 148;
@@ -2759,7 +2778,7 @@
             // 
             this.label44.AutoSize = true;
             this.label44.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label44.Location = new System.Drawing.Point(498, 455);
+            this.label44.Location = new System.Drawing.Point(485, 360);
             this.label44.Name = "label44";
             this.label44.Size = new System.Drawing.Size(120, 22);
             this.label44.TabIndex = 148;
@@ -3187,10 +3206,10 @@
             this.comboBox4.Items.AddRange(new object[] {
             "1号刀\t",
             "2号刀"});
-            this.comboBox4.Location = new System.Drawing.Point(514, 331);
+            this.comboBox4.Location = new System.Drawing.Point(507, 331);
             this.comboBox4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(86, 30);
+            this.comboBox4.Size = new System.Drawing.Size(116, 30);
             this.comboBox4.TabIndex = 1;
             this.comboBox4.Tag = "刀具选择";
             this.comboBox4.Text = "刀具选择";
@@ -3226,10 +3245,10 @@
             this.statusLabel,
             this.infoLbl,
             this.t2});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 699);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 682);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 11, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1385, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(1406, 30);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -3251,8 +3270,8 @@
             // 
             this.t2.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.t2.Name = "t2";
-            this.t2.Size = new System.Drawing.Size(107, 25);
-            this.t2.Text = "扫码信息：";
+            this.t2.Size = new System.Drawing.Size(21, 25);
+            this.t2.Text = "_";
             // 
             // UpdateTimer
             // 
@@ -3302,7 +3321,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1385, 729);
+            this.ClientSize = new System.Drawing.Size(1406, 712);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tc1);
             this.Controls.Add(this.menuStrip1);
@@ -3351,14 +3370,14 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem 文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 打开数据文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 帮助ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 使用说明ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于程序版本ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 关于意利欧机械有限公司ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 设备ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem connectMachine;
+        private System.Windows.Forms.ToolStripMenuItem fileMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openfileMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem useMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutVersionMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutEvokMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deviceMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem connectMachineMenuItem;
         private System.Windows.Forms.TabControl tc1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -3383,8 +3402,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn bin0;
         private System.Windows.Forms.DataGridViewTextBoxColumn value0;
         private System.Windows.Forms.ToolStripStatusLabel infoLbl;
-        private System.Windows.Forms.ToolStripMenuItem 查看日志文件ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 加载历史日志文件ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wathCurrentLogMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem watchHistoryLogMenuItem;
         private System.Windows.Forms.OpenFileDialog logOPF;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
@@ -3442,7 +3461,6 @@
         private System.Windows.Forms.Button lblY17;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Button lblY16;
-        private System.Windows.Forms.ToolStripMenuItem 成型样式编辑ToolStripMenuItem;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.TextBox textBox12;
@@ -3588,6 +3606,9 @@
         private System.Windows.Forms.Button button63;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.ToolStripMenuItem langShiftMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem menuItemChinese;
+        private System.Windows.Forms.ToolStripMenuItem menuItemEnglish;
     }
 }
 

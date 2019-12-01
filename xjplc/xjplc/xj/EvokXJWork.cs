@@ -86,6 +86,7 @@ namespace xjplc
         public PlcInfoSimple GWOutInPs;
         public PlcInfoSimple heightCountInOutPs;
         private List<DataTable> holeDataLst;
+        private List<DataTable> grooveDataLst;
         public PlcInfoSimple inspectPatternDoneInOutPs;
         public PlcInfoSimple inspectPatternModeInOutPs;
         public PlcInfoSimple inspectPatternPosInOutPs;
@@ -2938,6 +2939,10 @@ namespace xjplc
             string[] files = Directory.GetFiles(path, "*.nc");
             foreach (string str3 in files)
             {
+               // string str4 = Path.GetFileName(str3);
+               // str4=str4.Replace('_',' ');
+               // str4=str4.Replace('-', ' ').Trim();
+               // str4 = str4.Replace(" ", "");
                 if (str3.Contains(barcode))
                 {
                     return str3;
@@ -4091,7 +4096,7 @@ namespace xjplc
             }
             if (!RunFlag)
             {
-                showWorkInfo(Constant.IsWorking);
+                showWorkInfo(Constant.DeviceStop);
                 return false;
             }
             if (pauseOutPs.ShowValue == 0)
@@ -4373,7 +4378,11 @@ namespace xjplc
             }
             return 0;
         }
-
+        #region 水平打孔机
+        const int HoleMode = 0;
+        const int GrovveMode = 1;
+        const string  YunXi_GrovveMode = "T2";
+        const string  YunXi_HoleMode   = "T1";
         private bool readData(string fileName)
         {
             DataTable table = new DataTable();
@@ -4434,7 +4443,224 @@ namespace xjplc
             }
             return true;
         }
+        //水平打孔机 槽长 和起始位置
+        struct GrooveData
+        {
+           public  double StartPos;
+           public  double Len;
+        }
+        private bool readDataYunXi(string fileName)
+        {
+            //T2 拉槽开始
+            //T1 打孔开始
+           
+            DataTable table = new DataTable();
+            FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            StreamReader reader = new StreamReader(stream, System.Text.Encoding.Default);
+            string source = "";
+            Dictionary<string, List<double>> dictionaryHole = new Dictionary<string, List<double>>();
+            Dictionary<string, List<double>> dictionaryGroove = new Dictionary<string, List<double>>();
 
+            List<double> listHole = new List<double>();
+
+            List<double> listGrovve = new List<double>();
+
+
+            string str2 = "";
+
+       
+            int CutMode = -1;
+            while ((source = reader.ReadLine()) != null)
+            {
+                if (source.Contains("M6"))
+                {
+                    str2 = source.Trim();
+                    if (!dictionaryHole.Keys.Contains<string>(str2))
+                    {
+                        listHole = new List<double>();
+                        listGrovve = new List<double>();
+                        dictionaryHole.Add(str2, listHole);
+                        dictionaryGroove.Add(str2, listGrovve);
+                    }
+                }
+
+                CutMode = source.Contains(YunXi_GrovveMode) ? GrovveMode : CutMode;
+                CutMode = source.Contains(YunXi_HoleMode)   ? HoleMode : CutMode;
+                                           
+                if (source.Contains('X') && source.Contains('Y'))
+                {
+                    double result = 0.0;
+
+                    string[] strArray2 = source.Split(' ');
+
+                    string data = strArray2[2].Replace('Y',' ').Trim(); 
+
+                    if (CutMode==HoleMode && (strArray2.Length == 3) && double.TryParse(data, out result))
+                    {              
+                        if (!dictionaryHole[str2].Contains(result))
+                        {
+                            dictionaryHole[str2].Add(result);
+                        }
+                    }
+                    else
+                    if (CutMode == GrovveMode && (strArray2.Length == 4) && double.TryParse(data, out result))
+                    {
+
+                        if (!dictionaryGroove[str2].Contains(result))
+                        {
+                            dictionaryGroove[str2].Add(result);
+                        }                             
+                    }
+
+                }
+            }
+            //打孔数据
+            foreach (string str3 in dictionaryHole.Keys.ToList<string>())
+            {
+                if (dictionaryHole[str3].Count == 0)
+                {
+                    dictionaryHole.Remove(str3);
+                }
+                else
+                {
+                    dictionaryHole[str3].Sort();
+                    dictionaryHole[str3].Reverse();
+                    string[] valueCol = new string[] { "位置", "槽长", "木屑孔" };
+                    DataTable item = ConstantMethod.getDataTableByString(valueCol);
+                    item.TableName = str3;
+                    for (int i = 0; i < dictionaryHole[str3].Count; i++)
+                    {
+                        DataRow row = item.NewRow();
+                        row[0] = dictionaryHole[str3][i];
+                        row[1] = "0";
+                        row[2] = "0";
+                        item.Rows.Add(row);
+                    }
+                    HoleDataLst.Add(item);
+                }
+            }
+
+            //需要保存起始位置和槽长
+            Dictionary<string, List<GrooveData> > GrooveListDic = new Dictionary<string, List<GrooveData>>();
+
+            //处理拉槽数据 这里需要保存数据
+            foreach (string str3 in dictionaryGroove.Keys.ToList<string>())
+            {
+                if (dictionaryGroove[str3].Count % 2 == 0)
+                {
+                    List<double> GrooveDataLst = new List<double>();
+                    List<GrooveData> GrooveList = new List<GrooveData>();
+                    GrooveListDic.Add(str3, GrooveList);
+                    for (int i = 0; i < dictionaryGroove[str3].Count; i += 2)
+                    {
+                        if ((i + 1) < dictionaryGroove[str3].Count)
+                        {
+                            //数据大于0 有效  小余0 就清空数据
+                            double datag = 0;
+                            if ((datag = (dictionaryGroove[str3][i + 1] - dictionaryGroove[str3][i])) != 0)
+                            {
+                                GrooveData gd = new GrooveData();
+
+                                gd.Len = Math.Abs(datag);
+                                gd.StartPos = dictionaryGroove[str3][i + 1] > dictionaryGroove[str3][i] ?dictionaryGroove[str3][i]: dictionaryGroove[str3][i + 1];
+                                GrooveDataLst.Add(Math.Abs(datag));
+
+                                if (GrooveListDic[str3].Count==0|| gd.StartPos > GrooveListDic[str3].Last().StartPos)
+                                {
+                                    GrooveListDic[str3].Add(gd);
+                                }
+                                else
+                                {
+
+                                    //排序
+                                    if (gd.StartPos < GrooveListDic[str3].First().StartPos)
+                                    {
+                                        GrooveListDic[str3].Insert(0, gd);
+
+                                    }
+                                     else                             
+                                    for (int j = 0; j < GrooveListDic[str3].Count-1; j++)
+                                    {
+
+                                        if (GrooveListDic[str3][j].StartPos <= gd.StartPos && GrooveListDic[str3][j + 1].StartPos >= gd.StartPos)
+
+                                        { GrooveListDic[str3].Insert(j, gd); break; }
+                                    }                                    
+                                }
+                                                                                         
+                            }
+                            else
+                                GrooveDataLst.Clear();
+                        }
+                    }
+                    dictionaryGroove[str3].Clear();
+                    
+                    if(GrooveDataLst.Count>0)
+                    dictionaryGroove[str3] = GrooveDataLst;
+
+                  }
+            }
+           
+
+            //拉槽数据      
+            foreach (string str3 in dictionaryGroove.Keys.ToList<string>())
+            {
+                if (dictionaryGroove[str3].Count == 0)
+                {
+                    dictionaryGroove.Remove(str3);
+                }
+                else
+                {
+                    dictionaryGroove[str3].Sort();
+
+                    DataTable dt = ConstantMethod.getDatatByTableName(HoleDataLst,str3);
+
+                    // 如果表格不存在
+                    if (dt == null)
+                    {
+                        string[] valueCol = new string[] { "位置", "槽长", "木屑孔" };
+
+                        DataTable item = ConstantMethod.getDataTableByString(valueCol);
+
+                        item.TableName = str3;
+
+                        for (int i = 0; i < GrooveListDic[str3].Count; i++)
+                        {
+                            DataRow row = dt.NewRow();
+                            row[0] = GrooveListDic[str3][i].StartPos;
+                            row[1] = GrooveListDic[str3][i].Len;
+                            row[2] = "0";
+                            dt.Rows.Add(row);
+                        }
+
+                        HoleDataLst.Add(item);
+                    }
+                    else
+                    {
+                        // 如果表格存在
+                        for (int i = GrooveListDic[str3].Count-1; i >=0; i--)
+                        {
+                           // if (i < dt.Rows.Count)
+                           // {
+                               // dt.Rows[i][1] = dictionaryGroove[str3][i];
+                           // }
+                           // else
+                           // {
+                                DataRow row = dt.NewRow();
+                                row[0] = GrooveListDic[str3][i].StartPos;
+                                row[1] = GrooveListDic[str3][i].Len;
+                                row[2] = "0";
+                                dt.Rows.InsertAt(row,0);
+                           // }
+                        }                                                                      
+                    }
+                }
+            }
+        
+            return true;
+        }
+        
+        #endregion
         public bool reset()
         {
             if (!DeviceStatus)
@@ -4529,23 +4755,46 @@ namespace xjplc
                 LogManager.WriteProgramLogProdData(logs);
             }
         }
-
+        void DataClear()
+        {
+            if (HoleDataLst == null)
+            {
+                HoleDataLst = new List<DataTable>();
+            }
+            if (GrooveDataLst == null)
+            {
+                GrooveDataLst = new List<DataTable>();
+            }
+            HoleDataLst.Clear();
+            GrooveDataLst.Clear();
+        }
         public void ScanCode(string barcode)
         {
+
+            if(IsRuninng)
+            StopRunning();
+
             string path = FindBarCodeFile(barcode);
+
+
             if (File.Exists(path))
             {
-                if (HoleDataLst == null)
-                {
-                    HoleDataLst = new List<DataTable>();
-                }
-                HoleDataLst.Clear();
-                if (!readData(path))
+
+                DataClear();
+                //云溪软件扫码 +  隐形链接件技术
+                if (!readDataYunXi(path))
                 {
                     MessageBox.Show(Constant.dataConvertError);
                 }
+
                 IsRuninng = true;
+
                 enterRunning();
+
+            }
+            else
+            {
+                MessageBox.Show("读取数据失败！");
             }
             StopRunning();
         }
@@ -5660,7 +5909,7 @@ namespace xjplc
             tCheckPrint.Enabled = false;
         }
 
-        public void StopRunning()
+        public void StopRunning() 
         {
             IsRuninng = false;
             if (updateData !=null)
@@ -5864,7 +6113,7 @@ namespace xjplc
                 errorList = value;
             }
         }
-
+        #region  水平打孔机
         public List<DataTable> HoleDataLst
         {
             get { return holeDataLst; }
@@ -5875,6 +6124,16 @@ namespace xjplc
             }
         }
 
+        public List<DataTable> GrooveDataLst
+        {
+            get { return grooveDataLst; }
+
+            set
+            {
+                grooveDataLst = value;
+            }
+        }
+        #endregion
         public bool IsInNoSafe
         {
             get { return ((emgStopInPs.ShowValue == Constant.M_ON) || (ErrorList.Count > 0)); }

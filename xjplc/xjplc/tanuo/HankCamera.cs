@@ -6,14 +6,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 using static xjplc.HankVisionSDK;
 using static xjplc.HDVPLAYSDK;
 
 namespace xjplc.tanuo
 {
 
-    
+
     public class HankCamera
     {
 
@@ -41,27 +41,30 @@ namespace xjplc.tanuo
             this.deviceInfo = ser;
         }
 
-       
+
         public HankCamera()
         {
 
         }
 
         #region //打开摄像头
-
+        public bool IsOnLine()
+        {
+            return Status == 2;
+        }
         public bool OpenDevice(ServerInfo ser)
         {
 
 
             if (!HankVisionSDK.IPCNET_Init())
             {
-               
+
                 return false;
             }
             //登录
-            g_lUserID = HankVisionSDK.IPCNET_Login(ser.server_Ip, uint.Parse(ser.server_Port),ser.userName, ser.userPwd);
+            g_lUserID = HankVisionSDK.IPCNET_Login(ser.server_Ip, uint.Parse(ser.server_Port), ser.userName, ser.userPwd);
             //视频浏览
-            if (g_lUserID <0) return false;
+            if (g_lUserID < 0) return false;
 
 
             //开始预览
@@ -97,7 +100,7 @@ namespace xjplc.tanuo
 
             IPCNET_SetNetExceptionCallBack(cbne, puser);
 
-            Status = 1;
+            Status = 2;
 
             return true;
         }
@@ -132,7 +135,7 @@ namespace xjplc.tanuo
                 }
                 if (!HDVPLAY_CloseStream(m_lPlayHandle))
                 {
-                   // TRACE("HDVPLAY_CloseStream Faild!\n");
+                    // TRACE("HDVPLAY_CloseStream Faild!\n");
                 }
                 m_lPlayHandle = -1;
             }
@@ -152,32 +155,32 @@ namespace xjplc.tanuo
 
         FileStream fs;
 
-        bool RecordCmd=false;
+        bool RecordCmd = false;
 
         string recordFileName;
         public void Record()
         {
-            
 
-                if (RecordCmd)
-                {
-                    RecordCmd = false;
-                }
-                else
-                {
 
-                    RecordCmd = true;
-                    if (string.IsNullOrWhiteSpace(recordFileName))
-                    {
-                        string 
-                        fileName =
-                            Directory.GetCurrentDirectory() + "\\" +
-                        DateTime.Now.ToString("yyyyMMddhhmmss") + ".avi";
-                        fs = new FileStream(fileName, FileMode.Create);
-                    }
-               
+            if (RecordCmd)
+            {
+                RecordCmd = false;
+            }
+            else
+            {
+
+                RecordCmd = true;
+                if (string.IsNullOrWhiteSpace(recordFileName))
+                {
+                    string
+                    fileName =
+                        Directory.GetCurrentDirectory() + "\\" +
+                    DateTime.Now.ToString("yyyyMMddhhmmss") + ".avi";
+                    fs = new FileStream(fileName, FileMode.Create);
                 }
-            
+
+            }
+
         }
 
         #endregion
@@ -185,23 +188,196 @@ namespace xjplc.tanuo
         //拍照
 
         //复位
+
+        #region 焦距放大
+        int adjustId = 0;
+        bool IsAdjusitng;
+        public void StartAdjust(int id)
+        {
+            if (g_lUserID > 0)
+            {
+                switch (id)
+                {
+                    case 1:
+                        {
+
+                            if (adjustId != id)
+                            {
+                                if (adjustId > 0) StopAdjust();
+                                Focus_Far_Start();
+                                
+                                   
+                                
+                            }
+                            adjustId = id;
+                            break;
+                        }
+                    case 2:
+                        {
+                            if (adjustId != id)
+                            {
+                                if (adjustId > 0) StopAdjust();
+                                Focus_Near_Start();
+                            }
+                            adjustId = id;
+                            break;
+                        }
+                    case 3:
+                        {
+                            if (adjustId != id)
+                            {
+                                if (adjustId > 0) StopAdjust();
+                                Zoom_Out_Start();
+                            }
+                            adjustId = id;
+                            break;
+                        }
+                    case 4:
+                        {
+                            if (adjustId != id)
+                            {
+                                if (adjustId > 0) StopAdjust();
+                                Zoom_In_Start();
+                            }
+                            adjustId = id;
+                            break;
+                        }
+                    default:
+                        {
+                            StopAdjust();
+                            break;
+                        }
+
+
+
+                }
+            }
+        }
+        bool StartPtzControl()
+        {
+            return HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.FOCUS_FAR, 6, 6, false);
+        }
+        bool StopPtzControl()
+        {
+            return HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.FOCUS_FAR, 6, 6, true);
+        }
+        public void Focus_Far_Start()
+        {
+            if (Status == 2)
+            {
+                if (IsAdjusitng) return;
+                IsAdjusitng = true;
+                if (!StartPtzControl())
+                {
+                    MessageBox.Show("ERROR");
+                }
+            }
+        }
+        public void Focus_Far_Stop()
+        {
+           
+            StopPtzControl();
+            
+        }
+
+        public void Focus_Near_Start()
+        {
+            if (Status == 2)
+            {
+                if (IsAdjusitng) return;
+                IsAdjusitng = true;
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.FOCUS_NEAR, 6, 6, false);
+            }
+       }
+        public void Focus_Near_Stop()
+        {
+           
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.FOCUS_NEAR, 6, 6, true);
+            
+        }
+
+        public  void Zoom_Out_Start()
+        {
+            if (Status == 2)
+            {
+                if (IsAdjusitng) return;
+                IsAdjusitng = true;
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_WIDE, 6, 6, false);
+            }
+        }
+        public void Zoom_Out_Stop()
+        {
+            
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_WIDE, 6, 6,true);
+            
+        }
+
+        public void Zoom_In_Start()
+        {
+            if (Status == 2)
+            {
+                if (IsAdjusitng) return;
+                IsAdjusitng = true;
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_TELE, 6, 6, false);
+            }
+        }
+        public void Zoom_In_Stop()
+        {
+           
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_TELE, 6, 6, true);
+            
+        }
+        public void StopAdjust()
+        {
+            if (!IsAdjusitng) return;
+
+            IsAdjusitng = false;
+            switch (adjustId)
+            {
+                case 1:
+                    {
+
+                        Focus_Far_Stop();
+                        adjustId = 0;
+                        break;
+                    }
+                case 2:
+                    {
+                        Focus_Near_Stop();
+                        adjustId = 0;
+                        break;
+                    }
+                case 3:
+                    {
+                        Zoom_Out_Stop();
+                        adjustId = 0;
+                        break;
+                    }
+                case 4:
+                    {
+                        Zoom_In_Stop();
+                        adjustId = 0;
+                        break;
+                    }
+                default:
+                    {
+
+                        adjustId = 0;
+                        break;
+                    }
+            }
+        }
+
+        #endregion
         //焦距放大
         //看门狗
 
         #region 功能函数
+
         HankVisionSDK.CBRealData RealData = null;
+
         CBNetException cbne;
-        void PreviewShow()
-        {
-
-          
-
-
-
-
-        }
-
-
+             
 
         void RealData0(
             Int32 lRealHandle,
@@ -281,6 +457,9 @@ namespace xjplc.tanuo
 
         #endregion
 
+
+        #region 添加字符回调函数 //在hdvplay中
+        #endregion
 
     }
 }

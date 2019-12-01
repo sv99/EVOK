@@ -326,7 +326,7 @@
             // 
             // rtbResult
             // 
-            this.rtbResult.Location = new System.Drawing.Point(171, 401);
+            this.rtbResult.Location = new System.Drawing.Point(172, 400);
             this.rtbResult.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.rtbResult.Name = "rtbResult";
             this.rtbResult.ReadOnly = true;
@@ -362,7 +362,7 @@
             "12",
             "13",
             "14"});
-            this.comboBox2.Location = new System.Drawing.Point(333, 115);
+            this.comboBox2.Location = new System.Drawing.Point(465, 115);
             this.comboBox2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(104, 26);
@@ -394,7 +394,7 @@
             this.listBox1.Font = new System.Drawing.Font("宋体", 8.898876F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(35, 197);
+            this.listBox1.Location = new System.Drawing.Point(35, 196);
             this.listBox1.Margin = new System.Windows.Forms.Padding(1);
             this.listBox1.Name = "listBox1";
             this.listBox1.ScrollAlwaysVisible = true;
@@ -406,7 +406,7 @@
             // button11
             // 
             this.button11.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button11.Location = new System.Drawing.Point(762, 109);
+            this.button11.Location = new System.Drawing.Point(904, 104);
             this.button11.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(123, 41);
@@ -419,21 +419,20 @@
             // stopBtn
             // 
             this.stopBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.stopBtn.Location = new System.Drawing.Point(903, 109);
+            this.stopBtn.Location = new System.Drawing.Point(322, 104);
             this.stopBtn.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.stopBtn.Name = "stopBtn";
             this.stopBtn.Size = new System.Drawing.Size(123, 41);
             this.stopBtn.TabIndex = 111;
-            this.stopBtn.Tag = "停止";
-            this.stopBtn.Text = "停止";
+            this.stopBtn.Tag = "结疤测量";
+            this.stopBtn.Text = "结疤测量";
             this.stopBtn.UseVisualStyleBackColor = true;
-            this.stopBtn.Visible = false;
-            this.stopBtn.Click += new System.EventHandler(this.stopBtn_Click);
+            this.stopBtn.Click += new System.EventHandler(this.Off2On_Click);
             // 
             // button5
             // 
             this.button5.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button5.Location = new System.Drawing.Point(614, 107);
+            this.button5.Location = new System.Drawing.Point(762, 105);
             this.button5.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(123, 41);
@@ -447,7 +446,7 @@
             // 
             this.printcb.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.printcb.FormattingEnabled = true;
-            this.printcb.Location = new System.Drawing.Point(465, 115);
+            this.printcb.Location = new System.Drawing.Point(613, 115);
             this.printcb.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.printcb.Name = "printcb";
             this.printcb.Size = new System.Drawing.Size(124, 30);
@@ -456,7 +455,7 @@
             // 
             // rtbWork
             // 
-            this.rtbWork.Location = new System.Drawing.Point(1034, 60);
+            this.rtbWork.Location = new System.Drawing.Point(1040, 58);
             this.rtbWork.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.rtbWork.Name = "rtbWork";
             this.rtbWork.ReadOnly = true;
@@ -480,7 +479,7 @@
             // qClr
             // 
             this.qClr.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.qClr.Location = new System.Drawing.Point(30, 104);
+            this.qClr.Location = new System.Drawing.Point(30, 109);
             this.qClr.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.qClr.Name = "qClr";
             this.qClr.Size = new System.Drawing.Size(123, 41);
@@ -665,7 +664,7 @@
             // 
             this.UserData.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.UserData.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.UserData.Location = new System.Drawing.Point(173, 196);
+            this.UserData.Location = new System.Drawing.Point(172, 196);
             this.UserData.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.UserData.Name = "UserData";
             this.UserData.RowTemplate.Height = 23;
@@ -689,7 +688,7 @@
             // autoSLBtn
             // 
             this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(563, 151);
+            this.autoSLBtn.Location = new System.Drawing.Point(902, 158);
             this.autoSLBtn.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.autoSLBtn.Name = "autoSLBtn";
             this.autoSLBtn.Size = new System.Drawing.Size(123, 41);
@@ -703,7 +702,7 @@
             // resetBtn
             // 
             this.resetBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.resetBtn.Location = new System.Drawing.Point(762, 60);
+            this.resetBtn.Location = new System.Drawing.Point(762, 59);
             this.resetBtn.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.resetBtn.Name = "resetBtn";
             this.resetBtn.Size = new System.Drawing.Size(123, 41);

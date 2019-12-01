@@ -1300,6 +1300,51 @@ namespace evokNew0055
         {
             evokWork.bitOnClick(((Control)sender).Tag.ToString(), Constant.Write,Constant.AutoPage );
         }
+
+        private void 中文ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            MultiLanguage.setLangId(Constant.idChinese, evokWork.ParamFile);
+
+            InitLang();
+
+        }
+
+        public void InitLang()
+        {
+            //语言设置
+            //设置提醒字符串
+            Constant.InitStr(this);
+
+            /***
+            evokWork.ShiftDgvParamLang(dgvParam, MultiLanguage.getLangId());
+            evokWork.updateColName(dgvParam);
+            evokWork.updateColName(dgvIO);
+            //一些控件的库需要更换
+            string[] s = Constant.cutMode.Split('/');
+            comboBox1.Items.Clear();
+            comboBox1.Items.AddRange(s);
+            comboBox1.SelectedIndex = evokWork.CutSelMode;
+            s = Constant.printMode.Split('/');
+            printcb.Items.Clear();
+            printcb.Items.AddRange(s);
+            printcb.SelectedIndex = evokWork.PrintBarCodeMode;
+            ****/
+
+        }
+
+        private void 英文ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MultiLanguage.setLangId(Constant.idEnglish, evokWork.ParamFile);
+
+            InitLang();
+
+        }
+
+        private void 成型样式编辑ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
     #endregion
 }

@@ -406,6 +406,16 @@ namespace xjplc
 
 
         }
+
+        public static DataTable getDatatByTableName(List<DataTable> dtL, string tName)
+        {
+            foreach (DataTable dt in dtL)
+            {
+                if (dt.TableName.Equals(tName)) return dt;
+            }
+
+            return null;
+        }
         public static DataTable getDataTableByString(string[] valueCol)
         {
          
