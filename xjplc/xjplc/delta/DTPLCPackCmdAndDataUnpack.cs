@@ -68,7 +68,7 @@ namespace xjplc
 
       public int ReceivedDDataCount = 0;
 
-        public int[] UnPackCmdReadDMDataIn(DataTable datform,byte[] m_buffer,List<DTPlcInfo> dplcInfoLst, List<List<DTPlcInfo>> mplcInfoLst)
+      public int[] UnPackCmdReadDMDataIn(DataTable datform,byte[] m_buffer,List<DTPlcInfo> dplcInfoLst, List<List<DTPlcInfo>> mplcInfoLst)
       {
 
             List<int> UpDateRow = new List<int>();
@@ -124,7 +124,9 @@ namespace xjplc
             if (dCount>0)
             for (int i = 0; i < dCount; i++)
             {
-                    if (dplcInfoLst[i].IntArea < (Constant.M_ID))
+                  if(dplcInfoLst[i].Row>= datform.Rows.Count) continue;
+
+                   if (dplcInfoLst[i].IntArea < (Constant.M_ID))
                     {
                         if ((i * 2) < dArea_buffer.Count() && (i * 2 + 1) < dArea_buffer.Count())
                         {                       
@@ -155,13 +157,15 @@ namespace xjplc
                 int mArea_Buffer_Id_Old = 0;
                 for (int i = 0; i < mCount; i++)
                 {
+                  
                     //这里解释下为什么要这样，
                     mArea_Buffer_Id_Old = mArea_Buffer_Id;
                     mArea_Buffer_Id = 0;
                     if (i< mplcInfoLst.Count)
                     for (int m = 0; m < mplcInfoLst[i].Count; m++)
                     {
-                        
+                        if (mplcInfoLst[i][m].Row >= datform.Rows.Count) continue;
+
                             mArea_Buffer_Id = mArea_Buffer_Id_Old+ m / 8;
                         if (mArea_Buffer_Id < mArea_buffer.Count())
                         {
@@ -247,7 +251,8 @@ namespace xjplc
                            
                           mpLst[m].ByteValue[0] = mArea_buffer[s];
                           mpLst[m].Xuhao = m % 8;   // 8个一组 进行解析                                                  
-                      
+
+                           if (mpLst[m].Row >= datform.Rows.Count) continue;
                             //更新表格数据 不相等的 就更新下
                             if (!datform.Rows[mpLst[m].Row]["value"].ToString().Equals(mpLst[m].PlcValue.ToString())
                                     && !mpLst[m].IsInEdit)
@@ -321,6 +326,9 @@ namespace xjplc
             if (dCount > 0)
                 for (int i = 0; i < dCount; i++)
                 {
+
+                    if (dplcInfoLst[i].Row >= datform.Rows.Count) continue;
+
                     if (dplcInfoLst[i].IntArea < (Constant.M_ID))
                     {
                         if (
@@ -340,18 +348,22 @@ namespace xjplc
                                 && !dplcInfoLst[i].IsInEdit)
                             {
                                 if (datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].RelAddr.ToString())
-                                    && datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].StrArea)
+                                    && datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].StrArea)                                  
                                     )
                                 {
                                     string s = dplcInfoLst[i].PlcValue.ToString();
+
                                     datform.Rows[dplcInfoLst[i].Row]["value"] = s;
 
                                     double valueDouble;
+
                                     if (double.TryParse(s, out valueDouble))
                                     {
                                         valueDouble = valueDouble / Constant.dataMultiple;
+
                                         datform.Rows[dplcInfoLst[i].Row]["param6"] = valueDouble.ToString();
                                     }
+
                                     UpDateRow.Add(dplcInfoLst[i].Row);
 
                                 }

@@ -1252,7 +1252,7 @@ namespace xjplc
         private void ShowMeasureResult(List<int> resultOpt, List<SingleSize> prodLst, RichTextBox rt1)
         {
             List<SingleSize> resultSingleSize = new List<SingleSize>();
-            resultOpt.Sort();
+            //resultOpt.Sort();
             for (int i = 0; i < resultOpt.Count; i++)
             {
                 for (int k = 0; k < prodLst.Count; k++)
@@ -1999,7 +1999,8 @@ namespace xjplc
                 }
                 
             }
-            catch { }
+            catch
+            { }
         }
 
         public void ShowErrorRow()
@@ -2008,7 +2009,7 @@ namespace xjplc
             valueAbleRow.Clear();
             //检查datagridview数据是否违法 得出错误列
             errorId = CheckDataGridViewData(OptRealLen, DtData);
-
+            SetUserdataNosort();
             if (UserDataView != null)
             {
                 for (int i = 0; i < UserDataView.Rows.Count; i++)
@@ -2070,11 +2071,7 @@ namespace xjplc
                 for (int i = errorId.Count - 1; i >= 0; i--)
                 {
                     UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
-
                 }
-
-
-
             }
 
         }
@@ -2284,11 +2281,13 @@ namespace xjplc
                     }
                     else
                     {
+
                         foreach (DataRow dr in DtData.Rows)
                         {
                             SimiM.setMaterial(dr[6].ToString());
                             break;
                         }
+
                         int.TryParse(SimiM.ParamLst[2], out id);
                     }
 
@@ -2344,6 +2343,7 @@ namespace xjplc
             IsLoadData = true;
 
             CSVop.DataClear();
+
             if (dtData != null)
                 dtData.Clear();
             List<string> tableNameLst = new List<string>();
@@ -2607,6 +2607,7 @@ namespace xjplc
             else DtLst = new List<DataTable>();
 
             LogManager.WriteProgramLog(Constant.LoadFileSt + filename);
+
             while (IsSaving)
             {
                 Application.DoEvents();
@@ -2639,7 +2640,7 @@ namespace xjplc
                     if (!tableNameLst.Contains(dr[3]))
                     {
 
-                        dtResult = ConstantMethod.getDataTableByString(Constant.strformatZh);
+                        dtResult = ConstantMethod.getDataTableByString(Constant.strformatSimi);
                         DtLst.Add(dtResult);
                         dtResult.TableName = dr[3].ToString();
                         tableNameLst.Add(dtResult.TableName);
@@ -2652,9 +2653,9 @@ namespace xjplc
 
                     DataRow drt = dtResult.NewRow();
                     
-                    drt[Constant.strformatZh[1]] = "1";
-                    drt[Constant.strformatZh[2]] = "0";
-                    drt[Constant.strformatZh[3]] = dr[2];
+                    drt[Constant.strformatSimi[1]] = "1";
+                    drt[Constant.strformatSimi[2]] = "0";
+                    drt[Constant.strformatSimi[3]] = dr[2];
 
                     //角度计算
                     //L|90_R\44.9 
@@ -2662,15 +2663,15 @@ namespace xjplc
 
                     if (angleStr.Count() <3) continue;
                      
-                    drt[Constant.strformatZh[4]] = getAngleBystr(angleStr[0]);
-                    drt[Constant.strformatZh[5]] = getAngleBystr(angleStr[1]);
-                    drt[Constant.strformatZh[6]] = dr[3];
-                    drt[Constant.strformatZh[7]] = dr[0].ToString();
+                    drt[Constant.strformatSimi[4]] = getAngleBystr(angleStr[0]);
+                    drt[Constant.strformatSimi[5]] = getAngleBystr(angleStr[1]);
+                    drt[Constant.strformatSimi[6]] = dr[3];
+                    drt[Constant.strformatSimi[7]] = dr[0].ToString();
 
                     if (angleStr.Count()==4)
-                      drt[Constant.strformatZh[10]] = angleStr[2].ToString()+"_"+ angleStr[3].ToString();
+                      drt[Constant.strformatSimi[10]] = angleStr[2].ToString()+"_"+ angleStr[3].ToString();
                     if (angleStr.Count() == 3)
-                      drt[Constant.strformatZh[10]] = angleStr[2].ToString() ;
+                      drt[Constant.strformatSimi[10]] = angleStr[2].ToString() ;
 
 
                     //计算上下底边的数据 sized 如果是上边 那opposite就是下边 
@@ -2679,17 +2680,17 @@ namespace xjplc
                     string maxSize = "0";
                     double sized  = SimiM.calculateSize(
                         dr[0].ToString(), 
-                        drt[Constant.strformatZh[4]].ToString(), 
-                        drt[Constant.strformatZh[5]].ToString(),
+                        drt[Constant.strformatSimi[4]].ToString(), 
+                        drt[Constant.strformatSimi[5]].ToString(),
                         ref oppositeSize,
                         ref maxSize);
                         
 
                     if (sized > 0)
                     {
-                        drt[Constant.strformatZh[0]] = maxSize;//排版需要大尺寸
-                        drt[Constant.strformatZh[8]] = sized.ToString("0.00");
-                        drt[Constant.strformatZh[9]] = oppositeSize;
+                        drt[Constant.strformatSimi[0]] = maxSize;//排版需要大尺寸
+                        drt[Constant.strformatSimi[8]] = sized.ToString("0.00");
+                        drt[Constant.strformatSimi[9]] = oppositeSize;
 
                     }
                     else
@@ -2700,27 +2701,35 @@ namespace xjplc
 
                     for (int i = 4; i < dtTemp.Columns.Count; i++)
                     {
-                       drt[Constant.strformatZh[7 + i]] = dr[i];
+                       drt[Constant.strformatSimi[7 + i]] = dr[i];
                     }
 
                     DataTable dt =
-                    getDatatByTableName(DtLst, drt[Constant.strformatZh[6]].ToString());
+                    getDatatByTableName(DtLst, drt[Constant.strformatSimi[6]].ToString());
                     if(dt!=null) dt.Rows.Add(drt);
 
                     rowindex++;
 
                 }
             }
-            if (dtLst != null && DataShowCb != null && dtLst.Count > 0)
+            if (dtLst != null  && dtLst.Count > 0)
+            {
+                dtData = DtLst[0];
+                UserDataView.DataSource = dtData;
+            }
+            if (dtLst != null  && dtLst.Count > 0)
             {
 
                 dtData = DtLst[0];
-                DataShowCb.DataSource = tableNameLst;
-                DataShowCb.Visible = true;
-                DataShowCb.SelectedIndex = tableNameLst.IndexOf(dtData.TableName);
+                if (DataShowCb != null && tableNameLst.Count>0)
+                {
+                    DataShowCb.DataSource = tableNameLst;
+                    DataShowCb.Visible = true;
+                    DataShowCb.SelectedIndex = tableNameLst.IndexOf(dtData.TableName);
+                    listBoxColor(tableNameLst.IndexOf(dtData.TableName));
 
-                listBoxColor(tableNameLst.IndexOf(dtData.TableName));
-
+                }
+               
 
                 SplitSimiData();
 
@@ -2764,7 +2773,7 @@ namespace xjplc
         public void Simi_SelectData(string materialName,int id,bool IsFirst)
         {
 
-            if (Simi_dataLst.Count < 1) return;
+            if (Simi_dataLst ==null || Simi_dataLst.Count < 1) return;
             if (id < 1) return;
             id--;      
             foreach (var v in Simi_dataLst)
@@ -3001,7 +3010,7 @@ namespace xjplc
             Excelop.FileName = filename;
 
             UserDataView.DataSource = dtData;
-
+            SetUserdataNosort();
             ShowErrorRow();
 
             IsLoadData = false;
@@ -3010,7 +3019,17 @@ namespace xjplc
             return true;
         }
 
+        void SetUserdataNosort()
+        {
+            if(UserDataView !=null && UserDataView.Rows.Count>0 && UserDataView.ColumnCount>0)
+            for (int i = 0; i < UserDataView.Columns.Count; i++)
 
+            {
+
+                UserDataView.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+
+            }
+        }
        
         #region 金牌木业
         public bool LoadExcelDataWithJinPai(string filename)
@@ -3156,7 +3175,7 @@ namespace xjplc
             Excelop.FileName = filename;
 
             UserDataView.DataSource = dtData;
-
+         
             ShowErrorRow();
 
             IsLoadData = false;
@@ -3329,15 +3348,18 @@ namespace xjplc
 
             }
 
+            UserDataView.DataSource = dtData;
+
             Next:
             if (dtData.Rows.Count < 1)
             {
+                
                 return false;
             }
 
             CheckIfSplitData();
             Excelop.FileName = null;
-            UserDataView.DataSource = dtData;
+            //UserDataView.DataSource = dtData;
             ShowErrorRow();
             IsLoadData = false;
             LogManager.WriteProgramLog(Constant.LoadFileEd);
@@ -3565,7 +3587,55 @@ namespace xjplc
                
             return Constant.optSuccess;
         }
-       
+        public string OptMeasureNoOpt(RichTextBox rt1)
+        {
+
+            //干活之前 先清空数据 做好准备工作
+            if (rt1 != null) rt1.Clear();
+            singleSizeLst.Clear();
+            ProdInfoLst.Clear();
+
+            if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
+
+            //检查错误行
+            ShowErrorRow();
+            //获取数据
+            List<SingleSize> prodLst = new List<SingleSize>();
+
+            GetDataFromDt(DtData, prodLst);
+
+            //如果无数据 则返回-1
+            if (prodLst.Count < 1) //
+                return Constant.prodLstNoData;
+
+
+            //进行优化 变成单个模块
+            List<int> resultOpt = new List<int>();
+            List<int> dataOpt = new List<int>();
+
+            //进行完整的优化
+            if (prodLst.Count > 0)
+                foreach (SingleSize sss in prodLst)
+                {
+                    dataOpt.Add(sss.Cut);
+                }
+          
+            resultOpt = NoOptModuleMeasure(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+
+            if (resultOpt.Count > 0)
+            {
+                ShowMeasureResult(resultOpt, prodLst, rt1);
+            }
+            else return Constant.optResultNoData;
+
+            resultOpt = null;
+            prodLst = null;
+            dataOpt = null;
+
+
+            return Constant.optSuccess;
+        }
+
         /// <summary>
         /// 第一个参数为返回的结果 取了几个数据
         /// prodlst 为传入的尺寸数据
@@ -5047,8 +5117,10 @@ namespace xjplc
 
             //如果无数据 则返回-1
             if (prodLst.Count < 1) //
-            return Constant.prodLstNoData;
-
+            {
+                MessageBox.Show(Constant.optResultNoData);
+                return Constant.prodLstNoData;
+            }
 
             //进行优化 变成单个模块
             List<List<int>> resultOpt = new List<List<int>>();
@@ -5071,13 +5143,17 @@ namespace xjplc
             if (dataOpt.Count > 0)
                 resultOptCg = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
             if(resultOptCg.Count>0)
-                resultOpt.AddRange(resultOptCg);
+               resultOpt.AddRange(resultOptCg);
 
-            if (resultOptCg.Count>0)
+            if (resultOptCg.Count > 0)
             {
-                ShowNormalResult(resultOptCg, prodLst, rt1,Constant.optNormal);              
+               ShowNormalResult(resultOptCg, prodLst, rt1, Constant.optNormal);
             }
-            else return Constant.optResultNoData;
+            else
+            {
+                MessageBox.Show(Constant.optResultNoData);
+                return Constant.optResultNoData;
+            }
 
             resultOpt = null;
             prodLst = null;
@@ -5606,7 +5682,7 @@ namespace xjplc
                 int sum = 0;
                 for (int i = 0; i < dataTmp.Count; i++)
                 {
-                    sum += dataTmp[i];
+                    sum += (dataTmp[i]+dbc_tmp);
                     if (sum < (c - ltbc_tmp - dbc_tmp - safe_tmp))
                     {
                         dataRes.Add(dataTmp[i]);
@@ -5616,6 +5692,7 @@ namespace xjplc
                 }
                 if (dataRes.Count > 0)
                 {
+
                     dataResultM.Add(dataRes.ToList<int>());
                     //删除已经选中的数据
                     for (int j = 0; j < dataRes.Count; j++)
@@ -5626,9 +5703,9 @@ namespace xjplc
                     }
                 }
             }
-                    
+                                
                
-                if (dataResultM.Count > 0)
+             if (dataResultM.Count > 0)
                 {
                     if (dataResult.Count > 0)
                     {
@@ -5653,6 +5730,83 @@ namespace xjplc
             return dataResult.ToList();
 
         }
+        private List<int> NoOptModuleMeasure(List<int> data, int c, int dbc_tmp, int ltbc_tmp, int safe_tmp)
+        {
+            double index = 0;//取值是0~1 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 
+
+            List<List<int>> dataResult = new List<List<int>>();
+
+            List<List<int>> dataResultM = new List<List<int>>();
+
+            List<int> dataTmp = new List<int>();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i] < (c - safe_tmp - ltbc_tmp - dbc))
+                {
+                    int s = data[i];
+                    dataTmp.Add(s);
+                }
+            }
+
+            //while (dataTmp.Count > 0)
+            //{
+                List<int> dataRes = new List<int>();
+
+                int sum = 0;
+                for (int i = 0; i < dataTmp.Count; i++)
+                {
+                    sum += (dataTmp[i]+ dbc_tmp);
+                    if (sum < (c - ltbc_tmp - dbc_tmp - safe_tmp))
+                    {
+                        dataRes.Add(dataTmp[i]);
+                    }
+                    else
+                        break;
+                }
+                if (dataRes.Count > 0)
+                {
+
+                    dataResultM.Add(dataRes.ToList<int>());
+                    //删除已经选中的数据
+                    for (int j = 0; j < dataRes.Count; j++)
+                    {
+                        int FindSize = dataTmp.IndexOf(dataRes[j]);
+                        if (FindSize > -1)
+                            dataTmp.RemoveAt(FindSize);
+                    }
+                }
+           // }
+
+
+            if (dataResultM.Count > 0)
+            {
+                if (dataResult.Count > 0)
+                {
+                    if (dataResult.Count > dataResultM.Count)
+                    {
+                        dataResult = dataResultM.ToList();
+                    }
+                }
+                else
+                {
+                    dataResult = dataResultM.ToList();
+                }
+            }
+
+            dataResultM = null;
+            dataTmp = null;
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+
+            if (dataResult.Count > 0)
+            return dataResult.ToList()[0];
+            else
+            return null;
+
+        }
+
         private List<List<int>> OptModuleByDoorType(List<SingleSize> singleLst)
         {
             List<List<int>> dataResult = new List<List<int>>();
@@ -5742,9 +5896,65 @@ namespace xjplc
 
             return selectedData.ToArray();                        
                        
-        }        
-     
-        
+        }
+        //表格中 无数据
+        public bool CheckIsNoData(DataTable dt)
+        {
+            int intcounttocut = 0;
+
+            int intcountdone = 0;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!int.TryParse(dt.Rows[i][1].ToString(), out intcounttocut))
+                {
+                    continue;
+                }
+                //已切数量没有 默认为0
+                if (!int.TryParse(dt.Rows[i][2].ToString(), out intcountdone))
+                {
+                    continue;
+                    // errRow.Add(m);
+                }
+
+                if (intcountdone < intcounttocut) return false;
+
+            }
+
+            return true;
+        }
+        //没有数据了 在测长模式下 要提前预知表格里 有没有数据
+        public  bool CheckNextDataIsNoData(DataTable dt)
+        {
+            
+
+            List<SingleSize> dataL = new List<SingleSize>();
+
+            GetDataFromDt(DtData,dataL);
+
+            if ((SingleSizeLst.Count>0) &&(dataL.Count <= SingleSizeLst[0].Count)) return true;
+
+            /***
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (!int.TryParse(dt.Rows[i][1].ToString(), out intcounttocut))
+                {
+                    continue;
+                }
+                //已切数量没有 默认为0
+                if (!int.TryParse(dt.Rows[i][2].ToString(), out intcountdone))
+                {
+                    continue;
+                    // errRow.Add(m);
+                }
+
+                if (intcountdone < intcounttocut) return false;
+
+            }
+            **/
+            return false;
+        }
+
         //主要针对第一列数据进行检查TaT
         /// <summary>
         /// 第一列尺寸 第二列设定数量 第三列 已切数量

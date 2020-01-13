@@ -13,7 +13,7 @@ namespace evokNew0056
     public partial class WorkForm : Form
     {
         private static Queue<Control> allCtrls = new Queue<Control>();
-
+        
         List<string> errorList = new List<string>();
         int errorId = 0;
         private EvokDTTcpWork evokWork;
@@ -132,6 +132,7 @@ namespace evokNew0056
 
             //禁止排序
             UserData0.DataSource = evokWork.DtScHyShow;
+
             UserData1.DataSource = evokWork.DtScHyShow;
 
             for (int i = 0; i < evokWork.DtScHyShow.Columns.Count; i++)
@@ -214,6 +215,7 @@ namespace evokNew0056
             if (evokWork.DeviceId == Constant.msjDeivceId)
             {
                 InitMSJ();
+                InitLang();
             }
         }
 
@@ -388,7 +390,8 @@ namespace evokNew0056
 
         private void FileSave_Tick(object sender, EventArgs e)
         {
-            evokWork.SaveFile();
+            
+            evokWork?.SaveFile();
         }
         void upScHy(DataGridView dgv, int id)
         {
@@ -784,8 +787,12 @@ namespace evokNew0056
 
         private void tabPage5_Enter(object sender, EventArgs e)
         {
+
             groupBox5.Visible = false;
+
             groupBox6.Visible = true;
+
+            
         }
 
         public void setColor(DataGridView dgv, int row, int col)
@@ -923,6 +930,7 @@ namespace evokNew0056
                     {
 
                         List<string> str = new List<string>();
+                      
                         str.AddRange(Constant.scCutType);
 
                         cb5.Items.Clear();
@@ -960,14 +968,12 @@ namespace evokNew0056
                         break;
                     }
             }
-
-
-
         }
 
 
         private void UserData0_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+           
 
             if (!(e.RowIndex > -1 && e.ColumnIndex > -1)) return;
             UserData0.Rows[e.RowIndex].Selected = false;
@@ -992,8 +998,11 @@ namespace evokNew0056
             }
 
             showControlById(offset + id);
+
             groupBox5.Visible = true;
             groupBox6.Visible = false;
+
+           
 
         }
 
@@ -1143,7 +1152,7 @@ namespace evokNew0056
 
             }
 
-
+            InitLang();
 
 
 
@@ -1318,14 +1327,14 @@ namespace evokNew0056
 
         private void button59_Click(object sender, EventArgs e)
         {
-            if (button59.Text == "扫码关")
+            if (button59.Text == Constant.BarCode_Off)
             {
-                button59.Text = "扫码开";
+                button59.Text = Constant.BarCode_On;
                 button59.BackColor = Color.Green;
             }
             else
             {
-                button59.Text = "扫码关";
+                button59.Text = Constant.BarCode_Off;
                 button59.BackColor = Color.Gray;
             }
         }
@@ -1375,9 +1384,7 @@ namespace evokNew0056
         {
             evokWork.SetInEdit(((ComboBox)sender).Tag.ToString(), Constant.Read, evokWork.PsLstAuto);
         }
-
        
-
         private void comboBox1_SelectedValueChanged(object sender, EventArgs e)
         {
             int i=0;
@@ -1422,10 +1429,36 @@ namespace evokNew0056
             //语言设置
             //设置提醒字符串
             Constant.InitStr(this);
+                     
+            evokWork.ShiftDgvParamLang(dgvParam, MultiLanguage.getLangId(),Constant.ParamPage);
+            evokWork.ShiftDgvParamLang(dgvIO, MultiLanguage.getLangId(), Constant.IOPage);
 
-            /***
-            evokWork.ShiftDgvParamLang(dgvParam, MultiLanguage.getLangId());
             evokWork.updateColName(dgvParam);
+
+            evokWork.
+            shiftDtScHyShow(MultiLanguage.getLangId());
+            evokWork.updateColName(dgvIO);
+           string[] s = Constant.knifeLst.Split('/');
+
+            int selId = comboBox4.SelectedIndex;
+
+            comboBox4.Items.Clear();
+
+            comboBox4.Items.AddRange(s);
+
+            if (comboBox4.Items.Count > 0)
+            {
+                if (selId >= 0)
+                
+                    comboBox4.SelectedIndex = selId;
+            else
+                comboBox4.SelectedIndex = 0;
+
+                
+            }
+
+
+            /**
             evokWork.updateColName(dgvIO);
             //一些控件的库需要更换
             string[] s = Constant.cutMode.Split('/');
@@ -1451,6 +1484,24 @@ namespace evokNew0056
         private void 成型样式编辑ToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void tabPage1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox5_SelectedValueChanged(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void groupBox5_VisibleChanged(object sender, EventArgs e)
+        {
+            if (groupBox5.Visible)
+            {
+                InitLang();
+            }
         }
     }
     #endregion

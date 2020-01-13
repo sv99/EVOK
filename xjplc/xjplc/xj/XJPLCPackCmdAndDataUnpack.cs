@@ -94,46 +94,66 @@ namespace xjplc
             //分类读取 D区在前 按序号读取
 
             if (dCount>0)
-            for (int i = 0; i < dCount; i++)
             {
+                for (int i = 0; i < dCount; i++)
+                {
+                    if (dplcInfoLst[i].Row >= datform.Rows.Count) continue;
                     if (dplcInfoLst[i].IntArea < (Constant.M_ID))
                     {
                         if ((i * 2) < dArea_buffer.Count() && (i * 2 + 1) < dArea_buffer.Count())
-                        {                       
+                        {
                             dplcInfoLst[i].ByteValue[0] = dArea_buffer[i * 2];
                             dplcInfoLst[i].ByteValue[1] = dArea_buffer[i * 2 + 1];
+                        }
+                    }
+
+                }
+                for (int i = 0; i < dCount; i++)
+                {
+
+                    if (dplcInfoLst[i].Row >= datform.Rows.Count) continue;
+
+                    if (dplcInfoLst[i].IntArea < (Constant.M_ID))
+                    {
+                        if ((i * 2) < dArea_buffer.Count() && (i * 2 + 1) < dArea_buffer.Count())
+                        {
+                           // dplcInfoLst[i].ByteValue[0] = dArea_buffer[i * 2];
+                           // dplcInfoLst[i].ByteValue[1] = dArea_buffer[i * 2 + 1];
                             //更新监控表格数据
-                           
-                            if (!datform.Rows[dplcInfoLst[i].Row]["value"].ToString().Equals(dplcInfoLst[i].PlcValue.ToString()) 
+
+
+
+                            if (!datform.Rows[dplcInfoLst[i].Row]["value"].ToString().Equals(dplcInfoLst[i].PlcValue.ToString())
                                 && !dplcInfoLst[i].IsInEdit)
                             {
                                 if (datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].RelAddr.ToString())
                                     && datform.Rows[dplcInfoLst[i].Row]["addr"].ToString().Contains(dplcInfoLst[i].StrArea)
                                     )
-                                {                                
+                                {
                                     string s = dplcInfoLst[i].PlcValue.ToString();
                                     datform.Rows[dplcInfoLst[i].Row]["value"] = s;
 
                                     double ration = Constant.dataMultiple;
                                     if (!double.TryParse(datform.Rows[dplcInfoLst[i].Row][Constant.strParam7].ToString(), out ration))
                                     {
-                                         ration = Constant.dataMultiple;
+                                        ration = Constant.dataMultiple;
                                     }
-                                    
+
                                     double valueDouble;
                                     if (double.TryParse(s, out valueDouble))
                                     {
                                         valueDouble = valueDouble / ration;
                                         datform.Rows[dplcInfoLst[i].Row][Constant.strParam6] = valueDouble.ToString();
                                     }
-                                  
+
 
                                     UpDateRow.Add(dplcInfoLst[i].Row);
-                                                                       
+
                                 }
-                            }                         
-                        }                   
+                            }
+                        }
                     }
+                }
              }          
 
             if ((mCount > 0) && (mCount == mArea_buffer.Count()))
@@ -148,7 +168,9 @@ namespace xjplc
                     if (i< mplcInfoLst.Count)
                     for (int m = 0; m < mplcInfoLst[i].Count; m++)
                     {
-                        
+
+                        if (mplcInfoLst[i][m].Row >= datform.Rows.Count) continue;
+
                             mArea_Buffer_Id = mArea_Buffer_Id_Old+ m / 8;
                         if (mArea_Buffer_Id < mArea_buffer.Count())
                         {
@@ -251,14 +273,14 @@ namespace xjplc
             {
                 case "X":
                     {
-                        addr = ConstantMethod.GetXYAddr8To10(addr);
+                      //  addr = ConstantMethod.GetXYAddr8To10(addr);
                         addr = addr + Constant.X_addr;                     
                        
                         break;
                     }
                 case "Y":
                     {
-                        addr = ConstantMethod.GetXYAddr8To10(addr);
+                       // addr = ConstantMethod.GetXYAddr8To10(addr);
                         addr = addr + Constant.Y_addr;
                         break;
                     }

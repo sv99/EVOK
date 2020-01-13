@@ -106,13 +106,13 @@ namespace evokNew0075
         private void lcTxt_KeyPress0(object sender, KeyPressEventArgs e)
         {
             if (evokWork.AutoParamTxt_KeyPressWithRatio(sender, e))
-                resetBtn.Focus();
+                tc1.Focus();
         }
 
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (evokWork.AutoParamTxt_KeyPress(sender, e))
-                resetBtn.Focus();
+                tc1.Focus();
         }
 
         private void AutoTextBox_Enter(object sender, EventArgs e)

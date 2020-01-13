@@ -1,4 +1,5 @@
-﻿using System;
+﻿using evokNewXJ;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -23,6 +24,7 @@ namespace evokNew0080
             //ConstantMethod.AutoStart(true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            // Application.Run(new NewForm());
             Application.Run(new WorkForm());
         }
     }

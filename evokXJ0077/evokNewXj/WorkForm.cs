@@ -641,13 +641,18 @@ namespace evokNew0077
             }
             //
             if (evokWork.HoleDataLst != null && evokWork.HoleDataLst.Count > 0)
-            {       
-               
+            {
+                foreach (Label l in PrevlightLst)
+                {
+                    l.BackColor = Color.Gray;                  
+                }
                 foreach (DataTable dt in evokWork.HoleDataLst)
                 {
+
                     //当前有多少面
                     foreach (Label l in PrevlightLst)
                     {
+                                              
                         if (dt.TableName.Contains(l.Tag.ToString()))
                         {
                             l.BackColor = Color.Green;
@@ -692,8 +697,7 @@ namespace evokNew0077
                 textBox37.Clear();
                 label94.Text = s;
                 evokWork.ScanCode(s);
-
-              
+             
             }
         }
         #region 扫码

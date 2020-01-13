@@ -160,7 +160,6 @@ namespace xjplc
                     {
 
                         xtop.X = (int)(calcuXMargin(rightAngle) + p2.X +
-
                             Math.Abs(height / Math.Tan(rightAngle / 180 * Math.PI)) -
                             Math.Abs(height / Math.Tan(nextleftAngle / 180 * Math.PI)))
                             ;
@@ -360,9 +359,9 @@ namespace xjplc
             if (angle == 90 || angle == -90) return xmargin;
             return Math.Abs((int)(xmargin / Math.Sin(angle/180*Math.PI)));
         }
-        public void DrawLen(Bitmap bt,int id,int len)
+        public void DrawLen(Bitmap bt,int id,int len, ref Point[] pWl)
         {
-                    
+                             
             Graphics g = Graphics.FromImage(bt);
         
             //出现一个画笔  
@@ -370,6 +369,16 @@ namespace xjplc
      
             g.DrawRectangle(pen, OrigninP.X, OrigninP.Y+(height+ymargin)*id,len, height);
 
+
+            //尾部坐标 上方
+            //尾部坐标 下方
+            if (pWl != null && pWl.Count() == 2)
+            {
+                pWl[0].X = OrigninP.X + len;
+                pWl[0].Y = OrigninP.Y + (height + ymargin) * id;
+                pWl[1].X = OrigninP.X + len;
+                pWl[1].Y= OrigninP.Y + (height + ymargin) * id + height;
+            }
 
         }
         string  PackShowStr(int xuhao,ProdInfo prodinfo)
@@ -404,6 +413,7 @@ namespace xjplc
             str += ("  余料：" + wlDouble.ToString("0.00"));
             return str;
         }
+
         public void ProdDrawPloygon(ProdInfo prodinfo, ref Bitmap bt, int heightId, PictureBox p1)
         {
 
@@ -417,7 +427,108 @@ namespace xjplc
                 //p1.Height = bt.Height + 100;
             }
 
-            DrawLen(bt, heightId, (int)(prodinfo.Len * ration / Constant.dataMultiple));
+            //需要画尾料
+            Point[] pWl = new Point[2];
+
+            DrawLen(bt, heightId, (int)(prodinfo.Len * ration / Constant.dataMultiple), ref pWl);
+                                    
+            Point[] pArray = new Point[4];
+
+            Point[] pLine = new Point[2];
+
+            if (prodinfo.Cut.Count > 0)
+            {
+                xtop.X = xtop.X + calcuXMargin(prodinfo.leftAngle[0]);
+                xtop.Y = xtop.Y + heightId * height + ymargin * heightId;
+                pLine[0] = xtop;
+                pLine[1] = xtop;
+
+                pLine[1].Y += height;
+
+                DrawLine(bt, pLine);
+
+                //开始画图
+                for (int i = 0; i < prodinfo.Cut.Count; i++)
+                {
+                    double upSize = 0;
+                    double downSize = 0;
+                    if (!double.TryParse(prodinfo.Param5[i], out upSize))
+                    {
+                        MessageBox.Show(Constant.convertError + Constant.resultTip5 + heightId.ToString() +
+                            Constant.resultTip6 + Constant.resultTip5 + i.ToString() + Constant.resultTip7);
+                        return;
+                    }
+                    if (!double.TryParse(prodinfo.Param6[i], out downSize))
+                    {
+                        MessageBox.Show(Constant.convertError + Constant.resultTip5 + heightId.ToString() +
+                            Constant.resultTip6 + Constant.resultTip5 + i.ToString() + Constant.resultTip7);
+                        return;
+                    }
+
+                    upSize = upSize * (ration);
+                    downSize = downSize * (ration);
+
+                    if (i < (prodinfo.Cut.Count() - 1))
+                    {
+                        if (i != 0)
+                        pArray =
+                        pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], prodinfo.leftAngle[i + 1], prodinfo.rightAngle[i - 1], (int)upSize, (int)downSize);
+                        else
+                        pArray =
+                        pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], prodinfo.leftAngle[i + 1], 90, (int)upSize, (int)downSize);
+
+                    }
+                    else
+                    {
+                        if (i > 0)
+                        pArray =
+                        pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], 0, prodinfo.rightAngle[i - 1], (int)upSize, (int)downSize);
+                        else
+                        pArray =
+                        pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], 0, 0, (int)upSize, (int)downSize);
+
+                    }
+                    if (i != 0)
+                    DrawPolygon(bt, pArray, 1, "");
+                    else
+                    {
+                    DrawPolygon(bt, pArray, 1, PackShowStr(heightId, prodinfo));
+                    }
+                }
+
+                //尾料再换个颜色
+                List<Point> pwlLst = new List<Point>();
+                if (pArray.Count() == 4 && pWl.Count()==2)
+                {
+                    pwlLst.Add(pArray[1]);
+                    pwlLst.Add(pWl[0]);
+                    pwlLst.Add(pWl[1]);
+                    pwlLst.Add(pArray[2]);
+
+                    DrawPolygon(bt, pwlLst.ToArray(), 3, "");
+                }
+                
+
+                if (bt != null)
+                    p1.Image = bt;
+
+            }
+        }
+        public void ProdDrawPloygon(ProdInfo prodinfo, ref Bitmap bt, int heightId, PictureBox p1, int xuhao,int currentId)
+        {
+            int count = prodinfo.Cut.Count;
+            SetRation(prodinfo);
+            Point xtop = new Point(OrigninP.X, OrigninP.Y);
+
+            if (bt == null)
+            {
+                bt = new Bitmap(OrigninP.X + len + xmargin * (prodinfo.Cut.Count + 1) + 100 * xmargin + 100, 2 * OrigninP.Y + (count + 50) * (height + ymargin));
+                //p1.Height = bt.Height + 100;
+            }
+
+            Point[] pwl = new Point[2];
+
+            DrawLen(bt, heightId, (int)(prodinfo.Len * ration / Constant.dataMultiple), ref pwl);
 
 
             Point[] pArray = new Point[4];
@@ -476,16 +587,39 @@ namespace xjplc
                             pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], 0, 0, (int)upSize, (int)downSize);
 
                     }
-                    if (i != 0)
-                        DrawPolygon(bt, pArray, 1, "");
-                    else
+                    if (i < currentId)
                     {
-                        DrawPolygon(bt, pArray, 1, PackShowStr(heightId, prodinfo));
+                        if (i != 0)
+                            DrawPolygon(bt, pArray, 5, "");
+                        else
+                        {
+                            DrawPolygon(bt, pArray, 5, PackShowStr(xuhao, prodinfo));
+                        }
+                    }
+                    if (i == currentId)
+                    {
+                        if (i != 0)
+                            DrawPolygon(bt, pArray,6, "");
+                        else
+                        {
+                            DrawPolygon(bt, pArray, 6, PackShowStr(xuhao, prodinfo));
+                        }
+                    }
+
+                    if(i> currentId)
+                    {
+                      
+                        if (i != 0)
+                            DrawPolygon(bt, pArray, 4, "");
+                        else
+                        {
+                            DrawPolygon(bt, pArray, 4, PackShowStr(xuhao, prodinfo));
+                        }
                     }
                 }
 
                 if (bt != null)
-                    p1.Image = bt;
+                p1.Image = bt;
 
             }
         }
@@ -502,7 +636,8 @@ namespace xjplc
                 //p1.Height = bt.Height + 100;
             }
 
-            DrawLen(bt,heightId, (int)(prodinfo.Len*ration/Constant.dataMultiple));
+            Point[] pwl = new Point[2];
+            DrawLen(bt,heightId, (int)(prodinfo.Len*ration/Constant.dataMultiple),ref pwl);
 
 
             Point[] pArray = new Point[4];
@@ -656,6 +791,19 @@ namespace xjplc
                 case 2:
                     { g.FillPolygon(new SolidBrush(Color.Red), pLst); }
                     break;
+                case 3:
+                    { g.FillPolygon(new SolidBrush(Color.Gray), pLst); }
+                    break;
+                case 4: //没切
+                    { g.FillPolygon(new SolidBrush(Color.Gray), pLst); }
+                    break;
+                case 5: //已切
+                    { g.FillPolygon(new SolidBrush(Color.LightSeaGreen), pLst); }
+                    break;
+                case 6: //加工
+                    { g.FillPolygon(new SolidBrush(Color.LightYellow), pLst); }
+                    break;
+
             }
 
             if (!string.IsNullOrWhiteSpace(str))
@@ -686,5 +834,6 @@ namespace xjplc
         }
 
 
+        
     }
 }

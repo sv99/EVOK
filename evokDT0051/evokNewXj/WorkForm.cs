@@ -805,7 +805,6 @@ namespace evokNew0051
                 }
             }
             dgv.Rows[row].Cells[col].Style.BackColor = Color.Red;
-
         }
 
 

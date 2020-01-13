@@ -235,7 +235,30 @@ namespace xjplc
 
             }
         }
+        public  static TreeNode getRootNode(string dirname,int id)//递归，返回根结点
+        {
+            TreeNode node = new TreeNode(Path.GetFileName(dirname));
+            node.Tag = dirname;
+            string[] dirs = Directory.GetDirectories(dirname);
+            string[] files = Directory.GetFiles(dirname);
 
+            foreach (string dir in dirs)
+            {
+                node.Nodes.Add(getRootNode(dir,id));
+            }
+
+            foreach (string file in files)
+            {
+                
+               TreeNode fnode = new TreeNode(Path.GetFileName(file));
+               if(id==Constant.ShowPathName)
+               fnode.Tag = file;
+               node.Nodes.Add(fnode);
+                               
+            }
+
+            return node;
+        }
         //传入服务器IP 先确定当前电脑是否已经连入该字段的网络
         public static bool CheckServeIpExist(string serIp)
         {
@@ -440,6 +463,16 @@ namespace xjplc
             
             return ConstantMethod.getDataHighLowByte(j);
 
+        }
+
+        //datagridview 禁止排序
+        public static void NoSortDatagridView(ref DataGridView dataGridView1)
+        {
+            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+            {
+                dataGridView1.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
+                //this.dataGridView1.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            }
         }
 
         //根据规则转换表格 得到数据表格
@@ -762,7 +795,8 @@ namespace xjplc
             return count;
 
         }
-        //切换两个控件位置大小 PIC1为大 PIC 为小
+        //切换两个控件位置大小 PIC1为大 PIC 为小 
+        //适用于大小窗体
         public static void SwitchPic(Form f,ref PictureBox c1, ref PictureBox c2,int width0,int height0)
         {
             c1.Parent = null;
@@ -784,13 +818,12 @@ namespace xjplc
             c1.Top = 0;
             c1.Left = 0;
                   
-
-           
-
+                                           
             c1.Parent = c2;
            
 
         }
+              
         public static string GetParamPwd(int i)
         {
             string str = DateTime.Now.ToString("MMdd");

@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -87,7 +88,10 @@ namespace xjplc.tanuo
             {
                 cbne = new CBNetException(CBN);
             }
-
+            if (cbdf == null)
+            {
+                cbdf = new CBDrawFun(CBDrawFun);
+            }
 
             m_lRealDataID = IPCNET_StartRealData(
                 g_lUserID,
@@ -99,6 +103,8 @@ namespace xjplc.tanuo
 
 
             IPCNET_SetNetExceptionCallBack(cbne, puser);
+          
+            HDVPLAY_SetDrawFunCallBack(m_lPlayHandle, cbdf, puser);
 
             Status = 2;
 
@@ -377,7 +383,8 @@ namespace xjplc.tanuo
         HankVisionSDK.CBRealData RealData = null;
 
         CBNetException cbne;
-             
+
+        CBDrawFun      cbdf;    
 
         void RealData0(
             Int32 lRealHandle,
@@ -459,6 +466,27 @@ namespace xjplc.tanuo
 
 
         #region 添加字符回调函数 //在hdvplay中
+
+        void CBDrawFun(
+                       UInt32 lPlayHandle,
+                       IntPtr hdc,
+                       uint nWidth,
+                       uint nHeight,
+                       IntPtr pUserData
+                       )
+        {
+            Graphics gr = Graphics.FromHdc(hdc);
+            Font f = new Font("宋体",24);
+            Brush b = Brushes.Blue;
+            gr.DrawString("312312321",f, b,100, 100);
+
+        }
+
+        void AddString()
+        {
+            
+        }
+
         #endregion
 
     }

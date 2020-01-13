@@ -8,6 +8,7 @@ using System.IO;
 using imagepb;
 using simiDataOpt;
 using xjplc.simi;
+using evokNewXJ;
 
 namespace evokNew0080
 {
@@ -58,6 +59,8 @@ namespace evokNew0080
             printcb.Items.AddRange(s);
             printcb.SelectedIndex = evokWork.PrintBarCodeMode;
 
+
+
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -95,7 +98,7 @@ namespace evokNew0080
             evokWork.InitDgvParam(dgvParam);
             evokWork.InitDgvIO(dgvIO);
             evokWork.SetOptParamShowCombox(comboBox2);
-            evokWork.getOptSize().Simi_Split_Combox = comboBox1;
+           // evokWork.getOptSize().Simi_Split_Combox = comboBox1;
             errorList = evokWork.ErrorList;
             UpdateTimer.Enabled = true;
 
@@ -125,7 +128,7 @@ namespace evokNew0080
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (evokWork.AutoParamTxt_KeyPressWithRatio(sender, e))
-                resetBtn.Focus();
+                tc1.Focus();
         }
 
         private void AutoTextBox_Enter(object sender, EventArgs e)
@@ -282,8 +285,10 @@ namespace evokNew0080
             string datafile = "\\"+DateTime.Now.ToString("yyyyMMdd");
 
             string RootPath = "\\\\10.18.101.61\\OptimizationBatchesProduction\\WoodProfile\\Normal"+datafile;
+                      
             //string RootPath = "E:\\project\\2018\\中意木工\\司米橱柜\\网络对接\\"+ datafile;
-
+            
+                        
             if (!Directory.Exists(RootPath))
             {
                 MessageBox.Show("文件夹不存在,路径:"+ RootPath);
@@ -300,7 +305,6 @@ namespace evokNew0080
             }
 
             taskLst.Clear();
-
 
             //获取所有文件夹下的文件名
             string[] dirs= Directory.GetDirectories(RootPath);
@@ -329,13 +333,16 @@ namespace evokNew0080
                     }
                 }                                                                                         
             }
+
             foreach (var kv in taskLst)
             {
                 evokWork.LoadSimiData(kv.Value.ToArray());
+
                 break;
             }
             
             ShowMaterialLst();
+
         }
 
 
@@ -869,11 +876,11 @@ namespace evokNew0080
 
         private void autoSLBtn_Click_1(object sender, EventArgs e)
         {
-            evokWork.angleModify();
            
             DrawSizeForm drForm = new DrawSizeForm();                 
             drForm.showdata(evokWork.getOptSize());
             drForm.Show();
+
         }
 
         private void tabPage1_Click(object sender, EventArgs e)
@@ -905,6 +912,7 @@ namespace evokNew0080
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             evokWork.SetUseRest(checkBox1.Checked);
+
             if (checkBox1.Checked)
             {
                 MessageBox.Show("请堆放材料相同的余料，并扫码加入！");
@@ -928,8 +936,10 @@ namespace evokNew0080
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+
            if(listBox2.SelectedItem !=null && comboBox1.SelectedItem !=null)
             evokWork.getOptSize().Simi_SelectData(listBox2.SelectedItem.ToString(),int.Parse(comboBox1.SelectedItem.ToString()),false);
+
         }
 
         private void dataGridView1_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -940,6 +950,17 @@ namespace evokNew0080
         private void button40_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button41_Click(object sender, EventArgs e)
+        {
+            NewForm nf = new NewForm();
+
+            evokWork.ShowCutPictureBox = nf.getShowPic();
+
+            evokWork.Simi_Show(0);
+
+            nf.Show();
         }
     }   
 }

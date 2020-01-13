@@ -252,6 +252,7 @@ namespace xjplc
         #region 正常通讯
         public void startRepack()
         {
+            isShiftDataForm = true;
             if (comManager != null)
             {
                 comManager.IsRePackCmdReadDMDataOut = true;
@@ -273,7 +274,7 @@ namespace xjplc
         {
             if(comManager!=null)
             comManager.IsRepackDone = true;
-
+            IsShiftDataForm = false;
             if (tcpManager != null)
             {
                 tcpManager.IsRePackCmdReadDMDataOut = false;
@@ -310,8 +311,6 @@ namespace xjplc
 
             splitDataForm(dt,dataFormLst[formid]);
 
-            isShiftDataForm = true;
-
             doneRepack();
 
             return true;
@@ -324,11 +323,13 @@ namespace xjplc
         /// <returns></returns>
         public bool shiftDataForm(int formid)
         {
+          
+
             if (dataFormLst[formid] != null && dataFormLst[formid].Rows.Count > 0)
             {
                 startRepack();
     
-                isShiftDataForm = true;
+               
                 dataForm = dataFormLst[formid];
                 int dAreaCount = 0;
 
@@ -1126,7 +1127,7 @@ namespace xjplc
      
         void  Dataprocess(object sender, CommEventArgs e)
         {
-            isShiftDataForm = false;
+           if(isShiftDataForm) return ;
             //数据处理 以及更新 datagridview
             XJPLCcmd.UnPackCmdReadDMDataIn(dataForm,e.Byte_buffer, DPlcInfo, MPlcInfoAll);            
             Application.DoEvents();                   

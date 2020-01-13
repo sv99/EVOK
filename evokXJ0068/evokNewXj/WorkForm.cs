@@ -221,7 +221,7 @@ namespace evokNew0068
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(evokWork.AutoParamTxt_KeyPress(sender,e))
-            resetBtn.Focus();
+            tc1.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -705,6 +705,7 @@ namespace evokNew0068
 
         private void printcb_SelectedIndexChanged(object sender, EventArgs e)
         {
+             if(evokWork != null)
             if (evokWork.DeviceStatus)
             {
                 evokWork.ChangePrintMode(printcb.SelectedIndex);
@@ -723,12 +724,12 @@ namespace evokNew0068
             dgvParam.ClearSelection();
         }
 
-
+    
         private void button10_Click(object sender, EventArgs e)
         {
             if (UserData.RowCount > 0
-                 && UserData.CurrentRow.Index > -1
-                 && UserData.CurrentRow != null)
+                && UserData.CurrentRow.Index > -1
+                && UserData.CurrentRow != null)
                 evokWork.ShowBarCode(UserData.CurrentRow.Index);
         }
 

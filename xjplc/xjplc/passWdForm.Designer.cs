@@ -36,19 +36,22 @@
             // pwdTxt
             // 
             this.pwdTxt.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.pwdTxt.Location = new System.Drawing.Point(92, 37);
+            this.pwdTxt.Location = new System.Drawing.Point(42, 30);
+            this.pwdTxt.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.pwdTxt.Name = "pwdTxt";
+            this.pwdTxt.PasswordChar = '*';
             this.pwdTxt.ShortcutsEnabled = false;
-            this.pwdTxt.Size = new System.Drawing.Size(204, 42);
+            this.pwdTxt.Size = new System.Drawing.Size(201, 35);
             this.pwdTxt.TabIndex = 0;
             this.pwdTxt.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.pwdTxt_KeyPress);
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(124, 116);
+            this.button1.Location = new System.Drawing.Point(78, 94);
+            this.button1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(128, 45);
+            this.button1.Size = new System.Drawing.Size(141, 36);
             this.button1.TabIndex = 1;
             this.button1.Text = "确定";
             this.button1.UseVisualStyleBackColor = true;
@@ -56,12 +59,13 @@
             // 
             // passWdForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 201);
+            this.ClientSize = new System.Drawing.Size(296, 161);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.pwdTxt);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "passWdForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "密码输入";

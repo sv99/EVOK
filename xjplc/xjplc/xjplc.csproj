@@ -87,25 +87,29 @@
     <Reference Include="CSkin">
       <HintPath>bin\CSkin.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport, Version=2013.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport.Bars, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport.Bars, Version=2013.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Bars.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.Bars.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport.Editor, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport.Editor, Version=2013.2.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Editor.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.Editor.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport.Install, Version=1.0.0.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport.Install, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Install.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.Install.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport.Web, Version=2013.2.2.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport.VSDesign, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\newdll\FastReport.Web.dll</HintPath>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.VSDesign.dll</HintPath>
+    </Reference>
+    <Reference Include="FastReport.Web, Version=2013.2.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.Web.dll</HintPath>
     </Reference>
     <Reference Include="handControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -141,10 +145,12 @@
     <Reference Include="NPOI.OpenXmlFormats">
       <HintPath>bin\Debug\NPOI.OpenXmlFormats.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -175,12 +181,14 @@
     <Compile Include="FileConverToMachone.cs" />
     <Compile Include="ky\DeviceManager.cs" />
     <Compile Include="MultiLanguage.cs" />
+    <Compile Include="OpeeinFormula.cs" />
     <Compile Include="Permutation.cs" />
     <Compile Include="simi\PaintRect.cs" />
     <Compile Include="simi\RestMaterial.cs" />
     <Compile Include="simi\simiMaterial.cs" />
     <Compile Include="SqlHelper.cs" />
     <Compile Include="tanuo\Camera.cs" />
+    <Compile Include="tanuo\CGISDK.cs" />
     <Compile Include="tanuo\CHCNetSDK.cs" />
     <Compile Include="tanuo\cmdRobot.cs" />
     <Compile Include="tanuo\DeviceManageer.cs" />

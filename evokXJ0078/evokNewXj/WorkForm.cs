@@ -276,7 +276,7 @@ namespace evokNew0078
         private void lcTxt_KeyPress0(object sender, KeyPressEventArgs e)
         {
             if (evokWork.AutoParamTxt_KeyPressWithRatio(sender, e))
-                resetBtn.Focus();
+                tc1.Focus();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -471,7 +471,7 @@ namespace evokNew0078
             startBtnShow();
             evokWork.CutStartNormal(Constant.CutNormalWithShuChiMode);           
             stopBtnShow();
-    }
+        }
 
         private void stopBtn_Click(object sender, EventArgs e)
         {

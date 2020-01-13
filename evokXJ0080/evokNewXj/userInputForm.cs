@@ -30,7 +30,8 @@ namespace evokNewXJ
            
 
         }
-        bool IsExit = false;
+
+        bool IsExit = true;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -61,6 +62,7 @@ namespace evokNewXJ
                 wk.getOptSize().UserDataView.DataSource = dt;
 
                 IsExit = true;
+
             }
 
             DataRow drt = wk.getOptSize().DtData.NewRow();
@@ -87,14 +89,12 @@ namespace evokNewXJ
                 return;
             }
 
-           
-
+         
             drt[Constant.strformatZh[1]] = "1";
             drt[Constant.strformatZh[2]] = "0";
             drt[Constant.strformatZh[3]] = "补料";
 
             drt[Constant.strformatZh[4]] = textBox2.Text;
-
             drt[Constant.strformatZh[5]] = textBox3.Text;
             drt[Constant.strformatZh[7]] = textBox1.Text;
 
@@ -103,7 +103,9 @@ namespace evokNewXJ
             string maxSize = "0";
             wk.getOptSize().DtData.TableName = comboBox1.Text;
 
+
             drt[19] = wk.getOptSize().SimiM.Width.ToString();
+
             wk.getOptSize().SetSimiMaterial();
 
             double sized = wk.getOptSize().SimiM.calculateSize(
@@ -114,15 +116,19 @@ namespace evokNewXJ
                 ref maxSize);
             if (sized > 0)
             {
+
                 drt[Constant.strformatZh[0]] = maxSize;//排版需要大尺寸
                 drt[Constant.strformatZh[8]] = sized.ToString("0.00");
                 drt[Constant.strformatZh[9]] = oppositeSize;
                 drt[6] = comboBox1.Text;
                 drt[Constant.strformatZh[19]] = wk.getOptSize().SimiM.Width.ToString();
-
+                             
                 wk.getOptSize().DtData.Rows.Add(drt);
+
             }
-             
+
+            drt[Constant.strformatZh[10]] =textBox19.Text ;
+
         }
 
         private void userInputForm_Shown(object sender, EventArgs e)

@@ -353,6 +353,7 @@ namespace xjplc
                 HankCam.dispose();
             }
         }
+
         public DeviceManageer(Action<string> s, PictureBox phk, PictureBox pxm)
         {
             ShowConnAction = s;
@@ -361,6 +362,8 @@ namespace xjplc
             Init();
 
         }
+
+
         //在连接画面上显示字符
         public Action<string> ShowConnAction;
 

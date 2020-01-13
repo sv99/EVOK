@@ -249,7 +249,7 @@ namespace evokNew0072
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if(evokWork.AutoParamTxt_KeyPress(sender,e))
-            resetBtn.Focus();
+            tc1.Focus();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)

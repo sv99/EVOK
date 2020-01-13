@@ -274,7 +274,7 @@ namespace evokNew0074
         private void lcTxt_KeyPress0(object sender, KeyPressEventArgs e)
         {
             if (evokWork.AutoParamTxt_KeyPressWithRatio(sender, e))
-                resetBtn.Focus();
+                tc1.Focus();
         }
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -732,6 +732,7 @@ namespace evokNew0074
 
         private void printcb_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(evokWork !=null)
             if (evokWork.DeviceStatus)
             {
                 evokWork.ChangePrintMode(printcb.SelectedIndex);

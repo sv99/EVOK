@@ -28,7 +28,7 @@ namespace xjplc
 
         //设备地址
         int unitId;
-       
+
     }
     /// <summary>
     /// 串口参数类
@@ -96,7 +96,7 @@ namespace xjplc
             get { return byte_buffer; }
             set { byte_buffer = value; }
         }
-        
+
         public CommEventArgs()
         {
 
@@ -133,7 +133,7 @@ namespace xjplc
 
     //远邦台技项目
     public delegate void userShowItemChanged(object s, ItemChangedArgs e);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递//
-                                                                      //网络客户端进来
+                                                                          //网络客户端进来
     public delegate void ydtdWorkChanged(object s, YBDTWork ybtdWork0);//声明自定义的事件委托，用来执行事件的声明，和处理方法的传递
     public class Constant
     {
@@ -318,7 +318,7 @@ namespace xjplc
         public static string startTips7 = "选择错误，请重新选择！";
         public static string startTips8 = "条码错误:";
         public static string startTips9 = "等待测量！";
-
+        public static string startTips10 = "齐头！";
 
         public static string stopOk = "停止成功！";
         public static string stopWrong = "停止失败！";
@@ -363,12 +363,45 @@ namespace xjplc
         public static string paramHeader2 = "值";
         public static string DeviceUser = "DeviceUser";
         public static string DeviceUserJingPai = "金牌";
+        public static string DeviceUserKeFan = "科凡";
+        public static string DeviceUserOpeeinSimensi = "OpeeinAutoPos";
 
-
-        public static string msjLabel0= "内圈速度";
+        public static string msjLabel0 = "内圈速度";
         public static string msjLabel1 = "外圈速度";
         public static string msjLabel2 = "打孔速度";
-        public static string msjLabel3= "回退速度";
+        public static string msjLabel3 = "回退速度";
+
+        public static string steps = "步序";
+        public static string scPos = "锁槽工位";
+        public static string hyPos = "合页工位";
+
+        public static string fileFilter =
+        "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
+
+        public static string openFileTips =
+        "请选择数据文件";
+
+        public static string fileLogFilter =
+        "文件(*.log)|*.log";
+
+        public static string selectLogFileTips =
+       "请选择日志文件";
+
+        public static string Warning = "警告";
+
+        public static string scCutTypeLst = "垂直方槽/垂直圆孔/水平方槽/水平圆孔/椭圆槽";
+
+        public static string hyCutTypeLst = "合页槽/上开口合页槽/下开口合页槽/引孔编辑";
+
+        public static readonly string schyStrLstStr =
+            " /垂直方槽/垂直圆孔/水平方槽/水平圆孔/椭圆槽/右底边插销/合页槽/上开口合页槽/下开口合页槽/左底边圆孔/右底边圆孔";
+
+
+        public static string BarCode_On = "扫码开";
+        public static string BarCode_Off = "扫码关";
+
+        public static string knifeLst= "1号刀/2号刀";
+
         #endregion
 
         public static readonly string CsvSplitComma = ",";
@@ -388,7 +421,7 @@ namespace xjplc
         public static readonly string BitMode = "位";
         public static readonly string DBSimensDStr = "DB";
         public static readonly string DBSimensMStr = "DBM";
-
+        public static readonly string HandPositionMode = "手动输入模式";
         public static readonly int ExcelFile = 1;
         public const int evokGetDefaultMode = 0;
         public const int evokGetTcp = 2;
@@ -409,9 +442,11 @@ namespace xjplc
         public const int ParamPage = 2;
         public const int IOPage = 3;
         public const int Param1Page = 4;
-        public static readonly int AutoPageID = 2;//2; //2  普通  //双切刀下料锯 11   //0 西门子下料锯
-        public static readonly int HandPageID = 3;//5; //3   普通  //双切刀 5         //1 西门子下料锯
-        public static readonly int DataRowWatchMax = 35; //监控太多不行 还是少监控一点吧
+        public static readonly int Simensi_AutoPageID = 0;//2; //2  普通  //双切刀下料锯 11   //0 西门子下料锯
+        public static readonly int Simensi_HandPageID = 1;//5; //3   普通  //双切刀 5         //1 西门子下料锯
+        public static  int AutoPageID = 2;//2; //2  普通  //双切刀下料锯 11   //0 西门子下料锯
+        public static  int HandPageID = 3;//5; //3   普通  //双切刀 5         //1 西门子下料锯
+        public static readonly int DataRowWatchMax = 40; //监控太多不行 还是少监控一点吧
         public static readonly string[] plcDataFile = { "addr", "mode", "bin", "count", "value", "param1", "param2", "param3", "param4", "param5", "param6" };
         public static readonly string sqlChar10 = "char(10)";
         public static readonly string sqlChar20 = "char(20)";
@@ -434,7 +469,8 @@ namespace xjplc
         public const int SizeScarNoSplit = 1;
         public const int ScarSplit = 2;
         public const int doorId = 10;
-
+        //科凡特殊一点的 需要区分能切余不能切 宽度大于200 长度小于250 不能切
+        public const int kefan = 101;
         //文件转换 华雕厂家ID
         public const int hdiaoId = 100;
         public static readonly string stValue = "板件名称";
@@ -482,8 +518,8 @@ namespace xjplc
         public static readonly string DoorBanFile = ConstantMethod.GetAppPath() + "doorBan.csv";
         public static readonly string DoorSizeFile = ConstantMethod.GetAppPath() + "doorSize.csv";
         public static readonly string BarCode1 = ConstantMethod.GetAppPath() + "零件标签模板.frx";
-        public static readonly string BarCode2= ConstantMethod.GetAppPath() + "余料标签模板.frx";
-
+        public static readonly string BarCode2 = ConstantMethod.GetAppPath() + "余料标签模板.frx";
+        public static readonly string OpeeinFormulaFile = ConstantMethod.GetAppPath() + "SizeCalculateRule.csv";
 
         //public static readonly string ConstantMethod.GetAppPath() = ConstantMethod.GetAppPath();// System.AppDomain.CurrentDomain.BaseDirectory; //Application.StartupPath + "\\";// Path.GetDirectoryName(Application.ExecutablePath)+"\\";//System.AppDomain.CurrentDomain.BaseDirectory;
         public static readonly string ConfigSerialportFilePath = ConstantMethod.GetAppPath() + "config\\configSerialport.xml";
@@ -499,8 +535,7 @@ namespace xjplc
         public static readonly string ConfigParamFilePath = ConstantMethod.GetAppPath() + "config\\configParam.xml";
         public static readonly string ConfigDeviceModeFilePath = ConstantMethod.GetAppPath() + "config\\deviceMode.xml";
         public static readonly string ConfigUserDataFilePath = ConstantMethod.GetAppPath() + "config\\configUserData.xml";
-
-
+      
         public static readonly string ConfigParamFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configParam_bak.xml";
         public static readonly string ConfigPassWdFilePath = ConstantMethod.GetAppPath() + "config\\configPwd.xml";
         public static readonly string ConfigPassWdFilePath_Bak = ConstantMethod.GetAppPath() + "config\\configPwd__Bak.xml";
@@ -516,8 +551,11 @@ namespace xjplc
         public static readonly string strParam4 = "param4";
         public static readonly string strParam5 = "param5";
         public static readonly string strParam6 = "param6";
-        public static readonly string strParam7= "param7";
+        public static readonly string strParam7 = "param7";
         public static readonly string strParam10 = "param10";
+
+        public static readonly string strParamKlkMax = "paramKlkMax";
+        public static readonly string strParamKlkSizeMin = "paramKlkSizeMin";
         public static readonly string userName = "userName";
         public static readonly string passwdTime = "passwdTime";
         public static readonly string passwd = "passwd";
@@ -542,13 +580,13 @@ namespace xjplc
         public static readonly int AutoBarCode = 2;//20190404更改
         public static readonly int HandBarCode = 1;
         public static readonly string errorDeviceStatus = "设备状态错误或者数据下发中！";
-        public static string[] tataLineDeviceName = {"下料锯","门芯板锯","门皮锯" };
+        public static string[] tataLineDeviceName = { "下料锯", "门芯板锯", "门皮锯" };
         public static string tataLineName = "连线设备";
         public const int doorSizeId = 0;
-        public const int doorBanId = 1;  
+        public const int doorBanId = 1;
         public const int doorShellId = 2;           //0       1          2        3        4         5        6           7
-        public static string[] constantStatusStr = {"未知","报警中", "运行中", "复位中", "停止中", "暂停中","启动就绪","待机中" };
-        public static int[]    constantStatusId  = {0,1,2,3,4,5,6,7};
+        public static string[] constantStatusStr = { "未知", "报警中", "运行中", "复位中", "停止中", "暂停中", "启动就绪", "待机中" };
+        public static int[] constantStatusId = { 0, 1, 2, 3, 4, 5, 6, 7 };
         public static Color[] colorRgb = {
                                         Color.LightGray,
                                         Color.Red,
@@ -559,16 +597,31 @@ namespace xjplc
                                         Color.Yellow,
                                         Color.Yellow,
                                         };
-        public static readonly string[] printBarcodeModeStr = {"无条码","手动贴条码","自动贴条码" };
+        public static readonly string[] printBarcodeModeStr = { "无条码", "手动贴条码", "自动贴条码" };
 
         public static readonly string[] strformatEh = { "size", "CountToCut", "cntdone", "barcode", "param1", "param2", "param3", "param4", "param5", "param6", "param7", "param8", "param9", "param10", "param11", "param12", "param13" };
-        public static readonly string[] strformatZh = { "尺寸", "设定数量", "已切数量", "条码", "参数1" ,
-            "参数2" , "参数3" , "参数4","参数5" , "参数6" , "参数7", "参数8" , "参数9" , "参数10" ,"参数11", "参数12" , "参数13" , "参数14", "参数15" , "参数16" , "参数17" , "参数18" , "参数19" , "参数20" , "参数21" , "参数22" 
+        public static readonly string[] strformatZh = { "尺寸", 
+"设定数量", "已切数量", "条码", "参数1" ,
+            "参数2" , "参数3" , "参数4","参数5" , "参数6" , "参数7", "参数8" , "参数9" , "参数10" ,"参数11", "参数12" , "参数13" , "参数14", "参数15" , "参数16" , "参数17" , "参数18" , "参数19" , "参数20" , "参数21" , "参数22"
                 , "参数23" , "参数24"
         , "参数25"
         , "参数26"
         , "参数27"};
-  
+        public static readonly string[] strformatSimi = { "尺寸", "设定数量", "已切数量", "条码", "左角度*" ,
+            "右角度" , "原材料" , "基准尺寸","中间尺寸" , "底边尺寸" , "拼接关系", "排产日期" , "发运日期" , "包装批次" ,"订单名称", "订单号" , "订单行号" , "材料名称", "材料高" , "材料宽" , "描述" , "后端工艺路线" , "花色" , "模型" , "参数21" , "参数22"
+                , "参数23" , "参数24"
+        , "参数25"
+        , "参数26"
+        , "参数27"};
+        public static readonly string[] strformatSimiBl = { "尺寸", "设定数量",
+            "已切数量", "补料原因", "左角度*" ,
+            "右角度*" , "原材料*" , "基准尺寸*","顶边尺寸" , "底边尺寸" , "拼接关系", "排产日期" , "发运日期" , "包装批次" ,"订单名称", "订单号" , "订单行号" , "材料名称", "材料高" , "材料宽" , "描述" , "后端工艺路线" , "花色" , "模型" , "参数21" , "参数22"
+                , "参数23" , "参数24"
+        , "参数25"
+        , "参数26"
+        , "参数27"};
+
+
         public static readonly int pwdCountMax = 6;
         public static readonly int PwdOffSet = 1000;
         public static readonly int PwdNoOffSet = 6666;
@@ -576,14 +629,20 @@ namespace xjplc
         public static readonly int simiyuliaoId = 1000;
         public static readonly int MaxShowCount = 2000;
 
-
         public static readonly string ScarId = "-1";
         public static readonly string barCodeDemo = ConstantMethod.GetAppPath() + "零部件打印.frx";
         public static readonly string SplitTypeFile = ConstantMethod.GetAppPath() + "config\\SplitType.xls";
         public static readonly string SourceIco = ConstantMethod.GetAppPath() + "source\\app.ico";
+        
+        
         #region  优化数据
 
         public static readonly int MeaSureMaxTime = 120000;
+        //优化数据
+        public static string OptMode = "OptMode";
+
+        public const string OptModeOpt = "0";
+        public const string OptModeOptNo = "1";
 
         public static readonly int StartWaitMaxTime = 10000;
         #endregion
@@ -593,32 +652,33 @@ namespace xjplc
         public static readonly string devSC = "锁槽机";
         public static readonly string devSBJ = "四边锯";
         public static readonly string[] sthyDataCol = { "门长", "门厚", "门宽", "角度阀", "配方" };
-        public static readonly string[] sclsDataCol = { "门长", "门厚", "门宽", "配方1" ,"配方2" };
+        public static readonly string[] sclsDataCol = { "门长", "门厚", "门宽", "配方1", "配方2" };
         public static readonly string[] scDataCol = { "门长", "门厚", "门宽", "配方" };
-        public static readonly string[] sbjDataCol = { "原料长", "原料宽", "加工长", "加工宽","门厚" };
+        public static readonly string[] sbjDataCol = { "原料长", "原料宽", "加工长", "加工宽", "门厚" };
         #endregion
         #region 运行数据
-        public const  int devicePropertyA = 0;//设备类别 分为两种 一种是一维 
-        public const  int devicePropertyB = 1;//门皮 一种是二维
+        public const int devicePropertyA = 0;//设备类别 分为两种 一种是一维 
+        public const int devicePropertyB = 1;//门皮 一种是二维
 
         public const int devicePropertyC = 2;//门板 一种是二维
-       
-        public const  int CutMeasureRotateWithHoleMode = 2;
-        public const   int CutNormalMode = 0;
-        public const  int CutMeasureMode = 1;
-        public const int  CutNormalWithHoleMode = 3;
+
+        public const int CutMeasureRotateWithHoleMode = 2;
+        public const int CutNormalMode = 0;
+        public const int CutMeasureMode = 1;
+        public const int CutNormalWithHoleMode = 3;
         public const int CutMeasureWithScarSplitNoSize = 4;
         public const int CutNormalDoorShellMode = 5;
         public const int CutNormalWithShuChiMode = 6;
         public const int CutNormalDoorBanMode = 7;
         public const int CutNormalWithAngle = 8;
         public const int CutNormalWithSimensiPlc = 9;
+        public const int CutNormalWithSimensiPlc_AutoPos = 10;
         #endregion
         #region 双端锯
         public static readonly int sdjDeivceId = 4;
         public static readonly string sdjDeivceName = "双端锯";
         public static readonly string PlcDataFilePathParamDoubleSaw = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_param-";
-        public static string[] constantParamDoubleSawName ={"c1", "c2"};
+        public static string[] constantParamDoubleSawName = { "c1", "c2" };
         #endregion
         #region 水平打孔机器
         public static readonly int dkjDeivceId = 5;
@@ -646,28 +706,33 @@ namespace xjplc
         public static string WlNear1Str = "WlNear";
         public static int MaxWlNearCount = 20;//最大
         public static int MaxWlNearSize = 500;//最大
+        public static readonly string ConfigSimiUserDataFilePath = ConstantMethod.GetAppPath() + "config\\configParam_simi.xml";
 
-        public static int SplitMinTaskCount= 5;//多少个订单最小
+        public static int SplitMinTaskCount = 5;//多少个订单最小
+
+        public static string simiDataDir = "simiDataDir"; 
 
         public static string SplitCount = "SplitCount";
-        public static int  RestMaterialId = 10000;
+        public static int RestMaterialId = 10000;
+
+        public static int ShowPathName = 1;//最大
         #endregion
         #region 梳齿机
         public static readonly int scjDeivceId = 3;
-           public static readonly string scjDeivceName = "梳齿机";
-           public static readonly string PlcDataFilePathHandSC = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand-";
-           public static string[] constantHandName = 
-            {
+        public static readonly string scjDeivceName = "梳齿机";
+        public static readonly string PlcDataFilePathHandSC = ConstantMethod.GetAppPath() + "Plc Data\\plc_data_hand-";
+        public static string[] constantHandName =
+         {
               "机械手", "铣槽","推料", "前送料", "同步接料", "送料切料", "打码拉料", "分料"
             };
         public static readonly int maxSizeCount = 10;
         public static readonly string maxSizeCountEorrorStr = "单根数据下发超过最大数量，请检测门号或者工位 相应数据列！";
         #endregion
         #region PLC
-        public static readonly int schneiderPlc= 0;
-           public static readonly int xinjiePlc = 1;
-           public static readonly int deltaPlc = 2;
-           public static readonly int mitsubishiPlc = 3;
+        public static readonly int schneiderPlc = 0;
+        public static readonly int xinjiePlc = 1;
+        public static readonly int deltaPlc = 2;
+        public static readonly int mitsubishiPlc = 3;
         public static readonly int[] PlcDAddressOffset = { 0, 0, 0, 0 };
         public static readonly int[] PlcMAddressOffset = { 0, 0, 0, 0x2000 };
 
@@ -683,12 +748,19 @@ namespace xjplc
         public static readonly string outOfRangeStr = "监控数据数据过多，请修改监控数据数量再重启软件！";
 
         #region 门锁机
+
         public static readonly int msjDeivceId = 1;
+
         public static readonly string SchyCount = "SchyCount";
-        
+
         #region 锁槽
 
-        public static readonly string[] scCutType = {
+        //  public static string scCutTypeLst = "垂直方槽/垂直圆孔/水平方槽/水平圆孔/椭圆槽";
+
+
+        public static string[] scCutType { get { return scCutTypeLst.Split('/'); } }
+
+        /***{
                                                                "垂直方槽",
                                                                 "垂直圆孔",
                                                                 "水平方槽",
@@ -697,8 +769,9 @@ namespace xjplc
                                                                 // "合页槽",
                                                                 // "上开口合页槽",
                                                                 //"下开口合页槽" 
-                                                        };
+                                              };
 
+    ****/
         public static readonly int[] scCutTypeShowId = {        16,
                                                                 17,
                                                                 18,
@@ -723,20 +796,30 @@ namespace xjplc
 
         #region 合页
 
-        public static readonly string[] hyCutType =           {    
+
+        // public static string hyCutTypeLst = "合页槽/上开口合页槽/下开口合页槽/引孔编辑";
+
+
+
+        public static string[] hyCutType { get { return hyCutTypeLst.Split('/'); } }
+
+
+            /**
+            
+            {    
                                                                                                                      
                                                                 "合页槽",
                                                                 "上开口合页槽",
                                                                 "下开口合页槽",
                                                                   "引孔编辑"
          };
-
+       ***/
         public static readonly int[] hyCutTypeShowId = {       
                                                                 
                                                                 22,
                                                                 23,
                                                                 24,
-                                                                 21
+                                                                21
                                                           };
 
         public static readonly string[] hyCutTypeImage = {    
@@ -759,7 +842,10 @@ namespace xjplc
                                                                 "Z2",
                                                                 "A" };
 
-        public static readonly string[] schyStrLst = {" ",
+        public static  string[] schyStrLst  {
+            get { return schyStrLstStr.Split('/'); } }
+        /**
+        {" ",
                                                                 "垂直方槽",
                                                                 "垂直圆孔",
                                                                 "水平方槽",
@@ -772,7 +858,7 @@ namespace xjplc
                                                                 "左底边圆孔",
                                                                 "右底边圆孔"
         };
-        
+        ***/
         public static readonly string errClrValue = "8";
         #endregion
         #region MODBUSTCP
@@ -1020,13 +1106,14 @@ namespace xjplc
         //PLC 数据反馈 在切割的时候 数据发送 超时
         public static readonly int   PlcCountTimeOut = 90000;
         public static readonly byte[] XJReadDataCmdCheck = { 0x01, 0x19 };
-
-
+        //三菱PLC 
+        public static readonly int M_addr_MitSu = 0x2000;
+        public static readonly int Y_addr_MitSu = 0x0000;
         //信捷地址偏移常量 mosbust 
-        public static readonly int M_addr = 0;
+        public static readonly int M_addr = 0;  //信捷是0 ，三菱的偏移地址是2000
         public static readonly int D_addr = 0;
         public static readonly int X_addr = 0x5000;
-        public static readonly int Y_addr = 0x6000;
+        public static readonly int Y_addr = 0x6000; //信捷是0x6000 ，三菱的偏移地址是0
         public static readonly int HD_addr = 0xA080;
         public static readonly int HSD_addr = 0xB880;
         public static readonly int HM_addr = 0xC100;
@@ -1062,7 +1149,6 @@ namespace xjplc
         public static string[] strDMArea = { "D", "HD", "HSD", "M", "HM", "X", "Y" };
 
         #endregion 信捷PLC 专用
-
         #region 锯片旋转带打孔
         public static readonly char Angle45 = '/';
         public static readonly char Angle135 = '\\';

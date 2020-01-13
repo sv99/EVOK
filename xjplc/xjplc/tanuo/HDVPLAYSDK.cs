@@ -14,11 +14,12 @@ namespace xjplc
         public static extern Int32 HDVPLAY_OpenStream(IntPtr pStreamHead,
                                            UInt32 lStreamHeadSize);
 
+
         /**
         * @enum tagFrametype
         * @brief 回调解码后的数据帧类型
         * @attention 暂时只提供YUV422的uyvy排列格式
-*/
+        */
         public enum tagFrametype
         {
             FT_UYVY,    /**< 视频，uyvy格式。排列顺序 "U0Y0V0Y1U2Y2V2Y3……"，第一个像素位于图像左上角 */
@@ -166,6 +167,44 @@ SDKPLAY解码控制接口
         [DllImport(@"HDVSDK_Play.dll")]
         public static extern bool HDVPLAY_CloseStream(long lPlayHandle);
 
+
+        /**
+        * 叠加字符和图像，只在实时流上叠加
+        * @param [IN] lPlayHandle 当前的解码句柄
+        * @param [IN] fDrawFun    叠加字符和图像回调函数
+        * @param [IN] pUserData   用户自定义的数据，回调函数原值返回
+        * @return 返回如下结果：
+        * - 成功：true
+        * - 失败：false
+        * - 获取错误码调用HDVPLAY_GetLastError
+        * @note 该接口主要完成注册回调函数，获得当前表面的DC，用户可以在这个DC上画图或写字。
+        *       注：由于视频是缩放显示在窗口里的，所以视频坐标与窗口坐标有种缩放比例如下：显示窗口坐标/视频坐标=显示窗口大小/视频实际大小，
+        *       计算窗口或视频坐标时要按照该公式计算。
+        */
+        [DllImport(@"HDVSDK_Play.dll")]
+        public static extern bool HDVPLAY_SetDrawFunCallBack(int lPlayHandle,
+                                                           CBDrawFun fDrawFun,
+                                                           IntPtr puserdata);
+
+
+        /******************************************************************************
+            SDKPLAY图像接口
+         *******************************************************************************/
+        /**
+        * 叠加字符和图像回调函数的指针类型
+        * @param [OUT] lPlayHandle 当前的解码句柄
+        * @param [OUT] hDc         画图DC
+        * @param [OUT] nWidth      视频图像的宽度
+        * @param [OUT] nHeight     视频图像的高度
+        * @param [OUT] pUserData   用户数据，调用HDVPLAY_SetDrawFunCallBack时用户输入的值
+        * @return 无
+        * @note 无
+        */
+        public delegate void CBDrawFun(UInt32 lPlayHandle,
+                                      IntPtr hdc,
+                                       uint  nWidth,
+                                       uint  nHeight,
+                                       IntPtr pUserData);
 
     }
 }

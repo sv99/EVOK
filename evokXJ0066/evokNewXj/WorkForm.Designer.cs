@@ -63,8 +63,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.qClr = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.optchk = new System.Windows.Forms.CheckBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lcTxt = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -134,6 +135,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.infoLbl = new System.Windows.Forms.ToolStripStatusLabel();
+            this.warningLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
             this.DialogExcelDataLoad = new System.Windows.Forms.OpenFileDialog();
             this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
@@ -372,7 +374,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(29, 171);
+            this.label13.Location = new System.Drawing.Point(31, 171);
             this.label13.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(57, 19);
@@ -382,7 +384,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(29, 171);
+            this.label8.Location = new System.Drawing.Point(178, 171);
             this.label8.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(57, 19);
@@ -427,6 +429,7 @@
             this.stopBtn.Tag = "结疤测量";
             this.stopBtn.Text = "结疤测量";
             this.stopBtn.UseVisualStyleBackColor = true;
+            this.stopBtn.Visible = false;
             this.stopBtn.Click += new System.EventHandler(this.Off2On_Click);
             // 
             // button5
@@ -491,8 +494,9 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.optchk);
+            this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.lcTxt);
             this.groupBox1.Controls.Add(this.label2);
@@ -508,9 +512,36 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.groupBox1.Size = new System.Drawing.Size(999, 52);
+            this.groupBox1.Size = new System.Drawing.Size(1065, 52);
             this.groupBox1.TabIndex = 117;
             this.groupBox1.TabStop = false;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "结疤尺寸分离",
+            "结疤尺寸不分离",
+            "去除结疤"});
+            this.comboBox1.Location = new System.Drawing.Point(733, 14);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(122, 26);
+            this.comboBox1.TabIndex = 114;
+            this.comboBox1.Text = "结疤尺寸不分离";
+            this.comboBox1.Visible = false;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // optchk
+            // 
+            this.optchk.AutoSize = true;
+            this.optchk.Location = new System.Drawing.Point(617, 21);
+            this.optchk.Name = "optchk";
+            this.optchk.Size = new System.Drawing.Size(66, 23);
+            this.optchk.TabIndex = 127;
+            this.optchk.Text = "按序";
+            this.optchk.UseVisualStyleBackColor = true;
+            this.optchk.CheckedChanged += new System.EventHandler(this.optchk_CheckedChanged);
             // 
             // label7
             // 
@@ -521,25 +552,10 @@
             this.label7.Size = new System.Drawing.Size(0, 19);
             this.label7.TabIndex = 115;
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "结疤尺寸分离",
-            "结疤尺寸不分离",
-            "去除结疤"});
-            this.comboBox1.Location = new System.Drawing.Point(653, 17);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(122, 26);
-            this.comboBox1.TabIndex = 114;
-            this.comboBox1.Text = "结疤尺寸不分离";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            // 
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox1.Location = new System.Drawing.Point(910, 15);
+            this.textBox1.Location = new System.Drawing.Point(980, 14);
             this.textBox1.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(85, 32);
@@ -569,7 +585,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.Location = new System.Drawing.Point(790, 19);
+            this.label2.Location = new System.Drawing.Point(877, 18);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(120, 22);
             this.label2.TabIndex = 110;
@@ -688,7 +704,7 @@
             // autoSLBtn
             // 
             this.autoSLBtn.Font = new System.Drawing.Font("宋体", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.autoSLBtn.Location = new System.Drawing.Point(902, 158);
+            this.autoSLBtn.Location = new System.Drawing.Point(904, 153);
             this.autoSLBtn.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.autoSLBtn.Name = "autoSLBtn";
             this.autoSLBtn.Size = new System.Drawing.Size(123, 41);
@@ -1389,7 +1405,8 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
-            this.infoLbl});
+            this.infoLbl,
+            this.warningLabel});
             this.statusStrip1.Location = new System.Drawing.Point(0, 675);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
@@ -1409,7 +1426,17 @@
             this.infoLbl.BackColor = System.Drawing.Color.Red;
             this.infoLbl.Font = new System.Drawing.Font("微软雅黑", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.infoLbl.Name = "infoLbl";
-            this.infoLbl.Size = new System.Drawing.Size(0, 25);
+            this.infoLbl.Size = new System.Drawing.Size(40, 25);
+            this.infoLbl.Text = "NA";
+            // 
+            // warningLabel
+            // 
+            this.warningLabel.ActiveLinkColor = System.Drawing.Color.Red;
+            this.warningLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.warningLabel.Font = new System.Drawing.Font("微软雅黑", 12.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.warningLabel.Name = "warningLabel";
+            this.warningLabel.Size = new System.Drawing.Size(46, 25);
+            this.warningLabel.Text = "NA1";
             // 
             // UpdateTimer
             // 
@@ -1578,6 +1605,8 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.RichTextBox rtbResult;
+        private System.Windows.Forms.ToolStripStatusLabel warningLabel;
+        private System.Windows.Forms.CheckBox optchk;
     }
 }
 

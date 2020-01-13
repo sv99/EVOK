@@ -406,14 +406,15 @@ namespace xjplc
         //获取门皮 门板 码头等尺寸 门型 还他妈的有字母和文字
         public bool getSizeDataTable(doorTypeInfo door)
         {
-            //志邦的 20190418 string doorType = door.Name;
-            string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
+
+            string doorType = door.Name; //志邦的 20190418
+           // string doorType = ConstantMethod.getCharacter(door.Name)+ ConstantMethod.getNumber(door.Name); 
 
             foreach (sizeLstByDoorType split in UserSplitType)
             {
-                //志邦的 20190418   // if (split.Name.Equals(doorType))
+                if (split.Name.Equals(doorType)) //志邦的 20190418
                 //匹配成功 找到公式  找到尺寸
-                if (split.Name.Contains(doorType)) 
+                //if (split.Name.Contains(doorType)) 
               
                 {                                       
                     foreach (singleSize size in split.Size)
@@ -465,7 +466,9 @@ namespace xjplc
                             //添加尺寸条子
                             if (size.Formula.Count == 1 && size.Sizeid ==Constant.doorSizeId)
                             {
+
                                 DataRow dr = door.Door_Size.NewRow();
+
                                 dr[Constant.strformatZh[0]] = GetFormulaResult(size.Formula[0].Strexe, door);
                                 dr[Constant.strformatZh[1]] = size.Count;// GetFormulaResult(size.Formula[0].Strexe, door);
                                 dr[Constant.strformatZh[2]] = "0";
@@ -474,9 +477,8 @@ namespace xjplc
                                 // dr[Constant.strformatZh[15]] = door.GwId;
 
                                 if (door.BarCodeStr.Count > 13)
-                                {
-                                    /***
-                                    dr[Constant.strformatZh[3]] = door.BarCodeStr[1];
+                                {                               
+                                    dr[Constant.strformatZh[3]] = door.BarCodeStr[0];
                                     dr[Constant.strformatZh[4]] = door.BarCodeStr[1];
                                     dr[Constant.strformatZh[6]] = door.BarCodeStr[2];
                                     dr[Constant.strformatZh[7]] = door.BarCodeStr[3];
@@ -490,7 +492,7 @@ namespace xjplc
                                     dr[Constant.strformatZh[15]] = door.BarCodeStr[11];
                                     dr[Constant.strformatZh[16]] = door.BarCodeStr[12];
                                     dr[Constant.strformatZh[17]] = door.BarCodeStr[13];
-                                    ***/
+                                   
                                 }
                                 door.Door_Size.Rows.Add(dr);
                             }

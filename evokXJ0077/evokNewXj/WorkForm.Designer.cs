@@ -44,6 +44,10 @@
             this.aboutEvokMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label96 = new System.Windows.Forms.Label();
+            this.label95 = new System.Windows.Forms.Label();
+            this.label94 = new System.Windows.Forms.Label();
+            this.label93 = new System.Windows.Forms.Label();
             this.label91 = new System.Windows.Forms.Label();
             this.label90 = new System.Windows.Forms.Label();
             this.label89 = new System.Windows.Forms.Label();
@@ -59,6 +63,7 @@
             this.button12 = new System.Windows.Forms.Button();
             this.button9 = new System.Windows.Forms.Button();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.textBox52 = new System.Windows.Forms.TextBox();
             this.label49 = new System.Windows.Forms.Label();
             this.label48 = new System.Windows.Forms.Label();
             this.label47 = new System.Windows.Forms.Label();
@@ -245,11 +250,6 @@
             this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.logOPF = new System.Windows.Forms.OpenFileDialog();
             this.fb1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.label93 = new System.Windows.Forms.Label();
-            this.label94 = new System.Windows.Forms.Label();
-            this.label95 = new System.Windows.Forms.Label();
-            this.label96 = new System.Windows.Forms.Label();
-            this.textBox52 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -419,6 +419,45 @@
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // label96
+            // 
+            this.label96.AutoSize = true;
+            this.label96.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label96.Location = new System.Drawing.Point(33, 461);
+            this.label96.Name = "label96";
+            this.label96.Size = new System.Drawing.Size(95, 33);
+            this.label96.TabIndex = 205;
+            this.label96.Text = "扫描:";
+            // 
+            // label95
+            // 
+            this.label95.AutoSize = true;
+            this.label95.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label95.Location = new System.Drawing.Point(26, 515);
+            this.label95.Name = "label95";
+            this.label95.Size = new System.Drawing.Size(95, 33);
+            this.label95.TabIndex = 205;
+            this.label95.Text = "当前:";
+            // 
+            // label94
+            // 
+            this.label94.AutoSize = true;
+            this.label94.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label94.Location = new System.Drawing.Point(431, 412);
+            this.label94.Name = "label94";
+            this.label94.Size = new System.Drawing.Size(34, 24);
+            this.label94.TabIndex = 204;
+            this.label94.Text = "NA";
+            // 
+            // label93
+            // 
+            this.label93.AutoSize = true;
+            this.label93.Font = new System.Drawing.Font("宋体", 12.13483F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label93.Location = new System.Drawing.Point(470, 412);
+            this.label93.Name = "label93";
+            this.label93.Size = new System.Drawing.Size(0, 17);
+            this.label93.TabIndex = 203;
             // 
             // label91
             // 
@@ -623,6 +662,17 @@
             this.groupBox7.TabIndex = 158;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "拉槽孔";
+            // 
+            // textBox52
+            // 
+            this.textBox52.Font = new System.Drawing.Font("宋体", 12.13483F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBox52.Location = new System.Drawing.Point(141, 237);
+            this.textBox52.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.textBox52.Name = "textBox52";
+            this.textBox52.Size = new System.Drawing.Size(70, 26);
+            this.textBox52.TabIndex = 168;
+            this.textBox52.Tag = "拉槽孔4";
+            this.textBox52.Text = "1000";
             // 
             // label49
             // 
@@ -2957,56 +3007,6 @@
             // logOPF
             // 
             this.logOPF.FileName = "log";
-            // 
-            // label93
-            // 
-            this.label93.AutoSize = true;
-            this.label93.Font = new System.Drawing.Font("宋体", 12.13483F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label93.Location = new System.Drawing.Point(470, 412);
-            this.label93.Name = "label93";
-            this.label93.Size = new System.Drawing.Size(0, 17);
-            this.label93.TabIndex = 203;
-            // 
-            // label94
-            // 
-            this.label94.AutoSize = true;
-            this.label94.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label94.Location = new System.Drawing.Point(431, 412);
-            this.label94.Name = "label94";
-            this.label94.Size = new System.Drawing.Size(34, 24);
-            this.label94.TabIndex = 204;
-            this.label94.Text = "NA";
-            // 
-            // label95
-            // 
-            this.label95.AutoSize = true;
-            this.label95.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label95.Location = new System.Drawing.Point(26, 515);
-            this.label95.Name = "label95";
-            this.label95.Size = new System.Drawing.Size(95, 33);
-            this.label95.TabIndex = 205;
-            this.label95.Text = "当前:";
-            // 
-            // label96
-            // 
-            this.label96.AutoSize = true;
-            this.label96.Font = new System.Drawing.Font("宋体", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label96.Location = new System.Drawing.Point(33, 461);
-            this.label96.Name = "label96";
-            this.label96.Size = new System.Drawing.Size(95, 33);
-            this.label96.TabIndex = 205;
-            this.label96.Text = "扫描:";
-            // 
-            // textBox52
-            // 
-            this.textBox52.Font = new System.Drawing.Font("宋体", 12.13483F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.textBox52.Location = new System.Drawing.Point(141, 237);
-            this.textBox52.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.textBox52.Name = "textBox52";
-            this.textBox52.Size = new System.Drawing.Size(70, 26);
-            this.textBox52.TabIndex = 168;
-            this.textBox52.Tag = "拉槽孔4";
-            this.textBox52.Text = "1000";
             // 
             // WorkForm
             // 

@@ -172,7 +172,9 @@ namespace xjplc
         {
             DataTable dt = dataFormLst[formid].Clone();
 
-            if((rowSt >0) && ((rowSt+count-1)< dataFormLst[formid].Rows.Count) && count>0)
+            isShiftDataForm = true;
+
+            if ((rowSt >0) && ((rowSt+count-1)< dataFormLst[formid].Rows.Count) && count>0)
             {
                 for (int i = rowSt; i < rowSt+count; i++)
                 {
@@ -180,7 +182,8 @@ namespace xjplc
                 }
             }
             splitDataForm(dt,dataFormLst[formid]);
-            isShiftDataForm = true;
+
+            isShiftDataForm = false;
 
             comManager.IsRePackCmdReadDMDataOut = true;
 
@@ -194,7 +197,9 @@ namespace xjplc
         public bool shiftDataForm(int formid)
         {
             if (dataFormLst[formid] != null && dataFormLst[formid].Rows.Count > 0)
-            {                                             
+            {
+                isShiftDataForm = true;
+
                 dataForm = dataFormLst[formid];
                 int dAreaCount = 0;
 
@@ -221,7 +226,7 @@ namespace xjplc
                 if (dataForm != null && dataForm.Rows.Count > 0)
                     PackCmdReadDMDataOut(dataForm);
                 
-                isShiftDataForm = true; 
+                isShiftDataForm = false; 
                                                                                                                                                  
                 comManager.IsSetReadDDataOut = true;                   
 
@@ -969,7 +974,7 @@ namespace xjplc
      
         void  Dataprocess(object sender, CommEventArgs e)
         {
-            isShiftDataForm = false;
+            if (isShiftDataForm) return;         
 
             if ((DTPLCcmd.CmdReadDDataOut != null))
             {

@@ -116,8 +116,10 @@ namespace fileconvert
                 paramStr.Add(ss);
                 i++;
             }
-
-
+      
+            double.TryParse(paraFile.ReadConfig(Constant.strParamKlkMax),out KlkMax);
+            double.TryParse(paraFile.ReadConfig(Constant.strParamKlkSizeMin), out KlkSizeMin);
+            
             stopConfig();
 
         }
@@ -242,41 +244,225 @@ namespace fileconvert
             //不存在就代表参数没用
             if (!isParamExist)
             {
-                if (
-                (dtOutPut = fileManager.
-                saveDataTableToFile(rtbResult, PathStr, pBar1, UserDt, valueCol, true, null)) == null)
-                {
+                if 
+                 (
+                  (
+                  dtOutPut = fileManager.
+                  saveDataTableToFile(rtbResult, PathStr, pBar1, UserDt, valueCol, true, null)
+                  ) == null
+                  )
+                  {
                     ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
-                }
+                  }
             }
             else
             {
                 //存在则开始分割表格 把表格集合 第一给dtouput 用户可以查看条码
                 List<DataTable> dt = new List<DataTable>();
+
                 getDataTableByParam(dt, UserDt, paramStr);
-                foreach (DataTable dttemp in dt)
+                //有些保存规则 不一样的 比如科凡的需要分开切与不切
+              
+                switch (userId)
                 {
-                    if (dtOutPut == null)
-                    {
-                        if((dtOutPut = fileManager.saveDataTableToFile(rtbResult, PathStr, pBar1, dttemp, valueCol, false,paramStr))==null)
-                        {
-                            ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
-                        }
-                        
-                    }
-                    else
-                    {
-                        if (fileManager.saveDataTableToFile(rtbResult, PathStr, pBar1, dttemp, valueCol, false, paramStr) == null)
-                        {
-                            ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
-                        }
-                    }
+                    case Constant.kefan:
+
+                        KeFanConvert(PathStr, dt);
+                        break;
+                    default:
+                        NormalConvert(PathStr, dt);
+                        break;
                 }
-                
+
+                for (int i = 0; i < dataLst.Count;i++)
+                {
+                    comboBox1.Items.Add(dataLst[i].TableName);
+                }
+
+                showMultiDataTable(0);
             }
 
            ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换结束！");
 
+        }
+        void showMultiDataTable(int id)
+        {
+            if (dataLst.Count > 0 && id<dataLst.Count)
+            {
+               
+                dtOutPut = dataLst[id];
+                dgv.DataSource = dtOutPut;
+                comboBox1.Text = dtOutPut.TableName;
+            }
+        }
+
+        void CreateUnUseDir(string PathStr, List<DataTable> dtUnUsrLst)
+        {
+            if (dtUnUsrLst == null || dtUnUsrLst.Count <= 0) return;
+
+            DataTable dtAll = dtUnUsrLst[0].Clone();
+
+            foreach (DataTable dt in dtUnUsrLst)
+            {
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow dr = dt.NewRow();
+                    dt.Rows.Add(dr);
+
+                    dtAll.Merge(dt);
+                }               
+            }
+
+            string dirCreateNameUnUse = Path.GetFileNameWithoutExtension(PathStr) + "_不可切";
+
+            string dir = Path.GetDirectoryName(PathStr);
+
+            if (!Directory.Exists(dir + "\\" + dirCreateNameUnUse))
+                Directory.CreateDirectory(dir + "\\" + dirCreateNameUnUse);
+
+            fileManager.SaveFile(dtAll, dir + "\\" + dirCreateNameUnUse + "\\不可切_Machine.csv");
+          
+
+        }
+
+        double KlkMax = 0;
+        double KlkSizeMin = 0;
+        void KeFanConvert(string PathStr, List<DataTable> dt)
+        {
+            if (dataLst != null)
+                dataLst.Clear();
+            else
+                dataLst = new List<DataTable>();
+
+ 
+            //不需要切的收集
+            List<DataTable> dtUnUsrLst = new List<DataTable>();         
+
+            foreach (DataTable dttemp in dt)
+            {
+                if (dtOutPut == null)
+                {
+                    if ((dtOutPut = fileManager.saveDataTableToFileWithKeFan(rtbResult, PathStr, pBar1, dttemp, valueCol, false, paramStr,KlkMax)) == null)
+                    {
+                        ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                        continue;
+                    }
+                    if (!dtOutPut.TableName.Contains("UnUse"))
+                    {
+                        DataTable unuseDt = dtOutPut.Clone();
+                      
+                        for (int i = dtOutPut.Rows.Count - 1; i >= 0; i--)
+                        {
+                            double size = 0;
+                            if (double.TryParse(dtOutPut.Rows[i][0].ToString(), out size))
+                            {
+                                if (size < KlkSizeMin )
+                                {
+                                    unuseDt.Rows.Add(dtOutPut.Rows[i].ItemArray);
+                                    dtOutPut.Rows.RemoveAt(i);
+                                }
+                            }
+                            else
+                            {
+                                unuseDt.Rows.Add(dtOutPut.Rows[i].ItemArray);
+                                dtOutPut.Rows.RemoveAt(i);
+                            }
+                        }
+
+                        if (unuseDt.Rows.Count > 0)
+                        {
+                            dtUnUsrLst.Add(unuseDt);
+                        }
+                        if(dtOutPut.Rows.Count>0)
+                        dataLst.Add(dtOutPut);
+                    }
+                    else
+                    {
+                        
+                        dtUnUsrLst.Add(dtOutPut);
+                    }
+                }
+                else
+                {
+                    dtOutPut = fileManager.saveDataTableToFileWithKeFan(rtbResult, PathStr, pBar1, dttemp, valueCol, false, paramStr,KlkMax);
+                    if (dtOutPut == null)
+                    {
+                        ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                        continue;
+                    }
+
+                    if (!dtOutPut.TableName.Contains("UnUse"))
+                    {
+                        //如果可使用中 尺寸小于一定尺寸 也不要
+                        DataTable unuseDt = dtOutPut.Clone();
+                        for (int i = dtOutPut.Rows.Count - 1; i >= 0; i--)
+                        {
+                            double size = 0;
+                            if (double.TryParse(dtOutPut.Rows[i][0].ToString(), out size))
+                            {
+                                if (size < KlkSizeMin )
+                                {
+                                    unuseDt.Rows.Add(dtOutPut.Rows[i].ItemArray);
+                                    dtOutPut.Rows.RemoveAt(i);
+                                }
+                            }
+                            else
+                            {
+                                unuseDt.Rows.Add(dtOutPut.Rows[i].ItemArray);
+                                dtOutPut.Rows.RemoveAt(i);
+                            }
+                        }
+
+                        if (unuseDt.Rows.Count > 0)
+                        {
+                            dtUnUsrLst.Add(unuseDt);
+                        }
+
+                        if (dtOutPut.Rows.Count > 0)
+                            dataLst.Add(dtOutPut);
+                    }
+                    else
+                    {
+                        dtUnUsrLst.Add(dtOutPut);
+                    }
+
+                }
+            }
+
+            //开始归档不要用的集合
+            CreateUnUseDir(PathStr, dtUnUsrLst);
+
+        }
+        void NormalConvert(string PathStr, List<DataTable> dt)
+        {
+            if (dataLst != null)
+                dataLst.Clear();
+
+            foreach (DataTable dttemp in dt)
+            {
+                if (dtOutPut == null)
+                {
+                    if ((dtOutPut = fileManager.saveDataTableToFile(rtbResult, PathStr, pBar1, dttemp, valueCol, false, paramStr)) == null)
+                    {
+                        ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                    }
+
+                    dataLst.Add(dtOutPut);
+               
+                }
+                else
+                {
+                    dtOutPut = fileManager.saveDataTableToFile(rtbResult, PathStr, pBar1, dttemp, valueCol, false, paramStr);
+
+                    if (dtOutPut == null)
+                    {
+                        ConstantMethod.ShowInfo(rtbResult, DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss") + "转换错误，请检查转换规则！");
+                    }
+
+                    dataLst.Add(dtOutPut);
+
+                }
+            }
         }
         //传入要取的列名 paramL 和要比较的值 
         /// <summary>
@@ -352,6 +538,7 @@ namespace fileconvert
         {
             switch (userId)
             {
+
                 case Constant.hdiaoId:
                     {
                         hdiao(DialogExcelDataLoad.FileName);
@@ -362,6 +549,7 @@ namespace fileconvert
                         fileConvertFun(DialogExcelDataLoad.FileName);
                         break;
                     }
+
             }                     
                      
             if (File.Exists(Constant.barCodeDemo))
@@ -369,10 +557,11 @@ namespace fileconvert
                 barCodeButton.Enabled = true;
             }
         }
+        List<DataTable> dataLst;
         public void ShowBarCode(int rowindex)
         {
             List<string> valuestr = new List<string>();
-
+     
             if (dtOutPut != null && dtOutPut.Rows.Count > 0)
             {
                 DataRow dr = dtOutPut.Rows[rowindex];
@@ -747,11 +936,25 @@ namespace fileconvert
             }
 
         }
+        void ReLoadReport()
+        {
+            if (printReport != null)
+            {
+                string fileName = printReport.FileName;
+                printReport.Dispose();
+                printReport = null;
+                printReport = new Report();
+                printReport.Load(fileName);
+                printReport.PrintSettings.ShowDialog = false;
+
+            }
+        }
         public void printBarcode(Report rp1, object s2)
         {
 
             
-            string[] s1 = (string[])s2;           
+            string[] s1 = (string[])s2;
+
             if (s1 != null && printReport != null)
             {
                 try
@@ -791,7 +994,7 @@ namespace fileconvert
                         (rp1.FindObject("Text" + (i).ToString()) as TextObject).Text = s1[i];
                     }
                 }
-              
+                    rp1.SetParameterValue("Parameter", s1);
                     rp1.Prepare();
                     rp1.Show();
                 }
@@ -807,7 +1010,9 @@ namespace fileconvert
         private void 查看条码模板ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             List<string> valuestr = new List<string>();
-            
+
+      
+
             if (dtOutPut != null && dtOutPut.Rows.Count > 0)
             {
 
@@ -860,6 +1065,11 @@ namespace fileconvert
                 valueCol.RemoveAt(valueCol.Count - 1);
                 listBox2.Items.RemoveAt(listBox2.Items.Count-1);
             }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            showMultiDataTable(comboBox1.SelectedIndex);
         }
     }
 }

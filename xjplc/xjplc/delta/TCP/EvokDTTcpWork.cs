@@ -173,6 +173,23 @@ namespace xjplc
                 return evokDevice.Status==Constant.DeviceConnected;
             }
         }
+        public void ShiftDgvParamLang(DataGridView dgvParam, int id,int page)
+        {
+            if (id == 0)
+            {
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[page].Columns[Constant.Bin].ToString();
+            }
+            else
+            {
+                dgvParam.Columns[0].DataPropertyName = evokDevice.DataFormLst[page].Columns[Constant.strParam10].ToString();              
+            }
+        }
+        public void updateColName(DataGridView dgvParam)
+        {
+            dgvParam.Columns[0].HeaderText = Constant.paramHeader1;
+            dgvParam.Columns[1].HeaderText = Constant.paramHeader2;
+
+        }
 
         public void SetPrintReport()
         {
@@ -377,6 +394,17 @@ namespace xjplc
 
 
 
+        public void shiftDtScHyShow(int id )
+        {
+
+            DtScHyShow.Columns[0].ColumnName = Constant.steps;
+
+            DtScHyShow.Columns[1].ColumnName = Constant.scPos;
+
+            DtScHyShow.Columns[2].ColumnName = Constant.hyPos;
+
+        }
+
 
         #endregion
 
@@ -509,7 +537,6 @@ namespace xjplc
         {
             if (evokDevice.DataFormLst.Count > 1 && evokDevice.DataFormLst[id].Rows.Count > 0 && id< evokDevice.DataFormLst.Count && id < AllPlcSimpleLst.Count)
             {
-
                 AllPlcSimpleLst[id].Clear();
                 foreach (DataRow dr in evokDevice.DataFormLst[id].Rows)
                 {
@@ -631,9 +658,9 @@ namespace xjplc
                 hySureProgramOutPs = ConstantMethod.getDtPlcSimple(hySureProgramOutPs.Name, ProgramConfigPsLst);
                
 
-                DtScHyShow.Columns.Add("步序");
-                DtScHyShow.Columns.Add("锁槽工位");
-                DtScHyShow.Columns.Add("合页工位");
+                DtScHyShow.Columns.Add(Constant.steps);
+                DtScHyShow.Columns.Add(Constant.scPos);
+                DtScHyShow.Columns.Add(Constant.hyPos);
 
                 string userScHytCount = ParamFile.ReadConfig(Constant.SchyCount);
 
@@ -928,11 +955,12 @@ namespace xjplc
             int rowIndex = dgvParam.SelectedCells[0].RowIndex;
             try
             {
-
                 DgvValueEdit(rowIndex, s);
             }
             catch (Exception ex)
-            { }
+            {
+
+            }
             finally { DgvInOutEdit(rowIndex, false); }
             /***
             try
@@ -2184,8 +2212,11 @@ namespace xjplc
         {
 
             string userdata = evokDevice.DataForm.Rows[rowIndex]["addr"].ToString();
+
             int addr = 0;
+
             string area = "D";
+
             string mode = evokDevice.DataForm.Rows[rowIndex]["mode"].ToString();
 
             string name = evokDevice.DataForm.Rows[rowIndex]["bin"].ToString();
@@ -2208,6 +2239,11 @@ namespace xjplc
                     valueDouble = valueDouble * dp.Ration;
                     value.Add(valueDouble.ToString());
                     evokDevice.SetDValue(dp, value.ToArray());
+                }
+                else
+                {
+                    evokDevice.DataForm.Rows[rowIndex][Constant.strParam6]= dp.ShowValueFloat;
+                    MessageBox.Show(Constant.dataOutOfRange+"   "+dp.MaxValue.ToString()+"--"+ dp.MinValue.ToString());
                 }
             }
                       

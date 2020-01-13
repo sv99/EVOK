@@ -83,6 +83,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BlForm.Designer.cs">
+      <DependentUpon>BlForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MSizeForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MSizeForm.Designer.cs">
+      <DependentUpon>MSizeForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NewForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NewForm.Designer.cs">
+      <DependentUpon>NewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OptParamSet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptParamSet.Designer.cs">
+      <DependentUpon>OptParamSet.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RestForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RestForm.Designer.cs">
+      <DependentUpon>RestForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="userInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +133,18 @@
     <Compile Include="WatchForm.Designer.cs">
       <DependentUpon>WatchForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="BlForm.resx">
+      <DependentUpon>BlForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MSizeForm.resx">
+      <DependentUpon>MSizeForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NewForm.resx">
+      <DependentUpon>NewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptParamSet.resx">
+      <DependentUpon>OptParamSet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -113,6 +155,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RestForm.resx">
+      <DependentUpon>RestForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="userInputForm.resx">
       <DependentUpon>userInputForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -139,6 +184,7 @@
   <ItemGroup>
     <Content Include="app.ico" />
     <Content Include="evok.ico" />
+    <None Include="Resources\外形图2.jpg" />
     <None Include="Resources\bk.jpg" />
   </ItemGroup>
   <ItemGroup>

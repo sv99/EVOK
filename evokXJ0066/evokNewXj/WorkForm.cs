@@ -16,9 +16,11 @@ namespace evokNew0066
         //错误信息
         List<string> errorList = new List<string>();
 
+
+        List<string> warnList = new List<string>();
         //错误带有多种语言的时候
         int errorId = 0;
-    
+        int warnId = 0;
         private EvokXJWork evokWork;
 
         private WatchForm wForm;
@@ -32,7 +34,7 @@ namespace evokNew0066
         #region 初始化
         public void InitLang()
         {
-            //语言设置
+        
             //设置提醒字符串
             Constant.InitStr(this);
             evokWork.ShiftDgvParamLang(dgvParam, MultiLanguage.getLangId());
@@ -78,6 +80,10 @@ namespace evokNew0066
             evokWork.MainForm = this;
             evokWork.SetUserDataGridView(UserData);
             evokWork.SetRtbWork(rtbWork);
+            if (evokWork.IsArrangeOpt)
+            {
+                optchk.Checked = true; 
+            }                     
             evokWork.SetRtbResult(rtbResult);
             evokWork.SetPrintReport();
             evokWork.InitDgvParam(dgvParam);
@@ -85,19 +91,23 @@ namespace evokNew0066
             evokWork.SetShowCnt(comboBox2);
 
             errorList = evokWork.ErrorList;
+
+            warnList = evokWork.WarningList;
+
             UpdateTimer.Enabled = true;
 
         }
         private void InitView0()
         {
             DialogExcelDataLoad.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory;
-            DialogExcelDataLoad.Filter = "文件(*.xls,*.xlsx,*.csv)|*.xls;*.csv;*.xlsx";
-            DialogExcelDataLoad.FileName = "请选择数据文件";
+            DialogExcelDataLoad.Filter = Constant.fileFilter;
+            DialogExcelDataLoad.FileName = Constant.openFileTips;
 
             logOPF.InitialDirectory = AppDomain.CurrentDomain.BaseDirectory + "Log";
-            logOPF.Filter = "文件(*.log)|*.log";
-            logOPF.FileName = "请选择日志文件";
+            logOPF.Filter = Constant.fileLogFilter;
+            logOPF.FileName = Constant.selectLogFileTips;
             comboBox1.SelectedIndex = evokWork.CutSelMode;
+
             errorTimer.Enabled = true;
 
             evokWork.ReadCSVDataDefault();
@@ -113,7 +123,7 @@ namespace evokNew0066
         private void lcTxt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (evokWork.AutoParamTxt_KeyPress(sender, e))
-                resetBtn.Focus();
+                tc1.Focus();
         }
 
         private void AutoTextBox_Enter(object sender, EventArgs e)
@@ -183,34 +193,12 @@ namespace evokNew0066
             rtbResult.Clear();
             rtbWork.Clear();
             startOptShow();
-            /****单机启动
-            optSize.Len = 24400;//evokWork.lcOutInPs.ShowValue;
-            optSize.Dbc = 0;//evokWork.dbcOutInPs.ShowValue;
-            optSize.Ltbc = 0;/// evokWork.ltbcOutInPs.ShowValue;
-            optSize.Safe = 0;// evokWork.safeOutInPs.ShowValue;
-            ***/
-
-            /***
-           // if (!evokWork.AutoMes)
-           // {
-                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-           // }
-           ****/
-
-            //if (!evokWork.AutoMes)
-            //{
-                //测试用 EXCEL
-                // evokWork.optReady(Constant.optNormalExcel);
-                //ConstantMethod.Delay(2000);
-                evokWork.optReady(Constant.optNormal);
-                /****
-                optSize.Len = evokWork.lcOutInPs.ShowValue;
-                optSize.Dbc = evokWork.dbcOutInPs.ShowValue;
-                optSize.Ltbc = evokWork.ltbcOutInPs.ShowValue;
-                optSize.Safe = evokWork.safeOutInPs.ShowValue;
-                ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
-                ****/
-           // }
+            if (optchk.Checked)
+            {
+                evokWork.optReady(Constant.optNo);
+            }else
+            evokWork.optReady(Constant.optNormal);
+             
             stopOptShow();
             optBtn.BackColor = Color.Transparent;
             optBtn.Enabled = true;
@@ -255,11 +243,13 @@ namespace evokNew0066
                  //尺寸切了后 结巴尾料分离
                  //无尺寸就去除结疤
                  //优化系数是针对索菲亚的 只有在测长的时候会进行保存和设置 20181012
+                 /****
                 int value0 = 0;
                 if (int.TryParse(comboBox2.Text, out value0))
                 {
                     evokWork.SetOptSizeParam1(value0);
                 }
+                ****/
                 switch (comboBox1.SelectedIndex)
                 {
 
@@ -283,6 +273,7 @@ namespace evokNew0066
                         }
 
                 }
+
                 //测试代码 后续回复弹窗
                 /**
                 qClr_Click(sender, e);
@@ -395,53 +386,9 @@ namespace evokNew0066
             {
                 statusLabel.Text = Constant.ConnectMachineFail;
                 statusLabel.BackColor = Color.Red;
-            }
-            if (tc1.SelectedIndex == 0)
-            {
-                foreach (PlcInfoSimple p in evokWork.PsLstAuto)
-                {
-                    if (p.Name.Contains(Constant.Alarm) && p.ShowStr != null && p.ShowStr.Count > 0)
-                    {
-                        for (int i = 0; i < p.ShowStr.Count; i++)
-                        {
-                            int index = errorList.IndexOf(p.ShowStr[i]);
-                            if (p.ShowValue == Constant.M_ON && index < 0)
-                            {
-                                errorList.Add(p.ShowStr[i]);
-                            }
-                            if (p.ShowValue == Constant.M_OFF && index > -1 && index < errorList.Count)
-                            {
-                                errorList.RemoveAt(index);
-                            }
-                        }
-
-                    }
-                }
-            }
-            if (tc1.SelectedIndex == 1)
-            {
-                foreach (PlcInfoSimple p in evokWork.PsLstHand)
-                {
-                    if (p.Name.Contains(Constant.Alarm) && p.ShowStr != null && p.ShowStr.Count > 0)
-                    {
-                        for (int i = 0; i < p.ShowStr.Count; i++)
-                        {
-                            int index = errorList.IndexOf(p.ShowStr[i]);
-                            if (p.ShowValue == Constant.M_ON && index < 0)
-                            {
-                                errorList.Add(p.ShowStr[i]);
-                            }
-                            if (p.ShowValue == Constant.M_OFF && index > 0 && index < p.ShowStr.Count)
-                            {
-                                errorList.RemoveAt(index);
-                            }
-                        }
-
-                    }
-                }
-            }
-
-
+            }   
+                    
+            evokWork.errorListUpdate(tc1.SelectedIndex);             
         }
         private void UpdataHand()
         {
@@ -731,13 +678,14 @@ namespace evokNew0066
 
         private void errorTimer_Tick(object sender, EventArgs e)
         {
+            int id = MultiLanguage.getLangId();
+
             if (errorList.Count > 0)
             {
                 if (errorId >= errorList.Count)
                 {
                     errorId = 0;
-                }
-               int id = MultiLanguage.getLangId();
+                }              
                string[] splitError = errorList[errorId].Split('/');
                 if (splitError.Length > 1)
                 {
@@ -751,9 +699,32 @@ namespace evokNew0066
                 }
 
                 errorId++;
-
             }
             else infoLbl.Text = "";
+          
+            if (warnList.Count > 0)
+            {
+                if (warnId >= warnList.Count)
+                {
+                    warnId = 0;
+                }
+                string[] splitError = warnList[warnId].Split('/');
+                if (splitError.Length > 1)
+                {
+                    warningLabel.Text = splitError[id];
+                    LogManager.WriteProgramLog(warningLabel.Text);
+                }
+                else
+                {
+                    warningLabel.Text = warnList[warnId];
+                    LogManager.WriteProgramLog(warningLabel.Text);
+                }
+
+                warnId++;
+            }
+            else warningLabel.Text = "";
+
+           
         }
               
         private void printcb_SelectedIndexChanged(object sender, EventArgs e)
@@ -803,7 +774,7 @@ namespace evokNew0066
            
 
         }
-            
+                          
         private void comboBox3_SelectedValueChanged(object sender, EventArgs e)
         {
             if(tc1.SelectedIndex ==2)
@@ -828,6 +799,33 @@ namespace evokNew0066
         private void tc1_SizeChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            optBtn.Enabled = false;
+            optBtn.BackColor = Color.Red;
+            rtbResult.Clear();
+            rtbWork.Clear();
+            startOptShow();
+
+            evokWork.optReady(Constant.optNo);
+
+            stopOptShow();
+            optBtn.BackColor = Color.Transparent;
+            optBtn.Enabled = true;
+        }
+
+        private void optchk_CheckedChanged(object sender, EventArgs e)
+        {
+            if (optchk.Checked)
+            {
+                evokWork.SetIsArrangeOpt(true);
+            }
+            else
+            {
+                evokWork.SetIsArrangeOpt(false);
+            }
         }
     }   
 }

@@ -109,16 +109,23 @@ namespace xjplc
                                     item0.Text = (string)hashText[item0.Name];
                                 }
                             }
+
                             if (hashText.Contains(item.Name))
                             {
                                 item.Text = (string)hashText[item.Name];
                             }
+
+
                         }
                     }
+                    
+                                                                                                                                                                              
                     if (hashText.Contains(control.Name))
-                    {
+                    {                      
                         control.Text = (string)hashText[control.Name];
                     }
+
+
                 }
                 //如果找到了控件，就将对应的名字赋值过去
                 if (hashText.Contains(form.Name))

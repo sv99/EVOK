@@ -163,30 +163,46 @@ namespace xjplc.xj
                 if (inputs != null && inputs.Count() == tDplcLst.Count)
                 {
                     ErrorConnCount = 0;
+                    for (int i = 0; i < tDplcLst.Count(); i++)
+                    {
+                        if (IsRePackCmdReadDMDataOut) return true;
+
+                        byte[] a = BitConverter.GetBytes(inputs[i]);
+
+                        tDplcLst[i].ByteValue[0] = a[1]; //低字节
+                        tDplcLst[i].ByteValue[1] = a[0]; //低字节
+                    }
 
                     for (int i = 0; i < tDplcLst.Count(); i++)
                     {
                         if (IsRePackCmdReadDMDataOut) return true; 
-                        byte[] a = BitConverter.GetBytes(inputs[i]);
-                                  
-                        tDplcLst[i].ByteValue[0] = a[1]; //低字节
-                        tDplcLst[i].ByteValue[1] = a[0]; //低字节
+                                                                            
 
-                        if (!dataForm.Rows[tDplcLst[i].Row]["value"].ToString().Equals(tDplcLst[i].PlcValue.ToString())
-                        && !tDplcLst[i].IsInEdit )
+                        if (tDplcLst[i].Row >= dataForm.Rows.Count) continue;
+
+                        string sValue = tDplcLst[i].PlcValue.ToString();
+
+                        int iValue = tDplcLst[i].PlcValue;
+
+                        if (!dataForm.Rows[tDplcLst[i].Row]["value"].ToString().Equals(sValue)
+                        && !tDplcLst[i].IsInEdit && (tDplcLst[i].BelongToDT != null) )
                         {
                             if (dataForm.Rows[tDplcLst[i].Row]["addr"].ToString().Contains(tDplcLst[i].RelAddr.ToString())
                                 && dataForm.Rows[tDplcLst[i].Row]["addr"].ToString().Contains(tDplcLst[i].StrArea)
                                 )
                             {
-                                string s = tDplcLst[i].PlcValue.ToString();
-                                dataForm.Rows[tDplcLst[i].Row]["value"] = s;
-
-                                double ration = 1;
-                                if (double.TryParse(dataForm.Rows[tDplcLst[i].Row][Constant.strParam7].ToString(), out ration))
+                                
+                                if (tDplcLst[i].BelongToDT != null)
                                 {
-                                    dataForm.Rows[tDplcLst[i].Row]["value"] = tDplcLst[i].PlcValue.ToString();
-                                    dataForm.Rows[tDplcLst[i].Row][Constant.strParam6] = (tDplcLst[i].PlcValue / ration).ToString("0.00");
+                                    dataForm.Rows[tDplcLst[i].Row]["value"] = sValue;
+
+                                    double ration = 1;
+
+                                    if (double.TryParse(dataForm.Rows[tDplcLst[i].Row][Constant.strParam7].ToString(), out ration))
+                                    {
+                                        dataForm.Rows[tDplcLst[i].Row]["value"] = sValue;
+                                        dataForm.Rows[tDplcLst[i].Row][Constant.strParam6] = (iValue / ration).ToString("0.00");
+                                    }
                                 }
                             }
                         }
@@ -214,9 +230,12 @@ namespace xjplc.xj
                 if (inputBools != null && inputBools.Count() == mPlst.Count)
                 {
                     ErrorConnCount = 0;
+
                     for (int i = 0; i < mPlst.Count; i++)
                     {
                         if (IsRePackCmdReadDMDataOut) return true;
+
+                        if (mPlst[i].Row >= dataForm.Rows.Count) continue;
 
                         if (mPlst[i].ByteValue != null && mPlst[i].ByteValue.Count() > 0)
                         {
@@ -282,7 +301,7 @@ namespace xjplc.xj
 
                     if(tDplcLst.Count > 0)
                     {
-                        getDValueFromLst(tDplcLst);
+                       getDValueFromLst(tDplcLst);
                     }
                     tDplcLst.Clear();
                     tDplcLst = null;
