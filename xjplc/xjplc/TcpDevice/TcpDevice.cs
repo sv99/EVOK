@@ -89,6 +89,21 @@ namespace xjplc.TcpDevice
             get { return isGoToGetData; }
             set { isGoToGetData = value; }
         }
+        public void Dispose()
+        {
+            status = false;
+            ErrorConnCount = 0;
+            connectWatchTimer.Enabled = false;
+            isDeviceReady = false;
+            isGoToGetData = false;
+
+            ConstantMethod.Delay(150);
+
+            ClearBufferCmdOut();
+
+            CloseTcpClient();
+          
+        }
         public bool Reset()
         {
             status = false;
@@ -97,7 +112,7 @@ namespace xjplc.TcpDevice
             isDeviceReady = false;
             isGoToGetData = false;
             
-            ConstantMethod.Delay(150);
+            ConstantMethod.Delay(10);
 
             ClearBufferCmdOut();
 
@@ -143,7 +158,7 @@ namespace xjplc.TcpDevice
         public TcpDevice(ServerInfo p0)
         {
 
-            connectWatchTimer = new System.Timers.Timer(Constant.XJConnectTimeOut);  //这里0.3 秒别改 加到常量里 工控机性能不行 
+            connectWatchTimer = new System.Timers.Timer(500);  //这里0.3 秒别改 加到常量里 工控机性能不行 
 
             connectWatchTimer.Enabled = false;
 
@@ -171,6 +186,7 @@ namespace xjplc.TcpDevice
             //通讯错误次数太多 就直接停了吧
             if (ErrorConnCount < Constant.ErrorConnCountMax && ErrorConnCount > 2)
             {
+                string ss = DeviceName;
                 GetData();
                 return;
             }
@@ -203,7 +219,7 @@ namespace xjplc.TcpDevice
                 {
                     CloseTcpClient();
                 }
-
+                if (!ConstantMethod.IsNetWorkExist(serverParam.server_Ip)) return false;
                 socketDt = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress ip = IPAddress.Parse(serverParam.server_Ip);
                 IPEndPoint point = new IPEndPoint(ip, int.Parse(serverParam.server_Port));
@@ -218,7 +234,7 @@ namespace xjplc.TcpDevice
 
                 socketDt.ConnectAsync(connectArgs);
 
-                ConstantMethod.Delay(500);
+                ConstantMethod.Delay(200);
 
                 if (recThread != null && recThread.IsAlive)
                 {
@@ -235,7 +251,9 @@ namespace xjplc.TcpDevice
                     connectWatchTimer.Enabled = true;
                     SetReadCmd();
                     Start();
-                    ConstantMethod.Delay(200);
+
+                    Status = true;
+                    
                     return Status;
                 }
                 return false;
@@ -251,7 +269,7 @@ namespace xjplc.TcpDevice
         }
         public void GetData()
         {
-            if (IsGoToGetData)
+            if (IsGoToGetData  && !string.IsNullOrWhiteSpace(serverParam.server_Ip))
             {
                 if (CmdOut != null && CmdOut.Count() > 0) socketDt.Send(CmdOut.ToArray());
             }
@@ -261,7 +279,7 @@ namespace xjplc.TcpDevice
         public void Start()
         {
             IsGoToGetData = true;
-            IsDeviceReady = true;
+            IsDeviceReady = true;           
             ClearBufferCmdOut();
             GetData();
         }
@@ -280,18 +298,21 @@ namespace xjplc.TcpDevice
                     int r = socketDt.Receive(buffer);
                     if (r > 0)
                     {
+                        Status = true;
+
+                        ErrorConnCount = 0;
+
                         byte[] array_buffer = new byte[r];
                         Array.Copy(buffer, array_buffer, r);
 
-                        Thread.Sleep(10);
+                        Thread.Sleep(100);
 
                         DataProcessEventArgs.Byte_buffer = array_buffer.ToArray();
 
                         if(EventDataProcess != null && DataProcessEventArgs !=null)
                         EventDataProcess(this, DataProcessEventArgs);
-                        SetReadCmd();
-                        Status = true;
-                        ErrorConnCount = 0;
+
+                        SetReadCmd();                                             
                         GetData();
                        
 

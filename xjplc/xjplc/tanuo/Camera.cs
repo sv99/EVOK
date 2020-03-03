@@ -554,7 +554,7 @@ namespace xjplc
             }
         }
 
-        public bool StopRecord(string filename)
+        public bool StopRecord()
         {
             //停止录像 Stop recording
             if (!CHCNetSDK.NET_DVR_StopSaveRealData(m_lRealHandle))
@@ -566,7 +566,7 @@ namespace xjplc
             }
             else
             {
-                str = "录像已保存！" + filename;
+                str = "录像已保存！" +recordFileName;
                 MessageBox.Show(str);
                 Status = 2;
 
@@ -588,6 +588,7 @@ namespace xjplc
                 return false;
 
             }
+
             int lChannel = idChannel; //通道号 Channel number
             CHCNetSDK.NET_DVR_MakeKeyFrame(m_lUserID, lChannel);
 
@@ -611,7 +612,7 @@ namespace xjplc
             if (this == null) return;
             if (status == 4)
             {
-                StopRecord(RecordFileName);
+                StopRecord();
             }
             if (m_lRealHandle >= 0)
             {

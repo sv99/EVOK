@@ -289,7 +289,6 @@
             this.tc1.Size = new System.Drawing.Size(1325, 637);
             this.tc1.TabIndex = 1;
             this.tc1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc1_Selecting);
-            this.tc1.SizeChanged += new System.EventHandler(this.tc1_SizeChanged);
             // 
             // tabPage1
             // 

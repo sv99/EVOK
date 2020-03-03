@@ -38,6 +38,9 @@ namespace xjplc.TcpDevice
             set { farlight = value; }
         }
 
+
+        public bool IsHandControl = false;
+        
         //近光灯亮度
         int nearlight = 3;
         public int Nearlight
@@ -46,7 +49,17 @@ namespace xjplc.TcpDevice
             set { nearlight = value; }
         }
 
-       //小车倾斜方向
+        //后视灯亮度
+
+        int backlight = 3;
+        public int Backlight
+        {
+            get { return backlight; }
+            set { backlight = value; }
+        }
+
+
+        //小车倾斜方向
         int carQxDir = 0;
         public int CarQxDir
         {
@@ -69,14 +82,34 @@ namespace xjplc.TcpDevice
         }
 
         //小车速度
-        int speed = 5;
+        int speed = 3;
         public int Speed
         {
             get { return speed; }
             set { speed = value; }
         }
 
-
+        //小车抬杆状态
+        int carTaiGanValue = 0;
+        public int CarTaiGanValue
+        {
+            get { return carTaiGanValue; }
+            set { carTaiGanValue = value; }
+        }
+        //小车气压1
+        double carPressure1 = 0;
+        public double CarPressure1
+        {
+            get { return carPressure1; }
+            set { carPressure1 = value; }
+        }
+        //小车气压2
+        double carPressure2 = 0;
+        public double CarPressure2
+        {
+            get { return carPressure2; }
+            set { carPressure2 = value; }
+        }
         //是否除雾
         int cwEnable = 0;
         public int CwEnable
@@ -116,107 +149,236 @@ namespace xjplc.TcpDevice
             set { currentFgValue = value; }
         }
 
-        
+
 
         #endregion
-       
-        #region 参数设置
 
+        #region 参数设置
+        public Action<int> FarLightChange;
+        public Action<int> NearLightChange;
+        public Action<int> ZdSpeedChange;
+        public Action<int> BackLightChange;
         //远光灯加1
         public void incFarLight()
         {
-            SetLightCTRL(Farlight + 1, Nearlight);
+            SetLightFar(Farlight + 1);
         }
 
         //近光灯加1
         public void incNearLight()
         {
-            SetLightCTRL(Farlight , Nearlight + 1);
+            SetLightNear(Nearlight + 1);
         }
 
         //远光灯减1
         public void decFarLight()
         {
-            SetLightCTRL(Farlight -1 , Nearlight);
+            SetLightFar(Farlight -1);
         }
 
         //近光灯减1
         public void decNearLight()
         {
-            SetLightCTRL(Farlight, Nearlight - 1);
+            SetLightNear(Nearlight - 1);
         }
 
         public void SetSpeed(int spvalue)
         {
-            if (Speed <= 10 && Speed > 0)
-            {
-                Speed = spvalue;
+            Speed = spvalue;
 
-                byte dirByte = ((byte)(CmdOutReadyGo[2] & 0xf0));
-                dirByte = (byte)(dirByte | (Speed));
+            if (Speed > 10)Speed = 10;
+            if (Speed < 0)Speed = 0;
+
+           
+            byte dirByte = ((byte)(CmdOutReadyGo[2] & 0xf0));
+            dirByte = (byte)(dirByte | (Speed));
                 CmdOutReadyGo[2] = dirByte;
 
                 //取出速度值 给默认的指令
                 dirByte = (byte)(dirByte & 0x0f);
                 cmdZDUsualOut[2] = dirByte;
 
-               
-                
+            if (ZdSpeedChange != null  && IsHandControl)
+            {
+                ZdSpeedChange(Speed);
             }
+
+
         }
         //单独设置远近光灯设置
         public void SetLightCTRL(int farLight, int nearLight)
         {
-            if (farLight > 10 || farLight<1) return;
-            if (nearLight > 10 || nearlight <1 ) return;
+            if (farLight > 10 || farLight<0) return;
+
+            if (nearLight > 10 || nearlight <0) return;
+
 
             byte dirByte = (byte)(farLight << 4 | nearLight);
 
             CmdOutReadyGo[4] = dirByte;
             cmdZDUsualOut[4] = dirByte;
+
             this.Farlight = farLight;
             this.Nearlight = nearLight;
                       
         }
+        public void SetLightNear(int near)
+        {
+
+            if (near > 10 || near < 0) return;
+
+
+            byte dirByte = (byte)(this.Farlight << 4 | near);
+
+            CmdOutReadyGo[4] = dirByte;
+            cmdZDUsualOut[4] = dirByte;
+
+            this.Nearlight = near;
+
+            if (NearLightChange != null && IsHandControl)
+            {
+                NearLightChange(Nearlight);
+            }
+
+
+        }
+        public void SetLightFar(int far)
+        {
+            if (far > 10 || far < 0) return;
+
+           
+
+            byte dirByte = (byte)(far << 4 | this.Nearlight);
+
+            CmdOutReadyGo[4] = dirByte;
+            cmdZDUsualOut[4] = dirByte;
+
+            this.Farlight = far;
+            if (FarLightChange != null  && IsHandControl)
+                FarLightChange(Farlight);
+
+        }
+
+        public bool SetCarReset()
+        {
+
+            byte dirByte = CmdOutReadyGo[5];// (byte)(0x20 | CwEnable << 3 );
+
+            dirByte = ConstantMethod.set_bit(dirByte, 5, true);
+
+           
+            CmdOutReadyGo[5] = dirByte;
+
+            CarResetOk = false;
+            CarInRst = true;
+            /***
+            int cwEn = cwEnable;
+            byte[] cmdOutTemp = CmdOutReadyGo.ToArray();
+            byte dirByte = (byte)(0x10 | cwEn << 3);
+            cmdOutTemp[3] = dirByte;
+
+            CmdOutReadyGo = cmdOutTemp;
+
+            PTInRst = true;
+            ***/
+
+            ConstantMethod.Delay(3000, ref CarResetOk);
+
+            CarInRst = false;
+            dirByte = ConstantMethod.set_bit(dirByte, 5, false);
+
+  
+            CmdOutReadyGo[5] = dirByte;
+             
+
+            
+            return CarResetOk;
+
+
+
+
+        }
+
+        bool UnLock = true;
+        public bool SetCarUnlock()
+        {
+
+            byte dirByte = CmdOutReadyGo[5];// (byte)(0x20 | CwEnable << 3 );                   
+
+            if(UnLock)
+               UnLock = false;
+            else
+                UnLock = true;
+
+            dirByte = ConstantMethod.set_bit(dirByte, 6, UnLock);
+
+            CmdOutReadyGo[5] = dirByte;
+
+       
+            return UnLock;
+
+
+
+
+        }
+        public void SetBackLight(int near)
+        {
+            if (near > 10 || near < 0) return;
+
+
+            byte dirByte = (byte)(0x0F & near);
+
+            CmdOutReadyGo[5] = dirByte;
+            cmdZDUsualOut[5] = dirByte;
+
+            this.Backlight = near;
+
+            if (BackLightChange != null && IsHandControl)
+                BackLightChange(Backlight);
+
+
+        }
+        public void IncLight(int near)
+        {
+            SetBackLight(Backlight + 1);         
+        }
+        public void DecLight(int near)
+        {
+            SetBackLight(Backlight- 1);
+
+        }
         //速度加1
         public void incSpeed()
         {
-            byte[] cmdOutTemp = CmdOutReadyGo.ToArray();
+            
             Speed++;
-            if (Speed >= 9) Speed = 9;
 
-            byte dirByte = ((byte)(cmdOutTemp[2] & 0xf0));
-            dirByte = (byte)(dirByte | (Speed));
+            if (Speed >= 10) Speed = 10;
 
-            cmdOutTemp[2] = dirByte;
-            cmdZDUsualOut[2] = dirByte;
-            CmdOutReadyGo = cmdOutTemp;
+            SetSpeed(Speed);
 
         }
         //速度减1
         public void decSpeed()
         {
-            byte[] cmdOutTemp = CmdOutReadyGo.ToArray();
+            
             Speed--;
             if (Speed <= 0) Speed = 0;
 
-            byte dirByte = ((byte)(cmdOutTemp[2] & 0xf0));
-            dirByte = (byte)(dirByte | (Speed));
-
-            cmdOutTemp[2] = dirByte;
-            cmdZDUsualOut[2] = dirByte;
-            CmdOutReadyGo = cmdOutTemp;
+            SetSpeed(Speed);
 
         }
         #endregion
         #region 运动控制
         #region 云台运动
-
+        public Action<int> YunTaiShowChange;
         public bool  CamPTStart(int id)
         {
             if (!Status ) return false;
+            if (YunTaiShowChange != null) YunTaiShowChange(id);
             switch (id)
             {
+               
                 case 1:
                     {
                         if(!IsPTMoving) 
@@ -244,8 +406,8 @@ namespace xjplc.TcpDevice
                     }
                 case 5:
                     {
-                        if (!IsPTMoving)
-                            PTReset();
+                        if (!IsPTMoving )
+                            return PTReset();
                         break;
                     }
                 default:
@@ -271,8 +433,8 @@ namespace xjplc.TcpDevice
         bool PTDown = false;
         bool PTLeft = false;
         bool PTRight = false;
-        bool PTInRst = false;       
-
+        bool PTInRst = false;
+        bool CarInRst = false;
         //停止摄像头运动 第4个字节 
         void StopPT()
         {
@@ -298,7 +460,7 @@ namespace xjplc.TcpDevice
         }
 
         //摄像头云台复位
-        void  PTReset()
+        bool  PTReset()
         {
          
 
@@ -314,6 +476,8 @@ namespace xjplc.TcpDevice
 
             CmdOutReadyGo[3] = dirByte;
 
+            ResetOk = false;
+
             PTInRst = true;
             /***
             int cwEn = cwEnable;
@@ -325,16 +489,16 @@ namespace xjplc.TcpDevice
 
             PTInRst = true;
             ***/
-            while (PTInRst)
-            {                            
-                ConstantMethod.Delay(100);
-                
-                if (ResetOk)
-                {
-                    StopPT();
-                    break;
-                }
-            }
+
+            ConstantMethod.Delay(5000, ref resetOk);
+            PTInRst = false;
+
+            StopPT();
+
+            return resetOk;
+
+
+
         }
         //摄像头云台上
          void PackPTUp()
@@ -494,12 +658,12 @@ namespace xjplc.TcpDevice
         }
 
         #endregion
-
         #region 小车运动
         bool IsCarMoving
         {
             get { return CarMoveBackward || CarMoveForward || CarTurnLeft || CarTurnRight || GetLineHouTui; }
         }
+        public Action<int> CarStartShowChange;
         public void CarStart(int id)
         {
             if (!Status) return;
@@ -509,6 +673,10 @@ namespace xjplc.TcpDevice
                 case 1: //上
                     {
                         if (IsCarMoving) return;
+                        if (CarStartShowChange != null)
+                        {
+                            CarStartShowChange(1);
+                        }
                         //持续运动检测器开启
                         PackQianCmd();
                         break;
@@ -516,33 +684,54 @@ namespace xjplc.TcpDevice
                 case 2:
                     {
                         if (IsCarMoving) return;
+                        if (CarStartShowChange != null)
+                        {
+                            CarStartShowChange(2);
+                        }
                         PackHouCmd();
+                   
                         break;
                     }
                 case 3:
                     {
                         if (IsCarMoving) return;
+                        if (CarStartShowChange != null)
+                        {
+                            CarStartShowChange(3);
+                        }
                         PackZuoCmd();
                         break;
                     }
                 case 4:
                     {
                         if (IsCarMoving) return;
+                        if (CarStartShowChange != null)
+                        {
+                            CarStartShowChange(4);
+                        }
                         PackYouCmd();
                         break;
                     }
                 case 5:
                     {
-
                         ZdGetLineHouTuiStart();
+                        if (CarStartShowChange != null)
+                        {
+                            CarStartShowChange(2);
+                        }
                         break;
                     }
                 default:
                     {
                         if (IsCarMoving)
+                            if (CarStartShowChange != null)
+                            {
+                                CarStartShowChange(0);
+                            }
                         StopCar();
                         break;
                     }
+                
             }
         }
 
@@ -661,19 +850,20 @@ namespace xjplc.TcpDevice
 
             return oldangle;
         }
-
+        public bool CarResetOk = false;
         //数据处理
         void ZDDataProcess(object sender, SocEventArgs e)
         {
             if (DeviceId == Constant.devicePropertyB)
             {
-                if (e.Byte_buffer.Length == 5 && e.Byte_buffer[0] == 0xb0 && e.Byte_buffer[4] == 0x0b)
+                if (e.Byte_buffer.Length == 8 && e.Byte_buffer[0] == 0xb0 && e.Byte_buffer[7] == 0x0b)
                 {
                     int oldQxValue = CarQxValue;
                     int oldQxDir = CarQxDir;
 
-                    ResetOk = ConstantMethod.getBitValueInByte(8, e.Byte_buffer[1]) == 1 ? true : false;
-
+                    ResetOk = ConstantMethod.getBitValueInByte(8, e.Byte_buffer[1]) == 1 ;
+                    CarResetOk = ConstantMethod.getBitValueInByte(7, e.Byte_buffer[1]) == 1;
+                    
                     #region 计算倾斜
                     //老的计算方式
                     CarQxDir = ConstantMethod.getBitValueInByte(8, e.Byte_buffer[2]);
@@ -692,8 +882,6 @@ namespace xjplc.TcpDevice
                     #endregion
                     #region 翻滚角度
                     //老的计算方式
-                    int oldFgValue = CarFgValue;
-                    int oldFgDir = CarFgDir;
                     CarFgDir = ConstantMethod.getBitValueInByte(8, e.Byte_buffer[3]);
                     CarFgValue = e.Byte_buffer[3] & 0x7F;
 
@@ -704,7 +892,23 @@ namespace xjplc.TcpDevice
                     CurrentFgValue = getValueByDir(CarFgDir, CarFgValue); ;// (int)e.Byte_buffer[3];
                     //if (RotateFgValue == 0)
                     RotateFgValue = CurrentFgValue-oldCurrentFgValue ;// getRotateValue(oldFgDir, oldFgValue, CarFgDir, CarFgValue);
-                   #endregion
+
+
+
+
+                    #endregion
+
+                    #region 抬杆高度气压1气压2
+                    CarTaiGanValue = e.Byte_buffer[4];
+                
+
+                    CarPressure1 = ((e.Byte_buffer[5]- 98.333)/ -46.865);
+
+                    CarPressure2 = ((e.Byte_buffer[6] - 98.333) / -46.865);
+
+                    if (CarPressure1 <= 0) CarPressure1 = 0;
+                    if (CarPressure2 <= 0) CarPressure2 = 0;
+                    #endregion
                 }
             }
         }

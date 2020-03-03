@@ -656,6 +656,8 @@ namespace xjplc
 
         public int simiDownLoadSizeId = 0;
 
+
+
         int wl;            //尾料长度= 料长-刀补偿*总尺寸个数（含齐头）-料补偿
         /// <summary>
         /// m                                                                                                                            
@@ -687,16 +689,18 @@ namespace xjplc
                     int ladd = 0;
 
                     ladd = Cut.Sum();
-                    if (
-                                                
+
+                    #region  //司米的尾料计算
+                    if (                                               
                         leftAngle.Count > 0
                         && leftAngle[0] != 0
                         && leftAngle.Count == rightAngle.Count
                         && leftAngle[0] <= 90
                         && leftAngle[0] >= -90
-
+                        && rightAngle[0] != 0
                         )
                     {
+
                         ladd = 0;
                         if (simiDownLoadSizeId == Constant.downLoadTopSizeId)
                             foreach (string size in Param5)
@@ -722,10 +726,14 @@ namespace xjplc
                         int jfbc0 = 0;
                         int dbc0 = DBC ;
                         int lbc0 = LBC;
-                        double width0;
+                        double width0=0;
 
-                        if (!double.TryParse(Param16[0].ToString(), out width0))
-                            return 0;
+                        if (Param16.Count > 0 && !double.TryParse(Param16[0].ToString(), out width0))
+                        {
+
+                        }
+                      
+                       // return 0;
 
                         width0 = width0 * Constant.dataMultiple;
                         //左边都是要切的 如果右边角度和下一个左边不一样 那再加一个角度的刀补
@@ -832,6 +840,8 @@ namespace xjplc
                             jfbc0 += dbc0;
 
                         wl = len - ladd - jfbc0;
+
+                        #endregion
                     }
                     else           
                     wl = len - ladd - jfbc - lbc;
@@ -1499,11 +1509,7 @@ namespace xjplc
             sLst = sLstCuurent;
         }
 
-        //给定一个尺寸 左右角度 计算出上下角度
-        void simiDataShift()
-        {
 
-        }
         
         int getWlNear(int w)
         {
@@ -1957,6 +1963,8 @@ namespace xjplc
                     //如果CSVop 文件名为空 那就保存到默认文件名里
                     if (string.IsNullOrWhiteSpace(CSVop.FileName))
                     {
+                        if (!File.Exists(Constant.userdata)) File.Create(Constant.userdata).Close();
+
                         IsSaving = true;
                         //20181005增加一组函数 如果读取回来为空 那就再保存一次
                         CSVop.SaveCSV(dtData, Constant.userdata);
@@ -1969,7 +1977,10 @@ namespace xjplc
                     }
                 }
             }
-            catch { }
+            catch(Exception ex)
+            {
+                IsSaving = false;
+            }
         }
         public void SaveCsv(int id)
         {
@@ -2002,13 +2013,102 @@ namespace xjplc
             catch
             { }
         }
-
+        
+        
         public void ShowErrorRow()
         {
             List<int> errorId = new List<int>();
             valueAbleRow.Clear();
             //检查datagridview数据是否违法 得出错误列
             errorId = CheckDataGridViewData(OptRealLen, DtData);
+            SetUserdataNosort();
+            if (UserDataView != null)
+            {
+                for (int i = 0; i < UserDataView.Rows.Count; i++)
+                {
+                    UserDataView.Rows[i].DefaultCellStyle.BackColor = UserDataView.RowsDefaultCellStyle.ForeColor;
+                    int needToCut = 0;
+                    int doneCut = 0;
+                    if (UserDataView.Rows[i].Cells[1].Value != null
+                        && UserDataView.Rows[i].Cells[2].Value != null)
+                        if (int.TryParse(UserDataView.Rows[i].Cells[1].Value.ToString(), out needToCut)
+                            && int.TryParse(UserDataView.Rows[i].Cells[2].Value.ToString(), out doneCut))
+                        {
+                            if (needToCut == doneCut)
+                            {
+                                UserDataView.Rows[i].DefaultCellStyle.BackColor = Color.Green;
+
+                            }
+                        }
+                }
+
+                for (int i = errorId.Count - 1; i >= 0; i--)
+                {
+                    UserDataView.Rows[errorId[i]].DefaultCellStyle.BackColor = Color.Red;
+
+                }
+
+
+
+            }
+
+        }
+
+        public List<int> UnCuttableDataLst;
+        List<int>  CheckDataGridViewDataUnCutAngle(DataTable dt,List<string> errorAngleLst)
+        {
+            List<int> errorId = new List<int>();
+            int count = 0;
+            double la = 0;
+            double ra = 0;
+           
+            foreach (DataRow dr in dt.Rows)
+            {
+                bool laMatch = false;
+                bool raMatch = false;
+                if (double.TryParse(dr[4].ToString(), out la) && double.TryParse(dr[5].ToString(), out ra))
+                {
+
+                    foreach (string ang in errorAngleLst)
+                    {
+                        double an = double.Parse(ang);
+                        if (an - ToleranceAngle <= la && la <= an + ToleranceAngle && !laMatch)
+                        {
+                            laMatch = true;
+                        }
+                        if (an - ToleranceAngle <= ra && ra < an + ToleranceAngle && !raMatch)
+                        {
+                            raMatch = true;
+                        }
+                    }
+                }
+                    /*** 增加公差 不一定是这个角度
+                if (!errorAngleLst.Contains(dr[4].ToString()) ||
+                    !errorAngleLst.Contains(dr[5].ToString()))
+                    ***/
+
+                if(laMatch && raMatch)
+                errorId.Add(count);
+
+
+                count++;
+            }
+
+            return errorId;
+        }
+        public void ShowErrorRowSimi(List<string> errorAngleLst)
+        {
+            if (UnCuttableDataLst == null) UnCuttableDataLst = new List<int>();
+            UnCuttableDataLst.Clear();
+            List<int> errorId = new List<int>();
+            valueAbleRow.Clear();
+            //检查datagridview数据是否违法 得出错误列
+            UnCuttableDataLst = CheckDataGridViewDataUnCutAngle(DtData, errorAngleLst);
+            errorId = CheckDataGridViewData((int)simiM.Len*100, DtData);
+
+            if (UnCuttableDataLst.Count > 0) errorId.AddRange(UnCuttableDataLst);
+            UnCuttableDataLst.Clear();
+            UnCuttableDataLst = errorId;
             SetUserdataNosort();
             if (UserDataView != null)
             {
@@ -2274,7 +2374,8 @@ namespace xjplc
 
                     if (SimiM.Len != 0)
                     {
-                        if (int.TryParse(SimiM.ParamLst[2], out id))
+                        if (SimiM.ParamLst.Count > 2)
+                         if (int.TryParse(SimiM.ParamLst[2], out id))
                         {
 
                         }
@@ -2287,7 +2388,7 @@ namespace xjplc
                             SimiM.setMaterial(dr[6].ToString());
                             break;
                         }
-
+                        if(SimiM.ParamLst.Count>2)
                         int.TryParse(SimiM.ParamLst[2], out id);
                     }
 
@@ -2598,6 +2699,7 @@ namespace xjplc
             }
         }
 
+        List<string> CutAbleAngleLst = new List<string>{ "45", "67.5", "90", "-45", "-67.5" };
         //这里进行司米数据的加载      4324324
         public bool LoadSimiData(string filename)
         {
@@ -2735,7 +2837,7 @@ namespace xjplc
 
                 UserDataView.DataSource = dtData;
 
-                ShowErrorRow();                
+                ShowErrorRowSimi(CutAbleAngleLst);                
             }
 
             IsLoadData = false;
@@ -2774,6 +2876,9 @@ namespace xjplc
         {
 
             if (Simi_dataLst ==null || Simi_dataLst.Count < 1) return;
+            if (UnCuttableDataLst == null) UnCuttableDataLst = new List<int>();
+        
+             UnCuttableDataLst.Clear();
             if (id < 1) return;
             id--;      
             foreach (var v in Simi_dataLst)
@@ -2781,7 +2886,6 @@ namespace xjplc
                 if (v.Key.TableName.Equals(materialName) && v.Value.Count > 0)
                 {
                    
-
                     if (id >= v.Value.Count) return;
 
                     DtData = v.Value[id];
@@ -2796,7 +2900,8 @@ namespace xjplc
 
                     break;
                 }
-            }          
+            }
+            ShowErrorRowSimi(CutAbleAngleLst);         
         }
         void updataSplitCombox(int count)
         {
@@ -2852,6 +2957,10 @@ namespace xjplc
                             countId = 1;
                             DataRow drt = dtsplit.NewRow();
                             drt.ItemArray = dr.ItemArray.ToArray();
+                            if (string.IsNullOrWhiteSpace(drt["参数21"].ToString()))
+                            {
+                                drt["参数21"] = (dtSplitLst.Count+1).ToString() + "---"+ countId.ToString();
+                            }
                             dtsplit.Rows.Add(drt);
                         }
                         else
@@ -2859,6 +2968,10 @@ namespace xjplc
 
                             DataRow drt = dtsplit.NewRow();
                             drt.ItemArray = dr.ItemArray.ToArray();
+                            if (string.IsNullOrWhiteSpace(drt["参数21"].ToString()))
+                            {
+                                drt["参数21"] = (dtSplitLst.Count + 1).ToString() + "---" + countId.ToString();
+                            }
                             dtsplit.Rows.Add(drt);
                         }
 
@@ -2883,6 +2996,7 @@ namespace xjplc
             }
                        
         }
+        //材料配置文件的长度
         public double MaterialLen
         {
             get
@@ -2891,10 +3005,16 @@ namespace xjplc
 
                 if (SimiM != null)
                 {
-                    if (SimiM.Len > 0)
-                    {
+                    if (SimiM.Len > 0 )
+                    {                      
                         id = SimiM.Len;
-                    }                 
+
+                        if (Len > 0 && Len != SimiM.Len)
+                        {
+                            id = Len;
+                        }
+                    }  
+                                  
                 }
                 return id;
             }
@@ -3428,6 +3548,13 @@ namespace xjplc
         }
         #region 司米
 
+        //
+        double toleranceAngle = 0;
+        public double ToleranceAngle
+        {
+            get { return toleranceAngle; }
+            set { toleranceAngle = value; }
+        }
         //司米
         List<int> wlLst = new List<int>();
 
@@ -3640,7 +3767,7 @@ namespace xjplc
         /// 第一个参数为返回的结果 取了几个数据
         /// prodlst 为传入的尺寸数据
         /// </summary>
-        /// <param name="resultOpt"></param>
+        /// <param- name="resultOpt"></param>
         /// <param name="len0"></param>
         /// <param name="dbc0"></param>
         /// <param name="ltbc0"></param>
@@ -4699,6 +4826,7 @@ namespace xjplc
                 }
             }
         }
+
         //在正常优化模式下 可以选择优化模型 这里测试EXCEL
         public string OptSimi(RichTextBox rt1, int id)
         {
@@ -4721,6 +4849,7 @@ namespace xjplc
                 ShowErrorRow();
             }
             List<SingleSize> prodLst = new List<SingleSize>();
+
             GetDataFromDt(DtData, prodLst, id);
 
             //如果无数据 则返回-1
@@ -5101,6 +5230,69 @@ namespace xjplc
             }
             return useOptDataLstLst;
         }
+
+        public string OptNormalSimi(RichTextBox rt1)
+        {
+            //干活之前 先清空数据 做好准备工作          
+            singleSizeLst.Clear();
+            ProdInfoLst.Clear();
+
+            if (dtData == null || dtData.Rows.Count < 1) return Constant.prodLstNoData;
+
+            //检查错误行
+            ShowErrorRowSimi(CutAbleAngleLst);
+            List<SingleSize> prodLst = new List<SingleSize>();
+
+            GetDataFromDt(DtData, prodLst);
+
+            //如果无数据 则返回-1
+            if (prodLst.Count < 1) //
+            {
+                MessageBox.Show(Constant.optResultNoData);
+                return Constant.prodLstNoData;
+            }
+
+            //进行优化 变成单个模块
+            List<List<int>> resultOpt = new List<List<int>>();
+            List<int> dataOpt = new List<int>();
+            List<List<int>> resultOptCg = new List<List<int>>();
+            //进行完整的优化
+            if (prodLst.Count > 0)
+                foreach (SingleSize sss in prodLst)
+                {
+                    dataOpt.Add(sss.Cut);
+                }
+            //司米使用剩余原料
+            if (UseRestMaterial)
+            {
+                resultOpt.AddRange(getUseRestMaterial(ref dataOpt));
+                ShowNormalResultWithRestSimi(resultOpt, ref prodLst, rt1);
+            }
+
+            //--------------------------------
+            if (dataOpt.Count > 0)
+                resultOptCg = OptModuleNormal(dataOpt.ToList<int>(), len, dbc, ltbc, safe);
+            if (resultOptCg.Count > 0)
+                resultOpt.AddRange(resultOptCg);
+
+            if (resultOptCg.Count > 0)
+            {
+                ShowNormalResult(resultOptCg, prodLst, rt1, Constant.optNormal);
+            }
+            else
+            {
+                MessageBox.Show(Constant.optResultNoData);
+                return Constant.optResultNoData;
+            }
+
+            resultOpt = null;
+            prodLst = null;
+            dataOpt = null;
+
+            return Constant.optSuccess;
+
+        }
+
         public string OptNormal(RichTextBox rt1)
         {
             //干活之前 先清空数据 做好准备工作          
@@ -5132,7 +5324,7 @@ namespace xjplc
             {
                dataOpt.Add(sss.Cut);
             }
-
+            //司米使用剩余原料
             if (UseRestMaterial)
             {
                 resultOpt.AddRange(getUseRestMaterial(ref dataOpt));
@@ -6211,6 +6403,7 @@ namespace xjplc
 
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                if (UnCuttableDataLst.Contains(i)) continue;
                 //判断尺寸 设定数量 已切数量
                 if (!Double.TryParse(dt.Rows[i][0].ToString(), out dblevaluesize)) continue;
                 if (!int.TryParse(dt.Rows[i][1].ToString(), out intcounttocut)) continue;

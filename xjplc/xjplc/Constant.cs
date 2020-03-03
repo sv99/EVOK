@@ -364,6 +364,7 @@ namespace xjplc
         public static string DeviceUser = "DeviceUser";
         public static string DeviceUserJingPai = "金牌";
         public static string DeviceUserKeFan = "科凡";
+        public static string DeviceUserShenAo = "圣奥";
         public static string DeviceUserOpeeinSimensi = "OpeeinAutoPos";
 
         public static string msjLabel0 = "内圈速度";
@@ -607,14 +608,14 @@ namespace xjplc
         , "参数25"
         , "参数26"
         , "参数27"};
-        public static readonly string[] strformatSimi = { "尺寸", "设定数量", "已切数量", "条码", "左角度*" ,
-            "右角度" , "原材料" , "基准尺寸","中间尺寸" , "底边尺寸" , "拼接关系", "排产日期" , "发运日期" , "包装批次" ,"订单名称", "订单号" , "订单行号" , "材料名称", "材料高" , "材料宽" , "描述" , "后端工艺路线" , "花色" , "模型" , "参数21" , "参数22"
+        public static readonly string[] strformatSimi = { "尺寸", "设定数量", "已切数量", "条码", "左角度" ,
+            "右角度" , "原材料" , "基准尺寸","顶边尺寸" , "底边尺寸" , "拼接关系", "排产日期" , "发运日期" , "包装批次" ,"订单名称", "订单号" , "订单行号" , "材料名称", "材料高" , "材料宽" , "描述" , "后端工艺路线" , "花色" , "模型" , "参数21" , "参数22"
                 , "参数23" , "参数24"
         , "参数25"
         , "参数26"
         , "参数27"};
         public static readonly string[] strformatSimiBl = { "尺寸", "设定数量",
-            "已切数量", "补料原因", "左角度*" ,
+            "已切数量", "补料原因*", "左角度*" ,
             "右角度*" , "原材料*" , "基准尺寸*","顶边尺寸" , "底边尺寸" , "拼接关系", "排产日期" , "发运日期" , "包装批次" ,"订单名称", "订单号" , "订单行号" , "材料名称", "材料高" , "材料宽" , "描述" , "后端工艺路线" , "花色" , "模型" , "参数21" , "参数22"
                 , "参数23" , "参数24"
         , "参数25"
@@ -704,6 +705,7 @@ namespace xjplc
         public static string SQL_Passwd = "SQL_Passwd";
         public static string SQL_Tablename = "SQL_Tablename";
         public static string WlNear1Str = "WlNear";
+        public static string ToleranceAngle = "ToleranceAngle";
         public static int MaxWlNearCount = 20;//最大
         public static int MaxWlNearSize = 500;//最大
         public static readonly string ConfigSimiUserDataFilePath = ConstantMethod.GetAppPath() + "config\\configParam_simi.xml";
@@ -1079,7 +1081,7 @@ namespace xjplc
         //device类和设备重新握手的次数
         public static readonly int DeviceErrorConnCountMax = 0; //最大连接次数
         //通讯过程中 commmanager 重复通讯的最大次数
-        public static readonly int ErrorConnCountMax =10;
+        public static readonly int ErrorConnCountMax =15;
         //信捷专用码 最大区域
         public static readonly int XJMaxAddr = 50000;
         public static readonly int XJMaxDAddr = 7000;

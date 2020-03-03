@@ -32,7 +32,13 @@ namespace prjInfoSetting
          "qsdw", "sjpd","mssd", "jsrq",
          "pgbz", "dqzyx", "tzyxd", "fhzk","bz",
         };
-       
+        public static string[] infoStrCn = {
+        "工程名称", "检测人员", "检测设备", "检测单位", "检测方向", "检测地址",
+         "起点井号", "终点井号", "井口高程", "井口经度", "井口维度",
+         "管段类型", "管段材质", "管段直径", "管段长度", "支管长度",
+         "权属单位", "设计坡度","埋设深度", "建设日期",
+         "评估标准", "地区重要性", "土质影响度", "负荷状况","备注",
+        };
         public static string prjInfo = @"PrjInfo/";
         public static string demoStr = @"PrjInfo/demoStr";
         public static string extextion = ".mp4";
@@ -85,11 +91,11 @@ namespace prjInfoSetting
                         }
                         if (c.GetType().Equals(typeof(SkinComboBox)))
                         {
-                            c.Text = s2[s];  //这里奇怪了 
+                            c.Text = s2[s];  
                         }
                         if (c.GetType().Equals(typeof(RichTextBox)))
                         {
-                            c.Text = s2[s];  //这里奇怪了 
+                            c.Text = s2[s];  
                         }
                         if (c.GetType().Equals(typeof(SkinDateTimePicker)))
                         {
@@ -187,6 +193,11 @@ namespace prjInfoSetting
         private void prjCfg_Load(object sender, EventArgs e)
         {
            
+        }
+
+        private void tabPage6_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

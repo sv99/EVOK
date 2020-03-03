@@ -100,7 +100,7 @@ namespace prjInfoSetting
         {
           
         }
-
+        public DeviceManageer devM;
         private void skinButton3_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog dd = new FolderBrowserDialog();
@@ -127,6 +127,18 @@ namespace prjInfoSetting
         private void skinButton5_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void skinButton6_Click(object sender, EventArgs e)
+        {
+            if (devM != null)
+                devM.CarReset();
+        }
+
+        private void skinButton7_Click(object sender, EventArgs e)
+        {
+            if (devM != null)
+                devM.CarUnlock();
         }
     }
 }

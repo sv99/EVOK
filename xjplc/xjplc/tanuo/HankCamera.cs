@@ -18,6 +18,8 @@ namespace xjplc.tanuo
     public class HankCamera
     {
 
+        private string[] StatusStrip = { "未知", "连接成功", "预览中", "空闲", "录像中" };
+        private int[] statusStatusip = { 0, 1, 2, 3, 4 };
 
         int status;
         public int Status
@@ -36,7 +38,7 @@ namespace xjplc.tanuo
         int m_lRealDataID = -1;  //实时流句柄
 
         ServerInfo deviceInfo;
-
+        public Action<int> CamShow;
         public void SetDeviceInfo(ServerInfo ser)
         {
             this.deviceInfo = ser;
@@ -45,6 +47,12 @@ namespace xjplc.tanuo
 
         public HankCamera()
         {
+            for (int i = 0; i < 5; i++)
+            {
+                OsdText s = new OsdText();
+                s.Id = (i).ToString();
+                osdLst.Add(s);
+            }
 
         }
 
@@ -56,7 +64,6 @@ namespace xjplc.tanuo
         public bool OpenDevice(ServerInfo ser)
         {
 
-
             if (!HankVisionSDK.IPCNET_Init())
             {
 
@@ -66,7 +73,7 @@ namespace xjplc.tanuo
             g_lUserID = HankVisionSDK.IPCNET_Login(ser.server_Ip, uint.Parse(ser.server_Port), ser.userName, ser.userPwd);
             //视频浏览
             if (g_lUserID < 0) return false;
-
+            Status = 2;
 
             //开始预览
             IntPtr puser = new IntPtr();
@@ -79,6 +86,7 @@ namespace xjplc.tanuo
             sRealInfo.lChannel = 0;
             sRealInfo.lStreamMode = 0;  // 子码流
 
+            SetDeviceInfo(ser);
 
             if (RealData == null)
             {
@@ -88,11 +96,12 @@ namespace xjplc.tanuo
             {
                 cbne = new CBNetException(CBN);
             }
+            /***
             if (cbdf == null)
             {
                 cbdf = new CBDrawFun(CBDrawFun);
             }
-
+            ***/
             m_lRealDataID = IPCNET_StartRealData(
                 g_lUserID,
                 ref sRealInfo,
@@ -106,7 +115,7 @@ namespace xjplc.tanuo
           
             HDVPLAY_SetDrawFunCallBack(m_lPlayHandle, cbdf, puser);
 
-            Status = 2;
+           
 
             return true;
         }
@@ -122,7 +131,12 @@ namespace xjplc.tanuo
             {
                 RecordCmd = false;
             }
-
+         
+            if (status == 4)
+            {
+                StopRecord();
+            }
+                    
             if (m_lRealDataID >= 0)
             {
                 if (!IPCNET_StopRealData(m_lRealDataID))
@@ -192,7 +206,48 @@ namespace xjplc.tanuo
         #endregion
 
         //拍照
+        public bool TakePhoto(string filename)
+        {
+            if (Status != 2) return false;
+            if (!HDVPLAY_CapturePicture(m_lPlayHandle, filename, tagPictype.PIC_JPEG))
+            {
+                MessageBox.Show("拍照失败" + HDVPLAY_GetLastError().ToString());
 
+                return false;
+            }
+
+            return true;
+
+        }
+        public bool StartRecord(string filename)
+        {
+            if (Status != 2) return false;
+
+            if (File.Exists(filename))
+            {
+
+                MessageBox.Show("文件名已存在！");
+                return false;
+
+            }
+            if (HDVPLAY_StartRecord(m_lPlayHandle, filename, tagRecordtype.RECORD_AVI))
+            {
+                recordFileName = filename;
+                Status = 4;
+                return true;
+            }
+            else return false;
+        }
+        public bool StopRecord()
+        {
+            if (HDVPLAY_StopRecord(m_lPlayHandle))
+            {
+                Status = 2;
+                MessageBox.Show("录像已保存！" + recordFileName);
+                return true;
+            }
+            else return false;
+        }
         //复位
 
         #region 焦距放大
@@ -202,6 +257,7 @@ namespace xjplc.tanuo
         {
             if (g_lUserID > 0)
             {
+                if (CamShow != null) CamShow(id);
                 switch (id)
                 {
                     case 1:
@@ -210,10 +266,7 @@ namespace xjplc.tanuo
                             if (adjustId != id)
                             {
                                 if (adjustId > 0) StopAdjust();
-                                Focus_Far_Start();
-                                
-                                   
-                                
+                                Focus_Far_Start();                                                                                              
                             }
                             adjustId = id;
                             break;
@@ -298,8 +351,8 @@ namespace xjplc.tanuo
         public void Focus_Near_Stop()
         {
            
-                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.FOCUS_NEAR, 6, 6, true);
-            
+            HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.FOCUS_NEAR, 6, 6, true);
+            IsAdjusitng = false;
         }
 
         public  void Zoom_Out_Start()
@@ -308,14 +361,13 @@ namespace xjplc.tanuo
             {
                 if (IsAdjusitng) return;
                 IsAdjusitng = true;
-                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_WIDE, 6, 6, false);
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_TELE, 1, 1, false);
             }
         }
         public void Zoom_Out_Stop()
-        {
-            
-                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_WIDE, 6, 6,true);
-            
+        {         
+            HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_TELE, 1, 1,true);
+            IsAdjusitng = false;
         }
 
         public void Zoom_In_Start()
@@ -324,14 +376,14 @@ namespace xjplc.tanuo
             {
                 if (IsAdjusitng) return;
                 IsAdjusitng = true;
-                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_TELE, 6, 6, false);
+                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_WIDE, 1, 1, false);
             }
         }
         public void Zoom_In_Stop()
         {
            
-                HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_TELE, 6, 6, true);
-            
+            HankVisionSDK.IPCNET_PTZControl(g_lUserID, 0, tagPtzCommand.ZOOM_WIDE, 1, 1, true);
+            IsAdjusitng = false;
         }
         public void StopAdjust()
         {
@@ -398,7 +450,7 @@ namespace xjplc.tanuo
             {
                 case tagRealDataType.REALDATA_HEAD:
 
-                    m_lPlayHandle =
+                    m_lPlayHandle = 
                     HDVPLAYSDK.
                     HDVPLAY_OpenStream(pBuffer, lBufSize);
 
@@ -467,6 +519,82 @@ namespace xjplc.tanuo
 
         #region 添加字符回调函数 //在hdvplay中
 
+
+
+        List<OsdText> osdLst = new List<OsdText>();
+        string OsdHeader
+        {
+            get
+            {
+                return "http://" +deviceInfo.server_Ip+ "/cgi/image_set?Channel=1&Group=OSDInfo";
+            }
+        }
+        string CompactOsdstr(int id)
+        {
+            string ts = OsdHeader;
+            
+            if (id >= 0 && id < osdLst.Count)
+            {
+                if (id == 0)
+                {
+                    ts +=
+
+                   ("&" +
+                  osdLst[id].status + "&" +
+                  osdLst[id].Title + "&" +
+                  osdLst[id].PX + "&" +
+                  osdLst[id].PY
+                  );
+                }
+                else
+                    ts +=
+
+                        ("&" +
+                       osdLst[id].status + "&" +
+                       osdLst[id].Title + "&" +
+                       osdLst[id].PX + "&" +
+                       osdLst[id].PY + "&" +
+                       osdLst[id].FontSize
+                       );
+                return ts;
+            }
+            else
+                foreach (OsdText os in osdLst)
+                {
+
+                    ts +=
+
+                        ("&" +
+                       os.status + "&" +
+                       os.Title + "&" +
+                       os.PX + "&" +
+                       os.PY + "&" +
+                       os.FontSize
+                       );
+                }
+
+            return ts;
+
+        }
+
+        bool SetOsdText(int id, string str, int x, int y, int showId = 0, int fsize = 24)
+        {
+            if (id >= osdLst.Count || id < 0)
+            {
+                return false;
+            }
+
+            osdLst[id].StatusValue = showId;
+            osdLst[id].TitleValue = str;
+            osdLst[id].PXValue = x;
+            osdLst[id].PYValue = y;
+            osdLst[id].FontSizeValue = fsize;
+
+            return true;
+
+        }
+
+
         void CBDrawFun(
                        UInt32 lPlayHandle,
                        IntPtr hdc,
@@ -482,9 +610,33 @@ namespace xjplc.tanuo
 
         }
 
-        void AddString()
+        public bool HideString(int id)
         {
+            SetOsdText(id, "", 0, 0, ShowOff, 5);
+
+            string sUrl = CompactOsdstr(id);
+
+            byte[] ss = new byte[3000];
+
+            return false;
+           // return CGISDK.IPCCGI_SetValue(ref sUrl, ref ss[0], deviceInfo.userName, deviceInfo.userPwd);
+
+        }
+
+        public bool SetString(int id,string s,int x,int y,int fontsize)
+        {
+
+            SetOsdText(id, s,x, y,ShowOn, fontsize);
             
+            string sUrl = CompactOsdstr(id);
+
+            byte[] ss = new byte[3000];
+            byte[] byteArray = Encoding.UTF8.GetBytes(sUrl);
+
+
+            return CGISDK.IPCCGI_SetValue(ref byteArray[0], ref ss[0], deviceInfo.userName, deviceInfo.userPwd);
+            
+
         }
 
         #endregion

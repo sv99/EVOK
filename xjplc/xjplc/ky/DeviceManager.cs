@@ -616,6 +616,40 @@ namespace xjplc.ky
             dtTool.StartGetData();          
 
         }
+        public Device(string filename, ServerInfo serverParam, int plcid)
+        {
+            CsvStreamReader csvFile = new CsvStreamReader();
+            DataTable dt = csvFile.OpenCSV(filename);
+            plcId = plcid;
+            plcLstD = new List<PlcSimple>();
+            plcLstM = new List<PlcSimple>();
+
+            if (dt != null && dt.Rows.Count > 0)
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+
+                    PlcSimple plcSimple = new PlcSimple(dt.Rows[i].ItemArray[1].ToString(), dt.Rows[i].ItemArray[0].ToString());
+                    plcSimple.SetParam(getStrArr(dt.Rows[i].ItemArray));
+                    if (plcSimple.Area.Equals(Constant.D_ID))
+                        plcLstD.Add(plcSimple);
+                    else
+                        plcLstM.Add(plcSimple);
+                    plcSimple.SetPlcAddressOffset(plcId);
+                }
+            else
+            {
+                MessageBox.Show(Constant.ErrorPlcFile + filename);
+                ConstantMethod.AppExit();
+            }
+
+            //获取serverip 和 port
+            //serverParam = ConstantMethod.LoadServerParam(serverfile);
+            dtTool = new DataTransform(serverParam);
+            dtTool.SetDPlcSimple(plcLstD);
+            dtTool.SetMPlcSimple(plcLstM);
+            dtTool.StartGetData();
+
+        }
 
         public void ResetDev()
         {   
@@ -639,6 +673,7 @@ namespace xjplc.ky
         public void Dispose()
         {
             dtTool.StopGetData();
+            
         }
 
     }
@@ -780,8 +815,13 @@ namespace xjplc.ky
         TcpClient client;
 
         Modbus.Device.ModbusIpMaster master;
-
-        int status=-1;
+        int slaveId = 1;
+        public int SlaveId
+        {
+            get { return slaveId; }
+            set { slaveId = value; }
+        }
+        int status =-1;
         public int Status
         {
             get { return status; }
@@ -799,7 +839,7 @@ namespace xjplc.ky
                 client = new TcpClient(ser.server_Ip, int.Parse(ser.server_Port));
                 master = ModbusIpMaster.CreateIp(client);
                 Status = 0;
-            }
+              }
             catch(Exception ex)
             {
                 Status = -1;
@@ -820,8 +860,19 @@ namespace xjplc.ky
         {
             try
             {
+                if (client != null && client.Connected)
+                {
+                    client.Close();
+                }
+
+
+                if (master != null) master.Dispose();
+
+                StopGetData();
+
                 client = new TcpClient(ser.server_Ip, int.Parse(ser.server_Port));
                 master = ModbusIpMaster.CreateIp(client);
+              
                 Status = 0;
             }
             catch(Exception ex)
@@ -838,7 +889,7 @@ namespace xjplc.ky
 
         void ReadDData()
         {
-            if(status<1)
+            if(status>=0)
             if (pDLst!=null && pDLst.Count > 0)             
             {
                 ushort[] inputs = master.ReadHoldingRegisters((ushort)pDLst[0].Address, (ushort)pDLst.Count);
@@ -868,22 +919,23 @@ namespace xjplc.ky
         }
         public void WriteDData(PlcSimple pc,ushort[] value)
         {
-           // List<ushort> valueShort = new List<ushort>();
+            // List<ushort> valueShort = new List<ushort>();
             //for(int i=0;i<90;i++)
             //valueShort.Add((ushort)value);
-           // for (int i = 0; i < 10; i++)
-           // {
-           master.WriteMultipleRegisters((ushort)(pc.Address), value);
+            // for (int i = 0; i < 10; i++)
+            // {
+            //master.WriteSingleRegister((ushort)(pc.Address, ushort value);
+             master.WriteMultipleRegisters((byte)SlaveId, (ushort)(pc.Address), value);
            // }
 
-           // master.WriteMultipleRegisters((ushort)pc.Address, (ushort)90);
+            //master.WriteSingleRegisterAsync((ushort)pc.Address, (ushort)90);
         }
         public void SetMData(PlcSimple pc ,bool value)
         {
 
             List<bool> valueShort = new List<bool>();
             valueShort.Add((bool)value);
-            master.WriteMultipleCoils((ushort)pc.Address,valueShort.ToArray());
+            master.WriteMultipleCoils((byte)SlaveId,(ushort)pc.Address,valueShort.ToArray());
 
         }
         public void SetDPlcSimple(List<PlcSimple> plcLst)
@@ -903,6 +955,21 @@ namespace xjplc.ky
         public void StopGetData()
         {
             DataGetTimer.Enabled =false;
+        }
+
+        public void Dispose()
+        {
+            if (client != null && client.Connected)
+            {
+                client.Close();
+            }
+
+
+            if (master != null) master.Dispose();
+
+            StopGetData();
+
+
         }
 
 

@@ -262,7 +262,7 @@ namespace evokNew0080
             {
                 if (evokWork.SimimaterialId < Constant.patternMaterialId)
                 {
-                    evokWork.StartWithOutDevice();
+                    evokWork.StartWithOutDevice(0);
                 }
                 else
                 {

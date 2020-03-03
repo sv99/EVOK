@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B6157322-BE1B-4A85-83D0-88ADC63E9134}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>xjplc</RootNamespace>
     <AssemblyName>xjplc</AssemblyName>
@@ -38,7 +38,7 @@
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>
     <UseVSHostingProcess>false</UseVSHostingProcess>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
@@ -111,10 +111,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\evokXJ0066\evokNewXj\bin\Debug\FastReport.Web.dll</HintPath>
     </Reference>
-    <Reference Include="handControl, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\个人库\关于编程\C#\游戏手柄\handControl\bin\Release\handControl.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -179,10 +175,12 @@
     <Compile Include="evokWorkManager.cs" />
     <Compile Include="ExcelObject.cs" />
     <Compile Include="FileConverToMachone.cs" />
+    <Compile Include="HySk.cs" />
     <Compile Include="ky\DeviceManager.cs" />
     <Compile Include="MultiLanguage.cs" />
     <Compile Include="OpeeinFormula.cs" />
     <Compile Include="Permutation.cs" />
+    <Compile Include="simi\Device.cs" />
     <Compile Include="simi\PaintRect.cs" />
     <Compile Include="simi\RestMaterial.cs" />
     <Compile Include="simi\simiMaterial.cs" />
@@ -347,6 +345,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="evok.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\个人库\关于编程\C#\游戏手柄\handControl\handGameControl.csproj">
+      <Project>{C4D54404-0DFD-489D-899B-A0D96B11582E}</Project>
+      <Name>handGameControl</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

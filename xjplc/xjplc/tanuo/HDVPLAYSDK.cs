@@ -11,6 +11,9 @@ namespace xjplc
     {
 
         [DllImport(@"HDVSDK_Play.dll")]
+        public static extern Int32 HDVPLAY_GetLastError();
+
+        [DllImport(@"HDVSDK_Play.dll")]
         public static extern Int32 HDVPLAY_OpenStream(IntPtr pStreamHead,
                                            UInt32 lStreamHeadSize);
 
@@ -40,11 +43,11 @@ SDKPLAY解码控制接口
         * @note 播放视频画面大小将根据 hWnd 窗口调整。
         * 如果已经播放，只是改变当前播放速度为正常速度
 */
-        [DllImport(@"HDVSDK_Play.dll")]
+        [DllImport(@"HDVSDK_Play.dll") ]
         public static extern bool HDVPLAY_Play(
-            long lPlayHandle,
+            Int32 lPlayHandle,
             IntPtr hPlayWnd,
-             bool bCloseSound = false);
+            bool bCloseSound = false);
 
 
         /**
@@ -131,7 +134,7 @@ SDKPLAY解码控制接口
         * @note 无
         */
                 [DllImport(@"HDVSDK_Play.dll")]
-        public static extern bool HDVPLAY_Stop(long lPlayHandle);
+        public static extern bool HDVPLAY_Stop(Int32 lPlayHandle);
         /**
         * 播放暂停
         * @param [IN]   lPlayHandle 解码句柄
@@ -142,7 +145,7 @@ SDKPLAY解码控制接口
         * @note 无
         */
         [DllImport(@"HDVSDK_Play.dll")]
-        public static extern bool HDVPLAY_Pause(long lPlayHandle);
+        public static extern bool HDVPLAY_Pause(Int32 lPlayHandle);
         /**
         * 播放恢复
         * @param [IN]   lPlayHandle 解码句柄
@@ -153,7 +156,7 @@ SDKPLAY解码控制接口
         * @note 无
         */
         [DllImport(@"HDVSDK_Play.dll")]
-        public static extern bool HDVPLAY_Resume(long lPlayHandle);
+        public static extern bool HDVPLAY_Resume(Int32 lPlayHandle);
 
        /**
         * 关闭流
@@ -165,7 +168,7 @@ SDKPLAY解码控制接口
         * @note 无
         */
         [DllImport(@"HDVSDK_Play.dll")]
-        public static extern bool HDVPLAY_CloseStream(long lPlayHandle);
+        public static extern bool HDVPLAY_CloseStream(Int32 lPlayHandle);
 
 
         /**
@@ -205,6 +208,41 @@ SDKPLAY解码控制接口
                                        uint  nWidth,
                                        uint  nHeight,
                                        IntPtr pUserData);
+
+
+        /**
+        * @enum tagPictype
+        * @brief 截图的图像类型
+        * @attention 无
+        */
+        public enum tagPictype { PIC_JPEG, PIC_BMP }
+
+       
+        public enum tagRecordtype
+        {
+            RECORD_AVI,
+            RECORD_IFV,
+        }
+
+        /**
+        * 截图
+        * @param [IN]   lPlayHandle  当前的解码句柄
+        * @param [IN]   sPicFileName 图像文件名
+        * @param [IN]   ePicType     保存的图像格式
+        * @return 返回如下结果：
+        * - 成功：true
+        * - 失败：false
+        */
+
+        [DllImport(@"HDVSDK_Play.dll")]
+        public static extern bool HDVPLAY_CapturePicture(int lPlayHandle,string filename,tagPictype ePicType);
+
+
+        [DllImport(@"HDVSDK_Play.dll")]
+        public static extern bool HDVPLAY_StartRecord(int lPlayHandle,string filename,tagRecordtype eRecordType);
+
+        [DllImport(@"HDVSDK_Play.dll")]
+        public static extern bool HDVPLAY_StopRecord(int lPlayHandle);
 
     }
 }

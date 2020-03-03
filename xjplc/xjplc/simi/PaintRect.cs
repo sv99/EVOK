@@ -11,6 +11,16 @@ using xjplc;
 
 namespace xjplc
 {
+
+    //四边形 存放每个尺寸的坐标信息
+    public struct Rectan
+    {
+        public Point leftUp;
+        public Point leftdown;
+        public Point rightUp;
+        public Point rightDown;
+
+    }
     public class PaintRect
     {
          double ration;
@@ -33,7 +43,7 @@ namespace xjplc
         public void SetRation(ProdInfo p)
         {
 
-            ration = 0.3098;// len * 100 / (double)p.Len;
+            ration = 0.4098;// len * 100 / (double)p.Len;
 
             xmargin = (int)(p.DBC * ration / 100);
 
@@ -413,8 +423,8 @@ namespace xjplc
             str += ("  余料：" + wlDouble.ToString("0.00"));
             return str;
         }
-
-        public void ProdDrawPloygon(ProdInfo prodinfo, ref Bitmap bt, int heightId, PictureBox p1)
+        
+        public void ProdDrawPloygon(ProdInfo prodinfo, ref Bitmap bt, int heightId, PictureBox p1,List<Rectan> rec)
         {
 
             int count = prodinfo.Cut.Count;
@@ -488,24 +498,51 @@ namespace xjplc
                         pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], 0, 0, (int)upSize, (int)downSize);
 
                     }
+
+                    Rectan r = new Rectan();
+                    if (pArray.Count() == 4)
+                    {
+                        r.leftUp = pArray[0];
+                        r.rightUp = pArray[1];
+                        r.rightDown = pArray[2];
+                        r.leftdown = pArray[3];
+
+                        rec.Add(r);
+                    }
+
                     if (i != 0)
-                    DrawPolygon(bt, pArray, 1, "");
+                    {
+                  
+                        if (prodinfo.Barc.Contains("尾料裁剪"))
+                        {
+                            DrawPolygon(bt, pArray, 7, "");
+                        }
+                        else                        
+                        DrawPolygon(bt, pArray, 1, "");
+                    }
                     else
                     {
-                    DrawPolygon(bt, pArray, 1, PackShowStr(heightId, prodinfo));
+                        DrawPolygon(bt, pArray, 1, PackShowStr(heightId, prodinfo));
                     }
+
+
                 }
+
+                
 
                 //尾料再换个颜色
                 List<Point> pwlLst = new List<Point>();
+
                 if (pArray.Count() == 4 && pWl.Count()==2)
                 {
                     pwlLst.Add(pArray[1]);
                     pwlLst.Add(pWl[0]);
                     pwlLst.Add(pWl[1]);
                     pwlLst.Add(pArray[2]);
-
-                    DrawPolygon(bt, pwlLst.ToArray(), 3, "");
+                    if (prodinfo.Barc.Contains("尾料裁剪"))
+                        DrawPolygon(bt, pwlLst.ToArray(), 8, "");
+                    else
+                        DrawPolygon(bt, pwlLst.ToArray(), 3, "");
                 }
                 
 
@@ -587,6 +624,7 @@ namespace xjplc
                             pointArrayGet(ref xtop, prodinfo.leftAngle[i], prodinfo.rightAngle[i], 0, 0, (int)upSize, (int)downSize);
 
                     }
+
                     if (i < currentId)
                     {
                         if (i != 0)
@@ -617,6 +655,8 @@ namespace xjplc
                         }
                     }
                 }
+
+
 
                 if (bt != null)
                 p1.Image = bt;
@@ -697,14 +737,38 @@ namespace xjplc
 
                     }
                     if (i != 0)
+                    {
+
+                        if (prodinfo.Barc.Contains("尾料裁剪"))
+                        {
+                            DrawPolygon(bt, pArray, 7, "");
+                        }
+                        else
                         DrawPolygon(bt, pArray, 1, "");
+                    } 
                     else
                     {
                         DrawPolygon(bt, pArray, 1, PackShowStr(xuhao,prodinfo));
                     }                  
                 }
 
-                if(bt !=null)
+
+                //尾料再换个颜色
+                List<Point> pwlLst = new List<Point>();
+
+                if (pArray.Count() == 4 && pwl.Count() == 2)
+                {
+                    pwlLst.Add(pArray[1]);
+                    pwlLst.Add(pwl[0]);
+                    pwlLst.Add(pwl[1]);
+                    pwlLst.Add(pArray[2]);
+                    if (prodinfo.Barc.Contains("尾料裁剪"))
+                        DrawPolygon(bt, pwlLst.ToArray(), 8, "");
+                    else
+                        DrawPolygon(bt, pwlLst.ToArray(), 3, "");
+                }
+
+                if (bt !=null)
                 p1.Image = bt;            
 
             }
@@ -802,6 +866,12 @@ namespace xjplc
                     break;
                 case 6: //加工
                     { g.FillPolygon(new SolidBrush(Color.LightYellow), pLst); }
+                    break;
+                case 7: //尾料裁剪
+                    { g.FillPolygon(new SolidBrush(Color.Red), pLst); }
+                    break;
+                case 8: //尾料可用
+                    { g.FillPolygon(new SolidBrush(Color.BurlyWood), pLst); }
                     break;
 
             }

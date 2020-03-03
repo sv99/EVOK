@@ -9,6 +9,97 @@ namespace xjplc
    public  class HankVisionSDK
     {
 
+        public const string OsdStatus = "TextOSDStatus";
+        public const string OsdTitle = "TextOSDTitle";
+        public const string OsdX = "TextOSDX";
+        public const string OsdY = "TextOSDY";
+        public const string OsdSize = "TextOSDSize";
+        public const int     ShowOn  = 1;
+        public const int     ShowOff = 0;
+        public class OsdText
+        {
+            int id;
+            public string Id
+            {
+                get
+                {
+                    if (id > 0)
+                        return id.ToString();
+                    else return "";
+                }
+                set { id = int.Parse(value); }
+            }
+            int statusValue;
+            public int StatusValue
+            {
+                get { return statusValue; }
+                set { statusValue = value; }
+            }
+            string titleValue;
+            public string TitleValue
+            {
+                get { return titleValue; }
+                set { titleValue = value; }
+            }
+            int pXValue;
+            public int PXValue
+            {
+                get { return pXValue; }
+                set { pXValue = value; }
+            }
+            int pYValue;
+            public int PYValue
+            {
+                get { return pYValue; }
+                set { pYValue = value; }
+            }
+            int fontSizeValue;
+            public int FontSizeValue
+            {
+                get { return fontSizeValue; }
+                set { fontSizeValue = value; }
+            }
+            public string status
+            {
+                get
+                {
+                    return OsdStatus + Id.ToString() + "=" + StatusValue.ToString();
+                }
+            }
+            public string Title
+            {
+                get
+                {
+                    return OsdTitle + Id.ToString() + "=" + TitleValue;
+                }
+            }
+
+            public string PX
+            {
+                get
+                {
+                    return OsdX + Id.ToString() + "=" + PXValue.ToString();
+                }
+            }
+
+            public string PY
+            {
+                get
+                {
+                    return OsdY + Id.ToString() + "=" + PYValue.ToString();
+                }
+            }
+
+            public string FontSize
+            {
+                get
+                {
+                    return OsdSize + Id.ToString() + "=" + FontSizeValue.ToString();
+                }
+            }
+
+        }
+
         public HankVisionSDK()
         {
              
@@ -689,7 +780,7 @@ namespace xjplc
        * @note 无
        */
         [DllImport(@"IPCSDK_NET.dll")]
-        public static extern long IPCNET_GetLastError();
+        public static extern Int32 IPCNET_GetLastError();
 
      
 
@@ -906,7 +997,7 @@ namespace xjplc
         * @note 当iParam1表示速度时，范围是1~8
 */
         [DllImport(@"IPCSDK_Net.dll")]
-        public static extern bool  IPCNET_PTZControl(long lLoginID,
+        public static extern bool  IPCNET_PTZControl(Int32 lLoginID,
                                                   uint nChannel,
                                                   tagPtzCommand ePTZCommand,
                                                   int iParam1 = 6,

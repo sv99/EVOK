@@ -1,5 +1,6 @@
 namespace xjplc
 {
+    using evokNewXJ;
     using FastReport;
     using FastReport.Barcode;
     using simi;
@@ -219,8 +220,13 @@ namespace xjplc
         public PlcInfoSimple ZQInPs;
         public PlcInfoSimple zxShowInPs;
         public PlcInfoSimple zxShowOutPs;
-       
-
+        #region 通过式双端锯
+        public PlcInfoSimple   sdjDataDownLoadEnd;
+        public PlcInfoSimple   sdjLeftEnable;
+        public PlcInfoSimple   sdjRightEnable;
+        public PlcInfoSimple   sdjLeftDataAddress;
+        public PlcInfoSimple sdjRightDataAddress;
+        #endregion
 
         public SqlConnection lo_conn;
         public EvokXJWork()
@@ -366,7 +372,14 @@ namespace xjplc
             autoCCInPs = new PlcInfoSimple("自动测长读");
             clInPs = new PlcInfoSimple("出料读");
             slInPs = new PlcInfoSimple("送料读");
-            xialiaojuStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
+
+            sdjDataDownLoadEnd = new PlcInfoSimple("数据下发完毕读写");
+            sdjLeftEnable = new PlcInfoSimple("左1使能读写");
+            sdjRightEnable = new PlcInfoSimple("右1使能读写");
+            sdjLeftDataAddress = new PlcInfoSimple("左1数据下发地址读写");
+            sdjRightDataAddress = new PlcInfoSimple("右1数据下发地址读写");
+
+        xialiaojuStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
             doorBanStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
             doorShellStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
             comIsDownLoading = false;
@@ -1044,6 +1057,7 @@ namespace xjplc
         private void collectDeviceData()
         {
             SetSimiReady();
+
             if (lcOutInPs.Ration > 1.0)
             {
                 if ((DeviceName == null) || !DeviceName.Equals(Constant.scjDeivceName))
@@ -1706,7 +1720,7 @@ namespace xjplc
             while (RunFlag)
             {
                 Application.DoEvents();
-                ConstantMethod.Delay(0xbb8);
+               
                 Simi_Show(i, num);
                 int result = 0;
                 if(optSize.SingleSizeLst[i][num].DtUser!=null)
@@ -1718,7 +1732,7 @@ namespace xjplc
                     optSize.checkIsDone(optSize.SingleSizeLst[i][num].Xuhao);
                     
                  }
-               
+                ConstantMethod.Delay(1000);
                 string[] textArray1 = new string[7];
                 textArray1[0] = Constant.resultTip5;
                 int num2 = num + 1;
@@ -1744,6 +1758,8 @@ namespace xjplc
                     printBarcode(printReport, optSize.SingleSizeLst[i][num].ParamStrLst.ToArray());
 
             }
+            ConstantMethod.Delay(1000);
+            Simi_Show(i, num);
             return 0;
         }
         public void CutReady(int id)
@@ -1880,8 +1896,7 @@ namespace xjplc
                 {
                     break;
                 }
-
-               
+                                            
                 ConstantMethod.DelayMeasure(Constant.MeaSureMaxTime, ref valueOld, ref autoCCInPs, ref emgStopInPs, ref mRunFlag);
                 string[] textArray3 = new string[] { DeviceName + Constant.MeasureEd };
                 LogManager.WriteProgramLog(textArray3);
@@ -2562,7 +2577,7 @@ namespace xjplc
             {
                 CutThread.Join();
             }
-            SetOptSizeParam1(optSize.OptParam1);
+            //SetOptSizeParam1(optSize.OptParam1);
             string[] logs = new string[] { DeviceName + Constant.Quit };
             LogManager.WriteProgramLog(logs);
         }
@@ -3790,6 +3805,12 @@ namespace xjplc
             autoCCInPs = ConstantMethod.getPlcSimple(autoCCInPs.Name, psLstAuto);
             clInPs = ConstantMethod.getPlcSimple(clInPs.Name, psLstAuto);
             slInPs = ConstantMethod.getPlcSimple(slInPs.Name, psLstAuto);
+
+            sdjDataDownLoadEnd =ConstantMethod.getPlcSimple(sdjDataDownLoadEnd.Name, psLstAuto);
+            sdjLeftDataAddress = ConstantMethod.getPlcSimple(sdjLeftDataAddress.Name, psLstAuto);
+            sdjRightDataAddress = ConstantMethod.getPlcSimple(sdjRightDataAddress.Name, psLstAuto);
+            sdjLeftEnable = ConstantMethod.getPlcSimple(sdjLeftEnable.Name, psLstAuto);
+            sdjRightEnable = ConstantMethod.getPlcSimple(sdjRightEnable.Name, psLstAuto);
             SetPage(1);
             SetPage(2);
             SetPage(3);
@@ -3899,7 +3920,7 @@ namespace xjplc
 
                 simi_SQL_DataTableName = ParamFile.ReadConfig(Constant.SQL_Tablename);
 
-                InitSimiWlst();
+                ReadSimiWlst();
 
                 InitSimiSplit();
 
@@ -3975,9 +3996,25 @@ namespace xjplc
         public void SetSimiSplitCount(int splitcount)
         {          
             ParamFile.WriteConfig(Constant.SplitCount,splitcount.ToString());
+            optSize.Simi_Splitcount = splitcount;
         }
-        void InitSimiWlst()
+        //设置司米角度公差
+        public void SetSimiTloranceAngle()
         {
+            double tolerance = 0;
+            string s =
+            ParamFile.ReadConfig(Constant.ToleranceAngle);
+
+            if (double.TryParse(s, out tolerance))
+            {
+                optSize.ToleranceAngle = tolerance;
+            }
+
+
+        }
+        public void ReadSimiWlst()
+        {
+           
            List<int> wldata = new List<int>();
             for (int i = 0; i < Constant.MaxWlNearCount; i++)
             {
@@ -3985,6 +4022,7 @@ namespace xjplc
                 int intwl = 0;
                 string s=
                 ParamFile.ReadConfig(Constant.WlNear1Str+i.ToString());
+
 
                 if (string.IsNullOrWhiteSpace(s))   //遇到空白的 证明就没有了 那就
                 {
@@ -4318,8 +4356,247 @@ namespace xjplc
 
             
             optSize.WlMiniValue = wlMiniSizeOutInPs.ShowValue;
+
             showPath(filename);
+
             return optSize.LoadCsvData(filename);
+
+        }
+        #region 通过式双端锯
+        public void Sdj_DownLoadData(List<HySkCutParam> hyskLst)
+        {
+         
+            List<int> aLst = new List<int>();
+            List<int> eLst = new List<int>();
+            List<int> fleftLst = new List<int>();
+            List<int> gleftLst = new List<int>();
+            List<int> driilDepthLst = new List<int>();
+            List<int> knifeLst = new List<int>();
+            List<int> cutmodeLst = new List<int>();
+            List<int> jDepthLst = new List<int>();
+            List<int> roundSWLst = new List<int>();
+
+            if (hyskLst.Count <=0) return;
+                #region 
+                //左边下发
+            for (int i = 0; i<hyskLst.Count;i++)
+            {
+                if (hyskLst[i].Dir == 0)
+                {
+                    aLst.Add((int)(hyskLst[i].PosX*1000));
+                    eLst.Add((int)(hyskLst[i].PosY * 1000));
+                    fleftLst.Add((int)(hyskLst[i].Hysk.Len * 1000));
+                    gleftLst.Add((int)(hyskLst[i].Hysk.Width * 1000));
+                    driilDepthLst.Add((int)(hyskLst[i].DrillDepth * 1000));
+                    knifeLst.Add((int)(hyskLst[i].Knife));
+                    cutmodeLst.Add((int)(hyskLst[i].CutMode));
+                    jDepthLst.Add((int)(hyskLst[i].JdDepth));
+                    roundSWLst.Add((int)(hyskLst[i].RoundSwitch));
+                }
+            }
+            int address = sdjLeftDataAddress.Addr;
+           
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress,aLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, eLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, fleftLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, gleftLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, driilDepthLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, knifeLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, cutmodeLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, jDepthLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, roundSWLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+
+            int addressEn = sdjLeftEnable.Addr;
+            for (int i = 0; i < 6; i++)
+            {
+              
+
+                if (i < hyskLst.Count)
+                {
+
+                    evokDevice.SetMValueON(sdjLeftEnable);
+                }
+                else
+                {
+                    evokDevice.SetMValueOFF(sdjLeftEnable);
+                }
+
+                sdjLeftEnable.Addr++;
+            }
+            sdjLeftEnable.Addr = addressEn;
+
+            #endregion
+            #region 
+            aLst.Clear(); 
+            eLst.Clear(); 
+            fleftLst.Clear(); 
+            gleftLst.Clear(); 
+            driilDepthLst.Clear(); 
+            knifeLst.Clear(); 
+            cutmodeLst.Clear(); 
+            jDepthLst.Clear(); 
+            roundSWLst.Clear();
+
+            //右边下发
+            sdjLeftDataAddress.Addr = address + 300;
+
+            for (int i = 0; i < hyskLst.Count; i++)
+            {
+                if (hyskLst[i].Dir == 1)
+                {
+                    aLst.Add((int)(hyskLst[i].PosX * 1000));
+                    eLst.Add((int)(hyskLst[i].PosY * 1000));
+                    fleftLst.Add((int)(hyskLst[i].Hysk.Len * 1000));
+                    gleftLst.Add((int)(hyskLst[i].Hysk.Width * 1000));
+                    driilDepthLst.Add((int)(hyskLst[i].DrillDepth * 1000));
+                    knifeLst.Add((int)(hyskLst[i].Knife));
+                    cutmodeLst.Add((int)(hyskLst[i].CutMode));
+                    jDepthLst.Add((int)(hyskLst[i].JdDepth));
+                    roundSWLst.Add((int)(hyskLst[i].RoundSwitch));
+                }
+            }
+
+           
+
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, aLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, eLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, fleftLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, gleftLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, driilDepthLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, knifeLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, cutmodeLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, jDepthLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, roundSWLst.ToArray());
+            sdjLeftDataAddress.Addr += 30;
+
+            addressEn = sdjRightEnable.Addr;
+            for (int i = 0; i < 6; i++)
+            {
+                
+
+                if (i < hyskLst.Count)
+                {
+
+                    evokDevice.SetMValueON(sdjRightEnable);
+                }
+                else
+                {
+                    evokDevice.SetMValueOFF(sdjRightEnable);
+                }
+
+                sdjRightEnable.Addr++;
+            }
+            sdjRightEnable.Addr = addressEn;
+            #endregion
+            sdjLeftDataAddress.Addr = address ;
+
+            evokDevice.SetMValueON(sdjDataDownLoadEnd);
+
+        }
+        #endregion
+        /***
+         * 数量/排数=刀数
+        1.排数只能取1、2、3、4、5、6、8、10，但尽量取大值
+        2.当数量为两位数时，排数只取1、2、3、4、5、6、8、10
+        3.当数量为三位数时，排数只取5、6、8、10
+        4.数量/排数=刀数，当刀数出现小数时取整
+        5.数量≤计算出的刀数*排数≤数量+10
+         * 
+         * 
+         ****/
+        Dictionary<int, int>  GetShenAoCount(int count,int id )
+        {
+            Dictionary<int, int> cLst = new Dictionary<int, int>();
+
+            int ou = 0;
+            if (count > 1)
+            {
+                           
+                for (int i = 2; i < count; i++)
+                {
+                   
+                    if (count % i == 0 && (count/i)<=10)
+                    {
+                        ou = count / i;
+                        if (ou == 9 || ou == 7) continue;
+                        if(count>=100 && ou<5) continue;
+
+                        cLst.Add(i, (ou)); //如果是奇数 那就加1 改为偶数
+                    }
+                }
+
+
+
+            }
+
+            return cLst;
+
+        }
+        //圣奥还需要处理下数据
+        //假设设定数量是12 需要拆分成 设定数量为2 参数1是6 设定数量不要太大 然后参数1 如果是奇数 那就加1 改为偶数
+        /***
+         * 数量/排数=刀数
+        1.排数只能取1、2、3、4、5、6、8、10，但尽量取大值
+        2.当数量为两位数时，排数只取1、2、3、4、5、6、8、10
+        3.当数量为三位数时，排数只取5、6、8、10
+        4.数量/排数=刀数，当刀数出现小数时取整
+        5.数量≤计算出的刀数*排数≤数量+10
+         * 
+         * 
+         ****/
+        public void ShenAo(int maxmargin)
+        {
+
+           if (!DeviceUser.Equals(Constant.DeviceUserShenAo)) return;
+
+           DataTable dt = optSize.DtData;
+           
+           if (dt != null && dt.Rows.Count > 0)
+            {
+                foreach (DataRow dr in dt.Rows)
+                {
+                    int needcount = 0;
+                    if (int.TryParse(dr[4].ToString(), out needcount))
+                    {
+
+                       
+                        Dictionary<int, int> cLst= GetShenAoCount(needcount, 0);
+                        for (int i = 0; i < maxmargin; i++)
+                        {
+
+                            if (cLst.Count <= 0)
+                            {
+                                needcount++;
+                                cLst = GetShenAoCount(needcount, 0);
+                            }
+                            else
+                            {
+                                dr[1] = cLst.First().Key.ToString();
+                                dr[3] = cLst.First().Value.ToString();
+                                break;
+                            }                        
+                                                       
+                        }                                                                  
+                    }
+                }
+            }
         }
         public bool LoadSimiCsvData(string filename)
         {
@@ -4420,9 +4697,62 @@ namespace xjplc
             }
             showPath(filename);
             optSize.LoadSimiData(filename);
-            SetPLCMaterialWidth();
+            optSize.ProdInfoLst.Clear() ;
+           // SetPLCMaterialWidth();
         }
 
+        void PrintUnCuttAbleBarCode(int rowindex)
+        {
+          
+            ReLoadReport();
+            if (printReport != null)
+            {
+
+                List<string> list = new List<string>();
+                if ((optSize.DtData != null) && (optSize.DtData.Rows.Count > 0))
+                {
+                    DataRow row = optSize.DtData.Rows[rowindex];
+                    for (int i = 3; i < optSize.DtData.Columns.Count; i++)
+                    {
+                        list.Add(row[i].ToString());
+                    }
+                    printBarcode(printReport, list.ToArray());
+                }
+                else
+                {
+                    MessageBox.Show("无数据，请先导出数据！");
+                }
+            }
+            else
+            {
+                MessageBox.Show("条码加载错误");
+            }
+        
+
+    }
+    public void PrintUnCuttable(int id )
+        {
+         
+            if (optSize.UnCuttableDataLst.Count > 0 && optSize.UnCuttableDataLst.Contains(id))
+            {
+                DialogResult dr = MessageBox.Show("打印提示",
+                    "打印当前/全部不可加工标签？", 
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+                if (dr == DialogResult.No)
+                {
+                    PrintUnCuttAbleBarCode(id);
+                    
+                }
+                else
+                {
+                    foreach (int idx in optSize.UnCuttableDataLst)
+                    {
+                        PrintUnCuttAbleBarCode(idx);
+                        ConstantMethod.Delay(500);
+                    }
+                }
+            }
+        }
         public void LoadSimiData(string[] filenames)
         {
             optSize.Len = (int)(lcOutInPs.ShowValueDouble*Constant.dataMultiple);
@@ -4519,7 +4849,6 @@ namespace xjplc
                 }
             }
         }
-
         public void optReady(int OPTID)
         {
             rtbResult.Clear();
@@ -4538,20 +4867,20 @@ namespace xjplc
             else
             {
 
-                optSize.Safe += (optSize.Dbc * 2+100);
+                optSize.Safe += (optSize.Dbc * 2 + 100);
 
                 int num = OPTID;
 
                 switch (num)
                 {
                     case 0:
-                          ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult));
                         return;
                     case 1:
                         return;
 
                     case 2:
-                          ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 2));
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, 2));
                         return;
 
                     case 3:
@@ -4566,6 +4895,60 @@ namespace xjplc
                 {
                     ConstantMethod.ShowInfo(rtbResult, optSize.OptSimi(rtbResult, 10));
                 }
+            }
+        }
+        //司米专用优化
+        public void optReadySimi(int OPTID,int id)
+        {
+            rtbResult.Clear();
+           
+            if (!DeviceStatus )
+            {
+                if(id !=0)
+                collectUserInputData();
+            }
+            else
+            {
+                collectDeviceData();
+            }
+
+            if (optSize.Len < 100)
+            {
+                MessageBox.Show(Constant.optFail);
+            }
+            else
+            {
+
+                optSize.Safe += (optSize.Dbc * 2+100);
+
+                int num = OPTID;
+
+                switch (num)
+                {
+                    case 0:
+                          ConstantMethod.ShowInfo(rtbResult, optSize.OptNormalSimi(rtbResult));
+                        return;
+                    case 1:
+
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, num));
+                        return;
+
+                    case 2:
+                          ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, num));
+                        return;
+
+                    case 3:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, num));
+                        return;
+
+                    case 4:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptNormal(rtbResult, num));
+                        return;
+                    case 10:
+                        ConstantMethod.ShowInfo(rtbResult, optSize.OptSimi(rtbResult, num));
+                        return;
+                }
+                
             }
         }
 
@@ -6087,8 +6470,9 @@ namespace xjplc
                     {
                         Constant.HandPageID = Constant.Simensi_HandPageID;
                     }
-                  
-                        evokDevice.SetDValue(pageShiftOutPs, Constant.HandPageID);
+                                     
+                   evokDevice.SetDValue(pageShiftOutPs, Constant.HandPageID);
+
                 }
                 if (((pageid == 2) && (CurrentPageId < 4)) && !ConstantMethod.UserPassWd(Constant.PwdNoOffSet))
                 {
@@ -6280,7 +6664,7 @@ namespace xjplc
             return GetStartStatus();
         }
 
-        public void StartWithOutDevice()
+        public void StartWithOutDevice(int id)
         {
             showWorkInfo("虚拟启动");
             RunFlag = true;
@@ -6297,7 +6681,7 @@ namespace xjplc
                     showWorkInfo("数据下载至机器");
                     CutLoopWithDevice(i);
                     SimicutoffProcess(optSize.ProdInfoLst[i]);
-
+                    if (id > 100) break;
                 }
             }
             else
@@ -6352,7 +6736,7 @@ namespace xjplc
 
                     showWorkInfo("清除PLC计数器");
 
-                    ConstantMethod.Delay(0x3e8);
+                    ConstantMethod.Delay(1000);
 
                     showWorkInfo("数据下载至机器");
 
@@ -6654,6 +7038,8 @@ namespace xjplc
                 errorList = value;
             }
         }
+        #region 司米数据
+        #endregion
         #region  水平打孔机
         public List<DataTable> HoleDataLst
         {

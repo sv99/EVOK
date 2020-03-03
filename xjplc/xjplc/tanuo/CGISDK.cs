@@ -84,7 +84,7 @@ SDKCGI设备参数配置接口(CGI方式)
     * @note 无
     */
     [DllImport("IPCSDK_CGI.dll")]
-    public static extern bool IPCCGI_SetValue(ref byte sUrl,
+    public static extern bool IPCCGI_SetValue(ref byte ss0,
                                                ref byte ss,
                                               string  sUsername,
                                               string sPassword,

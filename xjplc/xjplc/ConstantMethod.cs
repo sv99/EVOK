@@ -183,9 +183,10 @@ namespace xjplc
             }
             return false;
         }
+        //单个单元提取数据--double
         
-        //拆分表格
-        public static void getDataTableByParam(List<DataTable> dtLst, DataTable res, List<string> paramL)
+    //拆分表格
+    public static void getDataTableByParam(List<DataTable> dtLst, DataTable res, List<string> paramL)
         {
             if (paramL.Count == 0) return;
             dtLst.Clear();
@@ -285,14 +286,21 @@ namespace xjplc
         public static bool  IsNetWorkExist(string hostName)
         {
             bool online = false; //是否在线
-            Ping ping = new Ping();
-            PingReply pingReply = ping.Send(hostName);
-            if (pingReply.Status == IPStatus.Success)
+            try
             {
-                online = true;
-                        
+                Ping ping = new Ping();
+                PingReply pingReply = ping.Send(hostName, 50);
+                if (pingReply.Status == IPStatus.Success)
+                {
+                    online = true;
+
+                }
+                ping.Dispose();
             }
-            ping.Dispose();
+            catch (System.Exception ex)
+            {
+
+            }
             return online;
         }
         //在IP存在的情况下 确认服务器端口是否可以连上
@@ -401,7 +409,50 @@ namespace xjplc
             return false;
 
         }
-        public static bool fileCopy(string source, string dest)
+
+        public static double dataConvert(DataRow dr, string colName)
+        {
+            double dtemp = 0;
+
+            if (dr.Table.Columns.Contains(colName))
+            {
+
+                double.TryParse(dr[colName].ToString(), out dtemp);
+
+            }
+
+
+
+            return dtemp;
+
+        }
+
+        //单个单元数据比较多--分隔符
+        public static double[] dataConvertLst(DataRow dr, string colName, char splitChar)
+        {
+            List<double> resultLst = new List<double>();
+
+            if (dr.Table.Columns.Contains(colName))
+            {
+                string[] sLst = dr[colName].ToString().Split(splitChar);
+
+                foreach (string yplj in sLst)
+                {
+                    double yplj_double = 0;
+                    if (double.TryParse(yplj, out yplj_double))
+                    {
+                        resultLst.Add(yplj_double);
+                    }
+                }
+
+            }
+
+
+            return resultLst.ToArray();
+
+        }
+    
+    public static bool fileCopy(string source, string dest)
         {
             if (!File.Exists(source)) return false;
             bool isrewrite = true; // true=覆盖已存在的同名文件,false则反之

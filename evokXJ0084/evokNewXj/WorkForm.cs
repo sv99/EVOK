@@ -927,7 +927,7 @@ namespace evokNew0084
                             //最后添加两行数据  
                             DataRow dr = dtData.NewRow();
                             dr[0] = h.ToString("0.00");
-                            dr[1] = "1";
+                            dr[1] = op.ParamLst[0];
                             dr[2] = "0";
                             for (int i = 0; i < op.ParamLst.Count; i++)
                             {
@@ -939,7 +939,7 @@ namespace evokNew0084
 
                             DataRow dr0 = dtData.NewRow();
                             dr0[0] = w.ToString("0.00");
-                            dr0[1] = "1";
+                            dr0[1] = op.ParamLst[0];
                             dr0[2] = "0";
                             for (int i = 0; i < op.ParamLst.Count; i++)
                             {
@@ -954,9 +954,7 @@ namespace evokNew0084
                             dtData.Rows.Add(dr0);
 
                         }
-                    }                                                        
-                
-
+                    }                                                                        
             }
 
             return 0;

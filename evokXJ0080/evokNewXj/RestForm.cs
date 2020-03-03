@@ -19,7 +19,7 @@ namespace evokNewXJ
 
         public DataGridView getDgv()
         {
-            return dgv1;
+            return restDgv;
         }
     }
 }

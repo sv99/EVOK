@@ -55,20 +55,19 @@
             this.skinButton1 = new CCWin.SkinControl.SkinButton();
             this.startBtn = new CCWin.SkinControl.SkinButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.Main_CutDatatable_ComBx = new System.Windows.Forms.ComboBox();
+            this.Main_CutId_ComBx = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.Main_CutShow_Pic = new System.Windows.Forms.PictureBox();
             this.skinButton7 = new CCWin.SkinControl.SkinButton();
             this.skinButton6 = new CCWin.SkinControl.SkinButton();
             this.skinButton28 = new CCWin.SkinControl.SkinButton();
             this.skinButton5 = new CCWin.SkinControl.SkinButton();
             this.skinButton4 = new CCWin.SkinControl.SkinButton();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.autoPage = new CCWin.SkinControl.SkinTabPage();
+            this.label12 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.UserData = new System.Windows.Forms.DataGridView();
             this.skinButton13 = new CCWin.SkinControl.SkinButton();
@@ -79,6 +78,7 @@
             this.skinButton8 = new CCWin.SkinControl.SkinButton();
             this.t1 = new CCWin.SkinControl.SkinTreeView();
             this.handPage = new CCWin.SkinControl.SkinTabPage();
+            this.label11 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.manualDgv = new System.Windows.Forms.DataGridView();
             this.skinButton19 = new CCWin.SkinControl.SkinButton();
@@ -88,8 +88,11 @@
             this.skinButton17 = new CCWin.SkinControl.SkinButton();
             this.skinButton18 = new CCWin.SkinControl.SkinButton();
             this.watchPage = new CCWin.SkinControl.SkinTabPage();
-            this.skinButton23 = new CCWin.SkinControl.SkinButton();
+            this.label19 = new System.Windows.Forms.Label();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.skinButton36 = new CCWin.SkinControl.SkinButton();
+            this.skinButton37 = new CCWin.SkinControl.SkinButton();
+            this.skinButton23 = new CCWin.SkinControl.SkinButton();
             this.skinButton34 = new CCWin.SkinControl.SkinButton();
             this.skinButton35 = new CCWin.SkinControl.SkinButton();
             this.skinButton20 = new CCWin.SkinControl.SkinButton();
@@ -97,6 +100,32 @@
             this.skinButton25 = new CCWin.SkinControl.SkinButton();
             this.blDgv = new CCWin.SkinControl.SkinDataGridView();
             this.barCodePage = new CCWin.SkinControl.SkinTabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.textBox13 = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.skinButton31 = new CCWin.SkinControl.SkinButton();
+            this.textBox10 = new System.Windows.Forms.TextBox();
+            this.textBox8 = new System.Windows.Forms.TextBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.textBox9 = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.skinButton30 = new CCWin.SkinControl.SkinButton();
+            this.textBox12 = new System.Windows.Forms.TextBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.skinButton33 = new CCWin.SkinControl.SkinButton();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -116,7 +145,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Main_CutShow_Pic)).BeginInit();
             this.autoPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UserData)).BeginInit();
             this.handPage.SuspendLayout();
@@ -124,6 +153,8 @@
             this.watchPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blDgv)).BeginInit();
             this.barCodePage.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.restMaterialPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.restDgv)).BeginInit();
@@ -146,7 +177,7 @@
             this.tc1.ImgTxtSpace = 10;
             this.tc1.ItemSize = new System.Drawing.Size(163, 36);
             this.tc1.ItemStretch = true;
-            this.tc1.Location = new System.Drawing.Point(12, 12);
+            this.tc1.Location = new System.Drawing.Point(10, 12);
             this.tc1.Name = "tc1";
             this.tc1.PageArrowDown = ((System.Drawing.Image)(resources.GetObject("tc1.PageArrowDown")));
             this.tc1.PageArrowHover = ((System.Drawing.Image)(resources.GetObject("tc1.PageArrowHover")));
@@ -160,6 +191,7 @@
             this.tc1.Size = new System.Drawing.Size(1149, 1020);
             this.tc1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tc1.TabIndex = 0;
+            this.tc1.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tc1_Selecting);
             // 
             // mainPage
             // 
@@ -201,9 +233,9 @@
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.pictureBox2.Location = new System.Drawing.Point(22, 82);
+            this.pictureBox2.Location = new System.Drawing.Point(6, 42);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(1118, 105);
+            this.pictureBox2.Size = new System.Drawing.Size(1118, 157);
             this.pictureBox2.TabIndex = 133;
             this.pictureBox2.TabStop = false;
             // 
@@ -231,7 +263,7 @@
             this.errorLabel.BorderColor = System.Drawing.Color.White;
             this.errorLabel.Font = new System.Drawing.Font("微软雅黑", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.errorLabel.ForeColor = System.Drawing.Color.Black;
-            this.errorLabel.Location = new System.Drawing.Point(162, 219);
+            this.errorLabel.Location = new System.Drawing.Point(162, 202);
             this.errorLabel.Name = "errorLabel";
             this.errorLabel.Size = new System.Drawing.Size(123, 62);
             this.errorLabel.TabIndex = 4;
@@ -243,7 +275,7 @@
             this.skinButton29.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton29.DownBack = null;
             this.skinButton29.ForeColor = System.Drawing.Color.Black;
-            this.skinButton29.Location = new System.Drawing.Point(84, 299);
+            this.skinButton29.Location = new System.Drawing.Point(163, 283);
             this.skinButton29.MouseBack = null;
             this.skinButton29.Name = "skinButton29";
             this.skinButton29.NormlBack = null;
@@ -251,6 +283,7 @@
             this.skinButton29.TabIndex = 0;
             this.skinButton29.Text = "测试";
             this.skinButton29.UseVisualStyleBackColor = false;
+            this.skinButton29.Visible = false;
             this.skinButton29.Click += new System.EventHandler(this.skinButton29_Click_1);
             // 
             // daijiLabel
@@ -260,7 +293,7 @@
             this.daijiLabel.BorderColor = System.Drawing.Color.White;
             this.daijiLabel.Font = new System.Drawing.Font("微软雅黑", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.daijiLabel.ForeColor = System.Drawing.Color.Black;
-            this.daijiLabel.Location = new System.Drawing.Point(162, 140);
+            this.daijiLabel.Location = new System.Drawing.Point(162, 123);
             this.daijiLabel.Name = "daijiLabel";
             this.daijiLabel.Size = new System.Drawing.Size(123, 62);
             this.daijiLabel.TabIndex = 4;
@@ -273,7 +306,7 @@
             this.startLbl.BorderColor = System.Drawing.Color.White;
             this.startLbl.Font = new System.Drawing.Font("微软雅黑", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.startLbl.ForeColor = System.Drawing.Color.Black;
-            this.startLbl.Location = new System.Drawing.Point(162, 61);
+            this.startLbl.Location = new System.Drawing.Point(162, 44);
             this.startLbl.Name = "startLbl";
             this.startLbl.Size = new System.Drawing.Size(123, 62);
             this.startLbl.TabIndex = 4;
@@ -286,7 +319,7 @@
             this.skinButton3.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton3.DownBack = null;
             this.skinButton3.ForeColor = System.Drawing.Color.Black;
-            this.skinButton3.Location = new System.Drawing.Point(18, 179);
+            this.skinButton3.Location = new System.Drawing.Point(22, 162);
             this.skinButton3.MouseBack = null;
             this.skinButton3.Name = "skinButton3";
             this.skinButton3.NormlBack = null;
@@ -302,7 +335,7 @@
             this.skinButton2.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton2.DownBack = null;
             this.skinButton2.ForeColor = System.Drawing.Color.Black;
-            this.skinButton2.Location = new System.Drawing.Point(18, 238);
+            this.skinButton2.Location = new System.Drawing.Point(22, 221);
             this.skinButton2.MouseBack = null;
             this.skinButton2.Name = "skinButton2";
             this.skinButton2.NormlBack = null;
@@ -317,7 +350,7 @@
             this.skinButton1.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton1.DownBack = null;
             this.skinButton1.ForeColor = System.Drawing.Color.Black;
-            this.skinButton1.Location = new System.Drawing.Point(18, 120);
+            this.skinButton1.Location = new System.Drawing.Point(22, 103);
             this.skinButton1.MouseBack = null;
             this.skinButton1.Name = "skinButton1";
             this.skinButton1.NormlBack = null;
@@ -333,7 +366,7 @@
             this.startBtn.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.startBtn.DownBack = null;
             this.startBtn.ForeColor = System.Drawing.Color.Black;
-            this.startBtn.Location = new System.Drawing.Point(18, 61);
+            this.startBtn.Location = new System.Drawing.Point(22, 44);
             this.startBtn.MouseBack = null;
             this.startBtn.Name = "startBtn";
             this.startBtn.NormlBack = null;
@@ -345,19 +378,17 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox5);
-            this.groupBox1.Controls.Add(this.comboBox2);
+            this.groupBox1.Controls.Add(this.Main_CutDatatable_ComBx);
+            this.groupBox1.Controls.Add(this.Main_CutId_ComBx);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.pictureBox1);
+            this.groupBox1.Controls.Add(this.Main_CutShow_Pic);
             this.groupBox1.Controls.Add(this.skinButton7);
             this.groupBox1.Controls.Add(this.skinButton6);
             this.groupBox1.Controls.Add(this.skinButton28);
             this.groupBox1.Controls.Add(this.skinButton5);
             this.groupBox1.Controls.Add(this.skinButton4);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Font = new System.Drawing.Font("宋体", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.groupBox1.Location = new System.Drawing.Point(0, 14);
             this.groupBox1.Name = "groupBox1";
@@ -366,21 +397,24 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "实时";
             // 
-            // comboBox5
+            // Main_CutDatatable_ComBx
             // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(671, 235);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(102, 29);
-            this.comboBox5.TabIndex = 134;
+            this.Main_CutDatatable_ComBx.FormattingEnabled = true;
+            this.Main_CutDatatable_ComBx.Location = new System.Drawing.Point(671, 235);
+            this.Main_CutDatatable_ComBx.Name = "Main_CutDatatable_ComBx";
+            this.Main_CutDatatable_ComBx.Size = new System.Drawing.Size(102, 29);
+            this.Main_CutDatatable_ComBx.TabIndex = 134;
+            this.Main_CutDatatable_ComBx.SelectedIndexChanged += new System.EventHandler(this.User_ComboBox_SelectedIndexChanged);
             // 
-            // comboBox2
+            // Main_CutId_ComBx
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(826, 235);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(103, 29);
-            this.comboBox2.TabIndex = 134;
+            this.Main_CutId_ComBx.FormattingEnabled = true;
+            this.Main_CutId_ComBx.Location = new System.Drawing.Point(826, 235);
+            this.Main_CutId_ComBx.Name = "Main_CutId_ComBx";
+            this.Main_CutId_ComBx.Size = new System.Drawing.Size(103, 29);
+            this.Main_CutId_ComBx.TabIndex = 134;
+            this.Main_CutId_ComBx.Text = "1";
+            this.Main_CutId_ComBx.SelectedIndexChanged += new System.EventHandler(this.Main_CutId_ComBx_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -415,14 +449,14 @@
             this.label4.TabIndex = 133;
             this.label4.Text = "NA";
             // 
-            // pictureBox1
+            // Main_CutShow_Pic
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.pictureBox1.Location = new System.Drawing.Point(21, 74);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(1118, 105);
-            this.pictureBox1.TabIndex = 132;
-            this.pictureBox1.TabStop = false;
+            this.Main_CutShow_Pic.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
+            this.Main_CutShow_Pic.Location = new System.Drawing.Point(6, 42);
+            this.Main_CutShow_Pic.Name = "Main_CutShow_Pic";
+            this.Main_CutShow_Pic.Size = new System.Drawing.Size(1118, 137);
+            this.Main_CutShow_Pic.TabIndex = 132;
+            this.Main_CutShow_Pic.TabStop = false;
             // 
             // skinButton7
             // 
@@ -438,6 +472,7 @@
             this.skinButton7.TabIndex = 5;
             this.skinButton7.Text = "生产";
             this.skinButton7.UseVisualStyleBackColor = false;
+            this.skinButton7.Click += new System.EventHandler(this.skinButton7_Click);
             // 
             // skinButton6
             // 
@@ -469,6 +504,7 @@
             this.skinButton28.TabIndex = 5;
             this.skinButton28.Text = "当前";
             this.skinButton28.UseVisualStyleBackColor = false;
+            this.skinButton28.Click += new System.EventHandler(this.skinButton28_Click);
             // 
             // skinButton5
             // 
@@ -502,31 +538,10 @@
             this.skinButton4.UseVisualStyleBackColor = false;
             this.skinButton4.Click += new System.EventHandler(this.skinButton4_Click);
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label2.ForeColor = System.Drawing.Color.Black;
-            this.label2.Location = new System.Drawing.Point(129, 31);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(94, 24);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "TFR0013";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(17, 31);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(106, 24);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "材料模型";
-            // 
             // autoPage
             // 
             this.autoPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.autoPage.Controls.Add(this.label12);
             this.autoPage.Controls.Add(this.comboBox1);
             this.autoPage.Controls.Add(this.UserData);
             this.autoPage.Controls.Add(this.skinButton13);
@@ -546,10 +561,21 @@
             this.autoPage.Text = "自动";
             this.autoPage.Enter += new System.EventHandler(this.autoPage_Enter);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.BackColor = System.Drawing.Color.Transparent;
+            this.label12.ForeColor = System.Drawing.Color.Black;
+            this.label12.Location = new System.Drawing.Point(524, 34);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(130, 24);
+            this.label12.TabIndex = 141;
+            this.label12.Text = "总数据单元";
+            // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(771, 31);
+            this.comboBox1.Location = new System.Drawing.Point(660, 31);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(136, 32);
             this.comboBox1.TabIndex = 138;
@@ -565,6 +591,8 @@
             this.UserData.RowTemplate.Height = 23;
             this.UserData.Size = new System.Drawing.Size(893, 585);
             this.UserData.TabIndex = 117;
+            this.UserData.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.UserData_CellDoubleClick);
+            this.UserData.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.UserData_DataError);
             // 
             // skinButton13
             // 
@@ -572,7 +600,7 @@
             this.skinButton13.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton13.DownBack = null;
             this.skinButton13.ForeColor = System.Drawing.Color.Black;
-            this.skinButton13.Location = new System.Drawing.Point(643, 23);
+            this.skinButton13.Location = new System.Drawing.Point(1024, 23);
             this.skinButton13.MouseBack = null;
             this.skinButton13.Name = "skinButton13";
             this.skinButton13.NormlBack = null;
@@ -588,7 +616,7 @@
             this.skinButton12.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton12.DownBack = null;
             this.skinButton12.ForeColor = System.Drawing.Color.Black;
-            this.skinButton12.Location = new System.Drawing.Point(515, 23);
+            this.skinButton12.Location = new System.Drawing.Point(896, 23);
             this.skinButton12.MouseBack = null;
             this.skinButton12.Name = "skinButton12";
             this.skinButton12.NormlBack = null;
@@ -604,7 +632,7 @@
             this.skinButton11.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton11.DownBack = null;
             this.skinButton11.ForeColor = System.Drawing.Color.Black;
-            this.skinButton11.Location = new System.Drawing.Point(387, 23);
+            this.skinButton11.Location = new System.Drawing.Point(131, 21);
             this.skinButton11.MouseBack = null;
             this.skinButton11.Name = "skinButton11";
             this.skinButton11.NormlBack = null;
@@ -636,7 +664,7 @@
             this.skinButton9.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton9.DownBack = null;
             this.skinButton9.ForeColor = System.Drawing.Color.Black;
-            this.skinButton9.Location = new System.Drawing.Point(131, 21);
+            this.skinButton9.Location = new System.Drawing.Point(387, 21);
             this.skinButton9.MouseBack = null;
             this.skinButton9.Name = "skinButton9";
             this.skinButton9.NormlBack = null;
@@ -673,6 +701,7 @@
             // handPage
             // 
             this.handPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.handPage.Controls.Add(this.label11);
             this.handPage.Controls.Add(this.comboBox3);
             this.handPage.Controls.Add(this.manualDgv);
             this.handPage.Controls.Add(this.skinButton19);
@@ -691,10 +720,21 @@
             this.handPage.Text = "手动";
             this.handPage.Enter += new System.EventHandler(this.handPage_Enter);
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.BackColor = System.Drawing.Color.Transparent;
+            this.label11.ForeColor = System.Drawing.Color.Black;
+            this.label11.Location = new System.Drawing.Point(552, 27);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(130, 24);
+            this.label11.TabIndex = 140;
+            this.label11.Text = "总数据单元";
+            // 
             // comboBox3
             // 
             this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(643, 24);
+            this.comboBox3.Location = new System.Drawing.Point(688, 24);
             this.comboBox3.Name = "comboBox3";
             this.comboBox3.Size = new System.Drawing.Size(136, 32);
             this.comboBox3.TabIndex = 139;
@@ -708,8 +748,9 @@
             this.manualDgv.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.manualDgv.Name = "manualDgv";
             this.manualDgv.RowTemplate.Height = 23;
-            this.manualDgv.Size = new System.Drawing.Size(1037, 598);
+            this.manualDgv.Size = new System.Drawing.Size(1142, 598);
             this.manualDgv.TabIndex = 118;
+            this.manualDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.UserData_DataError);
             // 
             // skinButton19
             // 
@@ -733,7 +774,7 @@
             this.skinButton14.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton14.DownBack = null;
             this.skinButton14.ForeColor = System.Drawing.Color.Black;
-            this.skinButton14.Location = new System.Drawing.Point(785, 16);
+            this.skinButton14.Location = new System.Drawing.Point(1024, 16);
             this.skinButton14.MouseBack = null;
             this.skinButton14.Name = "skinButton14";
             this.skinButton14.NormlBack = null;
@@ -749,7 +790,7 @@
             this.skinButton15.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton15.DownBack = null;
             this.skinButton15.ForeColor = System.Drawing.Color.Black;
-            this.skinButton15.Location = new System.Drawing.Point(515, 16);
+            this.skinButton15.Location = new System.Drawing.Point(877, 16);
             this.skinButton15.MouseBack = null;
             this.skinButton15.Name = "skinButton15";
             this.skinButton15.NormlBack = null;
@@ -765,7 +806,7 @@
             this.skinButton16.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton16.DownBack = null;
             this.skinButton16.ForeColor = System.Drawing.Color.Black;
-            this.skinButton16.Location = new System.Drawing.Point(387, 16);
+            this.skinButton16.Location = new System.Drawing.Point(131, 16);
             this.skinButton16.MouseBack = null;
             this.skinButton16.Name = "skinButton16";
             this.skinButton16.NormlBack = null;
@@ -797,7 +838,7 @@
             this.skinButton18.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton18.DownBack = null;
             this.skinButton18.ForeColor = System.Drawing.Color.Black;
-            this.skinButton18.Location = new System.Drawing.Point(131, 16);
+            this.skinButton18.Location = new System.Drawing.Point(387, 16);
             this.skinButton18.MouseBack = null;
             this.skinButton18.Name = "skinButton18";
             this.skinButton18.NormlBack = null;
@@ -810,8 +851,11 @@
             // watchPage
             // 
             this.watchPage.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.watchPage.Controls.Add(this.skinButton23);
+            this.watchPage.Controls.Add(this.label19);
             this.watchPage.Controls.Add(this.comboBox4);
+            this.watchPage.Controls.Add(this.skinButton36);
+            this.watchPage.Controls.Add(this.skinButton37);
+            this.watchPage.Controls.Add(this.skinButton23);
             this.watchPage.Controls.Add(this.skinButton34);
             this.watchPage.Controls.Add(this.skinButton35);
             this.watchPage.Controls.Add(this.skinButton20);
@@ -828,13 +872,64 @@
             this.watchPage.Text = "补料";
             this.watchPage.Enter += new System.EventHandler(this.watchPage_Enter);
             // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.BackColor = System.Drawing.Color.Transparent;
+            this.label19.ForeColor = System.Drawing.Color.Black;
+            this.label19.Location = new System.Drawing.Point(657, 24);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(130, 24);
+            this.label19.TabIndex = 144;
+            this.label19.Text = "总数据单元";
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Location = new System.Drawing.Point(793, 21);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(93, 32);
+            this.comboBox4.TabIndex = 143;
+            // 
+            // skinButton36
+            // 
+            this.skinButton36.BackColor = System.Drawing.Color.Transparent;
+            this.skinButton36.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinButton36.DownBack = null;
+            this.skinButton36.ForeColor = System.Drawing.Color.Black;
+            this.skinButton36.Location = new System.Drawing.Point(388, 13);
+            this.skinButton36.MouseBack = null;
+            this.skinButton36.Name = "skinButton36";
+            this.skinButton36.NormlBack = null;
+            this.skinButton36.Size = new System.Drawing.Size(122, 46);
+            this.skinButton36.TabIndex = 141;
+            this.skinButton36.Text = "余料预览";
+            this.skinButton36.UseVisualStyleBackColor = false;
+            this.skinButton36.Click += new System.EventHandler(this.skinButton17_Click);
+            // 
+            // skinButton37
+            // 
+            this.skinButton37.BackColor = System.Drawing.Color.Transparent;
+            this.skinButton37.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinButton37.DownBack = null;
+            this.skinButton37.ForeColor = System.Drawing.Color.Black;
+            this.skinButton37.Location = new System.Drawing.Point(260, 13);
+            this.skinButton37.MouseBack = null;
+            this.skinButton37.Name = "skinButton37";
+            this.skinButton37.NormlBack = null;
+            this.skinButton37.Size = new System.Drawing.Size(122, 46);
+            this.skinButton37.TabIndex = 142;
+            this.skinButton37.Text = "原料确认";
+            this.skinButton37.UseVisualStyleBackColor = false;
+            this.skinButton37.Click += new System.EventHandler(this.UserConfirm_Material_Click);
+            // 
             // skinButton23
             // 
             this.skinButton23.BackColor = System.Drawing.Color.Transparent;
             this.skinButton23.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton23.DownBack = null;
             this.skinButton23.ForeColor = System.Drawing.Color.Black;
-            this.skinButton23.Location = new System.Drawing.Point(257, 13);
+            this.skinButton23.Location = new System.Drawing.Point(516, 13);
             this.skinButton23.MouseBack = null;
             this.skinButton23.Name = "skinButton23";
             this.skinButton23.NormlBack = null;
@@ -842,14 +937,7 @@
             this.skinButton23.TabIndex = 140;
             this.skinButton23.Text = "优化设置";
             this.skinButton23.UseVisualStyleBackColor = false;
-            // 
-            // comboBox4
-            // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(513, 21);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(133, 32);
-            this.comboBox4.TabIndex = 139;
+            this.skinButton23.Click += new System.EventHandler(this.UserOpt_Click);
             // 
             // skinButton34
             // 
@@ -857,7 +945,7 @@
             this.skinButton34.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton34.DownBack = null;
             this.skinButton34.ForeColor = System.Drawing.Color.Black;
-            this.skinButton34.Location = new System.Drawing.Point(652, 13);
+            this.skinButton34.Location = new System.Drawing.Point(1024, 13);
             this.skinButton34.MouseBack = null;
             this.skinButton34.Name = "skinButton34";
             this.skinButton34.NormlBack = null;
@@ -873,7 +961,7 @@
             this.skinButton35.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton35.DownBack = null;
             this.skinButton35.ForeColor = System.Drawing.Color.Black;
-            this.skinButton35.Location = new System.Drawing.Point(385, 13);
+            this.skinButton35.Location = new System.Drawing.Point(892, 13);
             this.skinButton35.MouseBack = null;
             this.skinButton35.Name = "skinButton35";
             this.skinButton35.NormlBack = null;
@@ -889,7 +977,7 @@
             this.skinButton20.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton20.DownBack = null;
             this.skinButton20.ForeColor = System.Drawing.Color.Black;
-            this.skinButton20.Location = new System.Drawing.Point(1, 13);
+            this.skinButton20.Location = new System.Drawing.Point(4, 13);
             this.skinButton20.MouseBack = null;
             this.skinButton20.Name = "skinButton20";
             this.skinButton20.NormlBack = null;
@@ -905,7 +993,7 @@
             this.skinButton24.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton24.DownBack = null;
             this.skinButton24.ForeColor = System.Drawing.Color.Black;
-            this.skinButton24.Location = new System.Drawing.Point(129, 13);
+            this.skinButton24.Location = new System.Drawing.Point(132, 13);
             this.skinButton24.MouseBack = null;
             this.skinButton24.Name = "skinButton24";
             this.skinButton24.NormlBack = null;
@@ -920,7 +1008,7 @@
             this.skinButton25.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton25.DownBack = null;
             this.skinButton25.ForeColor = System.Drawing.Color.Black;
-            this.skinButton25.Location = new System.Drawing.Point(793, 13);
+            this.skinButton25.Location = new System.Drawing.Point(936, 678);
             this.skinButton25.MouseBack = null;
             this.skinButton25.Name = "skinButton25";
             this.skinButton25.NormlBack = null;
@@ -971,15 +1059,18 @@
             dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             this.blDgv.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.blDgv.RowTemplate.Height = 23;
-            this.blDgv.Size = new System.Drawing.Size(1054, 597);
+            this.blDgv.Size = new System.Drawing.Size(1142, 597);
             this.blDgv.TabIndex = 10;
             this.blDgv.TitleBack = null;
             this.blDgv.TitleBackColorBegin = System.Drawing.Color.White;
             this.blDgv.TitleBackColorEnd = System.Drawing.Color.FromArgb(((int)(((byte)(83)))), ((int)(((byte)(196)))), ((int)(((byte)(242)))));
+            this.blDgv.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.UserData_DataError);
             // 
             // barCodePage
             // 
             this.barCodePage.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.barCodePage.Controls.Add(this.groupBox6);
+            this.barCodePage.Controls.Add(this.groupBox5);
             this.barCodePage.Controls.Add(this.groupBox4);
             this.barCodePage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.barCodePage.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
@@ -990,6 +1081,278 @@
             this.barCodePage.TabItemImage = null;
             this.barCodePage.Text = "设置";
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.textBox13);
+            this.groupBox6.Controls.Add(this.label21);
+            this.groupBox6.Controls.Add(this.skinButton31);
+            this.groupBox6.Controls.Add(this.textBox10);
+            this.groupBox6.Controls.Add(this.textBox8);
+            this.groupBox6.Controls.Add(this.textBox7);
+            this.groupBox6.Controls.Add(this.textBox6);
+            this.groupBox6.Controls.Add(this.textBox9);
+            this.groupBox6.Controls.Add(this.label17);
+            this.groupBox6.Controls.Add(this.label15);
+            this.groupBox6.Controls.Add(this.label14);
+            this.groupBox6.Controls.Add(this.label13);
+            this.groupBox6.Controls.Add(this.label16);
+            this.groupBox6.Location = new System.Drawing.Point(3, 290);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(1143, 165);
+            this.groupBox6.TabIndex = 8;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "数据优化";
+            // 
+            // textBox13
+            // 
+            this.textBox13.Location = new System.Drawing.Point(106, 114);
+            this.textBox13.Name = "textBox13";
+            this.textBox13.Size = new System.Drawing.Size(106, 35);
+            this.textBox13.TabIndex = 11;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label21.ForeColor = System.Drawing.Color.Black;
+            this.label21.Location = new System.Drawing.Point(18, 120);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(82, 24);
+            this.label21.TabIndex = 10;
+            this.label21.Text = "尾料6:";
+            // 
+            // skinButton31
+            // 
+            this.skinButton31.BackColor = System.Drawing.Color.Transparent;
+            this.skinButton31.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinButton31.DownBack = null;
+            this.skinButton31.ForeColor = System.Drawing.Color.Black;
+            this.skinButton31.Location = new System.Drawing.Point(1007, 109);
+            this.skinButton31.MouseBack = null;
+            this.skinButton31.Name = "skinButton31";
+            this.skinButton31.NormlBack = null;
+            this.skinButton31.Size = new System.Drawing.Size(87, 35);
+            this.skinButton31.TabIndex = 9;
+            this.skinButton31.Text = "设置";
+            this.skinButton31.UseVisualStyleBackColor = false;
+            this.skinButton31.Click += new System.EventHandler(this.skinButton31_Click_1);
+            // 
+            // textBox10
+            // 
+            this.textBox10.Location = new System.Drawing.Point(962, 43);
+            this.textBox10.Name = "textBox10";
+            this.textBox10.Size = new System.Drawing.Size(106, 35);
+            this.textBox10.TabIndex = 8;
+            // 
+            // textBox8
+            // 
+            this.textBox8.Location = new System.Drawing.Point(753, 43);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(106, 35);
+            this.textBox8.TabIndex = 8;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(535, 43);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(106, 35);
+            this.textBox7.TabIndex = 8;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(318, 42);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(106, 35);
+            this.textBox6.TabIndex = 8;
+            // 
+            // textBox9
+            // 
+            this.textBox9.Location = new System.Drawing.Point(106, 43);
+            this.textBox9.Name = "textBox9";
+            this.textBox9.Size = new System.Drawing.Size(106, 35);
+            this.textBox9.TabIndex = 8;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label17.ForeColor = System.Drawing.Color.Black;
+            this.label17.Location = new System.Drawing.Point(874, 49);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(82, 24);
+            this.label17.TabIndex = 7;
+            this.label17.Text = "尾料5:";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label15.ForeColor = System.Drawing.Color.Black;
+            this.label15.Location = new System.Drawing.Point(665, 49);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(82, 24);
+            this.label15.TabIndex = 7;
+            this.label15.Text = "尾料4:";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label14.ForeColor = System.Drawing.Color.Black;
+            this.label14.Location = new System.Drawing.Point(447, 49);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(82, 24);
+            this.label14.TabIndex = 7;
+            this.label14.Text = "尾料3:";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label13.ForeColor = System.Drawing.Color.Black;
+            this.label13.Location = new System.Drawing.Point(230, 48);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(82, 24);
+            this.label13.TabIndex = 7;
+            this.label13.Text = "尾料2:";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label16.ForeColor = System.Drawing.Color.Black;
+            this.label16.Location = new System.Drawing.Point(18, 49);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(82, 24);
+            this.label16.TabIndex = 7;
+            this.label16.Text = "尾料1:";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.textBox5);
+            this.groupBox5.Controls.Add(this.textBox3);
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.label8);
+            this.groupBox5.Controls.Add(this.skinButton30);
+            this.groupBox5.Controls.Add(this.textBox12);
+            this.groupBox5.Controls.Add(this.textBox4);
+            this.groupBox5.Controls.Add(this.textBox2);
+            this.groupBox5.Controls.Add(this.label20);
+            this.groupBox5.Controls.Add(this.label9);
+            this.groupBox5.Controls.Add(this.label7);
+            this.groupBox5.Location = new System.Drawing.Point(3, 133);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(1143, 151);
+            this.groupBox5.TabIndex = 7;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "数据反馈";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(492, 98);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(192, 35);
+            this.textBox5.TabIndex = 11;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(181, 95);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(188, 35);
+            this.textBox3.TabIndex = 11;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label10.ForeColor = System.Drawing.Color.Black;
+            this.label10.Location = new System.Drawing.Point(399, 98);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(70, 24);
+            this.label10.TabIndex = 10;
+            this.label10.Text = "密码:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label8.ForeColor = System.Drawing.Color.Black;
+            this.label8.Location = new System.Drawing.Point(78, 98);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(94, 24);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "用户名:";
+            // 
+            // skinButton30
+            // 
+            this.skinButton30.BackColor = System.Drawing.Color.Transparent;
+            this.skinButton30.ControlState = CCWin.SkinClass.ControlState.Normal;
+            this.skinButton30.DownBack = null;
+            this.skinButton30.ForeColor = System.Drawing.Color.Black;
+            this.skinButton30.Location = new System.Drawing.Point(1007, 43);
+            this.skinButton30.MouseBack = null;
+            this.skinButton30.Name = "skinButton30";
+            this.skinButton30.NormlBack = null;
+            this.skinButton30.Size = new System.Drawing.Size(87, 35);
+            this.skinButton30.TabIndex = 9;
+            this.skinButton30.Text = "设置";
+            this.skinButton30.UseVisualStyleBackColor = false;
+            this.skinButton30.Click += new System.EventHandler(this.skinButton30_Click);
+            // 
+            // textBox12
+            // 
+            this.textBox12.Location = new System.Drawing.Point(771, 42);
+            this.textBox12.Name = "textBox12";
+            this.textBox12.Size = new System.Drawing.Size(208, 35);
+            this.textBox12.TabIndex = 8;
+            // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(492, 45);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(192, 35);
+            this.textBox4.TabIndex = 8;
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(181, 43);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(188, 35);
+            this.textBox2.TabIndex = 8;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label20.ForeColor = System.Drawing.Color.Black;
+            this.label20.Location = new System.Drawing.Point(690, 45);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(70, 24);
+            this.label20.TabIndex = 7;
+            this.label20.Text = "表名:";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label9.ForeColor = System.Drawing.Color.Black;
+            this.label9.Location = new System.Drawing.Point(375, 48);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(118, 24);
+            this.label9.TabIndex = 7;
+            this.label9.Text = "数据库名:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label7.ForeColor = System.Drawing.Color.Black;
+            this.label7.Location = new System.Drawing.Point(18, 49);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(154, 24);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "服务器名/IP:";
+            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.skinButton33);
@@ -997,7 +1360,7 @@
             this.groupBox4.Controls.Add(this.label6);
             this.groupBox4.Location = new System.Drawing.Point(3, 21);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(1051, 158);
+            this.groupBox4.Size = new System.Drawing.Size(1143, 106);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "数据更新";
@@ -1008,7 +1371,7 @@
             this.skinButton33.ControlState = CCWin.SkinClass.ControlState.Normal;
             this.skinButton33.DownBack = null;
             this.skinButton33.ForeColor = System.Drawing.Color.Black;
-            this.skinButton33.Location = new System.Drawing.Point(876, 63);
+            this.skinButton33.Location = new System.Drawing.Point(1007, 48);
             this.skinButton33.MouseBack = null;
             this.skinButton33.Name = "skinButton33";
             this.skinButton33.NormlBack = null;
@@ -1020,9 +1383,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(140, 63);
+            this.textBox1.Location = new System.Drawing.Point(142, 48);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(690, 35);
+            this.textBox1.Size = new System.Drawing.Size(859, 35);
             this.textBox1.TabIndex = 8;
             // 
             // label6
@@ -1030,7 +1393,7 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("宋体", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.label6.ForeColor = System.Drawing.Color.Black;
-            this.label6.Location = new System.Drawing.Point(16, 66);
+            this.label6.Location = new System.Drawing.Point(18, 51);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(118, 24);
             this.label6.TabIndex = 7;
@@ -1204,6 +1567,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "NewForm";
             this.Text = "Evok-自动下料电子锯";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.NewForm_FormClosing);
             this.tc1.ResumeLayout(false);
             this.mainPage.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1212,14 +1576,21 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Main_CutShow_Pic)).EndInit();
             this.autoPage.ResumeLayout(false);
+            this.autoPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UserData)).EndInit();
             this.handPage.ResumeLayout(false);
+            this.handPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.manualDgv)).EndInit();
             this.watchPage.ResumeLayout(false);
+            this.watchPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.blDgv)).EndInit();
             this.barCodePage.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.restMaterialPage.ResumeLayout(false);
@@ -1242,8 +1613,6 @@
         private CCWin.SkinControl.SkinTabPage restMaterialPage;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private CCWin.SkinControl.SkinButton skinButton2;
         private CCWin.SkinControl.SkinButton skinButton1;
         private CCWin.SkinControl.SkinButton startBtn;
@@ -1266,7 +1635,6 @@
         private CCWin.SkinControl.SkinButton skinButton19;
         private CCWin.SkinControl.SkinButton skinButton14;
         private CCWin.SkinControl.SkinButton skinButton15;
-        private CCWin.SkinControl.SkinButton skinButton16;
         private CCWin.SkinControl.SkinButton skinButton17;
         private CCWin.SkinControl.SkinButton skinButton18;
         private CCWin.SkinControl.SkinButton skinButton20;
@@ -1287,20 +1655,52 @@
         private System.Windows.Forms.DataGridView manualDgv;
         private CCWin.SkinControl.SkinButton skinButton34;
         private CCWin.SkinControl.SkinButton skinButton35;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox Main_CutShow_Pic;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
         private System.Windows.Forms.Timer tmrOffLine;
         private CCWin.SkinControl.SkinButton skinButton23;
         private CCWin.SkinControl.SkinButton skinButton25;
         private System.Windows.Forms.PictureBox pictureBox2;
         private CCWin.SkinControl.SkinButton skinButton29;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.ComboBox Main_CutId_ComBx;
+        private System.Windows.Forms.ComboBox Main_CutDatatable_ComBx;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Label label8;
+        private CCWin.SkinControl.SkinButton skinButton30;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private CCWin.SkinControl.SkinButton skinButton31;
+        private System.Windows.Forms.TextBox textBox10;
+        private System.Windows.Forms.TextBox textBox8;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.TextBox textBox6;
+        private System.Windows.Forms.TextBox textBox9;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label16;
+        private CCWin.SkinControl.SkinButton skinButton16;
+        private CCWin.SkinControl.SkinButton skinButton36;
+        private CCWin.SkinControl.SkinButton skinButton37;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.TextBox textBox12;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox textBox13;
+        private System.Windows.Forms.Label label21;
     }
 }

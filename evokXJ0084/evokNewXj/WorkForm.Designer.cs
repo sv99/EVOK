@@ -49,6 +49,7 @@
             this.aboutEvokMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tc1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label5 = new System.Windows.Forms.Label();
             this.textBox31 = new System.Windows.Forms.TextBox();
             this.button13 = new System.Windows.Forms.Button();
             this.button15 = new System.Windows.Forms.Button();
@@ -122,7 +123,6 @@
             this.FileSaveTimer = new System.Windows.Forms.Timer(this.components);
             this.errorTimer = new System.Windows.Forms.Timer(this.components);
             this.logOPF = new System.Windows.Forms.OpenFileDialog();
-            this.label5 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.tc1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -146,7 +146,7 @@
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
-            this.menuStrip1.Size = new System.Drawing.Size(1525, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1427, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -313,6 +313,17 @@
             this.tabPage1.Text = "自动操作";
             this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("宋体", 38.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label5.Location = new System.Drawing.Point(640, 606);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 51);
+            this.label5.TabIndex = 110;
+            this.label5.Tag = "";
+            this.label5.Text = "NA";
             // 
             // textBox31
             // 
@@ -828,7 +839,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.tabPage2.Size = new System.Drawing.Size(1391, 605);
+            this.tabPage2.Size = new System.Drawing.Size(1391, 669);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "手动操作";
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
@@ -1048,7 +1059,7 @@
             this.tabPage3.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.tabPage3.Size = new System.Drawing.Size(1391, 605);
+            this.tabPage3.Size = new System.Drawing.Size(1391, 669);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "参数设置";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -1093,7 +1104,7 @@
             this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(2, 1, 2, 1);
-            this.tabPage4.Size = new System.Drawing.Size(1391, 605);
+            this.tabPage4.Size = new System.Drawing.Size(1391, 669);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "IO监控";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -1134,10 +1145,10 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.statusLabel,
             this.infoLbl});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 741);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 733);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
-            this.statusStrip1.Size = new System.Drawing.Size(1525, 30);
+            this.statusStrip1.Size = new System.Drawing.Size(1427, 30);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -1174,22 +1185,11 @@
             // 
             this.logOPF.FileName = "log";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("宋体", 38.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label5.Location = new System.Drawing.Point(640, 606);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 51);
-            this.label5.TabIndex = 110;
-            this.label5.Tag = "";
-            this.label5.Text = "NA";
-            // 
             // WorkForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1525, 771);
+            this.ClientSize = new System.Drawing.Size(1427, 763);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tc1);
             this.Controls.Add(this.menuStrip1);

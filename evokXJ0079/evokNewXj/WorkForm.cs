@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using xjplc;
 using System.IO;
+using evokNewXJ;
 
 namespace evokNew0079
 {
@@ -23,6 +24,8 @@ namespace evokNew0079
 
         private WatchForm wForm;
 
+        HySkDevice hySk ;
+
         public WorkForm()
         {     
             //需要密码的时候     
@@ -37,6 +40,9 @@ namespace evokNew0079
             InitParam();
             InitControl();
             InitView0();
+            hySk = new HySkDevice();
+            hySk.ShowUserData(dataGridView1);
+            hySk.DownLoadData = evokWork.Sdj_DownLoadData;
             Application.DoEvents();         
             this.Visible = true;
         }
@@ -295,17 +301,22 @@ namespace evokNew0079
             {
                 e.Cancel = false;//退了
             }
-
+        
             UpdateTimer.Enabled = false;
+
             FileSaveTimer.Enabled = false;
-            if ( evokWork != null)
+
+            if (evokWork != null)
             {
-                 evokWork.Dispose();
+                evokWork.Dispose();
             }
-            ConstantMethod.Delay(100);
-           
-            Environment.Exit(0);
+
+
+
+
+
         }
+
         /// <summary>
         /// 控件tag 名称和plcsimple 结合起来
         /// plcsimple name只要包含 就可以和这个控件联合起来了 
@@ -378,15 +389,40 @@ namespace evokNew0079
         }
         private void tc1_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if ( evokWork.RunFlag)
+            if (evokWork.RunFlag)
             {
                 MessageBox.Show(Constant.IsWorking);
-                e.Cancel = true;               
+                e.Cancel = true;
             }
-            else if (!evokWork.ShiftPage(tc1.SelectedIndex))
+            else
+            if (tc1.SelectedIndex == Constant.ParamPage)
+            {
+                evokWork.ShiftPage(tc1.SelectedIndex);
+                
+                if (paraTc.SelectedIndex == 0)
+                {
+                    if (!evokWork.ShiftPage(Constant.ParamPage))
+                    {
+                        e.Cancel = true;
+                    }
+                }
+                else
+                if (!evokWork.ShiftPage(3 + paraTc.SelectedIndex))
+                {
+                    e.Cancel = true;
+
+                }
+               
+            }
+            else
+            if (!evokWork.ShiftPage(tc1.SelectedIndex))
             {
                 e.Cancel = true;
             }
+
+            
+
+
             showWatchForm();
         }
 
@@ -489,12 +525,42 @@ namespace evokNew0079
                 }
             }
             else
-          if (!evokWork.ShiftPage(3 + paraTc.SelectedIndex))
+            if (!evokWork.ShiftPage(3 + paraTc.SelectedIndex))
             {
                 e.Cancel = true;
 
             }
             showWatchForm();
+        }
+
+        private void button57_Click(object sender, EventArgs e)
+        {
+           
+            button57.Enabled = false;
+            
+            if (hySk.DownLoadData != null)
+            {
+
+                if (!hySk.DataOK)
+                {
+                    DialogResult dr = MessageBox.Show("存在错误数据，是否下发？", "确认！",MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+                    if (dr == DialogResult.No)
+                    {
+                        button57.Enabled = true;
+                        return;
+                    }
+                    
+                }
+                hySk.DownLoadData(hySk.HySkLst);
+
+                MessageBox.Show("数据发送完毕");
+            }
+            button57.Enabled = true;
+        }
+
+        private void button57_Click_1(object sender, EventArgs e)
+        {
+            hySk.ReadData();
         }
     }   
 }

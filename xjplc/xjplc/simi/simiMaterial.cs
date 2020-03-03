@@ -115,7 +115,7 @@ namespace xjplc.simi
             return false;
         }
 
-        const int noShift = 0;
+        const int noShift = 0; //
         const int upShift = 1;
         const int downShift = 2;       
         //四边形的数据 上下移不一样 

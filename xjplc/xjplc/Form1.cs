@@ -31,7 +31,7 @@ namespace xjplc
         
         private void Form1_Load(object sender, EventArgs e)
         {
-            ConstantMethod.AppExit();
+           // ConstantMethod.AppExit();
             strDataFormPath = new List<string>();
             strDataFormPath.Add(Constant.PlcDataFilePathAuto);
             strDataFormPath.Add(Constant.PlcDataFilePathHand);

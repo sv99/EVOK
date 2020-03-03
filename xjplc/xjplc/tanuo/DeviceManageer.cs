@@ -6,11 +6,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using xjplc.tanuo;
 using xjplc.TcpDevice;
@@ -295,10 +290,12 @@ namespace xjplc
             {
                 if (this != null
                     && HankCam != null
+                    && HankCam.Status>0
                     && Zd != null
                     && Zd.Status
+                     && XmBackwardCam.Status
                     //&& Jxp!=null
-                   // && Jxp.Status
+                    // && Jxp.Status
                     )
                     return true;
 
@@ -307,12 +304,15 @@ namespace xjplc
             }
         }
         //全局复位
-        public void reset()
+        public void ResetDevice()
         {
             LogManager.WriteProgramLog("手动初始化！");
-            LoginInCam();
+            //LoginInCam();
             ZdReset();
             JxpReset();
+            InitHankForwardCam();
+            InitXMBackWardCam();
+            ShowConn("重连设备结束！");
 
         }
         ConfigFileManager config;
@@ -322,46 +322,66 @@ namespace xjplc
 
             config = new ConfigFileManager(Constant.ConfigParamFilePath);
 
-            // InitHKCamera();
+            //InitHKCamera();
+            //前视摄像头
+            InitHankForwardCam();
 
-            InitHankCam();
+            //初始化机器人
+            InitRobot();
 
-            InitZd();
-
+            //工程信息
             InitPrjInfo();
 
+            //系统设置
             InitSysInfo();
 
+            //卷线盘
             InitJxp();
 
-            InitHand();
+            //手柄串口
+            //InitHand();
 
+            //游戏手柄
             InitJsControl();
 
-            InitXMCam();        
+            //后视摄像头
+            InitXMBackWardCam();
+
+            ShowConn("初始化设备结束！");
 
         }
         public void Dispose()
         {
             if (HKCam != null)
                 HKCam.dispose();
-            if (camxm != null)
-                camxm.dispose();
+            if (XmBackwardCam != null)
+                XmBackwardCam.dispose();
 
             if (HankCam != null)
             {
                 HankCam.dispose();
             }
+            if (Zd != null)
+            {
+                Zd.Dispose();
+            }
+            if (Jxp != null)
+            {
+                Jxp.Dispose();
+            }
         }
 
         public DeviceManageer(Action<string> s, PictureBox phk, PictureBox pxm)
         {
+            //显示连接回调函数
             ShowConnAction = s;
-            hkCamRealPlayWnd = phk;
-            xmCamRealPlayWnd = pxm;
+            //
+            ForwardCamShowControl = phk;
+            BackwardCamShowControl = pxm;
+
             Init();
 
-        }
+          }
 
 
         //在连接画面上显示字符
@@ -404,6 +424,7 @@ namespace xjplc
             showpara = sysForm.ShowSysParam;
             showParam();
             sysForm.SaveLoadParam();
+            sysForm.devM = this;
         }
 
         void showParam()
@@ -436,7 +457,14 @@ namespace xjplc
             get { return zd; }
             set { zd = value; }
         }
-        void InitZd()
+
+        bool clrConfirm = false;
+        public bool ClrConfirm
+        {
+            get { return clrConfirm; }
+            set { clrConfirm = value; }
+        }
+        void InitRobot()
         {
 
             ServerInfo p0 = new ServerInfo();
@@ -444,80 +472,130 @@ namespace xjplc
             p0.server_Ip = config.ReadConfig(ParamStr, configStr, sysInfo.param[14]);
 
             p0.server_Port = config.ReadConfig(ParamStr, configStr, sysInfo.param[15]);
-
+            ShowConn("车体初始化！");
             zd = new ZdDevice(p0);
             zd.DeviceName = devName2;
             zd.DeviceId = Constant.devicePropertyB;
+            zd.SetSpeed(3);
+            zd.SetLightFar(3);
+            zd.SetLightNear(3);
+            zd.SetBackLight(3);
             //尺寸运动初始化
             ContinueMonitorTimer = new System.Timers.Timer();
             ContinueMonitorTimer.Elapsed += ContinueMonitorTimerEvent;
             ContinueMonitorTimer.Interval = 1000;
             ContinueEnableCount = 0;
 
-            ShowConn("初始化小车");
+            ClrConfirmTimer = new System.Timers.Timer();
+            ClrConfirmTimer.Elapsed += ClrConfirmTimerEvent;
+            ClrConfirmTimer.Interval = 1000;
+            ClrConfirm = false;
+
+            ShowConn("车体检测IP！");
             if (!zd.OpenTcpClient())
             {
-                ShowConn("小车网络连接失败");
+                ShowConn("车体网络连接失败！");
+            }
+            else
+            {
+                ShowConn("车体网络连接成功！");
             }
         }
         //倾斜角度 翻滚角度当前值 如果变化了 就改变角度显示
         int qxjd = 0;
         int fgjd = 0;
-        public void ShowQxFgPic(PictureBox qxP, PictureBox fgP, Label qx, Label fg, Image image2)
+        public void ShowQxFgPic(PictureBox qxP, PictureBox fgP, Label qx, Label fg, Image qximage, Image fgimage)
         {
             qx.Text = Zd.CurrentQxValue.ToString();
             fg.Text = Zd.CurrentFgValue.ToString();
-            Bitmap image = new Bitmap(image2);
+            Bitmap qximagebit = new Bitmap(qximage);
+            Bitmap fgimagebit = new Bitmap(fgimage);
             //如果当前值变了
             if (Zd.CurrentQxValue != qxjd)
             {
-                qxP.Image = ConstantMethod.RotateImg(image, (-1) * Zd.CurrentQxValue);
+                qxP.Image = ConstantMethod.RotateImg(qximagebit, (-1) * Zd.CurrentQxValue);
                 qxjd = Zd.CurrentQxValue;
             }
 
             //如果当前值变了
             if (Zd.CurrentFgValue != fgjd)
             {
-                fgP.Image = ConstantMethod.RotateImg(image, (-1) * Zd.CurrentFgValue);
+                fgP.Image = ConstantMethod.RotateImg(fgimagebit, (-1) * Zd.CurrentFgValue);
                 fgjd = Zd.CurrentFgValue;
             }
 
 
         }
+
+        public void CarUnlock()
+        {
+            if (!Zd.SetCarUnlock())
+            {
+                ShowTipsAction("限位已关闭！");
+            }
+            else
+            {
+                ShowTipsAction("限位已打开！");
+            }
+            
+        }
+        public void CarReset()
+        {
+            if (Zd.SetCarReset())
+            {
+                ShowTipsAction("车体复位成功！");
+            }
+            else
+            {
+                ShowTipsAction("车体复位失败！");
+            }
+        }
         void ZdReset()
         {          
             if (Zd != null && !Zd.Status)
             {
-                ShowConn("初始化小车");
+                //ShowConn("初始化小车");
                 if (!Zd.Reset())
                 {
-                    ShowConn("小车网络连接失败");
+                    ShowConn("车体网络连接失败");
+                }
+                else
+                {
+                    ShowConn("车体网络连接成功！");
                 }
             }
         }
         //云台运动
         public void CamPTStart(int id)
         {           
-            if (Zd == null) return;
+            if (Zd == null || !Zd.Status) return;
             Zd. CamPTStart(id);
         }
 
         public void   PTRst()
         {
-            if(!Zd.CamPTStart(5)) ShowTips("云台复位失败，请检查云台状态!");       
+            ShowTips("复位中！");
+            if (Zd.IsPTMoving)
+            {                
+                return;
+            }
+            if(!Zd.CamPTStart(5))
+                ShowTips("复位失败!"); 
+            else
+                ShowTips("复位成功!");
         }
 
         string qxAlarm = "车体倾斜，危险！";      
         int QXangleAlarmMin = 15;
         int QXangleAlarmMax = -15;
 
-        public void ShowQxAlarm(PictureBox qxP, PictureBox fgP, Label qx, Label fg, Image image2)
+        public void ShowQxAlarm(PictureBox qxP, PictureBox fgP, Label qx, Label fg, Image qxImg,Image fgImg)
         {
             if (Zd != null && Zd.Status)
             {
                 
                 if (Zd.CurrentQxValue < QXangleAlarmMax || Zd.CurrentQxValue > QXangleAlarmMin) ShowTips(qxAlarm);
-                ShowQxFgPic(qxP, fgP, qx, fg, image2);
+                ShowQxFgPic(qxP, fgP, qx, fg, qxImg, fgImg);
             }
         }
 
@@ -560,27 +638,57 @@ namespace xjplc
             Zd.CarStart(0);
         }
 
+        public Action ShowContinueMove;
         
         //代表后退按键按下后 的标志 按键抬起就停止持续运动
         bool ReadyToQuitContinueMoveFlag = false;
         public void CarStart(int id)
         {
-            if (Zd == null) return;
+            if (Zd == null || !zd.Status) return;
+            if (JxpIsInAutoToGetLine)
+            {
+                AutoStopGetLine();
+                return;
+            }
+
+            if (JxpIsInManualToGetLine)
+            {
+                JxpIsInManualToGetLine = false;
+                JxpStopGetLine();
+                return;
+            }
 
             //上下左右 其中上要跟踪进行
             switch (id)
             {
                 case 1: //上
                     {
-
-                        //持续运动检测器开启
-                        OpenContinueMonitorTimer();
+                        if (ContinueMoveFlag) return;
+                            //持续运动检测器开启
+                      //  OpenContinueMonitorTimer();
                         break;
                     }
                  
-                case 2: //
+                case 2 : //
                     {
-
+                        if (ContinueMoveFlag)
+                        {
+                            ReadyToQuitContinueMoveFlag = true;
+                            return;
+                        }
+                        break;
+                    }
+                case 3: //
+                    {
+                        if (ContinueMoveFlag)
+                        {
+                            ReadyToQuitContinueMoveFlag = true;
+                            return;
+                        }
+                        break;
+                    }
+                case 4: //
+                    {
                         if (ContinueMoveFlag)
                         {
                             ReadyToQuitContinueMoveFlag = true;
@@ -593,13 +701,19 @@ namespace xjplc
                         if (ContinueMoveFlag && ReadyToQuitContinueMoveFlag)
                         {
                             StopContinueMove();
-                           // ShowTips("持续运动结束！");
+
                             return;
-                        }else 
+                        }
+                        else
                         if (ContinueMoveFlag)
                         {
-                            ShowTips("持续运动中,请后退解锁！");
+                            ShowTips("持续运动中,请解锁！");
+
                             return;
+                        }
+                        else
+                        {
+                            StopContinueMove();
                         }
                         
                         break;
@@ -608,64 +722,55 @@ namespace xjplc
                     {
                         if (ContinueMoveFlag)
                         {
-                            //ShowTips("持续运动中,请后退解锁！");
+                            ShowTips("持续运动中,请解锁！");
                             return;
                         }
                         break;
                     }
             }
 
+            
+
             Zd.CarStart(id);
+
+            
         }      
          
         public void TaiGanStart(int id)
         {
-            Zd.StartGan(id);           
+            if (Zd != null && Zd.Status)
+                Zd.StartGan(id);           
         }
 
         void ZdParamAdjust(int id)
         {
-            if (Zd == null) return;
+            if (Zd == null || !Zd.Status) return;
 
-             switch (id)
+                switch (id)
             {
                 case 1:
                     Zd.incFarLight();
-                    if (FarLightChange != null)
-                        FarLightChange(Zd.Farlight);
+                    
                     break;
                 case 2:
                     Zd.decFarLight();
-                    if (FarLightChange != null)
-                        FarLightChange(Zd.Farlight);
+                    
                     break;
                 case 3:
                     Zd.incNearLight();
-                    if (NearLightChange != null)
-                    {
-                        NearLightChange(Zd.Nearlight);
-                    }
+                    
                     break;
                 case 4:
                     Zd.decNearLight();
-                    if (NearLightChange != null)
-                    {
-                        NearLightChange(Zd.Nearlight);
-                    }
+                    
                     break;
                 case 5:
                     Zd.incSpeed();
-                    if (ZdSpeedChange != null)
-                    {
-                        ZdSpeedChange(Zd.Speed);
-                    }
+                   
                     break;
                 case 6:
                     Zd.decSpeed();
-                    if (ZdSpeedChange != null)
-                    {
-                        ZdSpeedChange(Zd.Speed);
-                    }
+                    
                     break;
             }
         }
@@ -685,13 +790,35 @@ namespace xjplc
                 Zd.SetLightCTRL(farLight, nearLight);
             }
         }
-
+        public void SetLightFar(int farLight)
+        {
+            if (Zd != null && Zd.Status)
+            {
+                Zd.SetLightFar(farLight);
+            }
+        }
+        public void SetLightNear(int nearLight)
+        {
+            if (Zd != null && Zd.Status)
+            {
+                Zd.SetLightNear(nearLight);
+            }
+        }
+        public void SetBackLight(int nearLight)
+        {
+            if (Zd != null && Zd.Status)
+            {
+                Zd.SetBackLight(nearLight);
+            }
+        }
         #region 持续运动模块
         //持续运动计数 手势保持时间=timerGestureCount*定时器
         int ContinueEnableCount;
         int MaxGestureCount = 3;
         public bool ContinueMoveFlag = false;
         System.Timers.Timer ContinueMonitorTimer;
+
+        System.Timers.Timer ClrConfirmTimer;
 
         private void ContinueMonitorTimerEvent(object sender, EventArgs e)
         {
@@ -704,40 +831,61 @@ namespace xjplc
             }
 
         }
+        private void ClrConfirmTimerEvent(object sender, EventArgs e)
+        {
+            ClrConfirm = true;
+            ClrConfirmTimer.Enabled = false;
+            if (ClrConfirm)
+            {
+                ClrParambb();
+                CleatMeter();
+                showInfo("清零");
+            }
+
+        }
         void OpenContinueMonitorTimer()
         {
-            if (!ContinueMoveFlag && !ContinueMonitorTimer.Enabled )
+            if (!ContinueMoveFlag && !ContinueMonitorTimer.Enabled  && ! Zd.IsHandControl)
             ContinueMonitorTimer.Enabled = true;
         }
-        void StartContinueMove()
+        public void StartContinueMove()
         {
-            if (!Status) return;
+            //如果已在运动 则停止
+            if (ContinueMoveFlag)
+            {
+                StopContinueMove();
+                return;
+            }
+
+            if (!Status) StopContinueMove();
        
-           // ShowTips("持续运动中！");
+            ShowTips("持续运动中！");
             ContinueMoveFlag = true;
             ContinueMonitorTimer.Enabled = false;
             ContinueEnableCount = 0;
+            ShowContinueMove();
 
         }
         public void StopContinueMove()
         {
-            if (!Status) return;
+           
+
             if (ContinueMoveFlag)
             {
-               // ShowTips("持续运动结束！");
+                ShowTips("持续运动结束！");
                 ContinueMoveFlag = false;
                 ContinueEnableCount = 0;
                 ContinueMonitorTimer.Enabled = false;
                 zd.CarStart(0);
                 ReadyToQuitContinueMoveFlag = false;
-            }         
+                ShowContinueMove();
+            }
+
+            ContinueMonitorTimer.Enabled = false;
 
         }
 
         #endregion
-
-
-
 
         #endregion
         #region 海康摄像头
@@ -747,7 +895,7 @@ namespace xjplc
             get { return camHK; }
             set { camHK = value; }
         }
-        PictureBox hkCamRealPlayWnd;
+        PictureBox ForwardCamShowControl;
 
         bool startRecordId;
         public bool LoginInCam()
@@ -774,7 +922,7 @@ namespace xjplc
 
                     if (HKCam.Login(ip, portInt, userName, pwd))
                     {
-                        if (!ListHKCamView(hkCamRealPlayWnd))
+                        if (!ListHKCamView(ForwardCamShowControl))
                         {
                             ShowConn("前置摄像头预览失败！");
                         }
@@ -792,34 +940,43 @@ namespace xjplc
 
         void setRealPlayWnd(PictureBox p12)
         {
-            hkCamRealPlayWnd = p12;
+            ForwardCamShowControl = p12;
         }
         public bool startRecord()
         {
             string filename = GetCurrentVideoFile();
+
             if (filename == null)
             {
                 MessageBox.Show("视频保存路径错误！");
                 return false;
             }
 
-            if (HKCam != null && startRecordId == false)
+            if (startRecordId == false)
             {
+                if(HKCam !=null)
                 startRecordId = HKCam.StartRecord(filename);
-                return true;
+
+                if(HankCam !=null)
+                 startRecordId =HankCam.StartRecord(filename);
+
+
             }
-            return false;
+            return startRecordId;
 
         }
-        public void stopRecord()
+        public bool stopRecord()
         {
             string filename = GetCurrentVideoFile();
             if (startRecordId)
             {
-                if (HKCam.StopRecord(filename))
-                    startRecordId = false;
-                return;
+                if (HKCam !=null && HKCam.StopRecord()) startRecordId = false;
+
+                if (HankCam != null && HankCam.StopRecord()) startRecordId = false;
+
+
             }
+            return !startRecordId;
         }
         string GetCurrentImageFile()
         {
@@ -856,7 +1013,7 @@ namespace xjplc
                 // return videoPath + prj.PrjName + dateTime + ".mp4";
                 //  string str= Path.Combine(folder, prj.InsQdJingHao + "-" + prj.InsZdJingHao + "-", dateTime + ".mp4");
 
-                return Path.Combine(folder, prj.InsQdJingHao + "-" + prj.InsZdJingHao + "-" + dateTime + ".mp4");
+                return Path.Combine(folder, prj.InsQdJingHao + "-" + prj.InsZdJingHao + "-" + dateTime + ".avi");
 
 
             }
@@ -874,13 +1031,24 @@ namespace xjplc
                 return "截图路径错误！";
 
             }
-            if (filePath != null && HKCam != null)
-            {
+
+            if (HKCam != null)
                 HKCam.Capture(filePath);
 
-                return filePath;
+            if (HankCam != null && HankCam.TakePhoto(filePath))
+            {
+                MessageBox.Show("拍照成功！请查看;" + filePath);
             }
-            return "截图失败！";
+            else
+            {
+                MessageBox.Show("拍照失败！请检查");
+            }
+
+
+
+            return filePath;
+
+
         }
 
         public void InitHKCamera()
@@ -935,8 +1103,13 @@ namespace xjplc
 
         public void CamStart(int id)
         {
-            if (HKCam != null && HKCam.Status !=0)
-                HKCam.StartAdjust(id);
+            if (HankCam.Status > 0)
+            {
+                if (HankCam != null && HankCam.Status != 0)
+                    HankCam.StartAdjust(id);
+                if (HKCam != null && HKCam.Status != 0)
+                    HKCam.StartAdjust(id);
+            }
         }
 
         #endregion
@@ -948,8 +1121,11 @@ namespace xjplc
             set { hankCam = value; }
         }
         //初始化
-        void InitHankCam()
+        void InitHankForwardCam()
         {
+
+            if (HankCam != null) HankCam.dispose();
+
             HankCam = new HankCamera();
 
             string ip = config.ReadConfig(ParamStr, configStr, sysInfo.param[4]);
@@ -963,8 +1139,15 @@ namespace xjplc
             sr.server_Port = port;
             sr.userName = userName;
             sr.userPwd = pwd;
-            HankCam.ShowhWnd =hkCamRealPlayWnd.Handle;
-            HankCam.OpenDevice(sr);
+            HankCam.ShowhWnd =ForwardCamShowControl.Handle;
+            ShowConn("前视摄像头检测IP！");
+            if (ConstantMethod.IsNetWorkExist(sr.server_Ip))
+            {
+                if (HankCam.OpenDevice(sr)) ShowConn("前视摄像头连接成功！");
+                else ShowConn("前视摄像头连接失败！");
+            }
+            else
+                ShowConn("前视摄像头连接失败！");
 
 
         }
@@ -973,7 +1156,6 @@ namespace xjplc
             if (HankCam != null && HankCam.Status != 0)
                 HankCam.StartAdjust(id);
         }
-
 
         #endregion
         #region 卷线盘
@@ -985,9 +1167,12 @@ namespace xjplc
         //收线中
         bool IsInGetLineFlag=false;
 
+
         //强制收线标志
         bool ForceToGetLine = false;
 
+        public bool JxpIsInAutoToGetLine;
+        
         JxpDevice jxp;
         public xjplc.TcpDevice.JxpDevice Jxp
         {
@@ -1002,14 +1187,18 @@ namespace xjplc
             p0.server_Ip = config.ReadConfig(ParamStr, configStr, sysInfo.param[12]);
 
             p0.server_Port = config.ReadConfig(ParamStr, configStr, sysInfo.param[13]);
-
+            ShowConn("线盘检测IP！");
             Jxp = new JxpDevice(p0);
             Jxp.DeviceName = devName1;
             Jxp.DeviceId = Constant.devicePropertyA;
-            ShowConn("初始化卷线盘");
+            //ShowConn("初始化卷线盘");
             if (!Jxp.OpenTcpClient())
             {
-                ShowConn("卷线盘网络连接失败！");
+                ShowConn("线盘网络连接失败！");
+            }
+            else
+            {
+                ShowConn("线盘网络连接成功！");
             }
 
         }
@@ -1017,10 +1206,14 @@ namespace xjplc
         {
             if (jxp != null && !jxp.Status)
             {
-                ShowConn("初始化卷线盘");
+                //ShowConn("初始化卷线盘");
                 if (!jxp.Reset())
                 {
-                    ShowConn("卷线盘网络连接失败");
+                    ShowConn("线盘网络连接失败");
+                }
+                else
+                {
+                    ShowConn("线盘网络连接成功！");
                 }
             }
         }
@@ -1067,22 +1260,49 @@ namespace xjplc
                 }
             }
         }
-
-        public void ShowDistance()
+        public void ShowDistanceHank()
         {
-            if (HKCam == null || HKCam.Status == 0) return;
+            if (HankCam == null || HankCam.Status == 0) return;
             //获取卷线盘运算距离 
             string s = JxpRealLen.ToString("0.00");
             if (Jxp != null && !oldCodedata.Equals(s))
             {
-                HKCam.StringAddTest(0, "距离:" + s + "M", 350, 600);
+
+                HankCam.SetString(1, "距离:" + s + "M", 1, 95, 5);
                 oldCodedata = s;
             }
             else
             {
                 if (Jxp == null && oldCodedata == "")
                 {
-                    HKCam.StringAddTest(0, "距离:0M", 450, 600);
+                    HankCam.SetString(1, "距离:0M", 1,95,5);
+
+                    //HKCam.StringAddTest(0, "距离:0M", 450, 600);
+                    oldCodedata = "0";
+                }
+            }
+
+        }
+
+        public void ShowDistance()
+        {
+
+
+            ShowDistanceHank();
+
+            if (HKCam == null || HKCam.Status == 0) return;
+            //获取卷线盘运算距离 
+            string s = JxpRealLen.ToString("0.00");
+            if (Jxp != null && !oldCodedata.Equals(s))
+            {
+                HKCam.StringAddTest(0,  s + "M", 350, 600);
+                oldCodedata = s;
+            }
+            else
+            {
+                if (Jxp == null && oldCodedata == "")
+                {
+                    HKCam.StringAddTest(0, "0M", 450, 600);
                     oldCodedata = "0";
                 }
             }
@@ -1092,8 +1312,7 @@ namespace xjplc
         {
             if (Jxp.EncoderData > xcMax)
                 ShowTips(xcAlarm);
-        }
-                
+        }               
         string shouxianAlarm = "线长小于2M";
         public void StopAutoGetLine()
         {
@@ -1101,30 +1320,40 @@ namespace xjplc
             if (Jxp.EncoderData < 2 && !ForceToGetLine&& Jxp.IsGetingLine)
             {
                 ShowTipsAction(shouxianAlarm);
-                JxpStopGetLine();
-                StopGetLineBackZd();
+                AutoStopGetLine();
             }
 
         }
-        public bool JxpIsInGetLine { get { return Jxp.IsGetingLine; } }
+        public bool JxpIsInManualToGetLine;
+        public bool IsNeedUserConfirmGetLine;
         bool JxpStartGetLine()
         {
+         
 
-            if (Jxp.Status && Jxp.EncoderData < 3)
+            if ( Jxp.EncoderData < 3 && !ForceToGetLine )
             {
-                DialogResult dr = MessageBox.Show("是否进入强制收线模式？", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
-                if (dr == DialogResult.Yes)
+                if (!IsNeedUserConfirmGetLine)
                 {
-                    ForceToGetLine = true;
-                }
-                else
-                {
-                    ForceToGetLine = false;
-                    return false;
-                }
 
+                    IsNeedUserConfirmGetLine = true;
+
+                    DialogResult dr = MessageBox.Show("是否进入强制收线模式？", "确认", MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+
+                    IsNeedUserConfirmGetLine = false;
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        ForceToGetLine = true;
+                    }
+                    else
+                    {
+                        ForceToGetLine = false;
+                        return false;
+                    }
+                }
+                else return false;            
             }
-
+          
             if (Jxp != null && Jxp.Status)
             {
                 Jxp.PackGetLineCmd();
@@ -1140,36 +1369,45 @@ namespace xjplc
             {                
                 Jxp.PackStopGetLineCmd();
                 IsInGetLineFlag = false;
+                ForceToGetLine = false;
             }
         }
         public void AutoStopGetLine()
         {
+
+            JxpIsInAutoToGetLine= false;
             JxpStopGetLine();
             StopGetLineBackZd();
         }
 
         public void AutoStartGetLine()
         {
+          
             if (JxpStartGetLine())
             {
+                JxpIsInAutoToGetLine = true;
                 StartGetLineBackZd();
             }
         }
         public void ManualGetLine()
         {
+            if (!Jxp.Status) return;
             if (IsInGetLineFlag)
             {
+                JxpIsInManualToGetLine = false;
                 JxpStopGetLine();
             }
             else
             {
+                JxpIsInManualToGetLine  = true;//手动模式下不需要考虑是否强制 直接开始收线
+                ForceToGetLine = true;
                 JxpStartGetLine();
             }
         }
         //自动收线 小车跟着一起动
-        public void AutoGetLine()
+        public void AutoGetLine() 
         {
-            if (Jxp == null || !Jxp.Status) return;
+            if (Jxp == null || !Jxp.Status || Zd ==null || !Zd.Status || Zd.Speed==0) return;
 
             if (IsInGetLineFlag)
             {
@@ -1212,12 +1450,12 @@ namespace xjplc
 
         }
         //清除偏移
-        public bool clrParambb()
+        public bool ClrParambb()
         {
             ParamB = 0;
             return true;
         }
-        public bool setParambb()
+        public bool SetParambb()
         {
             if (parambb > 0)
             {
@@ -1261,30 +1499,63 @@ namespace xjplc
         }
         #endregion
         #region 雄迈摄像头
-        PictureBox
-        xmCamRealPlayWnd;
-        xmCam camxm;
-
-        public void InitXMCam()
+        PictureBox BackwardCamShowControl;
+        xmCam xmBackwardCam;
+        public xmCam XmBackwardCam
         {
-            string ip = "192.168.0.12";
+            get
+            {
+                return xmBackwardCam;
+            }
+
+            set
+            {
+                xmBackwardCam = value;
+            }
+        }
+        public void InitXMBackWardCam()
+        {
+            ShowConn("后视摄像头初始化！");
+            string ip = config.ReadConfig(ParamStr, configStr, sysInfo.param[8]);
+            string port = config.ReadConfig(ParamStr, configStr, sysInfo.param[9]);
+            string userName = config.ReadConfig(ParamStr, configStr, sysInfo.param[10]);
+            string pwd = config.ReadConfig(ParamStr, configStr, sysInfo.param[11]);
+            /**
+            string ip = "192.168.0.65";
             string user = "admin";
             string port = "34567";
             string pwd = "";
+           
+     ***/
             string devName = "后视";
-
-            camxm = new xmCam();
-            if (!camxm.Init(devName, user, pwd, ip, port))
+            if (XmBackwardCam != null) XmBackwardCam.ExitSDK(); ;
+            xmBackwardCam = new xmCam();
+            ShowConn("后视摄像头检测IP！");
+            if (ConstantMethod.IsNetWorkExist(ip))
             {
-                MessageBox.Show("后视摄像头打开错误！");
+                if (!XmBackwardCam.Init(devName, userName, pwd, ip, port))
+                {
+                    ShowConn("后视摄像头连接失败！");
+                    return;
+                    //MessageBox.Show("后视摄像头打开错误！");
+                }
             }
-            camxm.OpenCamxm(xmCamRealPlayWnd);
+            else
+            {
+                ShowConn("后视摄像头连接失败！");
+                return;
+            }
+
+
+            ShowConn("后视摄像头连接成功！");
+
+            XmBackwardCam.OpenCamxm(BackwardCamShowControl);
 
         }
         public bool openXmcam(Control cc)
         {
-            if (camxm != null)
-                return camxm.OpenCamxm(cc);
+            if (XmBackwardCam != null)
+                return XmBackwardCam.OpenCamxm(cc);
             return false;
 
         }
@@ -1299,6 +1570,10 @@ namespace xjplc
             get { return handMan; }
             set { handMan = value; }
         }
+
+        
+        
+
         void InitHand()
         {
             HandMan = new handControl(handDataProcess);
@@ -1312,14 +1587,15 @@ namespace xjplc
         {
             ConstantMethod.ShowInfo(r2, S.ToString());
         }
-        public Action<int> FarLightChange;
-        public Action<int> NearLightChange;
-        public Action<int> ZdSpeedChange;
+   
+    
         void handDataProcess(byte[] s)
         {                     
             if (ConstantMethod.compareByteStrictly(CmdNewPack.zdqj, s))
             {
+
                 CarStart(1);
+                
                 showInfo("终端前进");
                 return;
             }
@@ -1369,7 +1645,9 @@ namespace xjplc
             if (ConstantMethod.compareByteStrictly(CmdNewPack.cambjAdd, s))
             {
                 CamStart(3);
+
                 showInfo("变焦+");
+
                 return;
             }
             if (ConstantMethod.compareByteStrictly(CmdNewPack.cambjDec, s))
@@ -1522,9 +1800,9 @@ namespace xjplc
 
             if (ConstantMethod.compareByteStrictly(CmdNewPack.jxpClear, s))
             {
-                clrParambb();
+                ClrParambb();
                 CleatMeter();
-                showInfo("卷线盘米数清零");
+                showInfo("线盘米数清零");
                 return;
             }
 
@@ -1557,33 +1835,33 @@ namespace xjplc
             int i = JoystickAPI.joyGetNumDevs();
             if (i > 0)
             {
-
                 JsControl.Capture();
-               // JsControl.rtbResult = r2;
+               //JsControl.rtbResult = r2;
             }
         }
 
-
+        
+       
         void JsDataProcess(object sender, JoystickEventArgs e)
         {
-
+            Zd.IsHandControl = true;
             int x = (int)e.Buttons;
             switch (x)
             {
                 case 1:
                     showInfo("变焦+");
-                    CamStart(1);
+                    CamStart(2);
                     break;
                 case 2:
                     showInfo("变焦-");
-                    CamStart(2);
+                    CamStart(1);
                     break;
                 case 3:
-                    CamStart(3);
+                    CamStart(4);
                     showInfo("变倍-");
                     break;
                 case 4:
-                    CamStart(4);
+                    CamStart(3);
                     showInfo("变倍+");
                     break;
                 case 5:
@@ -1603,11 +1881,15 @@ namespace xjplc
                     showInfo("车体右转");
                     break;
                 case 9:
-                    CamPTStart(5);
-                    showInfo("云台复位");
+                    //CamPTStart(5);
+                    ClrConfirm = false;
+
+                    ClrConfirmTimer.Enabled = true;
+                    
                     break;
                 case 10:
-                    AutoGetLine();
+                    ManualGetLine();
+                    //AutoGetLine();
                     showInfo("收线");                   
                     break;
                 case 11:
@@ -1630,32 +1912,41 @@ namespace xjplc
                     showInfo("云台右");
                     break;
                 case 15:
-                    clrParambb();
-                    CleatMeter();
-                    showInfo("清零");
+                    //ClrParambb();
+                    //CleatMeter();
+                    if(Zd!=null && Zd.Status)
+                    Zd.decSpeed();
+                                   
                     break;
                 case 16:
-                    TaiGanStart(1);
+                    if (Zd != null && Zd.Status)
+                        TaiGanStart(1);
                     showInfo("抬杆升");
                     break;
                 case 17:
-                    CwOpposite();
+                    //CwOpposite();
+                    if (Zd != null && Zd.Status)
+                        Zd.incSpeed();
                     showInfo("除雾开关");
                     break;
                 case 18:
-                    TaiGanStart(2);
+                   
+                        TaiGanStart(2);
                     showInfo("抬杆降");
                     break;
                 case 19:
-                    ZdParamAdjust(1);
+                   
+                        ZdParamAdjust(1);
                     showInfo("远光加");
                     break;
                 case 20:
-                    ZdParamAdjust(3);
+                    
+                        ZdParamAdjust(3);
                     showInfo("近光加");
                     break;
                 case 21:
-                    ZdParamAdjust(2);
+                    
+                        ZdParamAdjust(2);
                     showInfo("远光减");
                     break;
                 case 22:
@@ -1677,6 +1968,25 @@ namespace xjplc
                 case 26:
                     CamPTStart(0);
                     showInfo("右边遥感回归，云台停止运动");
+                    break;
+                case 27://清零
+                    ClrConfirmTimer.Enabled = false;
+                    /**
+                    if (ClrConfirm)
+                    {
+                        ClrParambb();
+                        CleatMeter();
+                        showInfo("清零");
+                    }
+                    **/
+                    break;
+                case 4096:
+                    CarStart(1);
+                    StartContinueMove();
+                    break;
+                case 8192:
+                  
+                    PTRst();
                     break;
             }
 

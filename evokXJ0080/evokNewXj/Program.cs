@@ -24,8 +24,8 @@ namespace evokNew0080
             //ConstantMethod.AutoStart(true);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            // Application.Run(new NewForm());
-            Application.Run(new WorkForm());
+             Application.Run(new NewForm());
+            //Application.Run(new WorkForm());
         }
     }
 }

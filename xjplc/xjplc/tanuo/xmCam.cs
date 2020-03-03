@@ -52,7 +52,12 @@ namespace xm
         DEV_INFO devInfo;
 
         int status = -1;
-
+        int m_iPlayhandle;
+        Control showCC;
+        public bool Status
+        {
+            get { return status == 1; }
+        }
         public Control owner = new Control();
         private NetSDK.fDisConnect disCallback;
         public xmCam()
@@ -74,14 +79,14 @@ namespace xm
             disCallback = new NetSDK.fDisConnect(DisConnectBackCallFunc);
             GC.KeepAlive(disCallback);
             int bResult = NetSDK.H264_DVR_Init(disCallback, owner.Handle);
-            NetSDK.H264_DVR_SetConnectTime(5000, 3);
+            NetSDK.H264_DVR_SetConnectTime(3000, 3);
             return bResult;
         }
         public bool ExitSDK()
         {
             return NetSDK.H264_DVR_Cleanup();
         }
-
+  
         public bool OpenCamxm(Control cc)
         {
             if (status < 0) return false;
@@ -92,10 +97,10 @@ namespace xm
             playstru.nStream = 0;
             playstru.nMode = 0;
             playstru.hWnd = cc.Handle;
-            long m_iPlayhandle = NetSDK.H264_DVR_RealPlay(devInfo.lLoginID, ref playstru);
-
             m_iPlayhandle = NetSDK.H264_DVR_RealPlay(devInfo.lLoginID, ref playstru);
 
+            m_iPlayhandle = NetSDK.H264_DVR_RealPlay(devInfo.lLoginID, ref playstru);
+            showCC = cc;
             if (m_iPlayhandle <= 0)
             {
                 Int32 dwErr = NetSDK.H264_DVR_GetLastError();
@@ -106,6 +111,7 @@ namespace xm
             }
             else
             {
+
                 NetSDK.H264_DVR_MakeKeyFrame(devInfo.lLoginID, 0, 0);
                 return true;
             }
@@ -146,6 +152,18 @@ namespace xm
         public void dispose()
         {
             if (this == null) return;
+            if (m_iPlayhandle > 0)
+            {
+                NetSDK.H264_DVR_StopRealPlay(m_iPlayhandle, (uint)showCC.Handle);
+                m_iPlayhandle = -1;
+
+            }
+
+            if (devInfo.lLoginID > 0)
+            {
+                NetSDK.H264_DVR_Logout(devInfo.lLoginID);
+                                             
+            }
             ExitSDK();
         }
     }

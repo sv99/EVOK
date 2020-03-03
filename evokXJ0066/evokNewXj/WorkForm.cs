@@ -154,8 +154,11 @@ namespace evokNew0066
             } 
             ****/                     
             loadDataBtn.Enabled = false;
+
             ReadCSVData();
+         
             //ReadSimiData();
+
             loadDataBtn.Enabled = true;
             
         }
@@ -243,6 +246,7 @@ namespace evokNew0066
                  //尺寸切了后 结巴尾料分离
                  //无尺寸就去除结疤
                  //优化系数是针对索菲亚的 只有在测长的时候会进行保存和设置 20181012
+
                  /****
                 int value0 = 0;
                 if (int.TryParse(comboBox2.Text, out value0))
@@ -250,6 +254,7 @@ namespace evokNew0066
                     evokWork.SetOptSizeParam1(value0);
                 }
                 ****/
+
                 switch (comboBox1.SelectedIndex)
                 {
 
@@ -259,7 +264,7 @@ namespace evokNew0066
                             evokWork.CutStartMeasure(true, Constant.CutMeasureMode);
                             break;
                         }
-                    case Constant.SizeScarNoSplit:
+                    case Constant.SizeScarNoSplit: 
                         {
                             //尺寸切了后 结巴尾料不分离
                             evokWork.CutStartMeasure(false, Constant.CutMeasureMode);
@@ -512,9 +517,13 @@ namespace evokNew0066
                 {
                      evokWork.LoadExcelData(DialogExcelDataLoad.FileName);
                 }
-                
+                //最多加十次
+                evokWork.ShenAo(10);
+
+
 
             }
+
             return 0;
         }             
         /// <summary>
@@ -794,11 +803,6 @@ namespace evokNew0066
         private void listBox1_DrawItem(object sender, DrawItemEventArgs e)
         {
             
-        }
-
-        private void tc1_SizeChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void button12_Click(object sender, EventArgs e)

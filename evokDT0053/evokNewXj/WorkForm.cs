@@ -274,7 +274,7 @@ namespace evokNew0053
                 txtChk.Add(checkBox5, textBox5);
                 txtChk.Add(checkBox6, textBox6);
 
-                InitXZJ();
+                //InitXZJ();
             }
         }
 

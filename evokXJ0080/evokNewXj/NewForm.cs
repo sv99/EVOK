@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,7 @@ namespace evokNewXJ
             userPara = new ConfigFileManager(Constant.ConfigSimiUserDataFilePath);
             restM = new RestMaterial();           
             InitParam();
+            InitSimiParam();
 
         }
 
@@ -58,7 +60,7 @@ namespace evokNewXJ
             // evokWork.SetRtbWork(rtbWork);
              evokWork.SetRtbResult(richTextBox1);
             evokWork.SetPrintReport(Constant.BarCode1);
-            evokWork.ShowCutPictureBox = pictureBox1;
+            evokWork.ShowCutPictureBox = Main_CutShow_Pic;
             evokWork.ShowCurrentCutPictureBox = pictureBox2;
            //evokWork.InitDgvParam(dgvParam);
            //evokWork.InitDgvIO(dgvIO);
@@ -74,7 +76,7 @@ namespace evokNewXJ
 
         public PictureBox getShowPic()
         {
-            return pictureBox1;
+            return Main_CutShow_Pic;
         }
 
         private void skinTreeView1_DoubleClick(object sender, EventArgs e)
@@ -89,49 +91,53 @@ namespace evokNewXJ
 
         private void skinButton8_Click(object sender, EventArgs e)
         {
+            string path = "";
+            path = textBox1.Text;
 
             FolderBrowserDialog op = new FolderBrowserDialog();
-            if (op.ShowDialog() == DialogResult.OK)
+
+            if (!Directory.Exists(path))
             {
+                if (op.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+                else
+                path = op.SelectedPath;
+            }
+
+                                 
+                t1.Nodes.Clear();
                 t1.Nodes.Add(
                 ConstantMethod.
-                getRootNode(op.SelectedPath,Constant.ShowPathName));
-
-                /**
-                string[] nodes = GetFileList(op.SelectedPath);
-                if (nodes.Count() > 0)
-                {
-                    foreach (string s in nodes)
-                    {
-                        
-                        TreeNode tn = new TreeNode(Path.GetFileName(s));
-
-                        string[] nodes0 = GetFileList(s);
-
-                        tn.Tag = s;
-
-                        foreach (string s0 in nodes)
-                        {
-                            tn.Nodes.Add(Path.GetFileName(s0));
-                            TreeNode tn1 = new TreeNode(Path.GetFileName(s));
-                            foreach (string s1 in nodes)
-                            {
-
-                            }
-
-                        t1.Nodes.Add(tn);
-
-
-                    }                                     
-                }
-                ***/
-            }
+                getRootNode(path, Constant.ShowPathName));
+            
             
         }
 
         private void skinButton33_Click(object sender, EventArgs e)
         {
-            
+            ConfigFileManager parafile = new ConfigFileManager(Constant.ConfigParamFilePath);
+
+            FolderBrowserDialog op = new FolderBrowserDialog();
+            string path = "";
+
+            if (op.ShowDialog() == DialogResult.OK)
+            {
+
+                path = op.SelectedPath;
+            }
+            else
+            return;
+
+            textBox1.Text = path;
+
+            if (Directory.Exists(textBox1.Text))
+            {
+                parafile.WriteConfig("simiDataDir", textBox1.Text);
+                MessageBox.Show("写入成功！");
+            }
+            else MessageBox.Show("写入失败！");
         }
 
 
@@ -170,6 +176,8 @@ namespace evokNewXJ
             if (File.Exists(t1.SelectedNode.Tag.ToString()))
             {
 
+                evokWork.SetUserDataGridView(UserData);
+
                 evokWork.LoadSimiData(t1.SelectedNode.Tag.ToString());
 
                 dtAuto = evokWork.getOptSize().DtData;
@@ -187,16 +195,23 @@ namespace evokNewXJ
             return this.evokWork;
            
         }
+
         MSizeForm msf;
         private void UserConfirm_Material_Click(object sender, EventArgs e)
         {
+
+            if (!evokWork.DeviceStatus)
+            {
+                MessageBox.Show("设备离线！");
+                return;
+            }
             if (msf == null)
             {
                 msf = new MSizeForm();
                 if (getWork() != null)
                 {
                     msf.evokWork = getWork();
-                    msf.Show();
+                    msf.ShowDialog();
                 }
             }
         }
@@ -215,7 +230,7 @@ namespace evokNewXJ
             }
 
             restM.updateDgv();
-            resF.Show();
+            resF.ShowDialog();
         }
 
         private void skinButton17_Click(object sender, EventArgs e)
@@ -275,11 +290,7 @@ namespace evokNewXJ
                                 dr[Constant.strformatSimiBl[9]] = oppositeSize;
                                 dr[Constant.strformatSimiBl[19]] = evokWork.getOptSize().SimiM.Width.ToString();
 
-                            }
-                            
-
-
-
+                            }                           
 
                             evokWork.getOptSize().DtData = dtBl;
                             break;
@@ -290,7 +301,7 @@ namespace evokNewXJ
                 if(evokWork.getOptSize().MaterialId <= Constant.patternMaterialId)
                 {
 
-                    evokWork.optReady(Constant.optNormal);
+                    evokWork.optReadySimi(Constant.optNormal,id);
 
                     UpdateNowOpt(0);
 
@@ -319,6 +330,7 @@ namespace evokNewXJ
                 {
                     if (string.IsNullOrWhiteSpace(dr[3].ToString()))
                     {
+                        MessageBox.Show("补料原因为空！");
                         return false;
                     }
                 }
@@ -331,12 +343,18 @@ namespace evokNewXJ
             if (tc1.SelectedIndex == 3)
             {
                 if (!BlReason(dtBl)) return;
-            }      
+            } 
+                 
             UserOpt(tc1.SelectedIndex);        
         }
 
         private void UserOptShow_Click(object sender, EventArgs e)
         {
+            if (evokWork.getOptSize().ProdInfoLst.Count <= 0)
+            {
+                MessageBox.Show("请先排版！");
+                return;
+            }
             DrawSizeForm drForm = new DrawSizeForm();
             drForm.showdata(evokWork.getOptSize());
             drForm.Show();
@@ -345,12 +363,10 @@ namespace evokNewXJ
         private void UserOptParam_Click(object sender, EventArgs e)
         {
 
-           // if (optF == null)
-           // {
-                optF = new OptParamSet();              
-           // }
+            optF = new OptParamSet();
 
-            optF.Show();
+            optF.evokWork = this.evokWork;
+            optF.ShowDialog();
 
 
         }
@@ -369,7 +385,7 @@ namespace evokNewXJ
            if (DialogExcelDataLoad.ShowDialog() == DialogResult.OK)
            {
 
-                //if (evokWork.showFilePathLabel == null) evokWork.showFilePathLabel = label8;
+                //if(evokWork.showFilePathLabel == null) evokWork.showFilePathLabel = label8;
                // evokWork.SetDataShowCb(listBox2);
                 //evokWork.SetDataShowLbl(label14);
                 evokWork.SetUserDataGridView(manualDgv);
@@ -400,6 +416,7 @@ namespace evokNewXJ
 
         private void watchPage_Enter(object sender, EventArgs e)
         {
+
             evokWork.getOptSize().Simi_Split_Combox = comboBox4;
 
             if (dtBl == null)
@@ -451,6 +468,12 @@ namespace evokNewXJ
         
         private void skinButton5_Click(object sender, EventArgs e)
         {
+            if (evokWork.getOptSize().ProdInfoLst.Count <= 0)
+            {
+                MessageBox.Show("无数据");
+                return;
+            }
+
             CountId++;
             if (CountId >= evokWork.getOptSize().ProdInfoLst.Count)
             {
@@ -462,7 +485,12 @@ namespace evokNewXJ
 
         private void skinButton4_Click(object sender, EventArgs e)
         {
-            CountId--;
+            if (evokWork.getOptSize().ProdInfoLst.Count <= 0)
+            {
+                MessageBox.Show("无数据");
+                return;
+            }
+                CountId--;
             if (CountId < 0)
             {
                 CountId = 0;
@@ -503,46 +531,90 @@ namespace evokNewXJ
         }
         private void autoPage_Enter(object sender, EventArgs e)
         {
-            
+           
             evokWork.getOptSize().Simi_Split_Combox = comboBox1;
             evokWork.getOptSize().
             Simi_SelectData(evokWork.getOptSize().DtData.TableName, 0, true);
 
         }
+        void ShiftDtData()
+        {
 
+        }
         private void User_ComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {     
-                 
+        {  
+
+            if (!((ComboBox)sender).Visible) return;    
             if (((ComboBox)sender).SelectedItem != null && !string.IsNullOrWhiteSpace(((ComboBox)sender).SelectedItem.ToString()))
             evokWork.getOptSize().Simi_SelectData(
                 evokWork.getOptSize().DtData.TableName, 
                 int.Parse(((ComboBox)sender).SelectedItem.ToString()), 
                 false);
+
+            if (evokWork.IsMaterialExist())
+            {
+                switch (tc1.SelectedIndex)
+                {
+                    case 1:
+                        {
+                            dtAuto = evokWork.getOptSize().DtData; ;
+                            break;
+                        }
+                    case 2:
+                        {
+                            dtManual = evokWork.getOptSize().DtData;
+                            break;
+                        }
+
+                }
+            }
             if (tc1.SelectedIndex == 0 )
             {
                 UserOpt(0);
+                UpdataXuhao();
             }
         }
 
+        void UpdataXuhao()
+        {
+            Main_CutId_ComBx.Items.Clear();
+
+            for (int i = 0; i < evokWork.getOptSize().ProdInfoLst.Count; i++)
+            {
+                Main_CutId_ComBx.Items.Add((i+1).ToString());
+            }
+        }
         private void mainPage_Enter(object sender, EventArgs e)
         {
+            //切换数据显示区域
+            ShiftComBox(tc1.SelectedIndex,Main_CutDatatable_ComBx);
 
-            ShiftComBox(tc1.SelectedIndex,comboBox5);
+            //设置第一个datatable 第一个数据源
             evokWork.getOptSize().
-            Simi_SelectData(evokWork.getOptSize().DtData.TableName, 0, true);
-            
+            Simi_SelectData(evokWork.getOptSize().DtData.TableName, 0, false);
+
+            //更新combox序号
+            UpdataXuhao();
+
         }
 
         private void handPage_Enter(object sender, EventArgs e)
         {
+                      
             evokWork.getOptSize().Simi_Split_Combox = comboBox3;
+
             evokWork.getOptSize().
             Simi_SelectData(evokWork.getOptSize().DtData.TableName, 0, true);
         }
 
         private void skinButton6_Click(object sender, EventArgs e)
-        {           
-               evokWork.ShowBarCode(0);
+        {
+            if (evokWork.getOptSize().ProdInfoLst.Count <= 0)
+            {
+                MessageBox.Show("无数据");
+                return;
+            }
+            evokWork.ShowBarCode(0);
         }
 
         void OffLine_Start()
@@ -566,14 +638,20 @@ namespace evokNewXJ
         
         private void startBtn_Click(object sender, EventArgs e)
         {
+            if (evokWork.getOptSize().ProdInfoLst.Count <= 0)
+            {
+                MessageBox.Show("无数据");
+                return;
+            }
 
+            evokWork.SetCutProCnt(0);
             if (evokWork.IsOffLineMode)
             {
                 OffLine_Start();                                           
             }
             if (evokWork.SimimaterialId < Constant.patternMaterialId)
             {
-                evokWork.StartWithOutDevice();
+                evokWork.StartWithOutDevice(0);
             }
             else
             {
@@ -605,8 +683,172 @@ namespace evokNewXJ
 
         private void skinButton29_Click_1(object sender, EventArgs e)
         {
-            evokWork.
-            Simi_Show(0, 1);
+            evokWork.Simi_Show(0, 1);
+        }
+
+        private void SingleStart_Btn_Click(object sender, EventArgs e)
+        {
+            if (evokWork.IsOffLineMode)
+            {
+                OffLine_Start();
+            }
+            if (evokWork.SimimaterialId < Constant.patternMaterialId)
+            {
+                evokWork.StartWithOutDevice(101);
+            }
+            else
+            {
+                evokWork.StartWithOutDeviceWithPattern(5);
+            }
+        }
+
+        private void Main_CutId_ComBx_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int id = 0;
+            if(int.TryParse(Main_CutId_ComBx.SelectedItem.ToString(),out id))
+            evokWork.Simi_Show(id-1);
+        }
+
+        private void skinButton7_Click(object sender, EventArgs e)
+        {
+            if (evokWork.getOptSize().ProdInfoLst.Count <= 0)
+            {
+                MessageBox.Show("无数据");
+                return;
+            }
+
+            if (evokWork.IsOffLineMode)
+            {
+                OffLine_Start();
+            }
+            if (evokWork.SimimaterialId < Constant.patternMaterialId)
+            {
+                evokWork.SetCutProCnt(CountId+1);
+                evokWork.StartWithOutDevice(101);
+            }
+            else
+            {
+                evokWork.StartWithOutDeviceWithPattern(5);
+            }
+        }
+
+        private void tc1_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            if ((tc1.SelectedIndex == 4 || tc1.SelectedIndex == 3 )&& !ConstantMethod.UserPassWd(Constant.PwdNoOffSet))
+            {
+                e.Cancel = true;
+            }
+            if( tc1.SelectedIndex == 5  && !evokWork.DeviceStatus)           
+            {
+               MessageBox.Show("设备离线！");
+               e.Cancel = true;
+            }
+        }
+
+        private void UserData_DataError(object sender, DataGridViewDataErrorEventArgs e)
+        {
+
+        }
+
+        private void UserData_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            evokWork.PrintUnCuttable(e.RowIndex);
+        }
+
+        private void NewForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult dr = MessageBox.Show(Constant.formCloseTips, Constant.formCloseTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);//触发事件进行提示
+            if (dr == DialogResult.No)
+            {
+                e.Cancel = true;//就不退了
+                return;
+            }
+            else
+            {
+                e.Cancel = false;//退了
+            }
+        }
+
+        private void skinButton30_Click(object sender, EventArgs e)
+        {
+            
+            SqlConnection
+            lo_conn = new SqlConnection("Server=" + textBox2 + ";Database=" + textBox4 + ";uid=" + textBox3 + ";pwd=" + textBox5);
+          
+            try
+            {
+                lo_conn.Open();
+                
+                DataTable dt = lo_conn.GetSchema("Tables");
+
+                ConfigFileManager parafile = new ConfigFileManager(Constant.ConfigParamFilePath);
+                parafile.WriteConfig("SQL_ServerName", textBox2.Text);
+                parafile.WriteConfig("SQL_DatabaseName", textBox4.Text);
+                parafile.WriteConfig("SQL_UserName", textBox3.Text);
+                parafile.WriteConfig("SQL_Passwd", textBox5.Text);
+                parafile.WriteConfig("SQL_Tablename", textBox12.Text);
+
+                MessageBox.Show("设置成功！");
+            }
+            catch (Exception ex)
+            {
+                 MessageBox.Show("设置成功失败！");
+                MessageBox.Show("数据库登录失败，错误：" + ex.Message);
+            }
+            
+            
+        }
+        void InitSimiParam()
+        {
+            ConfigFileManager parafile = new ConfigFileManager(Constant.ConfigParamFilePath);
+
+            textBox1.Text=  parafile.ReadConfig("simiDataDir");
+            textBox2.Text=parafile.ReadConfig("SQL_ServerName");
+
+            textBox4.Text = parafile.ReadConfig("SQL_DatabaseName");
+            textBox3.Text = parafile.ReadConfig("SQL_UserName");
+            textBox5.Text = parafile.ReadConfig("SQL_Passwd");
+            textBox12.Text = parafile.ReadConfig("SQL_Tablename");
+
+            textBox9.Text = parafile.ReadConfig("WlNear0");
+            textBox6.Text = parafile.ReadConfig("WlNear1");
+            textBox7.Text = parafile.ReadConfig("WlNear2");
+            textBox8.Text = parafile.ReadConfig("WlNear3");
+            textBox10.Text = parafile.ReadConfig("WlNear4");
+            textBox13.Text = parafile.ReadConfig("WlNear5");
+            
+
+        }
+        private void skinButton31_Click_1(object sender, EventArgs e)
+        {
+            int id = 0;
+            if (!int.TryParse(textBox6.Text, out id)
+                || !int.TryParse(textBox6.Text, out id)
+                || !int.TryParse(textBox8.Text, out id)
+                || !int.TryParse(textBox9.Text, out id)
+                || !int.TryParse(textBox10.Text, out id)
+               
+                )
+            {
+                MessageBox.Show("数据错误！");
+
+            }
+
+            ConfigFileManager parafile = new ConfigFileManager(Constant.ConfigParamFilePath);
+
+            parafile.WriteConfig("WlNear0", textBox9.Text);
+            parafile.WriteConfig("WlNear1", textBox6.Text);
+            parafile.WriteConfig("WlNear2", textBox7.Text);
+            parafile.WriteConfig("WlNear3", textBox8.Text);
+            parafile.WriteConfig("WlNear4", textBox10.Text);
+            parafile.WriteConfig("WlNear5", textBox13.Text);
+            evokWork?.ReadSimiWlst();
+            MessageBox.Show("设置成功！");
+        }
+
+        private void skinButton28_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
