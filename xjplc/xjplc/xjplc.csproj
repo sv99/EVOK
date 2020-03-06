@@ -180,6 +180,7 @@
     <Compile Include="MultiLanguage.cs" />
     <Compile Include="OpeeinFormula.cs" />
     <Compile Include="Permutation.cs" />
+    <Compile Include="PlcWork.cs" />
     <Compile Include="simi\Device.cs" />
     <Compile Include="simi\PaintRect.cs" />
     <Compile Include="simi\RestMaterial.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="passWdForm.Designer.cs">
       <DependentUpon>passWdForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="XJPLC.cs" />
     <Compile Include="xj\EvokXJWork.cs" />
     <Compile Include="xj\SimiPatternPoint.cs" />
     <Compile Include="xj\XJCommManager.cs" />

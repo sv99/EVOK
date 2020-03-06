@@ -741,7 +741,7 @@ namespace xjplc
             if (!evokDevice.getDeviceData()) 
             {             
                 MessageBox.Show(DeviceId + Constant.ConnectMachineFail);
-                Environment.Exit(0);
+               // Environment.Exit(0);
             }
             
             //切换

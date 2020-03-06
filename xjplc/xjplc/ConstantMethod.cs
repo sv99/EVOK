@@ -283,24 +283,32 @@ namespace xjplc
             return IsExist;
         }
 
-        public static bool  IsNetWorkExist(string hostName)
+        public static bool IsNetWorkExist(string hostName)
         {
             bool online = false; //是否在线
-            try
+
+            //return false;
+
+
+            using (Ping ping = new Ping())
             {
-                Ping ping = new Ping();
-                PingReply pingReply = ping.Send(hostName, 50);
-                if (pingReply.Status == IPStatus.Success)
+                try
                 {
-                    online = true;
+                    PingReply pingReply = ping.Send(hostName, 50);
+                    if (pingReply.Status == IPStatus.Success)
+                    {
+                        online = true;
+
+                    }
+                    ping.Dispose();
+                }
+
+                catch (System.Exception ex)
+                {
 
                 }
-                ping.Dispose();
             }
-            catch (System.Exception ex)
-            {
-
-            }
+         
             return online;
         }
         //在IP存在的情况下 确认服务器端口是否可以连上
@@ -1560,6 +1568,11 @@ namespace xjplc
 
             return count;
         }
+        public static void  ControlCenter(Control parent, Control son,int xoffset=0,int yoffset=0)
+        {
+            son.Parent = parent;
+            son.Location = new Point(parent.Width/2 - son.Width/2+xoffset, parent.Height/2 - son.Height/2+yoffset);
+        }
         public static Bitmap RotateImg(Bitmap img, float angle)
         {
             //通过Png图片设置图片透明，修改旋转图片变黑问题。
@@ -1585,7 +1598,45 @@ namespace xjplc
             Point center = new Point((int)(rect.X + rect.Width / 2), (int)(rect.Y + rect.Height / 2));
             g.TranslateTransform(center.X, center.Y);
             g.RotateTransform(angle);
-            g.Clear(Color.White);
+           // g.Clear(Color.White);
+            //恢复图像在水平和垂直方向的平移
+            g.TranslateTransform(-center.X, -center.Y);
+            g.DrawImage(img, rect);
+            //重至绘图的所有变换
+            g.ResetTransform();
+
+            g.Save();
+            g.Dispose();
+            path.Dispose();
+            return devImage;
+        }
+        //增加旋转中心
+        public static Bitmap RotateImg(Bitmap img, float angle,Point rotatePoint)
+        {
+            //通过Png图片设置图片透明，修改旋转图片变黑问题。
+            int width = img.Width;
+            int height = img.Height;
+            //角度
+            Matrix mtrx = new Matrix();
+            mtrx.RotateAt(angle, rotatePoint, MatrixOrder.Append);
+            //得到旋转后的矩形
+            GraphicsPath path = new GraphicsPath();
+            path.AddRectangle(new RectangleF(0f, 0f, width, height));
+            RectangleF rct = path.GetBounds(mtrx);
+            //生成目标位图
+            Bitmap devImage = new Bitmap((int)(rct.Width), (int)(rct.Height));
+            Graphics g = Graphics.FromImage(devImage);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Bilinear;
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            //计算偏移量
+            Point Offset = new Point((int)(rct.Width - width) / 2, (int)(rct.Height - height) / 2);
+            //构造图像显示区域：让图像的中心与窗口的中心点一致
+            Rectangle rect = new Rectangle(Offset.X, Offset.Y, (int)width, (int)height);
+
+            Point center = new Point((int)(rect.X + rect.Width / 2), (int)(rect.Y + rect.Height / 2));
+            g.TranslateTransform(center.X, center.Y);
+            g.RotateTransform(angle);
+             g.Clear(Color.White);
             //恢复图像在水平和垂直方向的平移
             g.TranslateTransform(-center.X, -center.Y);
             g.DrawImage(img, rect);

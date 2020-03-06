@@ -379,7 +379,7 @@ namespace xjplc
             sdjLeftDataAddress = new PlcInfoSimple("左1数据下发地址读写");
             sdjRightDataAddress = new PlcInfoSimple("右1数据下发地址读写");
 
-        xialiaojuStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
+             xialiaojuStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
             doorBanStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
             doorShellStatus0 = new string[] { "运行中", "准备就绪", "暂停中", "急停中", "报警中", "通讯错误", "复位中" };
             comIsDownLoading = false;
@@ -410,12 +410,7 @@ namespace xjplc
             evokDevice.setDeviceId(DeviceName);
             InitUsualTest();
         }
-
-      
-        public void ErrorListSave()
-        {
-
-        }
+    
         List<string> warningList = new List<string>();
         public System.Collections.Generic.List<string> WarningList
         {
@@ -479,7 +474,6 @@ namespace xjplc
                 optSize.Rsm = value;
             }
         }
-
 
         public EvokXJWork(int id)
         {
@@ -3806,11 +3800,14 @@ namespace xjplc
             clInPs = ConstantMethod.getPlcSimple(clInPs.Name, psLstAuto);
             slInPs = ConstantMethod.getPlcSimple(slInPs.Name, psLstAuto);
 
-            sdjDataDownLoadEnd =ConstantMethod.getPlcSimple(sdjDataDownLoadEnd.Name, psLstAuto);
-            sdjLeftDataAddress = ConstantMethod.getPlcSimple(sdjLeftDataAddress.Name, psLstAuto);
-            sdjRightDataAddress = ConstantMethod.getPlcSimple(sdjRightDataAddress.Name, psLstAuto);
-            sdjLeftEnable = ConstantMethod.getPlcSimple(sdjLeftEnable.Name, psLstAuto);
-            sdjRightEnable = ConstantMethod.getPlcSimple(sdjRightEnable.Name, psLstAuto);
+            if (sdjDataDownLoadEnd != null)
+            {
+                sdjDataDownLoadEnd = ConstantMethod.getPlcSimple(sdjDataDownLoadEnd.Name, psLstAuto);
+                sdjLeftDataAddress = ConstantMethod.getPlcSimple(sdjLeftDataAddress.Name, psLstAuto);
+                sdjRightDataAddress = ConstantMethod.getPlcSimple(sdjRightDataAddress.Name, psLstAuto);
+                sdjLeftEnable = ConstantMethod.getPlcSimple(sdjLeftEnable.Name, psLstAuto);
+                sdjRightEnable = ConstantMethod.getPlcSimple(sdjRightEnable.Name, psLstAuto);
+            }
             SetPage(1);
             SetPage(2);
             SetPage(3);
@@ -4390,12 +4387,13 @@ namespace xjplc
                     driilDepthLst.Add((int)(hyskLst[i].DrillDepth * 1000));
                     knifeLst.Add((int)(hyskLst[i].Knife));
                     cutmodeLst.Add((int)(hyskLst[i].CutMode));
-                    jDepthLst.Add((int)(hyskLst[i].JdDepth));
+                    jDepthLst.Add((int)(hyskLst[i].JdDepth * 1000));
                     roundSWLst.Add((int)(hyskLst[i].RoundSwitch));
                 }
             }
             int address = sdjLeftDataAddress.Addr;
            
+          
             evokDevice.SetMultiPleDValue(sdjLeftDataAddress,aLst.ToArray());
             sdjLeftDataAddress.Addr += 30;
             evokDevice.SetMultiPleDValue(sdjLeftDataAddress, eLst.ToArray());
@@ -4460,50 +4458,51 @@ namespace xjplc
                     driilDepthLst.Add((int)(hyskLst[i].DrillDepth * 1000));
                     knifeLst.Add((int)(hyskLst[i].Knife));
                     cutmodeLst.Add((int)(hyskLst[i].CutMode));
-                    jDepthLst.Add((int)(hyskLst[i].JdDepth));
+                    jDepthLst.Add((int)(hyskLst[i].JdDepth * 1000));
                     roundSWLst.Add((int)(hyskLst[i].RoundSwitch));
                 }
             }
 
+
            
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, aLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, eLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, fleftLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, gleftLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, driilDepthLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, knifeLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, cutmodeLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, jDepthLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
+                evokDevice.SetMultiPleDValue(sdjLeftDataAddress, roundSWLst.ToArray());
+                sdjLeftDataAddress.Addr += 30;
 
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, aLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, eLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, fleftLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, gleftLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, driilDepthLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, knifeLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, cutmodeLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, jDepthLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-            evokDevice.SetMultiPleDValue(sdjLeftDataAddress, roundSWLst.ToArray());
-            sdjLeftDataAddress.Addr += 30;
-
-            addressEn = sdjRightEnable.Addr;
-            for (int i = 0; i < 6; i++)
-            {
-                
-
-                if (i < hyskLst.Count)
+                addressEn = sdjRightEnable.Addr;
+                for (int i = 0; i < 6; i++)
                 {
 
-                    evokDevice.SetMValueON(sdjRightEnable);
-                }
-                else
-                {
-                    evokDevice.SetMValueOFF(sdjRightEnable);
-                }
 
-                sdjRightEnable.Addr++;
-            }
-            sdjRightEnable.Addr = addressEn;
+                    if (i < hyskLst.Count)
+                    {
+
+                        evokDevice.SetMValueON(sdjRightEnable);
+                    }
+                    else
+                    {
+                        evokDevice.SetMValueOFF(sdjRightEnable);
+                    }
+
+                    sdjRightEnable.Addr++;
+                }
+                sdjRightEnable.Addr = addressEn;
+            
             #endregion
             sdjLeftDataAddress.Addr = address ;
 
