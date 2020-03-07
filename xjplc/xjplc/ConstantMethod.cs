@@ -287,7 +287,7 @@ namespace xjplc
         {
             bool online = false; //是否在线
 
-            //return false;
+       
 
 
             using (Ping ping = new Ping())
